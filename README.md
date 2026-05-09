@@ -1,0 +1,245 @@
+# stony-vdfs
+
+> A privacy-first virtual filesystem for Rust with **local AI transcription and
+> auto-tagging built in**. Your media library understands itself — without sending a
+> byte to the cloud.
+
+[![CI](https://github.com/stonyp90/stony-vdfs/actions/workflows/ci.yml/badge.svg)](https://github.com/stonyp90/stony-vdfs/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/rust-2024_edition-orange.svg)](https://www.rust-lang.org)
+
+`stony-vdfs` is a Rust workspace that combines two ideas that usually live apart:
+
+1. a **backend-agnostic virtual filesystem** that gives applications a single async API
+   over memory, local disk, FUSE mounts, and WinFsp mounts;
+2. an opt-in **content-aware indexing layer** that, when a media file lands in the
+   filesystem, automatically:
+   - probes it with **FFmpeg**,
+   - extracts the audio track,
+   - **transcribes** it with `whisper.cpp` (or any other on-device backend you plug in),
+   - **auto-tags** the transcript with a small local LLM (no cloud calls),
+   - stores the transcript + tags as a sidecar JSON record retrievable through the
+     filesystem itself.
+
+The result: a desktop or server application can hand its users `cat`, `grep`, `find`
+over the *contents* of their videos and podcasts, with zero data leaving the device.
+
+This is the open-source distillation of an architecture the author refined privately
+across four CRA-acknowledged Canadian SR&ED R&D cycles. The library is being built
+openly through the [NGI Zero Commons Fund](https://nlnet.nl/commonsfund/) application
+cycle.
+
+---
+
+## Status
+
+**v0.1.0-alpha** — public scaffolding. The traits and the in-memory backend are usable;
+the local backend covers the happy path; FUSE, WinFsp, and the indexing pipeline (`crates/stony-vdfs-index/`) are scaffolded with a complete trait surface but the
+heavy implementations land in roadmap milestones M3–M6. See [ROADMAP.md](ROADMAP.md).
+
+## Why does this matter?
+
+Cloud providers (Google Drive, OneDrive, Dropbox, iCloud) all index user media
+**server-side**: your audio is uploaded, transcribed, indexed, and tagged in their data
+centres so their search box can find "the meeting where we discussed pricing." That is
+a useful feature — and an enormous privacy trade-off.
+
+`stony-vdfs` lets a downstream application offer the same user experience without ever
+sending the audio anywhere. The transcription and tagging run on the user's own machine
+via FFmpeg + `whisper.cpp` + a small local LLM. The library is the plumbing; the
+application picks the models and policies.
+
+This aligns with the
+[NGI Zero Commons Fund](https://nlnet.nl/commonsfund/) mission of building infrastructure
+for the digital commons that respects user sovereignty and does not rely on Big Tech
+intermediaries.
+
+## What's in the box
+
+| Crate                          | Purpose                                                  |
+|--------------------------------|----------------------------------------------------------|
+| `stony-vdfs-core`              | Traits, types, paths, errors — no IO dependencies.       |
+| `stony-vdfs-backend-memory`    | In-memory backend for tests and demos.                   |
+| `stony-vdfs-backend-local`     | Local filesystem backend (POSIX + Windows).              |
+| `stony-vdfs-fuse`              | FUSE mount adapter (Linux/macOS). **Stub until M3.**     |
+| `stony-vdfs-winfsp`            | WinFsp mount adapter (Windows). **Stub until M4.**       |
+| `stony-vdfs-index`             | **FFmpeg + transcription + auto-tag pipeline.** Trait surface today; full implementation M5–M6. |
+| `stony-vdfs-cli`               | Operator CLI: `list`, `cat`, `put` against any backend.  |
+
+## Architecture at a glance
+
+```
+  ┌───────────────────────────────────────────────────────────────────────┐
+  │                            stony-vdfs-cli                             │
+  └───────────────────────┬───────────────────────┬───────────────────────┘
+                          │                       │
+                          ▼                       ▼
+              ┌──────────────────┐    ┌────────────────────────────────┐
+              │  Indexing layer  │    │           Backends             │
+              │  (decorator)     │    │ ┌──────┐ ┌──────┐ ┌──────────┐ │
+              │ ┌──────────────┐ │    │ │memory│ │local │ │ future:  │ │
+              │ │  FFmpeg      │ │    │ └──────┘ └──────┘ │ cloud/CAS│ │
+              │ │  probe+audio │ │    │                   └──────────┘ │
+              │ └──────┬───────┘ │    └────────────────┬───────────────┘
+              │        ▼         │                     │
+              │ ┌──────────────┐ │                     │
+              │ │ Transcriber  │ │       wraps         │
+              │ │ (whisper.cpp)│ │ ───────────────────▶│
+              │ └──────┬───────┘ │                     │
+              │        ▼         │                     │
+              │ ┌──────────────┐ │                     │
+              │ │   Tagger     │ │                     │
+              │ │ (local LLM)  │ │                     │
+              │ └──────┬───────┘ │                     │
+              │        ▼         │                     │
+              │ sidecar JSON     │                     │
+              │ /.index/*.json   │                     │
+              └──────────────────┘                     │
+                                                       ▼
+                                          ┌────────────────────────┐
+                                          │   stony-vdfs-core      │
+                                          │ traits / paths / types │
+                                          └────────┬───────────────┘
+                                                   │
+                                ┌──────────────────┼──────────────────┐
+                                │                                     │
+                       ┌────────▼─────────┐                ┌──────────▼──────────┐
+                       │  FUSE adapter    │                │   WinFsp adapter    │
+                       │  (Linux/macOS)   │                │     (Windows)       │
+                       │    [M3 stub]     │                │      [M4 stub]      │
+                       └──────────────────┘                └─────────────────────┘
+```
+
+Full design notes in [ARCHITECTURE.md](ARCHITECTURE.md).
+
+## Design philosophy
+
+- **Privacy-by-default.** No telemetry. No implicit network calls. The transcription and
+  tagging models run on the user's device unless the caller explicitly chooses
+  otherwise.
+- **Async-first.** Built on `tokio`; every IO method returns a future.
+- **Cross-platform parity.** Identical behaviour on Linux, macOS, Windows; backends own
+  the platform quirks.
+- **Small core, big edges.** `stony-vdfs-core` has no IO dependencies — only traits.
+- **Composability over inheritance.** Indexing, encryption, dedup attach as decorators
+  around any backend.
+- **Bring-your-own-model.** The library ships traits, not weights. Callers point the
+  pipeline at their preferred `whisper.cpp` build, GGUF model, or LLM runtime.
+
+## Quick start — plain VFS
+
+```toml
+[dependencies]
+stony-vdfs-core = "0.1.0-alpha.1"
+stony-vdfs-backend-memory = "0.1.0-alpha.1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+```
+
+```rust
+use stony_vdfs_backend_memory::MemoryBackend;
+use stony_vdfs_core::{OpenFlags, VfsBackend, VfsPath};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let backend = MemoryBackend::new();
+    let path = VfsPath::new("/hello.txt").ok_or("invalid path")?;
+
+    let mut h = backend.open(&path, OpenFlags::CREATE | OpenFlags::WRITE).await?;
+    h.write(0, b"hello, world\n").await?;
+    h.flush().await?;
+
+    for entry in backend.list(&VfsPath::root()).await? {
+        let m = backend.metadata(&entry).await?;
+        println!("{entry}  ({} bytes, {})", m.size, m.kind.as_str());
+    }
+    Ok(())
+}
+```
+
+## Indexing pipeline preview (M5/M6)
+
+The trait surface is already public so downstream projects can start designing against
+it. The full pipeline ships in roadmap milestones M5 and M6:
+
+```rust
+use stony_vdfs_index::{ContentPipeline, MediaExtractor, Tagger, Transcriber};
+// (Once M5/M6 land, the default impls land in feature-gated submodules.)
+
+// Wire your own implementations or use the bundled defaults (planned):
+//   - FfmpegExtractor   — wraps the `ffmpeg` binary
+//   - WhisperCppTranscriber — wraps whisper.cpp via ffi
+//   - OllamaTagger     — talks to a local ollama daemon
+let pipeline = ContentPipeline {
+    extractor:   /* FfmpegExtractor::new()      */ todo!(),
+    transcriber: /* WhisperCppTranscriber::new()*/ todo!(),
+    tagger:      /* OllamaTagger::new("llama3") */ todo!(),
+};
+
+let record = pipeline.process(&path, &bytes_of_an_mp4).await?;
+println!("transcript snippet: {}", &record.transcript.text[..200]);
+for tag in &record.tags.tags {
+    println!("#{tag}");
+}
+```
+
+## Supported platforms
+
+| Platform   | Core | Memory | Local | FUSE        | WinFsp      | Index pipeline        |
+|------------|:----:|:------:|:-----:|:-----------:|:-----------:|:----------------------|
+| Linux      |  ✅  |   ✅   |  ✅   | M3 (planned)|     —       | M5/M6 (planned)       |
+| macOS      |  ✅  |   ✅   |  ✅   | M3 (planned)|     —       | M5/M6 (planned)       |
+| Windows    |  ✅  |   ✅   |  ✅   |      —      | M4 (planned)| M5/M6 (planned)       |
+
+## Building from source
+
+```bash
+git clone https://github.com/stonyp90/stony-vdfs.git
+cd stony-vdfs
+cargo build --workspace
+cargo test --workspace
+cargo run -p stony-vdfs-cli -- --help
+```
+
+Minimum supported Rust version: **1.85** (Rust 2024 edition).
+
+For the indexing pipeline (M5+), you will additionally need `ffmpeg` available on `PATH`
+and a `whisper.cpp` binary or compatible model runtime. The library itself does not
+bundle either — those are the user's choice.
+
+## Roadmap
+
+Six milestones across 12 months — see [ROADMAP.md](ROADMAP.md) for the full breakdown.
+
+| ID  | Theme                                                  | Target month |
+|-----|--------------------------------------------------------|--------------|
+| M1  | Core traits + memory backend stable                    | Month 1–2    |
+| M2  | Local backend production-ready + benchmarks            | Month 3–4    |
+| M3  | FUSE adapter end-to-end (Linux + macOS)                | Month 5–6    |
+| M4  | WinFsp adapter end-to-end                              | Month 7–8    |
+| **M5**  | **FFmpeg + Whisper transcription pipeline shipped**| Month 9–10   |
+| **M6**  | **Local-LLM auto-tagging + sidecar persistence + v1.0** | Month 11–12 |
+
+## Contributing
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the development
+workflow, coding standards, and PR process. All participants agree to the
+[Code of Conduct](CODE_OF_CONDUCT.md) (Contributor Covenant 2.1).
+
+The repository is mirrored on [Codeberg](https://codeberg.org/stonyp90/stony-vdfs) for
+European visibility and resilience.
+
+## Funding
+
+The 12-month development plan is under review for the
+[NLnet NGI Zero Commons Fund](https://nlnet.nl/commonsfund/). If funded, that
+acknowledgement will appear here and in release notes.
+
+The author was supported during the design phase by Canadian SR&ED tax credits
+(four active claims documenting prior R&D effort on related private projects involving
+FFmpeg pipelines, Whisper integration, and multimodal AI). The code in this repository
+is new, written from scratch under MIT, and is not encumbered by any prior employer, IP
+licence, or consortium agreement.
+
+## Licence
+
+[MIT](LICENSE) © 2026 Anthony Paquet

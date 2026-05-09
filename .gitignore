@@ -1,0 +1,22 @@
+# Rust
+/target
+**/*.rs.bk
+Cargo.lock.bak
+*.swp
+
+# IDE
+/.idea
+/.vscode
+.DS_Store
+
+# Coverage
+*.profraw
+*.profdata
+/coverage
+
+# Local env
+.env
+.env.local
+
+# Local notes
+/NOTES.local.md
