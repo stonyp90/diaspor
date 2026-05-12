@@ -1,0 +1,30 @@
+[package]
+name = "stony-vdfs-cli"
+description = "Command-line interface for stony-vdfs (demos and operator tooling)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[[bin]]
+name = "stony-vdfs"
+path = "src/main.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+stony-vdfs-core.workspace = true
+stony-vdfs-backend-memory.workspace = true
+stony-vdfs-backend-local.workspace = true
+clap.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "io-util", "io-std"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true
