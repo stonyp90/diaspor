@@ -9,7 +9,9 @@ Estimated working capacity for the funded portion: **50 % FTE (~20 h/week)** for
 months, delivered by Anthony Paquet (sole maintainer at the time of writing).
 
 The roadmap is intentionally **VFS-first, AI-optional**: milestones M1–M4 deliver a
-production-quality cross-platform virtual filesystem that is useful on its own. The
+cross-platform virtual filesystem that meets explicit measurable acceptance criteria
+(≥ 85 % line coverage on memory + local backends, CI green on Linux/macOS/Windows,
+published conformance suite, ≥ 1 external user integration tracked publicly). The
 content-understanding layer (FFmpeg + Whisper + local LLM) lands in M5–M6 as an
 **opt-in** crate (`stony-vdfs-index`) that downstream applications can leave out
 entirely. This phasing reduces NLnet review risk: the core deliverable does not
@@ -18,7 +20,7 @@ depend on the AI tooling chain being friction-free.
 | ID  | Window        | Theme                                                                   |
 |-----|---------------|-------------------------------------------------------------------------|
 | M1  | Month 1–2     | Core API frozen + memory backend at 100 %                               |
-| M2  | Month 3–4     | Local backend production-ready, cross-platform path tests               |
+| M2  | Month 3–4     | Local backend meets acceptance criteria, cross-platform path tests               |
 | M3  | Month 5–6     | FUSE adapter end-to-end on Linux and macOS                              |
 | M4  | Month 7–8     | WinFsp adapter end-to-end on Windows                                    |
 | M5  | Month 9–10    | **FFmpeg + `whisper.cpp` transcription pipeline** shipped (opt-in crate)|
@@ -50,7 +52,7 @@ crates.io.
 
 ---
 
-## M2 — Local backend production-ready (Month 3–4)
+## M2 — Local backend meets acceptance criteria (Month 3–4)
 
 **Goal:** make `stony-vdfs-backend-local` a credible drop-in for code that currently uses
 `tokio::fs` directly. Cover the long tail of platform quirks that bite real apps.
@@ -162,14 +164,16 @@ the documentation site and tag the v1.0 release.
 
 - `OllamaTagger` and `LlamaCppTagger` implementations of the `Tagger` trait, both
   running on-device with no network calls by default.
-- Stable JSON schema for `SidecarRecord` published at `docs.stony-vdfs.org/schema/v1`,
+- Stable JSON schema for `SidecarRecord` published in-repo at
+  `docs/schema/sidecar-v1.json` (and mirrored to GitHub Pages once the site is up),
   with `serde` derive + a versioned `schema_version` field.
 - Sidecar persistence: the indexer writes `/.index/<path>.json` back into the backend
   it wraps, so transcripts are queryable through normal VFS reads.
 - `examples/grep-the-podcasts.rs`: a CLI that mounts a folder, transcribes it, and lets
   the user `grep` across transcripts via standard shell tools.
-- mdbook documentation site (`docs.stony-vdfs.org` or GitHub Pages) covering
-  architecture, recipes, FAQ, security model, threat model.
+- mdbook documentation site hosted at `stonyp90.github.io/stony-vdfs` (GitHub Pages,
+  free; a custom domain can be added later if useful) covering architecture, recipes,
+  FAQ, security model, threat model.
 - Three example applications shipped under `examples/apps/`:
   1. A privacy-respecting note-taking app that auto-transcribes voice memos.
   2. A backup tool that indexes media-bearing archives before storing them.

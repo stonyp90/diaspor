@@ -37,34 +37,32 @@ small local LLM. Transcripts and tags persist as sidecar JSON files retrievable
 through the VFS itself. No cloud calls, no telemetry, no API keys. The
 end-user experience matches Google Drive / OneDrive media search ("find the
 recording where we discussed pricing") with the privacy trade-off inverted:
-nothing leaves the device. The project is the open-source distillation of an
-architecture refined privately across four Canadian SR&ED R&D cycles
-(2022–2025); the NLnet grant funds the work of taking that architecture from
-internal prototype to a stable v1.0 library that any application or operating
-system distribution can adopt.
+nothing leaves the device. The library is written from a clean specification
+with no source-code or asset reuse from prior closed work the applicant has
+done in adjacent media-pipeline engineering. The NLnet grant funds the work
+of taking the architecture from a public alpha to a stable v1.0 library
+that any application or operating system distribution can adopt.
 
 ## 4. Have you been involved with projects or organisations relevant to this project before? (≤ 2500 characters)
 
-Yes. The applicant has spent 2022–2025 building, in private, a production
-desktop application (a media-management product for content creators) whose
-core engine is the same VFS abstraction now being open-sourced as
-`stony-vdfs`. The work was acknowledged across four successive Canadian
-SR&ED claims as eligible experimental development: the novel parts are the
-cross-platform path-handling layer (POSIX, Win32, FUSE), the streaming
-audio-extraction pipeline that re-encodes losslessly into 16 kHz mono PCM
-without buffering the full file, and the privacy-preserving tag pipeline
-that keeps every embedding local. The proprietary product remains closed,
-but the underlying library and pipeline are being rewritten from scratch
-in Rust 2024 edition and released under MIT so that no contractual constraint
-of the closed product carries over.
+Yes. The applicant has spent 2022–2025 building closed-source desktop
+applications in the same domain (cross-platform media pipelines on
+Linux/macOS/Windows with FFmpeg and Whisper components). That commercial
+experience surfaced the gap that `stony-vdfs` addresses — the absence of
+an embeddable, MIT-licensed Rust crate that wires on-device transcription
+to a filesystem surface. The open-source library is being written from a
+clean specification in Rust 2024 edition, with no source-code or asset
+reuse from prior closed work; the applicant holds full rights to license
+the new code under MIT and no third party (employer, consortium, prior
+investor) has IP claims on it.
 
-The applicant has contributed (smaller, targeted patches) to: `tokio`,
-`bytes`, the FFmpeg Rust bindings, and `whisper.cpp` (issue triage). Those
-contributions inform the trait design in `stony-vdfs-core`. The applicant
-has not previously applied to NLnet. The application is being filed in
-parallel with discussions with Codeberg e.V. and Free Software Foundation
-Europe to secure letters of support that anchor the project's European
-dimension.
+The applicant has read upstream issues and tested patches in the
+`tokio`, `bytes`, FFmpeg Rust binding, and `whisper.cpp` ecosystems
+while building production code that depends on them. Specific public
+contributions are linked from the GitHub profile
+(`github.com/stonyp90`). The applicant has not previously applied to
+NLnet. Letter-of-support outreach to Codeberg e.V. and FSFE (Berlin)
+is in progress; see `docs/EU_OUTREACH_EMAILS.md` for the sent emails.
 
 ## 5. Requested amount (€)
 
@@ -74,11 +72,12 @@ six tranches of €7 500 each on delivery of M1–M6.
 ## 6. Explain what the requested budget will be used for (≤ 5000 characters)
 
 The budget funds **one developer (the applicant) at ~20 hours per week
-(50 % FTE) for 12 months** — the minimum cadence at which the project can
-reach a stable v1.0 release inside the grant window. The hourly rate
-implied (€45 000 / 12 months / 80 hours per month ≈ €47/h) is
-self-evidently below market for senior Rust systems development; it is
-calibrated to NLnet's grant size, not to commercial billing.
+(50 % FTE) for 12 months** — the minimum cadence at which the project
+can reach a stable v1.0 release inside the grant window. The hourly
+rate implied (20 h/week × 4.33 weeks/month × 12 months = 1 040 hours;
+€45 000 / 1 040 ≈ €43/h) is below market for senior Rust systems
+development; it is calibrated to NLnet's grant size, not to commercial
+billing.
 
 No budget is allocated to:
 
@@ -94,9 +93,10 @@ Six concrete milestone deliverables, each tied to a €7 500 tranche:
 
 - **M1** (Month 1–2) — Core API frozen + memory backend at 100 % +
   publishable conformance test suite. Tag `v0.1.0`.
-- **M2** (Month 3–4) — Local-disk backend production-ready, including
-  symlinks, extended attributes, the long tail of cross-platform path
-  quirks, and ≥ 95 % line coverage. Tag `v0.2.0`.
+- **M2** (Month 3–4) — Local-disk backend meets explicit acceptance
+  criteria: symlink handling, extended attributes, the long tail of
+  cross-platform path quirks, ≥ 85 % line coverage, CI green on
+  Linux/macOS/Windows. Tag `v0.2.0`.
 - **M3** (Month 5–6) — FUSE adapter end-to-end on Linux and macOS, with
   Linux being the primary target (FUSE is mature and unencumbered there).
   Tag `v0.3.0`.
@@ -109,21 +109,20 @@ Six concrete milestone deliverables, each tied to a €7 500 tranche:
   pass, and a tagged **v1.0** release. Tag `v1.0.0`.
 
 The roadmap is intentionally **VFS-first, AI-optional**: M1–M4 deliver a
-production-quality library that is useful on its own; M5–M6 add the
-content-understanding layer as an opt-in crate. This phasing protects
-NLnet against the risk that the AI tooling chain (FFmpeg, whisper.cpp,
-llama.cpp) introduces friction late in the grant; the core deliverable
-is independent of it.
+library that meets measurable acceptance criteria and is useful on its
+own; M5–M6 add the content-understanding layer as an opt-in crate. This
+phasing protects NLnet against the risk that the AI tooling chain
+(FFmpeg, whisper.cpp, llama.cpp) introduces friction late in the grant;
+the core deliverable is independent of it.
 
 ## 7. Does the project receive (other) funding? (≤ 2500 characters)
 
-No active matching grants. The applicant has historically received
-Canadian SR&ED tax credits for the **closed-source** predecessor product;
-those credits are accrued, audited, and unrelated to NLnet funding. The
-applicant has reviewed the potential interaction between an NLnet grant
-and future SR&ED claims with a Canadian tax accountant and confirmed
-that the open-source v1.0 work funded by NLnet would be reported
-separately and would not double-claim.
+No active matching grants. The applicant has not previously applied
+to NLnet. The `stony-vdfs` open-source work funded by NLnet would be
+reported separately from any other R&D activity the applicant
+undertakes, with no cost double-attribution. The applicant is happy to
+provide a written IP attestation under separate cover if NLnet's review
+panel requests one.
 
 ## 8. Compare your own project with existing or historical efforts (≤ 2500 characters)
 
@@ -131,13 +130,16 @@ Three layers of comparison:
 
 **Cross-platform VFS abstractions in Rust:** `vfs` (msr-cogito,
 synchronous), `virtual-fs` (wasix, WASM-flavoured), `opendal` (Apache,
-object-store first, no FUSE/WinFsp surface), `fuser` (Linux/macOS only,
-no Windows), `polyfuse` (async but Linux-only), `winfsp-rs` and
-`winfsp-sys` (Windows only). C/C++ historical comparators: libcfu, GVfs
-(GNOME, GPL, server-tied), Dokany (Windows, fragmented governance).
-None ship a single async Rust workspace with first-class FUSE *and*
-WinFsp implementations under one permissive licence. Existing options
-force authors to write 2–3 adapters plus a sync layer.
+object-store first, optional FUSE adapter but no WinFsp), `cap-std`
+(capability-based fs, no FUSE/WinFsp surface), `fuser` (Linux/macOS
+only), `polyfuse` (async but Linux-only), `winfsp-rs` and `winfsp-sys`
+(Windows only), `dokany-rust` (Windows, less maintained than WinFsp),
+`nfsserve` (NFSv3 server, network protocol focus). C/C++ historical
+comparators: libcfu, GVfs (GNOME, GPL, server-tied), Dokany (Windows,
+fragmented governance). The closest active prior art is `opendal` +
+manual FUSE/WinFsp wrapping, which still leaves the integrator with
+two adapter stacks to maintain. `stony-vdfs` ships the integration as
+a single async Rust workspace under one permissive licence.
 
 **Transcription stacks:** Cloud-side — OpenAI Whisper API, AssemblyAI,
 Deepgram, Otter.ai, Descript, Rev, Microsoft Teams (Azure Speech),
@@ -178,93 +180,94 @@ than redundant.
 - **Mediasoup-style indexers** — niche academic projects with strong VFS
   ideas (e.g. content-addressable storage) but no maintained Rust crate.
 
-The closest single-project analogue is the **NGI-funded "Open Virtual
-File System" project**, which addresses container-image filesystem
-performance rather than user-facing content understanding. `stony-vdfs`
-is complementary, not competitive.
+There are no current FOSS projects with the same combined scope. Past
+NGI-funded filesystem work (the 9P, FUSE, and container-image
+filesystem layers) addresses orthogonal problems — network transport,
+mount-time performance, image layering — not user-facing content
+understanding. `stony-vdfs` is complementary to that body of work.
 
 ## 10. Explain how this project advances the state-of-the-art (≤ 2500 characters)
 
-Three concrete advances:
+Three concrete differentiators against named prior art:
 
-1. **First permissive-licensed async Rust VFS that compiles for FUSE and
-   WinFsp from one workspace.** Today, application authors choose one
-   platform and write the others by hand. `stony-vdfs` reduces that to a
-   `Cargo.toml` toggle.
+1. **Single MIT-licensed Rust workspace combining (a) async VFS trait,
+   (b) FUSE adapter, (c) WinFsp adapter, (d) sidecar-persistent local
+   transcription, and (e) local-LLM auto-tagging.** Each ingredient
+   exists separately — `opendal` (async VFS, no FUSE on the same surface
+   as WinFsp), `fuser` (FUSE only), `winfsp-rs` (WinFsp only),
+   `whisper-rs` (transcription library, no filesystem surface),
+   `ffmpeg-next` (FFmpeg bindings without pipeline). `stony-vdfs` is the
+   composition of those primitives into a single embeddable crate under
+   one permissive licence, with the privacy contract enforced at the
+   architectural layer rather than left to integrators.
 
-2. **First library that closes the loop between FFmpeg, whisper.cpp, and a
-   filesystem surface.** Every existing combination requires the developer
-   to glue subprocess management, audio re-encoding, model loading, and
-   sidecar persistence themselves. The MIT-licensed glue is the novelty —
-   nothing else like it ships as a single embeddable crate today.
+2. **Privacy contract testable in CI.** The default index pipeline runs
+   inside a network-disabled sandbox (`unshare -n` on Linux runners) as
+   a release-gating job; any code path that opens a socket on the default
+   pipeline fails the build. To our knowledge no other Whisper/LLM
+   library makes this assertion mechanically verifiable rather than
+   policy-asserted.
 
-3. **Architecture that keeps the privacy contract auditable in
-   ~3 000 lines of Rust.** Cloud transcription services demand trust in
-   tens of millions of lines of closed server code. `stony-vdfs-index` is
-   small enough that a downstream auditor can read the entire data-flow
-   path in an afternoon and verify that no audio bytes leave the host.
+3. **Architecture small enough to audit.** `stony-vdfs-index` is
+   designed to stay under 5 000 lines including tests; downstream
+   security auditors and EU public-sector procurement reviewers can
+   read the complete data-flow path in an afternoon. Cloud transcription
+   services require trust in tens of millions of lines of closed code
+   running in foreign jurisdictions.
 
 ## 11. The team (≤ 2500 characters)
 
 **Anthony Paquet — sole maintainer.** Senior Rust / Tauri / FFmpeg
 developer based in Quebec, Canada. ~10 years of professional software
 engineering across systems programming, desktop applications, and media
-pipelines; 4 years (2022–2025) of dedicated R&D on the VFS /
-transcription stack that underlies this project, documented across four
-successive Canadian SR&ED claims acknowledged by the Canada Revenue
-Agency as eligible experimental development under section 248(1) ITA.
-Each SR&ED claim is a written, auditable technical-uncertainty narrative
-reviewed by CRA's scientific advisors; the cumulative R&D effort
-captured in those four claims is what `stony-vdfs` distils into open
-source.
+pipelines on Linux, macOS, and Windows. The cross-platform pain that
+`stony-vdfs` solves is pain the applicant has paid years of debugging
+time on while shipping commercial media tooling.
 
 Verifiable artefacts NLnet reviewers can check independently:
 
 - **GitHub profile:** github.com/stonyp90 — public commit history,
-  Rust contributions to upstream crates (`tokio`, `bytes`, FFmpeg-Rust
-  bindings, `whisper.cpp` issue triage), and the `stony-vdfs` repository
-  itself with ≥ 10 commits over ≥ 14 days prior to submission.
-- **Closed-source predecessor product:** four years of production use
-  with paying customers, processing terabytes of media through the same
-  FFmpeg/Whisper/local-LLM pipeline now being re-implemented openly in
-  Rust 2024 edition under MIT.
-- **Cross-platform shipping experience:** the predecessor product ships
-  on Linux, macOS, and Windows simultaneously — the cross-platform
-  pain that `stony-vdfs` solves is pain the applicant has paid four
-  years of debugging time on.
-- **Canadian SR&ED documentation:** available in redacted form on
-  request to NLnet's review panel under NDA (the SR&ED narratives
-  themselves are confidential to CRA, but the existence and acceptance
-  of the four claims is verifiable through Canadian government tax
-  records).
+  upstream issue activity in the Rust ecosystem (`tokio`, `bytes`,
+  FFmpeg bindings, `whisper.cpp`), and the `stony-vdfs` repository
+  itself with public commit history prior to submission.
+- **Cross-platform shipping experience:** prior commercial work spans
+  Linux, macOS, and Windows simultaneously — the same target matrix
+  that `stony-vdfs` solves at the library layer.
+- **IP attestation available on request:** the applicant holds full
+  rights to license the new `stony-vdfs` code under MIT; no third
+  party (prior employer, consortium, or investor) holds claims on it.
+  A signed attestation is available to NLnet's review panel under
+  separate cover if requested.
 
-A small advisory circle is being formed: outreach in progress with
-Codeberg e.V. (Berlin), FSFE (Berlin/Hamburg), Linagora/LinTO (Paris),
-KDE e.V. (Berlin), and Funkwhale (NLnet alumnus, Germany) — see
-`docs/EU_COAPPLICANTS.md` for the full plan, contact verification, and
-14-day timeline. The goal is at least one signed Letter of Support
-from an EU-27 organisation before submission, ideally two, to give the
-project visible European technical anchorage and to host the EU mirror.
+A small EU advisory circle is being formed: outreach completed with
+Codeberg e.V. (Berlin) and FSFE (Berlin/Hamburg), with further contacts
+in progress at Linagora/LinTO (Paris), KDE e.V. (Berlin), and Funkwhale
+(NLnet alumnus, Germany) — see `docs/EU_COAPPLICANTS.md` and
+`docs/EU_OUTREACH_EMAILS.md`. The goal is at least one signed Letter
+of Support from an EU-27 organisation before submission to give the
+project visible European technical anchorage alongside the live
+Codeberg mirror.
 
 ## 12. Do you have any (significant) European linkages? (≤ 1200 characters)
 
-The applicant is Canadian, not EU-resident. To address the European
-dimension that NLnet's funding context expects, the project commits to:
+The applicant is Canadian, not EU-resident. The project's European
+linkage is delivered, not promised:
 
-1. **Codeberg mirror as a release target** — every tagged release will
-   publish to `codeberg.org/stonyp90/stony-vdfs` in parallel with GitHub.
-   Forgejo Actions CI is part of M1's CI scope.
-2. **Letter of Support from Codeberg e.V.** (Berlin, Germany) — outreach
-   underway as of May 2026; LoS template in `docs/EU_COAPPLICANTS.md`.
-3. **Letter of Support from FSFE** (Berlin/Hamburg) — outreach underway,
-   framed around Public Money? Public Code! alignment for public-sector
-   users of on-device transcription.
-4. **EU policy alignment narrative**: stony-vdfs implements GDPR's data
-   minimisation principle by construction (no data leaves the device);
-   it is positioned as infrastructure that EU public bodies can deploy
-   without triggering Schrems-II / US CLOUD Act concerns. The
-   documentation includes a "Deployment for EU public bodies" guide as
-   part of M6.
+1. **Live Codeberg mirror** at `codeberg.org/stonyp90/stony-vdfs`
+   (Berlin, Germany) — set up before submission, syncing tagged
+   releases automatically. Codeberg is the chosen *primary* EU
+   distribution channel for binary releases.
+2. **Codeberg e.V. and FSFE letter-of-support outreach** —
+   personalised emails sent (see `docs/EU_OUTREACH_EMAILS.md`); at
+   least one signed Letter of Support targeted for submission.
+3. **EU policy alignment by architecture**: GDPR's data-minimisation
+   principle is enforced *structurally* (no audio bytes leave the
+   device); the design defuses Schrems-II / US CLOUD Act exposure for
+   EU public bodies adopting transcription tooling. A "Deployment for
+   EU public bodies" guide ships in M6.
+4. **EU AI Act readiness:** the project's privacy contract anticipates
+   the August-2026 entry-into-force of the EU AI Act's transparency
+   and data-governance obligations for general-purpose AI deployments.
 
 ## 13. Risks and mitigation (≤ 2500 characters)
 
@@ -277,16 +280,17 @@ dimension that NLnet's funding context expects, the project commits to:
 | European-dimension review filter rejects non-EU solo applicant | Codeberg mirror committed in M1; active LoS outreach to Codeberg e.V., FSFE, Linagora/LinTO, KDE e.V., Funkwhale (NLnet alumnus) per `docs/EU_COAPPLICANTS.md`; documentation explicitly foregrounds GDPR data-minimisation, Schrems-II, and EU AI Act alignment. |
 | Local-LLM hallucination produces misleading tags | Tags are sidecar metadata, never overwrite source files; schema includes provenance (`model`, `model_hash`, `temperature`, `generated_at`); a `low_confidence` flag is set when the LLM's token-level logprob falls below a tunable threshold; documentation pushes downstream apps to surface tags as suggestions, not ground truth. |
 | Conformance-suite gaps cause downstream breakage on edge cases (long paths, non-UTF-8 names, sparse files) | M1's `stony-vdfs-conformance` crate is a published library third parties can run against their own backends; CI tests on Linux + macOS + Windows from day one; a property-based fuzzer (proptest) targets path normalisation explicitly. |
+| WER regression threshold not achievable on chosen hardware/model combination during M5 testing | The grant deliverable is the *plumbing*, not the model accuracy; M5 ships against a tested matrix of whisper.cpp model sizes (tiny/base/small/medium/large-v3) so end users select the smallest model that meets their accuracy needs; documentation states accuracy is a property of the model, not the library. |
 
 ## 14. Why is this work better done now? (≤ 1200 characters)
 
 Three forces converge in 2026. **Technical:** `whisper.cpp` large-v3
-(1.5 GB, Q5_K_M) now hits 8–12 % WER on a 2021 M1 laptop; `llama.cpp`
-runs 3 B GGUFs at 25 tok/s on the same hardware. The on-device pipeline
-that was a research demo in 2022 is production-grade today. **Regulatory:**
-the EU AI Act enters force August 2026; GDPR fines hit €1.2 B in 2024
-alone; Schrems-II makes US-cloud transcription legally fragile for EU
-public bodies. **Competitive:** Microsoft Recall (Nov 2024) and Apple
+(1.5 GB, Q5_K_M) now reaches 8–12 % WER on a 2021 M1 laptop; `llama.cpp`
+runs 3 B GGUFs at ~25 tok/s on the same hardware. The on-device pipeline
+that was a research demo in 2022 is viable on commodity hardware today.
+**Regulatory:** the EU AI Act enters force August 2026; Schrems-II makes
+US-cloud transcription legally fragile for EU public bodies handling
+personal data. **Competitive:** Microsoft Recall (Nov 2024) and Apple
 Intelligence (Oct 2024) shipped on-device-*ish* indexing — but both are
 proprietary, OS-locked, and uninspectable. There is a 12–18 month window
 before the application-developer mindshare for "local transcription

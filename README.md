@@ -4,9 +4,14 @@
 > auto-tagging built in**. Your media library understands itself — without sending a
 > byte to the cloud.
 
-[![CI](https://github.com/stonyp90/stony-vdfs/actions/workflows/ci.yml/badge.svg)](https://github.com/stonyp90/stony-vdfs/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2024_edition-orange.svg)](https://www.rust-lang.org)
+
+<!-- CI badge intentionally omitted until the repository is live on GitHub
+and the first workflow run reports green. Re-add once stable:
+[![CI](https://github.com/stonyp90/stony-vdfs/actions/workflows/ci.yml/badge.svg)](https://github.com/stonyp90/stony-vdfs/actions/workflows/ci.yml)
+-->
+
 
 `stony-vdfs` is a Rust workspace that combines two ideas that usually live apart:
 
@@ -24,10 +29,10 @@
 The result: a desktop or server application can hand its users `cat`, `grep`, `find`
 over the *contents* of their videos and podcasts, with zero data leaving the device.
 
-This is the open-source distillation of an architecture the author refined privately
-across four CRA-acknowledged Canadian SR&ED R&D cycles. The library is being built
-openly through the [NGI Zero Commons Fund](https://nlnet.nl/commonsfund/) application
-cycle.
+The library is written from a clean specification in Rust 2024 edition under MIT.
+It is being released openly to support a [NGI Zero Commons Fund](https://nlnet.nl/commonsfund/)
+application; once the grant cycle clears, sustained 50%-FTE development through
+v1.0 is the plan.
 
 ---
 
@@ -213,7 +218,7 @@ Six milestones across 12 months — see [ROADMAP.md](ROADMAP.md) for the full br
 | ID  | Theme                                                  | Target month |
 |-----|--------------------------------------------------------|--------------|
 | M1  | Core traits + memory backend stable                    | Month 1–2    |
-| M2  | Local backend production-ready + benchmarks            | Month 3–4    |
+| M2  | Local backend meets acceptance criteria + benchmarks   | Month 3–4    |
 | M3  | FUSE adapter end-to-end (Linux + macOS)                | Month 5–6    |
 | M4  | WinFsp adapter end-to-end                              | Month 7–8    |
 | **M5**  | **FFmpeg + Whisper transcription pipeline shipped**| Month 9–10   |
