@@ -50,25 +50,15 @@ single codebase, and audit exactly what runs.
 
 ## Technical
 
-### What hardware and OS support does the transcription pipeline have?
+### What hardware and operating systems does the pipeline support?
 
 The minimum useful configuration is whatever runs `whisper.cpp`'s `base` or `small`
-GGUF model at a tolerable speed for the user's workload. In practice: any x86-64 CPU
-from the last decade with AVX2, any Apple Silicon Mac (M1 or later, with Metal
-acceleration), or any recent Windows machine (CPU or CUDA). The core, memory, and
-local backends work on Linux, macOS, and Windows today; the FUSE adapter lands in M3,
-the WinFsp adapter in M4. We test Apple Silicon and x86-64 Linux in CI for every
-release. The library itself is essentially free on top — the cost is the model.
-
-### Removed-placeholder-marker-XYZ
-### What hardware do I need to run the transcription pipeline?
-
-The minimum useful configuration is whatever runs `whisper.cpp`'s `base` or `small`
-GGUF model at a tolerable speed for the user's workload. In practice that means: any
-x86-64 CPU from the last decade with AVX2, or any Apple Silicon Mac (M1 or later), or
-any Windows machine with a recent CPU. A discrete GPU (CUDA or Metal) makes the `medium`
-and `large-v3` models comfortable in real time. The library itself is essentially free
-on top — the cost is the model.
+GGUF model at a tolerable speed. In practice: any x86-64 CPU from the last decade with
+AVX2, any Apple Silicon Mac (M1 or later, with Metal acceleration), or any recent
+Windows machine (CPU or CUDA). The core, memory, and local backends work on Linux,
+macOS, and Windows today; the FUSE adapter lands in M3 (Linux + macFUSE on macOS), the
+WinFsp adapter in M4. We test Apple Silicon and x86-64 Linux in CI for every release.
+The library itself is essentially free on top — the cost is the model.
 
 ### What languages does the transcription pipeline support?
 
@@ -79,34 +69,16 @@ language code in its `TranscriptRecord`, and the tagging step can be configured 
 or translate as the caller wishes. EU-language quality is broadly comparable to
 English for the larger models.
 
-### Does this work well on Apple Silicon?
+### Will there be Python or JavaScript bindings? Can I self-host this?
 
-Yes. `whisper.cpp` has first-class Metal support on M1, M2, M3, and M4. The local
-backend uses APFS-native APIs through `tokio::fs`, and the FUSE adapter (M3) targets
-macFUSE on macOS. We test on Apple Silicon in CI for every release.
-
-### Does this work on Windows?
-
-Yes for the core, memory, and local backends today. The WinFsp adapter lands in
-milestone M4. `whisper.cpp` runs natively on Windows (CPU or CUDA). FFmpeg is available
-as a static Windows binary from upstream. The library has no Linux-specific
-dependencies in the core; everything platform-specific is gated behind `cfg`
-attributes inside the adapter crates.
-
-### Will there be Python or JavaScript bindings?
-
-Not in v1.0, and not in the funded 12-month plan. The reason is that good bindings are
-a substantial undertaking — `pyo3` or `napi-rs` plus packaging plus CI plus
-documentation plus user support — and the project is sized to do one thing well
-(Rust + FFmpeg + Whisper + LLM on three platforms). Once v1.0 ships and the library is
-stable, language bindings are a natural follow-on; contributions are very welcome.
-
-### Can I self-host this?
-
-The library is local-first by default — there is nothing to host. "Self-hosting" in the
-SaaS sense only becomes meaningful if you build a multi-user application *on top of*
-`stony-vdfs`. The library happily runs inside a server process if you want to expose a
-custom HTTP API over a `VfsBackend`; nothing in the design prevents that.
+Bindings are not in v1.0 and not in the funded 12-month plan. Good bindings — `pyo3` or
+`napi-rs` plus packaging plus CI plus user support — are a substantial undertaking,
+and the project is sized to do one thing well (Rust + FFmpeg + Whisper + LLM on three
+platforms). Once v1.0 ships and the trait surface is stable, bindings are a natural
+follow-on; contributions are very welcome. On self-hosting: the library is local-first
+by default — there is nothing to host. "Self-hosting" only becomes meaningful if you
+build a multi-user application *on top of* `stony-vdfs`. The library happily runs
+inside a server process if you want to expose a custom HTTP API over a `VfsBackend`.
 
 ---
 
@@ -131,61 +103,54 @@ rewrite under MIT, designed from scratch, written from the trait surface outward
 prior work informs the design intuitions; it does not contribute source code, models,
 or proprietary algorithms.
 
-### How do I contribute?
+### How do I contribute, and what is the security model?
 
-Read [CONTRIBUTING.md](../CONTRIBUTING.md). In short: fork, branch, run
-`cargo test --workspace` and `cargo clippy --workspace -- -D warnings` locally, open a
-PR. Small fixes do not need prior discussion; substantial features benefit from an
-issue first so we can talk about fit with the roadmap. All contributions are MIT.
+Read [CONTRIBUTING.md](../CONTRIBUTING.md): fork, branch, run `cargo test --workspace`
+and `cargo clippy --workspace -- -D warnings` locally, open a PR. Small fixes do not
+need prior discussion; substantial features benefit from an issue first. All
+contributions are MIT. On security: see [SECURITY.md](../SECURITY.md). The library
+treats file contents as untrusted (hence FFmpeg as a subprocess — see ADR 0004); it
+makes no network calls; it has no telemetry. Encryption decorators land in M5 with a
+published threat model. Reports are accepted via private email or the GitHub security
+advisory mechanism.
 
-### What is the security model?
+### Is there any telemetry? Is the library accessible?
 
-See [SECURITY.md](../SECURITY.md) for vulnerability disclosure. The short version: the
-library treats file contents as untrusted (hence FFmpeg as a subprocess — see ADR
-0004); it makes no network calls; it has no telemetry. Encryption decorators land in
-M5 with a published threat model. Reports are accepted via private email or the GitHub
-security advisory mechanism.
-
-### Is there any telemetry?
-
-No. There is no telemetry. There is no analytics call. There is no update check. There
-is no anonymised counter. The library opens zero sockets unless the calling application
-wires in a backend that opens sockets, in which case the caller is responsible for that
-behaviour. This is enforced by `cargo-deny` audits on every release.
-
-### Is the library accessible?
-
-The library has no UI of its own, so accessibility applies to downstream applications.
-Command-line output from `stony-vdfs-cli` follows GNU CLI conventions (machine-readable
-output via flags, exit codes, no colour unless `--color always`) so it composes
-cleanly with screen-reader-friendly terminals.
+No telemetry. No analytics. No update check. No anonymised counter. The library opens
+zero sockets unless the calling application wires in a backend that opens sockets, in
+which case the caller is responsible for that behaviour. This is enforced by
+`cargo-deny` audits on every release. On accessibility: the library has no UI of its
+own, so accessibility applies to downstream applications. Output from `stony-vdfs-cli`
+follows GNU CLI conventions (machine-readable via flags, exit codes, no colour unless
+explicitly requested) so it composes cleanly with screen-reader-friendly terminals.
 
 ### Can EU public-sector organisations deploy this?
 
 Yes. The license is MIT, the development is open, the code is mirrored on Codeberg for
 European resilience, and the privacy-by-default posture means GDPR data-flow analysis
-is straightforward (no personal data leaves the host). The
-[EU_COAPPLICANTS.md](EU_COAPPLICANTS.md) document tracks specific public-sector
-interest. Deployment in regulated environments (healthcare, education, public records)
-is an explicit design audience.
+is straightforward (no personal data leaves the host unless the caller explicitly
+configures it). The [EU_COAPPLICANTS.md](EU_COAPPLICANTS.md) document tracks specific
+public-sector interest. Deployment in regulated environments (healthcare, education,
+public records) is an explicit design audience.
 
 ---
 
 ## Licence and governance
 
-### Is there a trademark on "stony-vdfs"?
+### Is there a trademark on "stony-vdfs"? Can I fork it?
 
 No. The name is unregistered. Forks may keep the name with attribution, or rename
-freely. There is no legal mechanism the project would use to police naming.
-
-### Can I fork the library?
-
-Yes. MIT explicitly permits forking, with or without modification, for any purpose
-including commercial use. The only requirement is that the MIT copyright notice
-travels with the source.
+freely. There is no legal mechanism the project would use to police naming. MIT
+explicitly permits forking, with or without modification, for any purpose including
+commercial use. The only requirement is that the MIT copyright notice travels with the
+source. If you fork to take the project in a different direction, that is welcome and
+exactly what the license intends.
 
 ### Can I bundle this in a commercial closed-source product?
 
 Yes. MIT permits this. Ship the LICENSE file in your product's third-party-notices
 section and you are compliant. We would love to hear about it (open a "showcase" issue
-or a discussion) but you are not required to disclose.
+or a discussion) but you are not required to disclose. Note that bundling `whisper.cpp`,
+FFmpeg, or any LLM weights has its own license terms set by those upstream projects —
+`whisper.cpp` is MIT, FFmpeg is LGPL/GPL depending on build config, model weights vary;
+`stony-vdfs` does not bundle any of them, so the obligation is on the integrator.
