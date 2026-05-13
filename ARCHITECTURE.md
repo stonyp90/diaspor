@@ -4,6 +4,45 @@ This document explains the design choices behind `stony-vdfs` and how the crates
 together. It is aimed at someone considering adopting the library in a downstream
 project, or contributing to its core.
 
+## Crate dependency graph
+
+The workspace has one trait crate and seven dependents. Every arrow points "depends on";
+the core crate has no IO dependencies of its own.
+
+```mermaid
+graph TD
+    core["stony-vdfs-core<br/><sub>traits / paths / errors</sub>"]
+    memory["stony-vdfs-backend-memory"]
+    local["stony-vdfs-backend-local"]
+    fuse["stony-vdfs-fuse<br/><sub>Linux/macOS</sub>"]
+    winfsp["stony-vdfs-winfsp<br/><sub>Windows</sub>"]
+    index["stony-vdfs-index<br/><sub>FFmpeg + Whisper + LLM</sub>"]
+    cli["stony-vdfs-cli"]
+
+    memory --> core
+    local  --> core
+    fuse   --> core
+    winfsp --> core
+    index  --> core
+    cli    --> core
+    cli    --> memory
+    cli    --> local
+    cli    --> index
+    index  --> local
+
+    classDef coreCls fill:#fde68a,stroke:#92400e,color:#111
+    classDef backendCls fill:#bbf7d0,stroke:#065f46,color:#111
+    classDef adapterCls fill:#bae6fd,stroke:#075985,color:#111
+    classDef pipelineCls fill:#fbcfe8,stroke:#9d174d,color:#111
+    classDef cliCls fill:#e9d5ff,stroke:#6b21a8,color:#111
+
+    class core coreCls
+    class memory,local backendCls
+    class fuse,winfsp adapterCls
+    class index pipelineCls
+    class cli cliCls
+```
+
 ## Design goals (in priority order)
 
 1. **Privacy by default.** The library never calls a remote service unless the caller
@@ -107,6 +146,73 @@ No backend allows blocking IO from inside the runtime; the local backend uses
 `Result<T> = std::result::Result<T, VfsError>` is exported from `stony-vdfs-core` and
 re-exported everywhere — callers should never need to qualify the error type.
 
+## Indexing pipeline flow
+
+When a media file is written through the indexing decorator, the bytes traverse four
+stages — all on the local device — before a sidecar JSON record is persisted alongside
+the file. Each stage is a trait; callers can swap any implementation.
+
+```mermaid
+flowchart LR
+    file[/"Media file<br/><sub>mp4, mkv, wav, mp3...</sub>"/]
+    probe["FFmpeg probe<br/><sub>codec / duration / streams</sub>"]
+    extract["Audio extract<br/><sub>16 kHz mono PCM</sub>"]
+    transcribe["whisper.cpp<br/><sub>on-device transcription</sub>"]
+    tag["Local LLM tagger<br/><sub>ollama / llama.cpp</sub>"]
+    sidecar[("Sidecar JSON<br/>/.index/&lt;hash&gt;.json")]
+
+    file --> probe --> extract --> transcribe --> tag --> sidecar
+
+    subgraph host["Host machine — nothing leaves the device"]
+        probe
+        extract
+        transcribe
+        tag
+        sidecar
+    end
+
+    classDef stageCls fill:#bae6fd,stroke:#075985,color:#111
+    classDef storeCls fill:#fde68a,stroke:#92400e,color:#111
+    classDef fileCls  fill:#e9d5ff,stroke:#6b21a8,color:#111
+    class probe,extract,transcribe,tag stageCls
+    class sidecar storeCls
+    class file fileCls
+```
+
+## Mount adapter architecture
+
+User-space mount points share a single trait surface: each adapter translates kernel
+callbacks (FUSE on Linux/macOS, WinFsp on Windows) into `VfsBackend` calls. The kernel
+sees a regular filesystem; the application sees an `Arc<dyn VfsBackend>`.
+
+```mermaid
+graph LR
+    app["Application<br/><sub>Arc&lt;dyn VfsBackend&gt;</sub>"]
+    trait["VfsBackend trait"]
+    fuse["FUSE adapter<br/><sub>stony-vdfs-fuse</sub>"]
+    winfsp["WinFsp adapter<br/><sub>stony-vdfs-winfsp</sub>"]
+    linuxK["Linux kernel<br/><sub>/dev/fuse</sub>"]
+    macK["macOS kernel<br/><sub>macFUSE</sub>"]
+    winK["Windows kernel<br/><sub>WinFsp driver</sub>"]
+
+    app --> trait
+    trait --> fuse
+    trait --> winfsp
+    fuse --> linuxK
+    fuse --> macK
+    winfsp --> winK
+
+    classDef appCls fill:#e9d5ff,stroke:#6b21a8,color:#111
+    classDef traitCls fill:#fde68a,stroke:#92400e,color:#111
+    classDef adapterCls fill:#bae6fd,stroke:#075985,color:#111
+    classDef kernelCls fill:#fecaca,stroke:#991b1b,color:#111
+
+    class app appCls
+    class trait traitCls
+    class fuse,winfsp adapterCls
+    class linuxK,macK,winK kernelCls
+```
+
 ## Privacy considerations
 
 Privacy is a design constraint, not a feature. Concretely:
@@ -121,6 +227,48 @@ Privacy is a design constraint, not a feature. Concretely:
   `docs/THREAT_MODEL.md`. The short version: encryption protects data at rest in an
   untrusted backend; it does not protect the contents from the host process or from a
   caller that mishandles its `KeyProvider`.
+
+### Privacy contract — what stays local, what is opt-in network
+
+The diagram below draws the host-machine boundary explicitly. The library's default
+posture keeps everything on the left. Anything on the right only happens when the
+calling application wires in a network-aware backend or tagger.
+
+```mermaid
+flowchart LR
+    subgraph host["Host machine — local by default"]
+        bytes["File bytes"]
+        meta["Metadata"]
+        probe["FFmpeg probe"]
+        ffmpegA["Audio extract"]
+        whisper["whisper.cpp"]
+        llm["Local LLM tagger<br/><sub>ollama / llama.cpp</sub>"]
+        json[("Sidecar JSON<br/>/.index/*.json")]
+        bytes --> probe --> ffmpegA --> whisper --> llm --> json
+        meta --> json
+    end
+
+    subgraph optin["Opt-in network — caller wires explicitly"]
+        s3["Cloud object store<br/><sub>custom backend</sub>"]
+        apiTag["Remote tagging API<br/><sub>custom Tagger impl</sub>"]
+        apiASR["Remote ASR<br/><sub>custom Transcriber impl</sub>"]
+    end
+
+    host -. caller may bridge .-> s3
+    host -. caller may bridge .-> apiTag
+    host -. caller may bridge .-> apiASR
+
+    classDef hostCls fill:#bbf7d0,stroke:#065f46,color:#111
+    classDef storeCls fill:#fde68a,stroke:#92400e,color:#111
+    classDef netCls fill:#fecaca,stroke:#991b1b,color:#111
+    class bytes,meta,probe,ffmpegA,whisper,llm hostCls
+    class json storeCls
+    class s3,apiTag,apiASR netCls
+```
+
+The library itself never opens a socket. Telemetry, analytics, and update checks are
+absent by construction — they are not features that can be toggled off, they are code
+that does not exist in the workspace.
 
 ## Future extensibility
 

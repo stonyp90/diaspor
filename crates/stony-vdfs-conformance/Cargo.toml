@@ -1,6 +1,6 @@
 [package]
-name = "stony-vdfs-backend-memory"
-description = "In-memory backend for stony-vdfs — primarily for tests and demos"
+name = "stony-vdfs-conformance"
+description = "Conformance test suite for stony-vdfs backends — every compliant VfsBackend must pass these assertions"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -19,12 +19,5 @@ workspace = true
 [dependencies]
 stony-vdfs-core.workspace = true
 async-trait.workspace = true
-tokio = { workspace = true, features = ["sync", "rt", "macros"] }
-parking_lot.workspace = true
 bytes.workspace = true
-tracing.workspace = true
-time = { workspace = true }
-
-[dev-dependencies]
-tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
-stony-vdfs-conformance = { path = "../stony-vdfs-conformance" }
+tokio = { workspace = true, features = ["rt", "macros"] }

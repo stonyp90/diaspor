@@ -4,6 +4,7 @@ members = [
     "crates/stony-vdfs-core",
     "crates/stony-vdfs-backend-memory",
     "crates/stony-vdfs-backend-local",
+    "crates/stony-vdfs-conformance",
     "crates/stony-vdfs-fuse",
     "crates/stony-vdfs-winfsp",
     "crates/stony-vdfs-index",
