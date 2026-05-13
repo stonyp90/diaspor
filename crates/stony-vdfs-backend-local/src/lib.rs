@@ -40,7 +40,9 @@ impl LocalBackend {
         if !root.is_dir() {
             return Err(VfsError::invalid_path(root.display().to_string()));
         }
-        Ok(Self { root: Arc::new(root.to_path_buf()) })
+        Ok(Self {
+            root: Arc::new(root.to_path_buf()),
+        })
     }
 
     /// Translates a [`VfsPath`] into a host path under [`Self::root`].
@@ -102,7 +104,9 @@ impl VfsBackend for LocalBackend {
             .truncate(flags.contains(OpenFlags::TRUNC))
             .append(flags.contains(OpenFlags::APPEND));
         let file = opts.open(&host).await?;
-        Ok(Box::new(LocalHandle { file: Mutex::new(file) }))
+        Ok(Box::new(LocalHandle {
+            file: Mutex::new(file),
+        }))
     }
 
     async fn create_dir(&self, path: &VfsPath) -> Result<()> {

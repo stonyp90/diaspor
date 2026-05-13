@@ -102,10 +102,7 @@ pub async fn run<B: VfsBackend>(backend: B) {
             .open(&file_path, OpenFlags::WRITE)
             .await
             .expect("open for write");
-        let n = h
-            .write(0, payload)
-            .await
-            .expect("write must succeed");
+        let n = h.write(0, payload).await.expect("write must succeed");
         assert_eq!(n, payload.len(), "write must return data.len()");
         h.flush().await.expect("flush must succeed");
     }
@@ -152,7 +149,10 @@ pub async fn run<B: VfsBackend>(backend: B) {
         .open(&inner_file, OpenFlags::CREATE | OpenFlags::WRITE)
         .await
         .expect("create /dir/a.txt");
-    backend.create_dir(&inner_dir).await.expect("create /dir/sub");
+    backend
+        .create_dir(&inner_dir)
+        .await
+        .expect("create /dir/sub");
     backend
         .open(&deep_file, OpenFlags::CREATE | OpenFlags::WRITE)
         .await

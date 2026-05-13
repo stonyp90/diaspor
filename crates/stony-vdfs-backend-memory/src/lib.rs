@@ -41,12 +41,22 @@ struct Node {
 impl Node {
     fn file() -> Self {
         let now = OffsetDateTime::now_utc();
-        Self { kind: NodeKind::File, data: Vec::new(), modified: now, created: now }
+        Self {
+            kind: NodeKind::File,
+            data: Vec::new(),
+            modified: now,
+            created: now,
+        }
     }
 
     fn directory() -> Self {
         let now = OffsetDateTime::now_utc();
-        Self { kind: NodeKind::Directory, data: Vec::new(), modified: now, created: now }
+        Self {
+            kind: NodeKind::Directory,
+            data: Vec::new(),
+            modified: now,
+            created: now,
+        }
     }
 
     fn metadata(&self) -> VfsMetadata {
@@ -82,7 +92,9 @@ impl MemoryBackend {
     pub fn new() -> Self {
         let mut nodes = HashMap::new();
         nodes.insert(VfsPath::root(), Node::directory());
-        Self { nodes: Arc::new(RwLock::new(nodes)) }
+        Self {
+            nodes: Arc::new(RwLock::new(nodes)),
+        }
     }
 }
 

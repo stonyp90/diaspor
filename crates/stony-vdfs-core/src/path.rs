@@ -21,7 +21,9 @@ impl VfsPath {
     /// Returns the root path `/`.
     #[must_use]
     pub fn root() -> Self {
-        Self { inner: String::from("/") }
+        Self {
+            inner: String::from("/"),
+        }
     }
 
     /// Constructs a `VfsPath` from a string, normalizing it.
@@ -85,7 +87,9 @@ impl VfsPath {
         if trimmed.is_empty() {
             Some(Self::root())
         } else {
-            Some(Self { inner: trimmed.to_string() })
+            Some(Self {
+                inner: trimmed.to_string(),
+            })
         }
     }
 

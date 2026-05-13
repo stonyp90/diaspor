@@ -191,11 +191,7 @@ where
     /// # Errors
     ///
     /// Bubbles up the first error from probe, extraction, transcription, or tagging.
-    pub async fn process(
-        &self,
-        path: &VfsPath,
-        bytes: &[u8],
-    ) -> Result<sidecar::SidecarRecord> {
+    pub async fn process(&self, path: &VfsPath, bytes: &[u8]) -> Result<sidecar::SidecarRecord> {
         let info = self.extractor.probe(path, bytes).await?;
         let pcm = self.extractor.extract_audio_pcm(path, bytes).await?;
         let transcript = self.transcriber.transcribe(&pcm).await?;

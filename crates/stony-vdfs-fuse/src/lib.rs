@@ -45,12 +45,24 @@ mod tests {
 
     #[async_trait::async_trait]
     impl VfsBackend for Stub {
-        fn name(&self) -> &'static str { "stub" }
-        async fn metadata(&self, _: &VfsPath) -> Result<VfsMetadata> { unimplemented!() }
-        async fn list(&self, _: &VfsPath) -> Result<Vec<VfsPath>> { unimplemented!() }
-        async fn open(&self, _: &VfsPath, _: OpenFlags) -> Result<Box<dyn VfsHandle>> { unimplemented!() }
-        async fn create_dir(&self, _: &VfsPath) -> Result<()> { unimplemented!() }
-        async fn remove(&self, _: &VfsPath) -> Result<()> { unimplemented!() }
+        fn name(&self) -> &'static str {
+            "stub"
+        }
+        async fn metadata(&self, _: &VfsPath) -> Result<VfsMetadata> {
+            unimplemented!()
+        }
+        async fn list(&self, _: &VfsPath) -> Result<Vec<VfsPath>> {
+            unimplemented!()
+        }
+        async fn open(&self, _: &VfsPath, _: OpenFlags) -> Result<Box<dyn VfsHandle>> {
+            unimplemented!()
+        }
+        async fn create_dir(&self, _: &VfsPath) -> Result<()> {
+            unimplemented!()
+        }
+        async fn remove(&self, _: &VfsPath) -> Result<()> {
+            unimplemented!()
+        }
     }
 
     #[test]
