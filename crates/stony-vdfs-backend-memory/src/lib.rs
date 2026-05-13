@@ -86,6 +86,14 @@ impl MemoryBackend {
     }
 }
 
+// Every method in this impl follows the pattern `acquire RwLock guard, do the work,
+// return`. The guard is held for the full body by design — there's no later work
+// that would benefit from an early drop. We silence `significant_drop_tightening`
+// at the impl level so the bodies stay readable.
+#[allow(
+    clippy::significant_drop_tightening,
+    reason = "guard held for the whole method body by design"
+)]
 #[async_trait]
 impl VfsBackend for MemoryBackend {
     fn name(&self) -> &'static str {
@@ -147,7 +155,21 @@ impl VfsBackend for MemoryBackend {
         let mut guard = self.nodes.write();
         let exists = guard.contains_key(path);
 
-        if !exists {
+        if exists {
+            // Existing node: reject if EXCL set, reject if it's a directory.
+            if flags.contains(OpenFlags::CREATE) && flags.contains(OpenFlags::EXCL) {
+                return Err(VfsError::already_exists(path.as_str()));
+            }
+            if let Some(n) = guard.get(path)
+                && n.kind != NodeKind::File
+            {
+                return Err(VfsError::KindMismatch {
+                    path: path.as_str().to_string(),
+                    expected: "file",
+                    found: n.kind.as_str(),
+                });
+            }
+        } else {
             if !flags.contains(OpenFlags::CREATE) {
                 return Err(VfsError::not_found(path.as_str()));
             }
@@ -167,20 +189,6 @@ impl VfsBackend for MemoryBackend {
                 Some(_) => {}
             }
             guard.insert(path.clone(), Node::file());
-        } else {
-            // Existing node: reject if EXCL set, reject if it's a directory.
-            if flags.contains(OpenFlags::CREATE) && flags.contains(OpenFlags::EXCL) {
-                return Err(VfsError::already_exists(path.as_str()));
-            }
-            if let Some(n) = guard.get(path)
-                && n.kind != NodeKind::File
-            {
-                return Err(VfsError::KindMismatch {
-                    path: path.as_str().to_string(),
-                    expected: "file",
-                    found: n.kind.as_str(),
-                });
-            }
         }
 
         if flags.contains(OpenFlags::TRUNC)
@@ -248,6 +256,10 @@ struct MemoryHandle {
     backend: MemoryBackend,
 }
 
+#[allow(
+    clippy::significant_drop_tightening,
+    reason = "guard held for the whole method body by design"
+)]
 #[async_trait]
 impl VfsHandle for MemoryHandle {
     async fn read(&mut self, offset: u64, len: usize) -> Result<Bytes> {
@@ -403,13 +415,14 @@ mod tests {
     }
 
     // 7. Reading a path that doesn't exist returns NotFound.
+    // Note: `Box<dyn VfsHandle>` doesn't implement Debug, so we use `let...else`
+    // to discard the Ok handle cleanly instead of `unwrap_err`.
     #[tokio::test]
     async fn read_nonexistent_is_not_found() {
         let backend = MemoryBackend::new();
-        let err = backend
-            .open(&p("/missing.txt"), OpenFlags::READ)
-            .await
-            .unwrap_err();
+        let Err(err) = backend.open(&p("/missing.txt"), OpenFlags::READ).await else {
+            panic!("expected error")
+        };
         assert!(matches!(err, VfsError::NotFound { .. }));
     }
 
@@ -417,10 +430,9 @@ mod tests {
     #[tokio::test]
     async fn write_to_nonexistent_without_create_is_not_found() {
         let backend = MemoryBackend::new();
-        let err = backend
-            .open(&p("/nope.txt"), OpenFlags::WRITE)
-            .await
-            .unwrap_err();
+        let Err(err) = backend.open(&p("/nope.txt"), OpenFlags::WRITE).await else {
+            panic!("expected error")
+        };
         assert!(matches!(err, VfsError::NotFound { .. }));
     }
 
@@ -460,13 +472,15 @@ mod tests {
             .open(&path, OpenFlags::CREATE | OpenFlags::WRITE)
             .await
             .unwrap();
-        let err = backend
+        let Err(err) = backend
             .open(
                 &path,
                 OpenFlags::CREATE | OpenFlags::EXCL | OpenFlags::WRITE,
             )
             .await
-            .unwrap_err();
+        else {
+            panic!("expected error")
+        };
         assert!(matches!(err, VfsError::AlreadyExists { .. }));
     }
 

@@ -74,8 +74,8 @@ impl VfsBackend for LocalBackend {
         Ok(VfsMetadata {
             kind,
             size: meta.len(),
-            modified: meta.modified().ok().and_then(|t| t.try_into().ok()),
-            created: meta.created().ok().and_then(|t| t.try_into().ok()),
+            modified: meta.modified().ok().map(Into::into),
+            created: meta.created().ok().map(Into::into),
             read_only: meta.permissions().readonly(),
         })
     }
@@ -127,6 +127,15 @@ struct LocalHandle {
     file: Mutex<tokio::fs::File>,
 }
 
+// The handle owns a `Mutex<File>`. Each method body is a single lock-and-operate
+// sequence — the guard naturally drops at the end of the method, which is what we
+// want. Clippy's `significant_drop_tightening` lint suggests inserting an explicit
+// `drop(file)` immediately before the trailing expression, but that doesn't change
+// behaviour here (no other work happens after the IO) and only adds noise.
+#[allow(
+    clippy::significant_drop_tightening,
+    reason = "lock held for the entire method body by design"
+)]
 #[async_trait]
 impl VfsHandle for LocalHandle {
     async fn read(&mut self, offset: u64, len: usize) -> Result<Bytes> {

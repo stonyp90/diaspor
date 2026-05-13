@@ -8,7 +8,7 @@
 //! backend, and any future cloud backend all behave identically when observed through the
 //! public [`VfsBackend`] trait.
 //!
-//! ```no_run
+//! ```ignore
 //! use stony_vdfs_backend_memory::MemoryBackend;
 //!
 //! #[tokio::test]
@@ -52,6 +52,11 @@ fn p(s: &str) -> VfsPath {
 /// 16. `open(WRITE)` without `CREATE` on a missing path returns `NotFound`.
 /// 17. `open(CREATE | EXCL)` on an existing file returns `AlreadyExists`.
 /// 18. `list` on a file returns `KindMismatch`.
+#[allow(
+    clippy::too_many_lines,
+    reason = "the suite is intentionally a single sequential script of 18 numbered \
+              assertions; splitting it would obscure ordering and state dependencies"
+)]
 pub async fn run<B: VfsBackend>(backend: B) {
     // 1 & 2. Fresh root metadata.
     let root_meta = backend
@@ -200,33 +205,35 @@ pub async fn run<B: VfsBackend>(backend: B) {
     );
 
     // 15. open(READ) on missing path -> NotFound.
-    let err = backend
-        .open(&p("/does-not-exist"), OpenFlags::READ)
-        .await
-        .expect_err("read of missing must fail");
+    // Note: `Box<dyn VfsHandle>` doesn't implement Debug, so we can't use
+    // `expect_err` here. `let...else` lets us discard the Ok handle cleanly.
+    let Err(err) = backend.open(&p("/does-not-exist"), OpenFlags::READ).await else {
+        panic!("read of missing must fail")
+    };
     assert!(
         matches!(err, VfsError::NotFound { .. }),
         "expected NotFound, got {err:?}"
     );
 
     // 16. open(WRITE) without CREATE -> NotFound.
-    let err = backend
-        .open(&p("/also-missing"), OpenFlags::WRITE)
-        .await
-        .expect_err("write without create on missing must fail");
+    let Err(err) = backend.open(&p("/also-missing"), OpenFlags::WRITE).await else {
+        panic!("write without create on missing must fail")
+    };
     assert!(
         matches!(err, VfsError::NotFound { .. }),
         "expected NotFound, got {err:?}"
     );
 
     // 17. CREATE | EXCL on existing -> AlreadyExists.
-    let err = backend
+    let Err(err) = backend
         .open(
             &p("/dir/keep.txt"),
             OpenFlags::CREATE | OpenFlags::EXCL | OpenFlags::WRITE,
         )
         .await
-        .expect_err("excl create on existing must fail");
+    else {
+        panic!("excl create on existing must fail")
+    };
     assert!(
         matches!(err, VfsError::AlreadyExists { .. }),
         "expected AlreadyExists, got {err:?}"

@@ -5,8 +5,8 @@
 //! This crate adds *local-first* content understanding to any [`stony_vdfs_core::VfsBackend`].
 //! When a media file lands in the filesystem, the indexer pipeline:
 //!
-//! 1. **Probes** the file with FFmpeg to identify codec / streams / duration.
-//! 2. **Extracts** the audio track losslessly into 16 kHz mono PCM via FFmpeg.
+//! 1. **Probes** the file with `FFmpeg` to identify codec / streams / duration.
+//! 2. **Extracts** the audio track losslessly into 16 kHz mono PCM via `FFmpeg`.
 //! 3. **Transcribes** the audio using a pluggable [`Transcriber`] (default backend:
 //!    `whisper.cpp`, all inference local).
 //! 4. **Tags** the resulting transcript using a pluggable [`Tagger`] (default backend:
@@ -18,7 +18,7 @@
 //! ## Pipeline at a glance
 //!
 //! ```text
-//!   ┌──────────┐   FFmpeg probe   ┌──────────┐   FFmpeg extract   ┌──────────┐
+//!   ┌──────────┐   `FFmpeg` probe   ┌──────────┐   `FFmpeg` extract   ┌──────────┐
 //!   │  file in │ ───────────────▶ │  metadata│ ─────────────────▶ │  PCM 16k │
 //!   │ backend  │                  │ {codec…} │                    │  mono    │
 //!   └────┬─────┘                  └──────────┘                    └────┬─────┘
@@ -36,7 +36,7 @@
 //! ## Privacy contract
 //!
 //! - **No network calls by default.** The default [`Transcriber`] and [`Tagger`] run
-//!   on-device. Cloud variants (OpenAI, Anthropic, etc.) are opt-in via separate feature
+//!   on-device. Cloud variants (`OpenAI`, Anthropic, etc.) are opt-in via separate feature
 //!   flags and require the caller to construct them explicitly.
 //! - **Bring-your-own-model.** The crate ships traits, not models. Callers point the
 //!   pipeline at their preferred whisper.cpp build, GGUF model, or LLM runtime.
@@ -46,7 +46,7 @@
 //! ## Status
 //!
 //! v0.1.0-alpha ships **the trait surface and a no-op probe** so the architecture is
-//! reviewable. Full FFmpeg integration arrives in milestone M5 of the roadmap, with
+//! reviewable. Full `FFmpeg` integration arrives in milestone M5 of the roadmap, with
 //! transcription and auto-tagging in M6.
 
 #![doc(html_root_url = "https://docs.rs/stony-vdfs-index/0.1.0-alpha.1")]
@@ -63,7 +63,7 @@ pub mod sidecar;
 /// Wraps cleanly into a [`stony_vdfs_core::VfsError::Backend`] when bubbled up.
 #[derive(Debug, Error)]
 pub enum IndexError {
-    /// FFmpeg binary not found or returned a non-zero exit code.
+    /// `FFmpeg` binary not found or returned a non-zero exit code.
     #[error("ffmpeg failed: {0}")]
     FfmpegFailed(String),
 
@@ -86,7 +86,7 @@ pub enum IndexError {
 /// Output of [`MediaExtractor::probe`].
 #[derive(Debug, Clone)]
 pub struct MediaInfo {
-    /// Container format reported by FFmpeg (mp4, mkv, mp3, wav, …).
+    /// Container format reported by `FFmpeg` (mp4, mkv, mp3, wav, …).
     pub container: String,
     /// Duration in seconds, if known.
     pub duration_seconds: Option<f64>,
@@ -100,7 +100,7 @@ pub struct MediaInfo {
     pub video_codec: Option<String>,
 }
 
-/// Extracts audio (and metadata) from media files via FFmpeg.
+/// Extracts audio (and metadata) from media files via `FFmpeg`.
 #[async_trait]
 pub trait MediaExtractor: Send + Sync {
     /// Probes a file's metadata without decoding it.
@@ -117,7 +117,7 @@ pub struct Transcript {
     pub language: Option<String>,
     /// The full transcript text.
     pub text: String,
-    /// Optional segment timestamps (start_seconds, end_seconds, segment_text).
+    /// Optional segment timestamps (`start_seconds`, `end_seconds`, `segment_text`).
     pub segments: Vec<TranscriptSegment>,
 }
 
@@ -172,7 +172,7 @@ pub trait Tagger: Send + Sync {
 /// path tree (`/.index/foo.mp4.json` for `/foo.mp4`) and are queryable via normal VFS
 /// reads.
 pub struct ContentPipeline<E, T, G> {
-    /// FFmpeg-backed media extractor.
+    /// `FFmpeg`-backed media extractor.
     pub extractor: E,
     /// Transcriber (default: whisper.cpp).
     pub transcriber: T,

@@ -17,7 +17,7 @@ pub enum NodeKind {
 impl NodeKind {
     /// Returns a static string label used in error messages.
     #[must_use]
-    pub fn as_str(&self) -> &'static str {
+    pub const fn as_str(&self) -> &'static str {
         match self {
             Self::File => "file",
             Self::Directory => "directory",
@@ -63,7 +63,7 @@ pub struct VfsMetadata {
 impl VfsMetadata {
     /// Convenience constructor for a regular file with the given size.
     #[must_use]
-    pub fn file(size: u64) -> Self {
+    pub const fn file(size: u64) -> Self {
         Self {
             kind: NodeKind::File,
             size,
@@ -75,7 +75,7 @@ impl VfsMetadata {
 
     /// Convenience constructor for a directory.
     #[must_use]
-    pub fn directory() -> Self {
+    pub const fn directory() -> Self {
         Self {
             kind: NodeKind::Directory,
             size: 0,

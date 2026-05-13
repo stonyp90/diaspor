@@ -15,7 +15,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     handle.flush().await?;
 
     let root = VfsPath::root();
-    println!("Contents of {}:", root);
+    println!("Contents of {root}:");
     for entry in backend.list(&root).await? {
         let meta = backend.metadata(&entry).await?;
         println!("  {entry}  ({} bytes, {})", meta.size, meta.kind.as_str());

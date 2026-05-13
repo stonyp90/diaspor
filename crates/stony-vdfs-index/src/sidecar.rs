@@ -13,7 +13,7 @@ use crate::{MediaInfo, TagSet, Transcript};
 pub struct SidecarRecord {
     /// Path of the file inside the VFS this record describes.
     pub path: String,
-    /// FFmpeg probe output.
+    /// `FFmpeg` probe output.
     pub media: MediaInfo,
     /// Whisper-style transcript.
     pub transcript: Transcript,
