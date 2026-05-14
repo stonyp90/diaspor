@@ -45,18 +45,27 @@ guarantees, and how the contract is enforced in CI.
 
 ## How the contract is enforced in CI
 
-The CI pipeline (`.github/workflows/ci.yml`) includes a "no-network"
-job that runs the default index pipeline inside a network-disabled
-sandbox:
+The CI pipeline (`.github/workflows/ci.yml`) includes a **`no-network`**
+job that runs the entire test suite inside a network-disabled namespace:
 
 ```bash
-unshare --net cargo run --example index-localfile -- sample.mp3
+sudo --preserve-env=PATH,HOME,CARGO_HOME,RUSTUP_HOME unshare --net -- bash -c '
+  cargo build --workspace --all-features --offline
+  cargo test --workspace --all-features --offline
+'
 ```
 
-If the default code path opens a socket, the syscall fails and the
-job fails. The job is *gating* — a failing run blocks merging to
-`main`. This is the structural enforcement: the contract holds because
-the build fails when it breaks, not because anyone remembered to check.
+If any default code path opens a socket, the syscall fails inside the
+namespace and the job fails. The job is *gating* on every push to
+`main` — a failing run blocks merging. This is the structural
+enforcement: the contract holds because the build fails when it breaks,
+not because anyone remembered to check.
+
+**Scope today (v0.1.0-alpha.1):** the test suite is gated. Milestone
+M6 extends the same gate to the actual index pipeline running against
+a real audio sample (Issue #14), at which point the gate also covers
+FFmpeg / `whisper.cpp` / `llama.cpp` subprocess behaviour, not just
+the Rust test suite.
 
 ## What this contract does *not* cover
 
