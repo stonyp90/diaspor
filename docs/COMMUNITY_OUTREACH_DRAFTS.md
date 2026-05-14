@@ -88,7 +88,7 @@ Repo: https://github.com/stonyp90/cairn — issues open. No installer yet, this 
 
 ## D. HackerNews "Show HN" post
 
-**Title (60 chars max):** Show HN: Stony-vdfs – Rust VFS with local Whisper transcription
+**Title (60 chars max):** Show HN: Cairn – Rust VFS with local Whisper transcription
 
 (58 chars including "Show HN: " prefix.)
 
