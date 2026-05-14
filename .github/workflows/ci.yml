@@ -73,11 +73,12 @@ jobs:
         # See PRIVACY.md and THREAT_MODEL.md.
         #
         # GitHub Actions runners disallow user-namespace unshare, so
-        # we use passwordless sudo (available on GHA Linux runners) to
-        # create the netns. `-E` preserves PATH / CARGO_HOME / HOME so
-        # cargo finds the pre-fetched registry from the runner's HOME.
+        # we use passwordless sudo to create the netns. `secure_path`
+        # in /etc/sudoers strips PATH even with `-E`, so we list each
+        # variable explicitly under `--preserve-env`.
         run: |
-          sudo -E unshare --net -- bash -c '
+          sudo --preserve-env=PATH,HOME,CARGO_HOME,RUSTUP_HOME unshare --net -- bash -c '
+            set -e
             cargo build --workspace --all-features --offline
             cargo test --workspace --all-features --offline
           '
