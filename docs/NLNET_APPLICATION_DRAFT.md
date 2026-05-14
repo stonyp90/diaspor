@@ -243,10 +243,20 @@ A small EU advisory circle is being formed: outreach completed with
 Codeberg e.V. (Berlin) and FSFE (Berlin/Hamburg), with further contacts
 in progress at Linagora/LinTO (Paris), KDE e.V. (Berlin), and Funkwhale
 (NLnet alumnus, Germany) — see `docs/EU_COAPPLICANTS.md` and
-`docs/EU_OUTREACH_EMAILS.md`. The goal is at least one signed Letter
-of Support from an EU-27 organisation before submission to give the
-project visible European technical anchorage alongside the live
-Codeberg mirror.
+`docs/EU_OUTREACH_EMAILS.md`.
+
+**Year-1 community-growth plan.** The project ships with the
+contributor infrastructure NLnet expects from a sustainable open
+project from day one: GitHub issue templates (bug / feature / docs)
+with `good first issue` pre-labelling, a 19-line PR template,
+CODEOWNERS, FUNDING.yml, an enforced Code of Conduct (Contributor
+Covenant v2.1), and a published `stony-vdfs-conformance` crate that
+gives external backend authors a public way to contribute back. Target
+trajectory through M6: at least three regular non-author contributors
+visible in `git log`, with per-crate ownership formally added to
+CODEOWNERS as contributors become regulars. Outreach roster across
+Mastodon, r/rust, r/selfhosted, HN Show HN, Codeberg fediverse, and
+the NLnet alumni network is staged through `docs/COMMUNITY_OUTREACH_DRAFTS.md`.
 
 ## 12. Do you have any (significant) European linkages? (≤ 1200 characters)
 
@@ -273,11 +283,11 @@ linkage is delivered, not promised:
 
 | Risk                                       | Mitigation                                                                                       |
 |--------------------------------------------|--------------------------------------------------------------------------------------------------|
-| Solo maintainer becomes unavailable (illness, life event) | Trait-driven architecture, MIT licence, public roadmap, and milestone-gated commits mean any Rust developer can fork at any tagged release; NLnet's milestone-based disbursement also caps grant exposure to the last completed milestone, protecting NLnet from sunk-cost loss. |
+| Solo maintainer becomes unavailable (illness, life event) | Trait-driven architecture, MIT licence, public roadmap, and milestone-gated commits mean any Rust developer can fork at any tagged release; the published `stony-vdfs-conformance` crate ensures external backends can verify themselves without applicant involvement; Year-1 plan targets ≥ 3 regular non-author contributors and per-crate CODEOWNERS, lifting bus-factor from 1 to 4+ inside the grant window; NLnet's milestone-based disbursement also caps grant exposure to the last completed milestone, protecting NLnet from sunk-cost loss. |
 | FFmpeg / whisper.cpp / llama.cpp upstream regressions | All three dependencies are subprocess- or FFI-wrapped, never statically linked into the core; M5–M6 pin specific commits in `Cargo.lock` and document a tested binary matrix; bring-your-own-binary is the default. |
 | WinFsp licence ambiguity (GPLv3 + commercial dual-licence) | The `stony-vdfs-winfsp` crate is feature-gated and isolated in its own workspace member; downstream MIT-only packagers can omit it entirely and still ship FUSE + memory + local backends. |
 | AI tooling chain (whisper.cpp/llama.cpp APIs) shifts mid-grant | VFS-first phasing: M1–M4 deliver a stand-alone production library worth €30 000 of value if M5–M6 must be re-scoped. Trait surface for index pipeline is decoupled from any specific runtime. |
-| European-dimension review filter rejects non-EU solo applicant | Codeberg mirror committed in M1; active LoS outreach to Codeberg e.V., FSFE, Linagora/LinTO, KDE e.V., Funkwhale (NLnet alumnus) per `docs/EU_COAPPLICANTS.md`; documentation explicitly foregrounds GDPR data-minimisation, Schrems-II, and EU AI Act alignment. |
+| European-dimension review filter rejects non-EU solo applicant | Live Codeberg mirror at submission (not promised — delivered); active LoS outreach to Codeberg e.V., FSFE, Linagora/LinTO, KDE e.V., Funkwhale (NLnet alumnus) per `docs/EU_COAPPLICANTS.md`; targeted Fediverse outreach to attract EU-based contributors before submission (Codeberg forum, Funkwhale and Framasoft communities — see `docs/COMMUNITY_OUTREACH_DRAFTS.md`); documentation explicitly foregrounds GDPR data-minimisation, Schrems-II, and EU AI Act alignment. |
 | Local-LLM hallucination produces misleading tags | Tags are sidecar metadata, never overwrite source files; schema includes provenance (`model`, `model_hash`, `temperature`, `generated_at`); a `low_confidence` flag is set when the LLM's token-level logprob falls below a tunable threshold; documentation pushes downstream apps to surface tags as suggestions, not ground truth. |
 | Conformance-suite gaps cause downstream breakage on edge cases (long paths, non-UTF-8 names, sparse files) | M1's `stony-vdfs-conformance` crate is a published library third parties can run against their own backends; CI tests on Linux + macOS + Windows from day one; a property-based fuzzer (proptest) targets path normalisation explicitly. |
 | WER regression threshold not achievable on chosen hardware/model combination during M5 testing | The grant deliverable is the *plumbing*, not the model accuracy; M5 ships against a tested matrix of whisper.cpp model sizes (tiny/base/small/medium/large-v3) so end users select the smallest model that meets their accuracy needs; documentation states accuracy is a property of the model, not the library. |
