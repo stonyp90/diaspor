@@ -4,7 +4,7 @@
 > auto-tagging built in**. Your media library understands itself — without sending a
 > byte to the cloud.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: AGPL--3.0-only](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-2024_edition-orange.svg)](https://www.rust-lang.org)
 
 <!-- CI badge intentionally omitted until the repository is live on GitHub
@@ -29,7 +29,7 @@ and the first workflow run reports green. Re-add once stable:
 The result: a desktop or server application can hand its users `cat`, `grep`, `find`
 over the *contents* of their videos and podcasts, with zero data leaving the device.
 
-The library is written from a clean specification in Rust 2024 edition under MIT.
+The library is written from a clean specification in Rust 2024 edition under AGPL-3.0.
 It is being released openly to support a [NGI Zero Commons Fund](https://nlnet.nl/commonsfund/)
 application; once the grant cycle clears, sustained 50%-FTE development through
 v1.0 is the plan.
@@ -242,7 +242,7 @@ acknowledgement will appear here and in release notes.
 The author was supported during the design phase by Canadian SR&ED tax credits
 (four active claims documenting prior R&D effort on related private projects involving
 FFmpeg pipelines, Whisper integration, and multimodal AI). The code in this repository
-is new, written from scratch under MIT, and is not encumbered by any prior employer, IP
+is new, written from scratch under AGPL-3.0, and is not encumbered by any prior employer, IP
 licence, or consortium agreement.
 
 ## Recognized contributors
@@ -256,4 +256,4 @@ Want to be on this list? See [CONTRIBUTING.md](CONTRIBUTING.md) — even a typo 
 
 ## Licence
 
-[MIT](LICENSE) © 2026 Anthony Paquet
+[AGPL-3.0](LICENSE) © 2026 Anthony Paquet
