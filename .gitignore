@@ -20,3 +20,8 @@ Cargo.lock.bak
 
 # Local notes
 /NOTES.local.md
+
+# Internal review notes (kept outside repo)
+_*.md
+_RED_TEAM_REVIEW.md
+_STRATEGIC_DECISION.md
