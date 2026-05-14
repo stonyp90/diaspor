@@ -30,7 +30,7 @@ purpose of this repository.
 Applies to:
 
 - Issues, pull requests, discussions, and review comments on
-  github.com/stonyp90/cairn and codeberg.org/stonyp90/cairn.
+  github.com/stonyp90/diaspor and codeberg.org/stonyp90/diaspor.
 - Direct messages from project participants framed as being about
   this project.
 - Public talks or social-media statements where the participant

@@ -1,7 +1,7 @@
 # Architecture Decision Records
 
 This directory captures the load-bearing decisions made during the design of
-`cairn`. Each record uses [Michael Nygard's ADR format][nygard]: Title, Status,
+`diaspor`. Each record uses [Michael Nygard's ADR format][nygard]: Title, Status,
 Context, Decision, Consequences. ADRs are immutable once accepted; later decisions that
 supersede an earlier one are filed as new ADRs that reference the original.
 

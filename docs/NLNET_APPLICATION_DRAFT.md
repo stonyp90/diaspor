@@ -3,9 +3,9 @@
 **Call:** 13th NGI Zero Commons Fund call  
 **Deadline:** 2026-06-01 12:00 CEST (Brussels time)  
 **Applicant:** Anthony Paquet (sole maintainer)  
-**Project:** `cairn`  
+**Project:** `diaspor`  
 **Requested budget:** €45 000 (≈ CAD 60 000) over 12 months  
-**Repository:** https://github.com/stonyp90/cairn (primary) + https://codeberg.org/stonyp90/cairn (EU mirror)  
+**Repository:** https://github.com/stonyp90/diaspor (primary) + https://codeberg.org/stonyp90/diaspor (EU mirror)  
 **License:** MIT
 
 > This document is the draft text for the **public** NLnet application form. Once
@@ -18,20 +18,20 @@
 
 ## 1. Project name
 
-`cairn` — a privacy-first Rust virtual filesystem with on-device FFmpeg
+`diaspor` — a privacy-first Rust virtual filesystem with on-device FFmpeg
 transcription and local-LLM auto-tagging.
 
 ## 2. Website / wiki
 
-- https://github.com/stonyp90/cairn
-- https://codeberg.org/stonyp90/cairn (EU sovereign mirror)
+- https://github.com/stonyp90/diaspor
+- https://codeberg.org/stonyp90/diaspor (EU sovereign mirror)
 
 ## 3. Abstract (≤ 1200 characters)
 
-`cairn` is a Rust library that gives applications a single async API over
+`diaspor` is a Rust library that gives applications a single async API over
 multiple storage backends (memory, local disk, FUSE, WinFsp) — plus an opt-in
 content-understanding layer that runs entirely on the user's device. When a
-media file lands in the filesystem, `cairn-index` probes it with FFmpeg,
+media file lands in the filesystem, `diaspor-index` probes it with FFmpeg,
 transcribes the audio with `whisper.cpp`, and auto-tags the transcript with a
 small local LLM. Transcripts and tags persist as sidecar JSON files retrievable
 through the VFS itself. No cloud calls, no telemetry, no API keys. The
@@ -48,7 +48,7 @@ that any application or operating system distribution can adopt.
 Yes. The applicant has spent 2022–2025 building closed-source desktop
 applications in the same domain (cross-platform media pipelines on
 Linux/macOS/Windows with FFmpeg and Whisper components). That commercial
-experience surfaced the gap that `cairn` addresses — the absence of
+experience surfaced the gap that `diaspor` addresses — the absence of
 an embeddable, MIT-licensed Rust crate that wires on-device transcription
 to a filesystem surface. The open-source library is being written from a
 clean specification in Rust 2024 edition, with no source-code or asset
@@ -101,9 +101,9 @@ Six concrete milestone deliverables, each tied to a €7 500 tranche:
   Linux being the primary target (FUSE is mature and unencumbered there).
   Tag `v0.3.0`.
 - **M4** (Month 7–8) — WinFsp adapter end-to-end on Windows. Tag `v0.4.0`.
-- **M5** (Month 9–10) — `cairn-index` ships the **FFmpeg + whisper.cpp**
+- **M5** (Month 9–10) — `diaspor-index` ships the **FFmpeg + whisper.cpp**
   transcription pipeline as an opt-in crate, with a deterministic CLI demo
-  (`cairn transcribe input.mp4 -o sidecar.json`). Tag `v0.5.0`.
+  (`diaspor transcribe input.mp4 -o sidecar.json`). Tag `v0.5.0`.
 - **M6** (Month 11–12) — **Local-LLM auto-tagging** via a small GGUF model
   through `llama.cpp`, sidecar persistence in the VFS itself, documentation
   pass, and a tagged **v1.0** release. Tag `v1.0.0`.
@@ -118,7 +118,7 @@ the core deliverable is independent of it.
 ## 7. Does the project receive (other) funding? (≤ 2500 characters)
 
 No active matching grants. The applicant has not previously applied
-to NLnet. The `cairn` open-source work funded by NLnet would be
+to NLnet. The `diaspor` open-source work funded by NLnet would be
 reported separately from any other R&D activity the applicant
 undertakes, with no cost double-attribution. The applicant is happy to
 provide a written IP attestation under separate cover if NLnet's review
@@ -138,7 +138,7 @@ only), `polyfuse` (async but Linux-only), `winfsp-rs` and `winfsp-sys`
 comparators: libcfu, GVfs (GNOME, GPL, server-tied), Dokany (Windows,
 fragmented governance). The closest active prior art is `opendal` +
 manual FUSE/WinFsp wrapping, which still leaves the integrator with
-two adapter stacks to maintain. `cairn` ships the integration as
+two adapter stacks to maintain. `diaspor` ships the integration as
 a single async Rust workspace under one permissive licence.
 
 **Transcription stacks:** Cloud-side — OpenAI Whisper API, AssemblyAI,
@@ -149,7 +149,7 @@ Galaxy AI. On-device-and-open but framework-level — `whisper.cpp` (CLI),
 `whisper-rs` (FFI crate), `faster-whisper` (Python/CTranslate2), Vosk,
 Coqui STT, Mozilla DeepSpeech (archived). LinTO (Linagora) is the
 closest EU comparator but is a server product, not an embeddable
-library. The gap `cairn-index` fills is **the glue that wires
+library. The gap `diaspor-index` fills is **the glue that wires
 on-device transcription to a filesystem surface** so any application
 ships Drive-style search without leaving the device.
 
@@ -171,7 +171,7 @@ than redundant.
   mirror target by this project. Different problem domain.
 - **Nextcloud** — cloud collaboration platform that ships an indexer; their
   indexer is server-side, runs on PHP, and is tied to the Nextcloud stack.
-  `cairn-index` runs in-process, in Rust, with no server.
+  `diaspor-index` runs in-process, in Rust, with no server.
 - **rclone** — multi-backend cloud storage CLI. Operates on remote stores,
   not on a local FUSE/WinFsp surface, and has no transcription path.
 - **Subtitle Edit / Whisper.cpp wrappers** — desktop GUIs that wrap
@@ -184,7 +184,7 @@ There are no current FOSS projects with the same combined scope. Past
 NGI-funded filesystem work (the 9P, FUSE, and container-image
 filesystem layers) addresses orthogonal problems — network transport,
 mount-time performance, image layering — not user-facing content
-understanding. `cairn` is complementary to that body of work.
+understanding. `diaspor` is complementary to that body of work.
 
 ## 10. Explain how this project advances the state-of-the-art (≤ 2500 characters)
 
@@ -196,7 +196,7 @@ or by a milestone with a measurable acceptance gate.
    we discussed pricing" composes by hand: `opendal` + `fuser` +
    `winfsp-rs` + `whisper-rs` + `ffmpeg-next` + custom sidecar
    persistence — three OS adapter layers and four IPC boundaries the
-   developer integrates. `cairn` ships a single async API
+   developer integrates. `diaspor` ships a single async API
    (`Pipeline::process(&path)`) that produces a transcript + tags
    sidecar through one Cargo dependency. The novelty is the
    composition, the cross-platform parity (Linux + macOS + Windows in
@@ -213,7 +213,7 @@ or by a milestone with a measurable acceptance gate.
    no other Whisper/LLM library exposes this assertion as a
    mechanically verifiable CI job rather than a policy statement.
 
-3. **Architecture small enough to audit.** `cairn-index` is
+3. **Architecture small enough to audit.** `diaspor-index` is
    239 lines at v0.1.0-alpha.1 and the M6 contract caps it at
    5 000 lines including tests. A downstream security auditor or EU
    public-sector procurement reviewer can read the complete data-flow
@@ -227,20 +227,20 @@ or by a milestone with a measurable acceptance gate.
 developer based in Quebec, Canada. ~10 years of professional software
 engineering across systems programming, desktop applications, and media
 pipelines on Linux, macOS, and Windows. The cross-platform pain that
-`cairn` solves is pain the applicant has paid years of debugging
+`diaspor` solves is pain the applicant has paid years of debugging
 time on while shipping commercial media tooling.
 
 Verifiable artefacts NLnet reviewers can check independently:
 
 - **GitHub profile:** github.com/stonyp90 — public commit history,
   upstream issue activity in the Rust ecosystem (`tokio`, `bytes`,
-  FFmpeg bindings, `whisper.cpp`), and the `cairn` repository
+  FFmpeg bindings, `whisper.cpp`), and the `diaspor` repository
   itself with public commit history prior to submission.
 - **Cross-platform shipping experience:** prior commercial work spans
   Linux, macOS, and Windows simultaneously — the same target matrix
-  that `cairn` solves at the library layer.
+  that `diaspor` solves at the library layer.
 - **IP attestation available on request:** the applicant holds full
-  rights to license the new `cairn` code under MIT; no third
+  rights to license the new `diaspor` code under MIT; no third
   party (prior employer, consortium, or investor) holds claims on it.
   A signed attestation is available to NLnet's review panel under
   separate cover if requested.
@@ -256,7 +256,7 @@ contributor infrastructure NLnet expects from a sustainable open
 project from day one: GitHub issue templates (bug / feature / docs)
 with `good first issue` pre-labelling, a 19-line PR template,
 CODEOWNERS, FUNDING.yml, an enforced Code of Conduct (Contributor
-Covenant v2.1), and a published `cairn-conformance` crate that
+Covenant v2.1), and a published `diaspor-conformance` crate that
 gives external backend authors a public way to contribute back. Target
 trajectory through M6: at least three regular non-author contributors
 visible in `git log`, with per-crate ownership formally added to
@@ -269,7 +269,7 @@ the NLnet alumni network is staged through `docs/COMMUNITY_OUTREACH_DRAFTS.md`.
 The applicant is Canadian, not EU-resident. The project's European
 linkage is delivered, not promised:
 
-1. **Live Codeberg mirror** at `codeberg.org/stonyp90/cairn`
+1. **Live Codeberg mirror** at `codeberg.org/stonyp90/diaspor`
    (Berlin, Germany) — set up before submission, syncing tagged
    releases automatically. Codeberg is the chosen *primary* EU
    distribution channel for binary releases.
@@ -289,13 +289,13 @@ linkage is delivered, not promised:
 
 | Risk                                       | Mitigation                                                                                       |
 |--------------------------------------------|--------------------------------------------------------------------------------------------------|
-| Solo maintainer becomes unavailable (illness, life event) | Trait-driven architecture, MIT licence, public roadmap, and milestone-gated commits mean any Rust developer can fork at any tagged release; the published `cairn-conformance` crate ensures external backends can verify themselves without applicant involvement; Year-1 plan targets ≥ 3 regular non-author contributors and per-crate CODEOWNERS, lifting bus-factor from 1 to 4+ inside the grant window; NLnet's milestone-based disbursement also caps grant exposure to the last completed milestone, protecting NLnet from sunk-cost loss. |
+| Solo maintainer becomes unavailable (illness, life event) | Trait-driven architecture, MIT licence, public roadmap, and milestone-gated commits mean any Rust developer can fork at any tagged release; the published `diaspor-conformance` crate ensures external backends can verify themselves without applicant involvement; Year-1 plan targets ≥ 3 regular non-author contributors and per-crate CODEOWNERS, lifting bus-factor from 1 to 4+ inside the grant window; NLnet's milestone-based disbursement also caps grant exposure to the last completed milestone, protecting NLnet from sunk-cost loss. |
 | FFmpeg / whisper.cpp / llama.cpp upstream regressions | All three dependencies are subprocess- or FFI-wrapped, never statically linked into the core; M5–M6 pin specific commits in `Cargo.lock` and document a tested binary matrix; bring-your-own-binary is the default. |
-| WinFsp licence ambiguity (GPLv3 + commercial dual-licence) | The `cairn-winfsp` crate is feature-gated and isolated in its own workspace member; downstream MIT-only packagers can omit it entirely and still ship FUSE + memory + local backends. |
+| WinFsp licence ambiguity (GPLv3 + commercial dual-licence) | The `diaspor-winfsp` crate is feature-gated and isolated in its own workspace member; downstream MIT-only packagers can omit it entirely and still ship FUSE + memory + local backends. |
 | AI tooling chain (whisper.cpp/llama.cpp APIs) shifts mid-grant | VFS-first phasing: M1–M4 deliver a stand-alone production library worth €30 000 of value if M5–M6 must be re-scoped. Trait surface for index pipeline is decoupled from any specific runtime. |
 | European-dimension review filter rejects non-EU solo applicant | Live Codeberg mirror at submission (not promised — delivered); active LoS outreach to Codeberg e.V., FSFE, Linagora/LinTO, KDE e.V., Funkwhale (NLnet alumnus) per `docs/EU_COAPPLICANTS.md`; targeted Fediverse outreach to attract EU-based contributors before submission (Codeberg forum, Funkwhale and Framasoft communities — see `docs/COMMUNITY_OUTREACH_DRAFTS.md`); documentation explicitly foregrounds GDPR data-minimisation, Schrems-II, and EU AI Act alignment. |
 | Local-LLM hallucination produces misleading tags | Tags are sidecar metadata, never overwrite source files; schema includes provenance (`model`, `model_hash`, `temperature`, `generated_at`); a `low_confidence` flag is set when the LLM's token-level logprob falls below a tunable threshold; documentation pushes downstream apps to surface tags as suggestions, not ground truth. |
-| Conformance-suite gaps cause downstream breakage on edge cases (long paths, non-UTF-8 names, sparse files) | M1's `cairn-conformance` crate is a published library third parties can run against their own backends; CI tests on Linux + macOS + Windows from day one; a property-based fuzzer (proptest) targets path normalisation explicitly. |
+| Conformance-suite gaps cause downstream breakage on edge cases (long paths, non-UTF-8 names, sparse files) | M1's `diaspor-conformance` crate is a published library third parties can run against their own backends; CI tests on Linux + macOS + Windows from day one; a property-based fuzzer (proptest) targets path normalisation explicitly. |
 | WER regression threshold not achievable on chosen hardware/model combination during M5 testing | The grant deliverable is the *plumbing*, not the model accuracy; M5 ships against a tested matrix of whisper.cpp model sizes (tiny/base/small/medium/large-v3) so end users select the smallest model that meets their accuracy needs; documentation states accuracy is a property of the model, not the library. |
 
 ## 14. Why is this work better done now? (≤ 1200 characters)

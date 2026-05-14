@@ -1,14 +1,14 @@
 # Sidecar JSON schema
 
 This directory hosts the **forward-looking** JSON Schema definitions for
-artifacts produced by `cairn-index`. It is published in the v0.1.0-alpha.1
+artifacts produced by `diaspor-index`. It is published in the v0.1.0-alpha.1
 release to anchor the stability contract referenced in the project's NLnet
 application (§10: "Stable JSON schema for `SidecarRecord` published in-repo at
 `docs/schema/sidecar-v1.json`").
 
 ## Status at v0.1.0-alpha.1
 
-- The Rust type `cairn_index::sidecar::SidecarRecord` exists at the
+- The Rust type `diaspor_index::sidecar::SidecarRecord` exists at the
   trait-surface level but no production transcriber / tagger writes it yet.
   M5 lands the FFmpeg + `whisper.cpp` pipeline; M6 lands the local-LLM tagger
   and the sidecar persistence layer that produces JSON conforming to the
@@ -41,7 +41,7 @@ ergonomics) is introduced whenever a breaking change is made:
 
 - **Adding** an optional field is **not** a breaking change. Readers must
   ignore unknown fields (see `P4` in
-  [`crates/cairn-conformance/SPEC.md`](../../crates/cairn-conformance/SPEC.md#m6--sidecar-persistence-and-v10)).
+  [`crates/diaspor-conformance/SPEC.md`](../../crates/diaspor-conformance/SPEC.md#m6--sidecar-persistence-and-v10)).
 - **Renaming or removing** a field, **changing its type**, or **tightening a
   validation rule** is a breaking change and requires a new schema version
   file (e.g. `sidecar-v2.json`). The old schema file stays in this directory
@@ -76,16 +76,16 @@ node -e "const Ajv = require('ajv').default; \
 ```
 
 In Rust, the canonical path is to use `serde_json::from_str::<SidecarRecord>`
-once `cairn-index` exposes `serde` derives on `SidecarRecord` (M6
+once `diaspor-index` exposes `serde` derives on `SidecarRecord` (M6
 deliverable). Until then, treat the schema as the source of truth.
 
 ## See also
 
-- [`crates/cairn-index/src/sidecar.rs`](../../crates/cairn-index/src/sidecar.rs)
+- [`crates/diaspor-index/src/sidecar.rs`](../../crates/diaspor-index/src/sidecar.rs)
   for the in-memory Rust type that this schema mirrors.
 - [`ROADMAP.md`](../../ROADMAP.md) M5 / M6 sections for the milestones that
   bring the schema from "published, not yet enforced" to "frozen and round-
   trip tested in CI."
-- [`crates/cairn-conformance/SPEC.md`](../../crates/cairn-conformance/SPEC.md)
+- [`crates/diaspor-conformance/SPEC.md`](../../crates/diaspor-conformance/SPEC.md)
   for the conformance invariants that will lock the schema into the test
   suite once M6 ships.

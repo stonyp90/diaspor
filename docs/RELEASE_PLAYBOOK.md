@@ -7,18 +7,18 @@ below in order. Each step is short and idempotent.
 
 ```bash
 gh auth status            # confirm signed in as stonyp90
-gh repo create stonyp90/cairn \
+gh repo create stonyp90/diaspor \
   --public \
   --description "Privacy-first Rust VFS with on-device FFmpeg transcription and local-LLM auto-tagging" \
-  --homepage "https://github.com/stonyp90/cairn" \
+  --homepage "https://github.com/stonyp90/diaspor" \
   --disable-wiki=false
 ```
 
 ## Step 2 — Push everything
 
 ```bash
-cd /tmp/cairn
-git remote add origin git@github.com:stonyp90/cairn.git
+cd /tmp/diaspor
+git remote add origin git@github.com:stonyp90/diaspor.git
 git push -u origin main
 git push origin v0.1.0-alpha.1
 ```
@@ -55,7 +55,7 @@ write it during the actual submission week).
 
 ```bash
 # After registering at codeberg.org
-git remote add codeberg git@codeberg.org:stonyp90/cairn.git
+git remote add codeberg git@codeberg.org:stonyp90/diaspor.git
 git push -u codeberg main
 git push codeberg v0.1.0-alpha.1
 ```

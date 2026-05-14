@@ -10,21 +10,21 @@ application submission package.
 
 What ships:
 
-- `cairn-core` — async trait surface, path/error/metadata types,
+- `diaspor-core` — async trait surface, path/error/metadata types,
   unit tests. Stable shape; minor API churn expected pre-1.0.
-- `cairn-backend-memory` — reference in-memory backend. Full
+- `diaspor-backend-memory` — reference in-memory backend. Full
   implementation; covered by the conformance suite.
-- `cairn-backend-local` — local-disk backend, happy path. Cross-
+- `diaspor-backend-local` — local-disk backend, happy path. Cross-
   platform path edge cases land in M2.
-- `cairn-fuse` — adapter stub with full trait surface. Real
+- `diaspor-fuse` — adapter stub with full trait surface. Real
   implementation in M3.
-- `cairn-winfsp` — adapter stub with full trait surface. Real
+- `diaspor-winfsp` — adapter stub with full trait surface. Real
   implementation in M4.
-- `cairn-index` — pipeline trait surface (FFmpeg + Whisper + LLM
+- `diaspor-index` — pipeline trait surface (FFmpeg + Whisper + LLM
   tagger). No real binary calls yet; M5/M6 land them.
-- `cairn-conformance` — published conformance test suite that
+- `diaspor-conformance` — published conformance test suite that
   third-party backends can run against their own implementations.
-- `cairn-cli` — operator CLI with memory/local mount examples.
+- `diaspor-cli` — operator CLI with memory/local mount examples.
 
 What does *not* ship yet:
 

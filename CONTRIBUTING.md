@@ -1,4 +1,4 @@
-# Contributing to cairn
+# Contributing to diaspor
 
 Thanks for considering a contribution. The project is small and the maintainer responds
 to issues and PRs on a best-effort basis; please be patient, and please keep things
@@ -19,7 +19,7 @@ By participating you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Good first issues
 
-Issues tagged [`good first issue`](https://github.com/stonyp90/cairn/labels/good%20first%20issue)
+Issues tagged [`good first issue`](https://github.com/stonyp90/diaspor/labels/good%20first%20issue)
 are scoped to land in a single, focused PR without needing a deep tour of the codebase.
 If the label is empty, the documentation tracker is always a safe place to start — see
 the categories below.
@@ -51,8 +51,8 @@ You need:
 - Optional: `cargo-deny` and `cargo-audit` for the security workflows.
 
 ```bash
-git clone https://github.com/stonyp90/cairn.git
-cd cairn
+git clone https://github.com/stonyp90/diaspor.git
+cd diaspor
 cargo build --workspace
 cargo test --workspace
 ```

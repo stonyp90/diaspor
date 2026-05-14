@@ -29,7 +29,7 @@ body:
       label: Where is it?
       description: |
         File path, rustdoc URL, or section heading. Be as specific as you can.
-      placeholder: "README.md § Quick start, or crates/cairn-core/src/lib.rs:42"
+      placeholder: "README.md § Quick start, or crates/diaspor-core/src/lib.rs:42"
     validations:
       required: true
 

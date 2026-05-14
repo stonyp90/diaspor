@@ -22,14 +22,14 @@ process. A subprocess crash, by contrast, surfaces as an `ExitStatus` we can han
 
 ## Decision
 
-The default `FfmpegExtractor` shipped in `cairn-index` calls **`ffmpeg` as a
+The default `FfmpegExtractor` shipped in `diaspor-index` calls **`ffmpeg` as a
 subprocess** via `tokio::process::Command`. Implementations that prefer linking against
 `libav` may write their own `MediaExtractor` impl; the trait is public.
 
 ## Consequences
 
 Positive: a memory-corruption bug in any FFmpeg codec stays inside the subprocess. Users
-can pin or upgrade `ffmpeg` independently of `cairn` releases. The build does not
+can pin or upgrade `ffmpeg` independently of `diaspor` releases. The build does not
 need a C toolchain for FFmpeg headers. Distro packagers do not have to vendor codec
 sources.
 

@@ -15,13 +15,13 @@ body:
       label: Affected crate
       description: Which crate is the bug in? Pick "unsure" if you don't know.
       options:
-        - cairn-core
-        - cairn-backend-memory
-        - cairn-backend-local
-        - cairn-fuse
-        - cairn-winfsp
-        - cairn-index
-        - cairn-cli
+        - diaspor-core
+        - diaspor-backend-memory
+        - diaspor-backend-local
+        - diaspor-fuse
+        - diaspor-winfsp
+        - diaspor-index
+        - diaspor-cli
         - workspace / build / CI
         - unsure
     validations:

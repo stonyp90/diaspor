@@ -6,7 +6,7 @@ Accepted — 2026-02-04. Confirmed at v0.1.0-alpha tag.
 
 ## Context
 
-`cairn` is a library aimed at downstream Rust applications, some of which will be
+`diaspor` is a library aimed at downstream Rust applications, some of which will be
 commercial closed-source desktop products and some of which will be publicly funded
 open-source projects in EU jurisdictions. The license needs to maximise adoption
 without alienating either audience. The three serious candidates were:
@@ -26,7 +26,7 @@ We license the workspace under **MIT**.
 
 Positive: MIT is the lowest-friction license for both commercial integrators and the
 Rust ecosystem at large (most of the Rust standard library ecosystem is dual MIT /
-Apache-2.0). Downstream adopters can link `cairn` into closed products without
+Apache-2.0). Downstream adopters can link `diaspor` into closed products without
 license-compatibility lawyering; that is a precondition for the library being used by
 the kind of privacy-respecting commercial desktop apps we want to enable.
 

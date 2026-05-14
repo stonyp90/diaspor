@@ -1,14 +1,14 @@
 [workspace]
 resolver = "3"
 members = [
-    "crates/cairn-core",
-    "crates/cairn-backend-memory",
-    "crates/cairn-backend-local",
-    "crates/cairn-conformance",
-    "crates/cairn-fuse",
-    "crates/cairn-winfsp",
-    "crates/cairn-index",
-    "crates/cairn-cli",
+    "crates/diaspor-core",
+    "crates/diaspor-backend-memory",
+    "crates/diaspor-backend-local",
+    "crates/diaspor-conformance",
+    "crates/diaspor-fuse",
+    "crates/diaspor-winfsp",
+    "crates/diaspor-index",
+    "crates/diaspor-cli",
 ]
 
 [workspace.package]
@@ -17,19 +17,19 @@ edition = "2024"
 rust-version = "1.85"
 authors = ["Anthony Paquet <anthonypaquet1508@gmail.com>"]
 license = "MIT"
-repository = "https://github.com/stonyp90/cairn"
-homepage = "https://github.com/stonyp90/cairn"
-documentation = "https://docs.rs/cairn-core"
+repository = "https://github.com/stonyp90/diaspor"
+homepage = "https://github.com/stonyp90/diaspor"
+documentation = "https://docs.rs/diaspor-core"
 readme = "README.md"
 keywords = ["filesystem", "vfs", "transcription", "ffmpeg", "ai"]
 categories = ["filesystem", "multimedia", "asynchronous"]
 
 [workspace.dependencies]
 # Internal crates
-cairn-core = { version = "0.1.0-alpha.1", path = "crates/cairn-core" }
-cairn-backend-memory = { version = "0.1.0-alpha.1", path = "crates/cairn-backend-memory" }
-cairn-backend-local = { version = "0.1.0-alpha.1", path = "crates/cairn-backend-local" }
-cairn-index = { version = "0.1.0-alpha.1", path = "crates/cairn-index" }
+diaspor-core = { version = "0.1.0-alpha.1", path = "crates/diaspor-core" }
+diaspor-backend-memory = { version = "0.1.0-alpha.1", path = "crates/diaspor-backend-memory" }
+diaspor-backend-local = { version = "0.1.0-alpha.1", path = "crates/diaspor-backend-local" }
+diaspor-index = { version = "0.1.0-alpha.1", path = "crates/diaspor-index" }
 
 # Error handling
 thiserror = "2.0"

@@ -1,4 +1,4 @@
-# cairn
+# diaspor
 
 > A privacy-first virtual filesystem for Rust with **local AI transcription and
 > auto-tagging built in**. Your media library understands itself — without sending a
@@ -9,11 +9,11 @@
 
 <!-- CI badge intentionally omitted until the repository is live on GitHub
 and the first workflow run reports green. Re-add once stable:
-[![CI](https://github.com/stonyp90/cairn/actions/workflows/ci.yml/badge.svg)](https://github.com/stonyp90/cairn/actions/workflows/ci.yml)
+[![CI](https://github.com/stonyp90/diaspor/actions/workflows/ci.yml/badge.svg)](https://github.com/stonyp90/diaspor/actions/workflows/ci.yml)
 -->
 
 
-`cairn` is a Rust workspace that combines two ideas that usually live apart:
+`diaspor` is a Rust workspace that combines two ideas that usually live apart:
 
 1. a **backend-agnostic virtual filesystem** that gives applications a single async API
    over memory, local disk, FUSE mounts, and WinFsp mounts;
@@ -39,7 +39,7 @@ v1.0 is the plan.
 ## Status
 
 **v0.1.0-alpha** — public scaffolding. The traits and the in-memory backend are usable;
-the local backend covers the happy path; FUSE, WinFsp, and the indexing pipeline (`crates/cairn-index/`) are scaffolded with a complete trait surface but the
+the local backend covers the happy path; FUSE, WinFsp, and the indexing pipeline (`crates/diaspor-index/`) are scaffolded with a complete trait surface but the
 heavy implementations land in roadmap milestones M3–M6. See [ROADMAP.md](ROADMAP.md).
 
 ## Why does this matter?
@@ -49,7 +49,7 @@ Cloud providers (Google Drive, OneDrive, Dropbox, iCloud) all index user media
 centres so their search box can find "the meeting where we discussed pricing." That is
 a useful feature — and an enormous privacy trade-off.
 
-`cairn` lets a downstream application offer the same user experience without ever
+`diaspor` lets a downstream application offer the same user experience without ever
 sending the audio anywhere. The transcription and tagging run on the user's own machine
 via FFmpeg + `whisper.cpp` + a small local LLM. The library is the plumbing; the
 application picks the models and policies.
@@ -63,19 +63,19 @@ intermediaries.
 
 | Crate                          | Purpose                                                  |
 |--------------------------------|----------------------------------------------------------|
-| `cairn-core`              | Traits, types, paths, errors — no IO dependencies.       |
-| `cairn-backend-memory`    | In-memory backend for tests and demos.                   |
-| `cairn-backend-local`     | Local filesystem backend (POSIX + Windows).              |
-| `cairn-fuse`              | FUSE mount adapter (Linux/macOS). **Stub until M3.**     |
-| `cairn-winfsp`            | WinFsp mount adapter (Windows). **Stub until M4.**       |
-| `cairn-index`             | **FFmpeg + transcription + auto-tag pipeline.** Trait surface today; full implementation M5–M6. |
-| `cairn-cli`               | Operator CLI: `list`, `cat`, `put` against any backend.  |
+| `diaspor-core`              | Traits, types, paths, errors — no IO dependencies.       |
+| `diaspor-backend-memory`    | In-memory backend for tests and demos.                   |
+| `diaspor-backend-local`     | Local filesystem backend (POSIX + Windows).              |
+| `diaspor-fuse`              | FUSE mount adapter (Linux/macOS). **Stub until M3.**     |
+| `diaspor-winfsp`            | WinFsp mount adapter (Windows). **Stub until M4.**       |
+| `diaspor-index`             | **FFmpeg + transcription + auto-tag pipeline.** Trait surface today; full implementation M5–M6. |
+| `diaspor-cli`               | Operator CLI: `list`, `cat`, `put` against any backend.  |
 
 ## Architecture at a glance
 
 ```
   ┌───────────────────────────────────────────────────────────────────────┐
-  │                            cairn-cli                             │
+  │                            diaspor-cli                             │
   └───────────────────────┬───────────────────────┬───────────────────────┘
                           │                       │
                           ▼                       ▼
@@ -102,7 +102,7 @@ intermediaries.
               └──────────────────┘                     │
                                                        ▼
                                           ┌────────────────────────┐
-                                          │   cairn-core      │
+                                          │   diaspor-core      │
                                           │ traits / paths / types │
                                           └────────┬───────────────┘
                                                    │
@@ -125,7 +125,7 @@ Full design notes in [ARCHITECTURE.md](ARCHITECTURE.md).
 - **Async-first.** Built on `tokio`; every IO method returns a future.
 - **Cross-platform parity.** Identical behaviour on Linux, macOS, Windows; backends own
   the platform quirks.
-- **Small core, big edges.** `cairn-core` has no IO dependencies — only traits.
+- **Small core, big edges.** `diaspor-core` has no IO dependencies — only traits.
 - **Composability over inheritance.** Indexing, encryption, dedup attach as decorators
   around any backend.
 - **Bring-your-own-model.** The library ships traits, not weights. Callers point the
@@ -135,14 +135,14 @@ Full design notes in [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ```toml
 [dependencies]
-cairn-core = "0.1.0-alpha.1"
-cairn-backend-memory = "0.1.0-alpha.1"
+diaspor-core = "0.1.0-alpha.1"
+diaspor-backend-memory = "0.1.0-alpha.1"
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 ```
 
 ```rust
-use cairn_backend_memory::MemoryBackend;
-use cairn_core::{OpenFlags, VfsBackend, VfsPath};
+use diaspor_backend_memory::MemoryBackend;
+use diaspor_core::{OpenFlags, VfsBackend, VfsPath};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -167,7 +167,7 @@ The trait surface is already public so downstream projects can start designing a
 it. The full pipeline ships in roadmap milestones M5 and M6:
 
 ```rust
-use cairn_index::{ContentPipeline, MediaExtractor, Tagger, Transcriber};
+use diaspor_index::{ContentPipeline, MediaExtractor, Tagger, Transcriber};
 // (Once M5/M6 land, the default impls land in feature-gated submodules.)
 
 // Wire your own implementations or use the bundled defaults (planned):
@@ -198,11 +198,11 @@ for tag in &record.tags.tags {
 ## Building from source
 
 ```bash
-git clone https://github.com/stonyp90/cairn.git
-cd cairn
+git clone https://github.com/stonyp90/diaspor.git
+cd diaspor
 cargo build --workspace
 cargo test --workspace
-cargo run -p cairn-cli -- --help
+cargo run -p diaspor-cli -- --help
 ```
 
 Minimum supported Rust version: **1.85** (Rust 2024 edition).
@@ -230,7 +230,7 @@ Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the develo
 workflow, coding standards, and PR process. All participants agree to the
 [Code of Conduct](CODE_OF_CONDUCT.md) (Contributor Covenant 2.1).
 
-The repository is mirrored on [Codeberg](https://codeberg.org/stonyp90/cairn) for
+The repository is mirrored on [Codeberg](https://codeberg.org/stonyp90/diaspor) for
 European visibility and resilience.
 
 ## Funding
@@ -249,7 +249,7 @@ licence, or consortium agreement.
 
 Today this is a single-maintainer project — but the goal is for that to change. Every
 person who lands a commit appears on the
-[contributors graph](https://github.com/stonyp90/cairn/graphs/contributors) and
+[contributors graph](https://github.com/stonyp90/diaspor/graphs/contributors) and
 is named in CHANGELOG.md for the release that ships their work.
 
 Want to be on this list? See [CONTRIBUTING.md](CONTRIBUTING.md) — even a typo fix counts.

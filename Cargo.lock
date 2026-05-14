@@ -91,105 +91,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e748733b7cbc798e1434b6ac524f0c1ff2ab456fe201501e6497c8417a4fc33"
 
 [[package]]
-name = "cairn-backend-local"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "cairn-core",
- "tempfile",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "cairn-backend-memory"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "cairn-conformance",
- "cairn-core",
- "parking_lot",
- "time",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "cairn-cli"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "cairn-backend-local",
- "cairn-backend-memory",
- "cairn-core",
- "cairn-index",
- "clap",
- "tokio",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "cairn-conformance"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "cairn-core",
- "tokio",
-]
-
-[[package]]
-name = "cairn-core"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bitflags",
- "bytes",
- "thiserror",
- "time",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "cairn-fuse"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "cairn-core",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "cairn-index"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "cairn-core",
- "parking_lot",
- "thiserror",
- "time",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "cairn-winfsp"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "cairn-core",
- "tokio",
- "tracing",
-]
-
-[[package]]
 name = "cfg-if"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -249,6 +150,105 @@ checksum = "7cd812cc2bc1d69d4764bd80df88b4317eaef9e773c75226407d9bc0876b211c"
 dependencies = [
  "powerfmt",
  "serde_core",
+]
+
+[[package]]
+name = "diaspor-backend-local"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "diaspor-core",
+ "tempfile",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "diaspor-backend-memory"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "diaspor-conformance",
+ "diaspor-core",
+ "parking_lot",
+ "time",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "diaspor-cli"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "clap",
+ "diaspor-backend-local",
+ "diaspor-backend-memory",
+ "diaspor-core",
+ "diaspor-index",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "diaspor-conformance"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "diaspor-core",
+ "tokio",
+]
+
+[[package]]
+name = "diaspor-core"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bitflags",
+ "bytes",
+ "thiserror",
+ "time",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "diaspor-fuse"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "diaspor-core",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "diaspor-index"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "diaspor-core",
+ "parking_lot",
+ "thiserror",
+ "time",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "diaspor-winfsp"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "diaspor-core",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]

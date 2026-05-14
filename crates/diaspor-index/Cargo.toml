@@ -1,0 +1,30 @@
+[package]
+name = "diaspor-index"
+description = "Content-aware indexing layer for diaspor: FFmpeg transcription + local AI auto-tagging"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["filesystem", "vfs", "transcription", "ffmpeg", "tagging"]
+categories = ["filesystem", "multimedia", "api-bindings"]
+
+[lints]
+workspace = true
+
+[dependencies]
+diaspor-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["sync", "rt", "macros", "process"] }
+bytes.workspace = true
+parking_lot.workspace = true
+tracing.workspace = true
+time = { workspace = true }
+thiserror.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

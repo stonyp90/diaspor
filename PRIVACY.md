@@ -1,11 +1,11 @@
 # Privacy contract
 
-`cairn` ships with a structural — not aspirational — privacy
+`diaspor` ships with a structural — not aspirational — privacy
 contract. This file documents what the library does and does not do
 with user data, what an integrator must do to preserve those
 guarantees, and how the contract is enforced in CI.
 
-## What `cairn` promises
+## What `diaspor` promises
 
 - **No telemetry, ever.** The library makes zero outbound network
   calls of its own accord. There is no analytics, no auto-update
@@ -35,7 +35,7 @@ guarantees, and how the contract is enforced in CI.
   or `CloudTagger`, you are operating outside the privacy contract.
   Disclose to your users.
 - **Audit your sidecar destination.** If your VFS backend is
-  `cairn-backend-cloud-s3` (hypothetical future backend), the
+  `diaspor-backend-cloud-s3` (hypothetical future backend), the
   sidecar JSON files containing transcripts will write to S3. The
   library does not know that — it just calls `backend.open(...).write()`.
   Decide your data residency policy at the backend choice.
@@ -70,7 +70,7 @@ the Rust test suite.
 ## What this contract does *not* cover
 
 - The behaviour of third-party `Transcriber` / `Tagger` implementations
-  in other crates. Authors of `cairn-transcribe-azure` etc. are
+  in other crates. Authors of `diaspor-transcribe-azure` etc. are
   outside the contract.
 - The behaviour of the FFmpeg, whisper.cpp, or llama.cpp binaries
   themselves. We invoke them with no network arguments, but if you

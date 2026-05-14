@@ -1,6 +1,6 @@
 # EU Outreach Emails — Letter-of-Support Requests
 
-**Project:** `cairn` — Rust virtual filesystem with on-device FFmpeg transcription and local-LLM auto-tagging (MIT)
+**Project:** `diaspor` — Rust virtual filesystem with on-device FFmpeg transcription and local-LLM auto-tagging (MIT)
 **Sender:** Anthony Paquet (`anthonypaquet1508@gmail.com`), Quebec, Canada
 **Purpose:** NLnet NGI Zero Commons Fund, 13th call, deadline 2026-06-01 12:00 CEST
 **Send date target:** Week of 2026-05-13
@@ -17,9 +17,9 @@ Three fully personalised emails follow, one per priority candidate. Each is inte
 
 Hi Codeberg team,
 
-I'm Anthony Paquet, a Canadian Rust developer preparing an NLnet NGI Zero Commons Fund application due 1 June for **cairn** — an MIT-licensed virtual filesystem in Rust that does privacy-first audio/video transcription via FFmpeg + whisper.cpp and auto-tagging via a small local LLM. No bytes leave the user's machine. Repo: github.com/stonyp90/cairn.
+I'm Anthony Paquet, a Canadian Rust developer preparing an NLnet NGI Zero Commons Fund application due 1 June for **diaspor** — an MIT-licensed virtual filesystem in Rust that does privacy-first audio/video transcription via FFmpeg + whisper.cpp and auto-tagging via a small local LLM. No bytes leave the user's machine. Repo: github.com/stonyp90/diaspor.
 
-The reason I'm writing you specifically: Codeberg, and Forgejo, are exactly the kind of EU-sovereign infrastructure that the project's pitch leans on. I want cairn to be visibly anchored on Codeberg, not just GitHub. Concretely, I'm committing to (a) a synced mirror at `codeberg.org/stonyp90/cairn` from `v0.1.0` onward, (b) Forgejo Actions CI as part of M1's scope so every tagged release is reproducibly built on Codeberg infrastructure, and (c) upstream issue reports against Forgejo when I hit edges during integration — small but real signal back to the cooperative.
+The reason I'm writing you specifically: Codeberg, and Forgejo, are exactly the kind of EU-sovereign infrastructure that the project's pitch leans on. I want diaspor to be visibly anchored on Codeberg, not just GitHub. Concretely, I'm committing to (a) a synced mirror at `codeberg.org/stonyp90/diaspor` from `v0.1.0` onward, (b) Forgejo Actions CI as part of M1's scope so every tagged release is reproducibly built on Codeberg infrastructure, and (c) upstream issue reports against Forgejo when I hit edges during integration — small but real signal back to the cooperative.
 
 NLnet weights the "European dimension" criterion heavily, and a Canadian solo applicant without a single EU letter of support is typically filtered in the first review pass. The ask is small: **would Codeberg e.V. write a short (one-paragraph) letter of support** confirming that the project's mirror commitment and Public Money? Public Code! values alignment are real, and that Codeberg is willing to host the mirror? I'm happy to draft a version for the board to edit so this stays a 10-minute task on your side.
 
@@ -29,7 +29,7 @@ Thanks for considering — and for running Codeberg in the first place.
 
 Anthony Paquet
 github.com/stonyp90 · `anthonypaquet1508@gmail.com`
-README: github.com/stonyp90/cairn#readme
+README: github.com/stonyp90/diaspor#readme
 
 ---
 
@@ -43,7 +43,7 @@ Hello FSFE team,
 
 I'm Anthony Paquet, a Canadian Rust developer writing because the project I'm filing with NLnet next month is a direct operationalisation of Public Money? Public Code! for one specific, painful use case: **public-sector audio and video transcription** that today depends almost entirely on US SaaS (Microsoft Teams, Otter, Descript, Rev, AWS Transcribe). Parliaments, courts, public broadcasters, and journalists upload sensitive audio to US-hosted services every working day. Schrems-II makes that a legal liability; the EU AI Act, in force August 2026, makes it a compliance liability too.
 
-**cairn** is the underlying infrastructure: an MIT-licensed Rust virtual filesystem (memory / local / FUSE / WinFsp) with an opt-in indexing pipeline running FFmpeg + whisper.cpp + a small local LLM **entirely on-device**. No telemetry, no cloud calls, no API keys — the privacy contract is structural. Repo: github.com/stonyp90/cairn. The 12-month roadmap commits a "Deployment for EU public bodies" guide in M6 that maps explicitly onto the PMPC criteria.
+**diaspor** is the underlying infrastructure: an MIT-licensed Rust virtual filesystem (memory / local / FUSE / WinFsp) with an opt-in indexing pipeline running FFmpeg + whisper.cpp + a small local LLM **entirely on-device**. No telemetry, no cloud calls, no API keys — the privacy contract is structural. Repo: github.com/stonyp90/diaspor. The 12-month roadmap commits a "Deployment for EU public bodies" guide in M6 that maps explicitly onto the PMPC criteria.
 
 NLnet typically filters non-EU solo applicants in the first pass without a European letter of support. **Would FSFE write a short LoS** confirming the design is PMPC-compliant in spirit and that the public-sector framing is credible? Even 5–7 sentences from FSFE carries enormous weight with NLnet reviewers. I'm not asking for co-applicant status or any financial role — just a written endorsement of values alignment.
 
@@ -60,15 +60,15 @@ github.com/stonyp90 · `anthonypaquet1508@gmail.com`
 
 **To:** `hello@linto.ai` (LinTO team) — primary
 **CC:** Linagora contact form at `linagora.com/en/contact` (secondary; mirror the email body there)
-**Subject:** cairn × LinTO — complementary local-first transcription stack, letter-of-support ask for NLnet
+**Subject:** diaspor × LinTO — complementary local-first transcription stack, letter-of-support ask for NLnet
 
 Bonjour LinTO team,
 
-I'm Anthony Paquet, a Quebec-based Rust developer (French-speaking, writing in English so the wider team can skim). I'm preparing an NLnet NGI Zero Commons Fund application due 1 June for **cairn** — an MIT-licensed virtual filesystem in Rust whose opt-in indexing layer wraps FFmpeg + whisper.cpp + a small local LLM to give downstream applications "Drive-style search across your media, no cloud calls." Repo: github.com/stonyp90/cairn.
+I'm Anthony Paquet, a Quebec-based Rust developer (French-speaking, writing in English so the wider team can skim). I'm preparing an NLnet NGI Zero Commons Fund application due 1 June for **diaspor** — an MIT-licensed virtual filesystem in Rust whose opt-in indexing layer wraps FFmpeg + whisper.cpp + a small local LLM to give downstream applications "Drive-style search across your media, no cloud calls." Repo: github.com/stonyp90/diaspor.
 
 I've been following LinTO since the European Commission / European Parliament deployments became public — your six-year run of pre-Whisper sovereign-AI R&D is the bar this whole space should be measured against, and LUCIE is the LLM I'd most like to make a first-class tagger backend for in M6.
 
-The reason I'm writing rather than just shipping a quiet competitor: **cairn is complementary, not competitive.** LinTO is a server product with institutional deployments; cairn is a filesystem-native, embeddable Rust library for individual application developers (desktop, mobile, edge). The use cases barely overlap. The integration story is clean — LinTO Studio can ingest cairn sidecar JSON, cairn can target LinTO endpoints as one of several pluggable backends. I'd happily commit a "cairn × LinTO Studio" integration cookbook as a public grant deliverable.
+The reason I'm writing rather than just shipping a quiet competitor: **diaspor is complementary, not competitive.** LinTO is a server product with institutional deployments; diaspor is a filesystem-native, embeddable Rust library for individual application developers (desktop, mobile, edge). The use cases barely overlap. The integration story is clean — LinTO Studio can ingest diaspor sidecar JSON, diaspor can target LinTO endpoints as one of several pluggable backends. I'd happily commit a "diaspor × LinTO Studio" integration cookbook as a public grant deliverable.
 
 The concrete ask: **would Linagora write a short letter of support** confirming the complementarity and your willingness to host the cookbook on linagora.ai? NLnet flags non-EU solo applicants without an EU LoS, and one from LinTO would land with particular credibility.
 

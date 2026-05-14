@@ -24,7 +24,7 @@ that return `Pin<Box<dyn Future + Send>>`, at the cost of one heap allocation pe
 
 The public trait surface uses **`#[async_trait]` macro-based async**. Specifically:
 
-- All public traits in `cairn-core` are annotated with `#[async_trait]`.
+- All public traits in `diaspor-core` are annotated with `#[async_trait]`.
 - All blanket impls and decorator backends follow the same pattern.
 - The boxing cost is documented as dominated by IO cost in realistic workloads.
 
