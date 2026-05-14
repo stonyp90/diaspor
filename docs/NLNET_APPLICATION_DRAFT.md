@@ -188,32 +188,38 @@ understanding. `stony-vdfs` is complementary to that body of work.
 
 ## 10. Explain how this project advances the state-of-the-art (≤ 2500 characters)
 
-Three concrete differentiators against named prior art:
+Three concrete differentiators, each backed by code already on `main`
+or by a milestone with a measurable acceptance gate.
 
-1. **Single MIT-licensed Rust workspace combining (a) async VFS trait,
-   (b) FUSE adapter, (c) WinFsp adapter, (d) sidecar-persistent local
-   transcription, and (e) local-LLM auto-tagging.** Each ingredient
-   exists separately — `opendal` (async VFS, no FUSE on the same surface
-   as WinFsp), `fuser` (FUSE only), `winfsp-rs` (WinFsp only),
-   `whisper-rs` (transcription library, no filesystem surface),
-   `ffmpeg-next` (FFmpeg bindings without pipeline). `stony-vdfs` is the
-   composition of those primitives into a single embeddable crate under
-   one permissive licence, with the privacy contract enforced at the
-   architectural layer rather than left to integrators.
+1. **Application-developer ergonomics for on-device media search.**
+   Today an application wanting Drive-style "find the recording where
+   we discussed pricing" composes by hand: `opendal` + `fuser` +
+   `winfsp-rs` + `whisper-rs` + `ffmpeg-next` + custom sidecar
+   persistence — three OS adapter layers and four IPC boundaries the
+   developer integrates. `stony-vdfs` ships a single async API
+   (`Pipeline::process(&path)`) that produces a transcript + tags
+   sidecar through one Cargo dependency. The novelty is the
+   composition, the cross-platform parity (Linux + macOS + Windows in
+   one workspace), and the MIT licence that lets commercial
+   downstreams adopt without legal review.
 
-2. **Privacy contract testable in CI.** The default index pipeline runs
-   inside a network-disabled sandbox (`unshare -n` on Linux runners) as
-   a release-gating job; any code path that opens a socket on the default
-   pipeline fails the build. To our knowledge no other Whisper/LLM
-   library makes this assertion mechanically verifiable rather than
-   policy-asserted.
+2. **Privacy contract enforced structurally, not policy-asserted.**
+   The CI workflow ships a `no-network` job on every push to `main`
+   (`.github/workflows/ci.yml`): `cargo test --workspace` runs inside
+   `unshare --net`, passing today without a single permitted outbound
+   socket. Any default code path that opens a socket fails the job
+   and gates merging. Milestone M6 extends the same gate to the full
+   index pipeline (tracked publicly as Issue #14). To our knowledge
+   no other Whisper/LLM library exposes this assertion as a
+   mechanically verifiable CI job rather than a policy statement.
 
 3. **Architecture small enough to audit.** `stony-vdfs-index` is
-   designed to stay under 5 000 lines including tests; downstream
-   security auditors and EU public-sector procurement reviewers can
-   read the complete data-flow path in an afternoon. Cloud transcription
-   services require trust in tens of millions of lines of closed code
-   running in foreign jurisdictions.
+   239 lines at v0.1.0-alpha.1 and the M6 contract caps it at
+   5 000 lines including tests. A downstream security auditor or EU
+   public-sector procurement reviewer can read the complete data-flow
+   path in an afternoon. Cloud transcription services demand trust
+   in millions of lines of closed code running in foreign
+   jurisdictions.
 
 ## 11. The team (≤ 2500 characters)
 

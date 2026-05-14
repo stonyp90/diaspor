@@ -56,3 +56,23 @@ jobs:
       - run: cargo doc --workspace --no-deps --all-features
         env:
           RUSTDOCFLAGS: "-D warnings"
+
+  no-network:
+    name: no-network sandbox (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Pre-fetch dependencies (network allowed here only)
+        run: cargo fetch --locked
+      - name: Build and test inside an unshare(--net) sandbox
+        # This job enforces the privacy contract structurally:
+        # if any default code path opens a socket, the syscall fails
+        # inside the new network namespace and the job fails.
+        # See PRIVACY.md and THREAT_MODEL.md.
+        run: |
+          unshare --net --map-root-user -- bash -c '
+            cargo build --workspace --all-features --offline
+            cargo test --workspace --all-features --offline
+          '
