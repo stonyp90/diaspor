@@ -245,6 +245,15 @@ FFmpeg pipelines, Whisper integration, and multimodal AI). The code in this repo
 is new, written from scratch under MIT, and is not encumbered by any prior employer, IP
 licence, or consortium agreement.
 
+## Recognized contributors
+
+Today this is a single-maintainer project — but the goal is for that to change. Every
+person who lands a commit appears on the
+[contributors graph](https://github.com/stonyp90/stony-vdfs/graphs/contributors) and
+is named in CHANGELOG.md for the release that ships their work.
+
+Want to be on this list? See [CONTRIBUTING.md](CONTRIBUTING.md) — even a typo fix counts.
+
 ## Licence
 
 [MIT](LICENSE) © 2026 Anthony Paquet

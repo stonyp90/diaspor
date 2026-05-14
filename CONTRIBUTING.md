@@ -17,6 +17,31 @@ By participating you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md)
 - **Have a fix?** PRs are welcome. Small, targeted PRs land faster than big ones.
 - **Improving docs?** Always welcome. Doc-only PRs skip most of the test gating.
 
+## Good first issues
+
+Issues tagged [`good first issue`](https://github.com/stonyp90/stony-vdfs/labels/good%20first%20issue)
+are scoped to land in a single, focused PR without needing a deep tour of the codebase.
+If the label is empty, the documentation tracker is always a safe place to start — see
+the categories below.
+
+## What we're looking for in PRs
+
+Realistic contributions that land cleanly, in roughly increasing order of scope:
+
+- **Typo and grammar fixes** in rustdoc, README, or other markdown.
+- **Doc clarifications** — a paragraph that confused you is probably confusing others.
+- **Test additions** — extra cases for the conformance suite, edge cases for the
+  memory or local backend, fuzz inputs.
+- **Conformance suite expansion** — new shared tests that any backend must pass.
+- **ADR proposals** for non-trivial design decisions (post an issue first; the ADR is
+  the artefact that comes out of the discussion).
+- **Examples** under `examples/` showing real downstream uses (CLI tools, decorators,
+  custom backends).
+- **Benchmark additions** with reproducible inputs and a brief note on what they measure.
+
+Larger trait or API changes are best discussed in an issue before code is written —
+see the PR process below.
+
 ## Development setup
 
 You need:
@@ -77,6 +102,12 @@ top-level changes.
 4. The maintainer will review within a week, typically faster. Expect one or two rounds
    of feedback on style and API.
 5. Once approved, the maintainer merges via squash with a Conventional Commit message.
+
+## Recognition
+
+All contributors who land a commit are credited in CHANGELOG.md and on the repository
+README's contributors graph. Doc fixes and typo PRs count equally — a name on the
+contributors list is a name on the contributors list.
 
 ## Licence
 

@@ -1,0 +1,50 @@
+name: Documentation issue
+description: Typo, missing docs, unclear section, broken example.
+title: "[Docs]: "
+labels: ["documentation", "good first issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Documentation fixes are always welcome and skip most of the test
+        gating — see CONTRIBUTING.md. If you can submit a PR directly, even
+        better.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of issue
+      options:
+        - Typo / grammar
+        - Missing docs (public item with no rustdoc)
+        - Unclear or misleading explanation
+        - Broken example / out-of-date code snippet
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Where is it?
+      description: |
+        File path, rustdoc URL, or section heading. Be as specific as you can.
+      placeholder: "README.md § Quick start, or crates/stony-vdfs-core/src/lib.rs:42"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's wrong
+      description: Quote the current text and explain what's confusing or incorrect.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix (optional)
+      description: A proposed rewrite, or a sketch of what should change.
+    validations:
+      required: false

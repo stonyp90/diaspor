@@ -1,0 +1,86 @@
+name: Bug report
+description: Something is broken or behaves unexpectedly.
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. A small, focused reproducer
+        helps more than anything else — even a failing test in prose is fine.
+
+  - type: dropdown
+    id: crate
+    attributes:
+      label: Affected crate
+      description: Which crate is the bug in? Pick "unsure" if you don't know.
+      options:
+        - stony-vdfs-core
+        - stony-vdfs-backend-memory
+        - stony-vdfs-backend-local
+        - stony-vdfs-fuse
+        - stony-vdfs-winfsp
+        - stony-vdfs-index
+        - stony-vdfs-cli
+        - workspace / build / CI
+        - unsure
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Crate version (e.g. `0.1.0-alpha.1`) or git commit SHA.
+      placeholder: "0.1.0-alpha.1 or commit 1a2b3c4"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - Other / multiple (describe below)
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Minimal reproducer
+      description: |
+        Smallest snippet, test, or shell session that triggers the bug.
+        If it requires a fixture, describe it.
+      render: rust
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Include error messages or panic output verbatim.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / backtrace (optional)
+      description: |
+        Paste relevant logs or a `RUST_BACKTRACE=1` trace. Long output is fine —
+        we'll trim it during triage.
+      render: shell
+    validations:
+      required: false

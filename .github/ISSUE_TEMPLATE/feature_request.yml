@@ -1,0 +1,61 @@
+name: Feature request
+description: Propose a new capability or an API addition.
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The roadmap is deliberately narrow — composable extensions (decorator
+        backends, conformance suite expansions, examples) are easier to land
+        than changes that touch many crates. Please scope the request before
+        writing code.
+
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: |
+        What are you trying to do? Concrete user-facing scenarios land faster
+        than abstract feature lists.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_api
+    attributes:
+      label: Proposed API (optional)
+      description: |
+        Sketch the trait or function signature you'd want. Pseudocode is fine —
+        a written sketch is much easier to review than an implicit one.
+      render: rust
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: |
+        What workarounds did you try? What did/didn't work, and why is a
+        library-level change the right place to fix this?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone target
+      description: |
+        Which roadmap milestone does this fit? See ROADMAP.md if unsure.
+      options:
+        - M1 — core traits + memory
+        - M2 — local backend
+        - M3 — FUSE adapter
+        - M4 — WinFsp adapter
+        - M5 — FFmpeg + Whisper pipeline
+        - M6 — local-LLM tagging + v1.0
+        - Post-1.0 / unscheduled
+        - Unsure
+    validations:
+      required: true
