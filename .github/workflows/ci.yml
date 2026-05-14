@@ -71,8 +71,13 @@ jobs:
         # if any default code path opens a socket, the syscall fails
         # inside the new network namespace and the job fails.
         # See PRIVACY.md and THREAT_MODEL.md.
+        #
+        # GitHub Actions runners disallow user-namespace unshare, so
+        # we use passwordless sudo (available on GHA Linux runners) to
+        # create the netns. `-E` preserves PATH / CARGO_HOME / HOME so
+        # cargo finds the pre-fetched registry from the runner's HOME.
         run: |
-          unshare --net --map-root-user -- bash -c '
+          sudo -E unshare --net -- bash -c '
             cargo build --workspace --all-features --offline
             cargo test --workspace --all-features --offline
           '
