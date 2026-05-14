@@ -24,7 +24,7 @@ without locking users into a single hardware vendor.
 
 ## Decision
 
-The default `Transcriber` implementation in `stony-vdfs-index` wraps **`whisper.cpp`**.
+The default `Transcriber` implementation in `cairn-index` wraps **`whisper.cpp`**.
 The wrapper invokes the `whisper-cli` binary as a subprocess (see ADR 0004 for the
 analogous reasoning) and parses its JSON output. The `Transcriber` trait is public, so
 callers can plug in `faster-whisper`, MLX, or even the OpenAI API if they choose to

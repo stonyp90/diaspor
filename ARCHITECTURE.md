@@ -1,6 +1,6 @@
 # Architecture
 
-This document explains the design choices behind `stony-vdfs` and how the crates fit
+This document explains the design choices behind `cairn` and how the crates fit
 together. It is aimed at someone considering adopting the library in a downstream
 project, or contributing to its core.
 
@@ -11,13 +11,13 @@ the core crate has no IO dependencies of its own.
 
 ```mermaid
 graph TD
-    core["stony-vdfs-core<br/><sub>traits / paths / errors</sub>"]
-    memory["stony-vdfs-backend-memory"]
-    local["stony-vdfs-backend-local"]
-    fuse["stony-vdfs-fuse<br/><sub>Linux/macOS</sub>"]
-    winfsp["stony-vdfs-winfsp<br/><sub>Windows</sub>"]
-    index["stony-vdfs-index<br/><sub>FFmpeg + Whisper + LLM</sub>"]
-    cli["stony-vdfs-cli"]
+    core["cairn-core<br/><sub>traits / paths / errors</sub>"]
+    memory["cairn-backend-memory"]
+    local["cairn-backend-local"]
+    fuse["cairn-fuse<br/><sub>Linux/macOS</sub>"]
+    winfsp["cairn-winfsp<br/><sub>Windows</sub>"]
+    index["cairn-index<br/><sub>FFmpeg + Whisper + LLM</sub>"]
+    cli["cairn-cli"]
 
     memory --> core
     local  --> core
@@ -56,7 +56,7 @@ graph TD
    or on a remote object store is a configuration choice, not an API choice.
 4. **Cross-platform parity.** A test that passes on Linux passes on macOS and Windows,
    modulo features explicitly gated behind `#[cfg]`. Backends own their platform quirks.
-5. **Small core.** `stony-vdfs-core` depends on the minimum: `thiserror`, `bytes`,
+5. **Small core.** `cairn-core` depends on the minimum: `thiserror`, `bytes`,
    `bitflags`, `async-trait`, `time`, `tracing`, plus the `sync` and `rt` features of
    `tokio`. No IO. No `std::fs`. No FUSE.
 6. **Composability over inheritance.** Decorators (caches, encryption, CAS) wrap any
@@ -143,7 +143,7 @@ No backend allows blocking IO from inside the runtime; the local backend uses
 3. **Cheap.** Every variant carries the offending `VfsPath` as a `String`, which costs
    one allocation on the error path — same cost as `std::io::Error::new(_, message)`.
 
-`Result<T> = std::result::Result<T, VfsError>` is exported from `stony-vdfs-core` and
+`Result<T> = std::result::Result<T, VfsError>` is exported from `cairn-core` and
 re-exported everywhere — callers should never need to qualify the error type.
 
 ## Indexing pipeline flow
@@ -189,8 +189,8 @@ sees a regular filesystem; the application sees an `Arc<dyn VfsBackend>`.
 graph LR
     app["Application<br/><sub>Arc&lt;dyn VfsBackend&gt;</sub>"]
     trait["VfsBackend trait"]
-    fuse["FUSE adapter<br/><sub>stony-vdfs-fuse</sub>"]
-    winfsp["WinFsp adapter<br/><sub>stony-vdfs-winfsp</sub>"]
+    fuse["FUSE adapter<br/><sub>cairn-fuse</sub>"]
+    winfsp["WinFsp adapter<br/><sub>cairn-winfsp</sub>"]
     linuxK["Linux kernel<br/><sub>/dev/fuse</sub>"]
     macK["macOS kernel<br/><sub>macFUSE</sub>"]
     winK["Windows kernel<br/><sub>WinFsp driver</sub>"]
@@ -275,7 +275,7 @@ that does not exist in the workspace.
 These are deliberate hooks, not promises:
 
 - **Content-addressable storage.** The `VfsBackend` trait does not expose hashes today,
-  but `stony-vdfs-cas` (M5) will provide an additional trait that CAS-aware backends
+  but `cairn-cas` (M5) will provide an additional trait that CAS-aware backends
   implement. Non-CAS backends pass through unchanged.
 - **Optional encryption.** A decorator backend wraps any other backend and encrypts
   on write / decrypts on read. The trait does not change.

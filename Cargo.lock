@@ -91,6 +91,105 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e748733b7cbc798e1434b6ac524f0c1ff2ab456fe201501e6497c8417a4fc33"
 
 [[package]]
+name = "cairn-backend-local"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "cairn-core",
+ "tempfile",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "cairn-backend-memory"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "cairn-conformance",
+ "cairn-core",
+ "parking_lot",
+ "time",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "cairn-cli"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "cairn-backend-local",
+ "cairn-backend-memory",
+ "cairn-core",
+ "cairn-index",
+ "clap",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "cairn-conformance"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "cairn-core",
+ "tokio",
+]
+
+[[package]]
+name = "cairn-core"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bitflags",
+ "bytes",
+ "thiserror",
+ "time",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "cairn-fuse"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "cairn-core",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "cairn-index"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "bytes",
+ "cairn-core",
+ "parking_lot",
+ "thiserror",
+ "time",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "cairn-winfsp"
+version = "0.1.0-alpha.1"
+dependencies = [
+ "async-trait",
+ "cairn-core",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "cfg-if"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -522,105 +621,6 @@ name = "smallvec"
 version = "1.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
-
-[[package]]
-name = "stony-vdfs-backend-local"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "stony-vdfs-core",
- "tempfile",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "stony-vdfs-backend-memory"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "parking_lot",
- "stony-vdfs-conformance",
- "stony-vdfs-core",
- "time",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "stony-vdfs-cli"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "clap",
- "stony-vdfs-backend-local",
- "stony-vdfs-backend-memory",
- "stony-vdfs-core",
- "stony-vdfs-index",
- "tokio",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "stony-vdfs-conformance"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "stony-vdfs-core",
- "tokio",
-]
-
-[[package]]
-name = "stony-vdfs-core"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bitflags",
- "bytes",
- "thiserror",
- "time",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "stony-vdfs-fuse"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "stony-vdfs-core",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "stony-vdfs-index"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "bytes",
- "parking_lot",
- "stony-vdfs-core",
- "thiserror",
- "time",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "stony-vdfs-winfsp"
-version = "0.1.0-alpha.1"
-dependencies = [
- "async-trait",
- "stony-vdfs-core",
- "tokio",
- "tracing",
-]
 
 [[package]]
 name = "strsim"

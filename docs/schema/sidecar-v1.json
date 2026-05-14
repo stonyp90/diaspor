@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/stonyp90/stony-vdfs/blob/main/docs/schema/sidecar-v1.json",
-  "title": "Stony VDFS Sidecar Record v1",
-  "description": "Forward-looking JSON Schema for the sidecar records that the stony-vdfs-index pipeline will persist alongside indexed media files. v1 is published in advance of the M6 milestone so that downstream tooling can target a stable shape from the v0.1.0-alpha.1 release onward. The corresponding in-memory Rust type lives in `crates/stony-vdfs-index/src/sidecar.rs`.",
+  "$id": "https://github.com/stonyp90/cairn/blob/main/docs/schema/sidecar-v1.json",
+  "title": "Cairn Sidecar Record v1",
+  "description": "Forward-looking JSON Schema for the sidecar records that the cairn-index pipeline will persist alongside indexed media files. v1 is published in advance of the M6 milestone so that downstream tooling can target a stable shape from the v0.1.0-alpha.1 release onward. The corresponding in-memory Rust type lives in `crates/cairn-index/src/sidecar.rs`.",
   "type": "object",
   "additionalProperties": false,
   "required": [

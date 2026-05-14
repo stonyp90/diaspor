@@ -1,7 +1,7 @@
 # Initial GitHub Issues to Open
 
 These 15 issues seed the public roadmap. Open them as **GitHub issues** on
-`github.com/stonyp90/stony-vdfs` right after the initial push so the repo
+`github.com/stonyp90/cairn` right after the initial push so the repo
 looks like an active project, not a one-shot drop. Suggested labels in
 square brackets — create the labels first via `gh label create` or the
 GitHub UI.
@@ -27,13 +27,13 @@ infrastructure       colour #c5def5
 
 **Labels:** `M1`, `help wanted`, `good first issue`
 
-The conformance suite in `stony-vdfs-conformance` must exercise every
+The conformance suite in `cairn-conformance` must exercise every
 method on `VfsBackend` against every meaningful `OpenFlags` combination.
 Today the trait surface is set; we need an explicit checklist of
 behaviours each backend must demonstrate (read-after-write, partial
 writes, EOF semantics, concurrent open/read, etc.).
 
-**Acceptance criteria:** a markdown spec in `crates/stony-vdfs-conformance/SPEC.md`
+**Acceptance criteria:** a markdown spec in `crates/cairn-conformance/SPEC.md`
 listing each invariant and the test function that proves it.
 
 ---
@@ -42,7 +42,7 @@ listing each invariant and the test function that proves it.
 
 **Labels:** `M1`
 
-`stony-vdfs-backend-memory` currently has no xattr support. The trait
+`cairn-backend-memory` currently has no xattr support. The trait
 needs to be extended (or a sibling trait introduced) so that backends
 that support xattrs can expose them.
 
@@ -70,7 +70,7 @@ unit test per invariant.
 
 POSIX and Windows treat symlinks differently. We need a behaviour matrix
 (create, follow, raw stat, remove) and a deliberate policy in
-`stony-vdfs-backend-local`.
+`cairn-backend-local`.
 
 **Acceptance criteria:** matrix in docstring + tests on each platform in CI.
 
@@ -92,12 +92,12 @@ should wrap paths transparently.
 
 **Labels:** `M3`
 
-`stony-vdfs-fuse` today is a stub. Wire it against the `fuser` crate
+`cairn-fuse` today is a stub. Wire it against the `fuser` crate
 and implement `getattr` / `readdir` / `read` end-to-end against the
 memory backend so we have a "hello world" mount.
 
 **Acceptance criteria:** `cargo run --example fuse-memory-mount` mounts
-a memory backend at `/tmp/stony-vdfs-demo` and `ls` works.
+a memory backend at `/tmp/cairn-demo` and `ls` works.
 
 ---
 
@@ -128,7 +128,7 @@ that justifies an alternative (e.g. raw FFI).
 
 **Labels:** `M5`
 
-Replace the no-op probe in `stony-vdfs-index` with a real
+Replace the no-op probe in `cairn-index` with a real
 `ffprobe -of json` subprocess that fills `MediaInfo`.
 
 **Acceptance criteria:** probing a 10-second wav, mp3, mp4, and mkv

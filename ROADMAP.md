@@ -13,7 +13,7 @@ cross-platform virtual filesystem that meets explicit measurable acceptance crit
 (≥ 85 % line coverage on memory + local backends, CI green on Linux/macOS/Windows,
 published conformance suite, ≥ 1 external user integration tracked publicly). The
 content-understanding layer (FFmpeg + Whisper + local LLM) lands in M5–M6 as an
-**opt-in** crate (`stony-vdfs-index`) that downstream applications can leave out
+**opt-in** crate (`cairn-index`) that downstream applications can leave out
 entirely. This phasing reduces NLnet review risk: the core deliverable does not
 depend on the AI tooling chain being friction-free.
 
@@ -36,9 +36,9 @@ crates.io.
 
 **Deliverables**
 
-- `stony-vdfs-core` v0.1.0 published to crates.io with full rustdoc.
-- `stony-vdfs-backend-memory` v0.1.0 with > 90 % line coverage.
-- `stony-vdfs-conformance` test crate: a `conformance::run(backend)` helper any third
+- `cairn-core` v0.1.0 published to crates.io with full rustdoc.
+- `cairn-backend-memory` v0.1.0 with > 90 % line coverage.
+- `cairn-conformance` test crate: a `conformance::run(backend)` helper any third
   party can use to validate their own backend implementation against the spec.
 - `cargo doc` warnings-as-errors clean.
 - Public release notes + tagged `v0.1.0` git tag.
@@ -54,7 +54,7 @@ crates.io.
 
 ## M2 — Local backend meets acceptance criteria (Month 3–4)
 
-**Goal:** make `stony-vdfs-backend-local` a credible drop-in for code that currently uses
+**Goal:** make `cairn-backend-local` a credible drop-in for code that currently uses
 `tokio::fs` directly. Cover the long tail of platform quirks that bite real apps.
 
 **Deliverables**
@@ -62,9 +62,9 @@ crates.io.
 - Symlink handling (resolved vs raw modes), extended attributes (best-effort), file
   locking semantics.
 - Cross-platform path normalization with a dedicated property-based test suite.
-- Bench suite (`criterion`) comparing `stony-vdfs-backend-local` to `tokio::fs` on a
+- Bench suite (`criterion`) comparing `cairn-backend-local` to `tokio::fs` on a
   read/write workload — published in `BENCHMARKS.md` with reproducible scripts.
-- `stony-vdfs-backend-local` v0.2.0 release.
+- `cairn-backend-local` v0.2.0 release.
 
 **Success criteria**
 
@@ -83,7 +83,7 @@ as a real filesystem on Linux and macOS via the `fuser` crate.
 
 **Deliverables**
 
-- `stony-vdfs-fuse` v0.1.0 with `mount()` returning a working `FuseMount`.
+- `cairn-fuse` v0.1.0 with `mount()` returning a working `FuseMount`.
 - Async-to-sync bridge that lets the FUSE thread call into the async `VfsBackend` API
   without blocking the entire runtime.
 - macFUSE compatibility tested on macOS via CI runners.
@@ -105,7 +105,7 @@ as a real filesystem on Linux and macOS via the `fuser` crate.
 
 **Deliverables**
 
-- `stony-vdfs-winfsp` v0.1.0 with `mount()` returning a working `WinFspMount`.
+- `cairn-winfsp` v0.1.0 with `mount()` returning a working `WinFspMount`.
 - Bindings against the WinFsp DLL with proper RAII unmount.
 - Integration tests on a Windows CI runner using PowerShell to drive file operations.
 - `examples/winfsp-mount.rs` mirroring `examples/fuse-mount.rs`.
@@ -120,16 +120,16 @@ as a real filesystem on Linux and macOS via the `fuser` crate.
 
 ## M5 — FFmpeg + Whisper transcription pipeline (Month 9–10)
 
-**Goal:** ship the first piece of `stony-vdfs-index`'s content-understanding pipeline:
+**Goal:** ship the first piece of `cairn-index`'s content-understanding pipeline:
 take a media file inside any VFS backend, run FFmpeg to extract its audio, and produce
 a Whisper transcript — all locally, no cloud calls.
 
-This is the milestone that turns `stony-vdfs` from "yet another VFS abstraction" into
+This is the milestone that turns `cairn` from "yet another VFS abstraction" into
 **"the privacy-first filesystem that understands your media."**
 
 **Deliverables**
 
-- `stony-vdfs-index` v0.2.0 with two production implementations:
+- `cairn-index` v0.2.0 with two production implementations:
   - `FfmpegExtractor` — wraps the `ffmpeg` binary, probes media (codec, duration,
     streams), and losslessly extracts the primary audio track as 16 kHz mono PCM.
   - `WhisperCppTranscriber` — wraps `whisper.cpp` via FFI (`whisper-rs`), runs entirely
@@ -171,7 +171,7 @@ the documentation site and tag the v1.0 release.
   it wraps, so transcripts are queryable through normal VFS reads.
 - `examples/grep-the-podcasts.rs`: a CLI that mounts a folder, transcribes it, and lets
   the user `grep` across transcripts via standard shell tools.
-- mdbook documentation site hosted at `stonyp90.github.io/stony-vdfs` (GitHub Pages,
+- mdbook documentation site hosted at `stonyp90.github.io/cairn` (GitHub Pages,
   free; a custom domain can be added later if useful) covering architecture, recipes,
   FAQ, security model, threat model.
 - Three example applications shipped under `examples/apps/`:

@@ -1,0 +1,23 @@
+[package]
+name = "cairn-fuse"
+description = "FUSE mount adapter for cairn backends (Linux and macOS)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+cairn-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["rt", "sync"] }
+tracing.workspace = true

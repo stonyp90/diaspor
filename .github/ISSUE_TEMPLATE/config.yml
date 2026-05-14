@@ -1,12 +1,12 @@
 blank_issues_enabled: false
 contact_links:
   - name: Question or discussion
-    url: https://github.com/stonyp90/stony-vdfs/discussions
+    url: https://github.com/stonyp90/cairn/discussions
     about: |
       Have a question about how to use the library, or want to discuss a
       design idea before filing a feature request? Please use Discussions.
   - name: Security report
-    url: https://github.com/stonyp90/stony-vdfs/blob/main/SECURITY.md
+    url: https://github.com/stonyp90/cairn/blob/main/SECURITY.md
     about: |
       Please do not file security issues publicly. See SECURITY.md for the
       coordinated disclosure process.

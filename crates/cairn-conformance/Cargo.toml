@@ -1,0 +1,23 @@
+[package]
+name = "cairn-conformance"
+description = "Conformance test suite for cairn backends — every compliant VfsBackend must pass these assertions"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+cairn-core.workspace = true
+async-trait.workspace = true
+bytes.workspace = true
+tokio = { workspace = true, features = ["rt", "macros"] }

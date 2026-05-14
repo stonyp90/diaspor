@@ -1,6 +1,6 @@
 # Threat model
 
-`stony-vdfs` is a library, not a product. The threat model below
+`cairn` is a library, not a product. The threat model below
 describes which threats the library *itself* mitigates, which are
 *deferred to integrators*, and which are *explicitly out of scope*.
 
@@ -50,7 +50,7 @@ The library cannot enforce these — the integrating application must:
   depth. The library does the in-process part; the integrator does the
   host part.
 - **Authenticate downstream callers.** If your application exposes a
-  network API that wraps `stony-vdfs`, *your* layer authenticates.
+  network API that wraps `cairn`, *your* layer authenticates.
 
 ## What we recommend integrators read alongside this file
 

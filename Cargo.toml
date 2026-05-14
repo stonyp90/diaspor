@@ -1,14 +1,14 @@
 [workspace]
 resolver = "3"
 members = [
-    "crates/stony-vdfs-core",
-    "crates/stony-vdfs-backend-memory",
-    "crates/stony-vdfs-backend-local",
-    "crates/stony-vdfs-conformance",
-    "crates/stony-vdfs-fuse",
-    "crates/stony-vdfs-winfsp",
-    "crates/stony-vdfs-index",
-    "crates/stony-vdfs-cli",
+    "crates/cairn-core",
+    "crates/cairn-backend-memory",
+    "crates/cairn-backend-local",
+    "crates/cairn-conformance",
+    "crates/cairn-fuse",
+    "crates/cairn-winfsp",
+    "crates/cairn-index",
+    "crates/cairn-cli",
 ]
 
 [workspace.package]
@@ -17,19 +17,19 @@ edition = "2024"
 rust-version = "1.85"
 authors = ["Anthony Paquet <anthonypaquet1508@gmail.com>"]
 license = "MIT"
-repository = "https://github.com/stonyp90/stony-vdfs"
-homepage = "https://github.com/stonyp90/stony-vdfs"
-documentation = "https://docs.rs/stony-vdfs-core"
+repository = "https://github.com/stonyp90/cairn"
+homepage = "https://github.com/stonyp90/cairn"
+documentation = "https://docs.rs/cairn-core"
 readme = "README.md"
 keywords = ["filesystem", "vfs", "transcription", "ffmpeg", "ai"]
 categories = ["filesystem", "multimedia", "asynchronous"]
 
 [workspace.dependencies]
 # Internal crates
-stony-vdfs-core = { version = "0.1.0-alpha.1", path = "crates/stony-vdfs-core" }
-stony-vdfs-backend-memory = { version = "0.1.0-alpha.1", path = "crates/stony-vdfs-backend-memory" }
-stony-vdfs-backend-local = { version = "0.1.0-alpha.1", path = "crates/stony-vdfs-backend-local" }
-stony-vdfs-index = { version = "0.1.0-alpha.1", path = "crates/stony-vdfs-index" }
+cairn-core = { version = "0.1.0-alpha.1", path = "crates/cairn-core" }
+cairn-backend-memory = { version = "0.1.0-alpha.1", path = "crates/cairn-backend-memory" }
+cairn-backend-local = { version = "0.1.0-alpha.1", path = "crates/cairn-backend-local" }
+cairn-index = { version = "0.1.0-alpha.1", path = "crates/cairn-index" }
 
 # Error handling
 thiserror = "2.0"

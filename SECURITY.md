@@ -2,14 +2,14 @@
 
 ## Supported versions
 
-`stony-vdfs` is pre-1.0 software. Only the latest released minor version
+`cairn` is pre-1.0 software. Only the latest released minor version
 on the `main` branch receives security fixes. Once v1.0 ships (M6), the
 last two minor versions are supported.
 
 ## Reporting a vulnerability
 
 **Do not open a public issue** for a suspected vulnerability. Email
-**anthonypaquet1508@gmail.com** with subject `[stony-vdfs security]`.
+**anthonypaquet1508@gmail.com** with subject `[cairn security]`.
 
 Please include:
 
@@ -33,7 +33,7 @@ plan within thirty. Fixes are released as patch versions and noted in
 
 ## Privacy contract
 
-The privacy contract of `stony-vdfs-index` (no audio bytes leave the
+The privacy contract of `cairn-index` (no audio bytes leave the
 device unless the operator explicitly configures a cloud transcriber)
 is part of this security policy. A bug that causes the default
 pipeline to make an unsolicited network call is a security issue and

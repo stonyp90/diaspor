@@ -15,13 +15,13 @@ body:
       label: Affected crate
       description: Which crate is the bug in? Pick "unsure" if you don't know.
       options:
-        - stony-vdfs-core
-        - stony-vdfs-backend-memory
-        - stony-vdfs-backend-local
-        - stony-vdfs-fuse
-        - stony-vdfs-winfsp
-        - stony-vdfs-index
-        - stony-vdfs-cli
+        - cairn-core
+        - cairn-backend-memory
+        - cairn-backend-local
+        - cairn-fuse
+        - cairn-winfsp
+        - cairn-index
+        - cairn-cli
         - workspace / build / CI
         - unsure
     validations:

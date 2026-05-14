@@ -1,0 +1,38 @@
+[package]
+name = "cairn-cli"
+description = "Command-line interface for cairn (demos and operator tooling)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[[bin]]
+name = "cairn"
+path = "src/main.rs"
+
+# Examples in `examples/` are auto-discovered by Cargo. The transcribe-demo
+# example demonstrates the public Transcriber/Tagger/MediaExtractor trait
+# surface that M5 (FFmpeg + whisper.cpp) will fill in with production
+# implementations.
+
+[lints]
+workspace = true
+
+[dependencies]
+cairn-core.workspace = true
+cairn-backend-memory.workspace = true
+cairn-backend-local.workspace = true
+cairn-index.workspace = true
+async-trait.workspace = true
+bytes.workspace = true
+clap.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "io-util", "io-std", "fs"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true

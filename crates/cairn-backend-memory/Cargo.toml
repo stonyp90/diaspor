@@ -1,0 +1,30 @@
+[package]
+name = "cairn-backend-memory"
+description = "In-memory backend for cairn — primarily for tests and demos"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+cairn-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["sync", "rt", "macros"] }
+parking_lot.workspace = true
+bytes.workspace = true
+tracing.workspace = true
+time = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+cairn-conformance = { path = "../cairn-conformance" }

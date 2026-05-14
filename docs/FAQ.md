@@ -11,20 +11,20 @@ GitHub or Codeberg.
 ### How is this different from rclone?
 
 `rclone` is an excellent command-line tool for syncing files between cloud backends. It
-does one thing — move bytes — and does it well. `stony-vdfs` is a *library*, not a CLI,
+does one thing — move bytes — and does it well. `cairn` is a *library*, not a CLI,
 aimed at applications that want a single async API across memory, disk, and
 user-space mount points (FUSE / WinFsp) *and* want optional content-aware indexing built
 in. There is no overlap: an application could happily use `rclone` to mirror its
-`stony-vdfs` storage to an off-site backup. The two projects address different layers
+`cairn` storage to an off-site backup. The two projects address different layers
 of the stack.
 
 ### How is this different from Nextcloud?
 
 Nextcloud is a self-hosted server with a web UI, sharing, calendars, contacts, and a
-plugin marketplace. It is a full collaboration platform. `stony-vdfs` is a Rust library
+plugin marketplace. It is a full collaboration platform. `cairn` is a Rust library
 that gives a *single user's application* a filesystem-shaped API with local AI
-indexing. The two could integrate — a Nextcloud-replacement app could use `stony-vdfs`
-as its local cache layer with offline transcription — but `stony-vdfs` itself ships no
+indexing. The two could integrate — a Nextcloud-replacement app could use `cairn`
+as its local cache layer with offline transcription — but `cairn` itself ships no
 server, no UI, no multi-user model. The scope is deliberately narrow so the library
 stays a dependency and not a platform.
 
@@ -32,7 +32,7 @@ stays a dependency and not a platform.
 
 Otter and Descript are commercial SaaS products that transcribe meetings and podcasts
 server-side. They are excellent at what they do and they are not private: your audio is
-uploaded to their data centres for processing. `stony-vdfs` is the open-source plumbing
+uploaded to their data centres for processing. `cairn` is the open-source plumbing
 that lets a downstream application offer comparable transcription and search features
 without sending any audio off-device. You bring the model weights (whisper.cpp GGUF
 files, any local LLM), the library wires up the pipeline.
@@ -41,9 +41,9 @@ files, any local LLM), the library wires up the pipeline.
 
 Apple's Spotlight and Google's on-device search both index media on the device, and
 both are excellent. They are also closed-source, vendor-controlled, and locked to their
-respective operating systems. `stony-vdfs` is cross-platform (Linux, macOS, Windows),
+respective operating systems. `cairn` is cross-platform (Linux, macOS, Windows),
 open-source (MIT), and the indexing models are user-chosen. An application built on
-`stony-vdfs` can ship the same on-device feature across all three desktops with a
+`cairn` can ship the same on-device feature across all three desktops with a
 single codebase, and audit exactly what runs.
 
 ---
@@ -77,7 +77,7 @@ and the project is sized to do one thing well (Rust + FFmpeg + Whisper + LLM on 
 platforms). Once v1.0 ships and the trait surface is stable, bindings are a natural
 follow-on; contributions are very welcome. On self-hosting: the library is local-first
 by default — there is nothing to host. "Self-hosting" only becomes meaningful if you
-build a multi-user application *on top of* `stony-vdfs`. The library happily runs
+build a multi-user application *on top of* `cairn`. The library happily runs
 inside a server process if you want to expose a custom HTTP API over a `VfsBackend`.
 
 ---
@@ -120,7 +120,7 @@ No telemetry. No analytics. No update check. No anonymised counter. The library 
 zero sockets unless the calling application wires in a backend that opens sockets, in
 which case the caller is responsible for that behaviour. This is enforced by
 `cargo-deny` audits on every release. On accessibility: the library has no UI of its
-own, so accessibility applies to downstream applications. Output from `stony-vdfs-cli`
+own, so accessibility applies to downstream applications. Output from `cairn-cli`
 follows GNU CLI conventions (machine-readable via flags, exit codes, no colour unless
 explicitly requested) so it composes cleanly with screen-reader-friendly terminals.
 
@@ -137,7 +137,7 @@ public records) is an explicit design audience.
 
 ## Licence and governance
 
-### Is there a trademark on "stony-vdfs"? Can I fork it?
+### Is there a trademark on "cairn"? Can I fork it?
 
 No. The name is unregistered. Forks may keep the name with attribution, or rename
 freely. There is no legal mechanism the project would use to police naming. MIT
@@ -153,4 +153,4 @@ section and you are compliant. We would love to hear about it (open a "showcase"
 or a discussion) but you are not required to disclose. Note that bundling `whisper.cpp`,
 FFmpeg, or any LLM weights has its own license terms set by those upstream projects —
 `whisper.cpp` is MIT, FFmpeg is LGPL/GPL depending on build config, model weights vary;
-`stony-vdfs` does not bundle any of them, so the obligation is on the integrator.
+`cairn` does not bundle any of them, so the obligation is on the integrator.

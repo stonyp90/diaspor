@@ -10,21 +10,21 @@ application submission package.
 
 What ships:
 
-- `stony-vdfs-core` — async trait surface, path/error/metadata types,
+- `cairn-core` — async trait surface, path/error/metadata types,
   unit tests. Stable shape; minor API churn expected pre-1.0.
-- `stony-vdfs-backend-memory` — reference in-memory backend. Full
+- `cairn-backend-memory` — reference in-memory backend. Full
   implementation; covered by the conformance suite.
-- `stony-vdfs-backend-local` — local-disk backend, happy path. Cross-
+- `cairn-backend-local` — local-disk backend, happy path. Cross-
   platform path edge cases land in M2.
-- `stony-vdfs-fuse` — adapter stub with full trait surface. Real
+- `cairn-fuse` — adapter stub with full trait surface. Real
   implementation in M3.
-- `stony-vdfs-winfsp` — adapter stub with full trait surface. Real
+- `cairn-winfsp` — adapter stub with full trait surface. Real
   implementation in M4.
-- `stony-vdfs-index` — pipeline trait surface (FFmpeg + Whisper + LLM
+- `cairn-index` — pipeline trait surface (FFmpeg + Whisper + LLM
   tagger). No real binary calls yet; M5/M6 land them.
-- `stony-vdfs-conformance` — published conformance test suite that
+- `cairn-conformance` — published conformance test suite that
   third-party backends can run against their own implementations.
-- `stony-vdfs-cli` — operator CLI with memory/local mount examples.
+- `cairn-cli` — operator CLI with memory/local mount examples.
 
 What does *not* ship yet:
 

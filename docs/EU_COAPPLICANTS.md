@@ -1,6 +1,6 @@
 # EU Co-Applicants & Letter of Support Candidates
 
-**Project:** `stony-vdfs` — Rust virtual filesystem with privacy-first FFmpeg + whisper.cpp transcription + local LLM auto-tagging (MIT, github.com/stonyp90/stony-vdfs)
+**Project:** `cairn` — Rust virtual filesystem with privacy-first FFmpeg + whisper.cpp transcription + local LLM auto-tagging (MIT, github.com/stonyp90/cairn)
 **Funding target:** NLnet NGI Zero Commons Fund, 13th call, deadline **2026-06-01 12:00 CEST**
 **Document purpose:** Identify 5+ EU-based individuals/organizations who can co-apply or provide a letter of support to satisfy NLnet's "European dimension" criterion, which is effectively a knockout filter for Canadian solo applicants.
 **Status:** Research-stage shortlist. Contact info verified via public pages as of May 2026.
@@ -19,7 +19,7 @@ NLnet's Commons Fund is EU-funded (Horizon Europe / DG CNECT). Reviewers explici
 
 - **Country:** Germany (Berlin)
 - **Type:** Registered non-profit association (eingetragener Verein), FOSS Git hosting cooperative, ~7 founding members, launched 2019
-- **Why a good fit:** Codeberg hosts non-Microsoft, EU-sovereign infrastructure for open-source code — a direct mission overlap with stony-vdfs' "privacy-first, local-first" pitch. Moving the project's mirror to Codeberg as part of the grant deliverables gives them a concrete reason to write a support letter. They explicitly back projects that strengthen European digital sovereignty. Forgejo, which Codeberg maintains, has itself been NGI-funded — they understand the funding context.
+- **Why a good fit:** Codeberg hosts non-Microsoft, EU-sovereign infrastructure for open-source code — a direct mission overlap with cairn' "privacy-first, local-first" pitch. Moving the project's mirror to Codeberg as part of the grant deliverables gives them a concrete reason to write a support letter. They explicitly back projects that strengthen European digital sovereignty. Forgejo, which Codeberg maintains, has itself been NGI-funded — they understand the funding context.
 - **Contact info (verified):**
   - General: `help@codeberg.org`
   - Membership / governance: `codeberg@codeberg.org`
@@ -34,13 +34,13 @@ NLnet's Commons Fund is EU-funded (Horizon Europe / DG CNECT). Reviewers explici
 
 - **Country:** Germany (legal seat Hamburg; primary office Berlin, Revaler Straße 19, 10245)
 - **Type:** Registered voluntary association under German law; sister org to FSF/US; runs the "Public Money? Public Code!" campaign and is an associate of KDE e.V.
-- **Why a good fit:** stony-vdfs is MIT-licensed, public-money-eligible (research credits) software, and addresses a sovereignty concern (no cloud transcription). FSFE's PMPC campaign explicitly targets the kind of public-sector use case where a sovereign local-first transcription stack is preferable to Otter/Descript/Microsoft Teams. They have a long history of endorsing NGI Zero applicants with policy-aligned missions.
+- **Why a good fit:** cairn is MIT-licensed, public-money-eligible (research credits) software, and addresses a sovereignty concern (no cloud transcription). FSFE's PMPC campaign explicitly targets the kind of public-sector use case where a sovereign local-first transcription stack is preferable to Otter/Descript/Microsoft Teams. They have a long history of endorsing NGI Zero applicants with policy-aligned missions.
 - **Contact info (verified):**
   - General: `contact@fsfe.org`
   - Privacy / DPO: `privacy@fsfe.org`
   - Contact page: https://fsfe.org/about/contact.en.html
   - President: Matthias Kirschner
-- **Approach angle:** Frame stony-vdfs as PMPC-aligned tooling for public broadcasters, parliaments, courts, and journalists who currently depend on US SaaS transcription. Mention you'll add a "PMPC-compliant" deployment guide. Ask for an LoS, not co-applicant status (FSFE generally avoids financial co-applicant roles).
+- **Approach angle:** Frame cairn as PMPC-aligned tooling for public broadcasters, parliaments, courts, and journalists who currently depend on US SaaS transcription. Mention you'll add a "PMPC-compliant" deployment guide. Ask for an LoS, not co-applicant status (FSFE generally avoids financial co-applicant roles).
 - **Likelihood:** **MEDIUM-HIGH** — FSFE writes a lot of LoS but vets carefully. Worth a personalized email referencing specific PMPC documents.
 
 ---
@@ -49,13 +49,13 @@ NLnet's Commons Fund is EU-funded (Horizon Europe / DG CNECT). Reviewers explici
 
 - **Country:** France
 - **Type:** French open-source software publisher (SAS); LinTO is its sovereign open-source AI transcription product line, used by the European Commission and European Parliament
-- **Why a good fit:** This is the single closest technical overlap on the list. LinTO does exactly what stony-vdfs' transcription module does — Whisper-based audio transcription, live subtitling, summarization — but with an institutional focus. They have six years of pre-Whisper R&D in this space and have publicly positioned themselves around European AI sovereignty. stony-vdfs as a filesystem-native, local-first complement to LinTO's server product is a clean differentiation story; they don't compete.
+- **Why a good fit:** This is the single closest technical overlap on the list. LinTO does exactly what cairn' transcription module does — Whisper-based audio transcription, live subtitling, summarization — but with an institutional focus. They have six years of pre-Whisper R&D in this space and have publicly positioned themselves around European AI sovereignty. cairn as a filesystem-native, local-first complement to LinTO's server product is a clean differentiation story; they don't compete.
 - **Contact info (verified):**
   - LinTO team: `hello@linto.ai`
   - Linagora main: contact form at https://linagora.com/en/contact
   - GitHub org: https://github.com/linto-ai
   - Sites: https://linagora.ai/en, https://linto.ai
-- **Approach angle:** Position as complementary, not competitive. "Your customers can pipe stony-vdfs output into LinTO Studio." Offer to publish a joint integration cookbook as a grant deliverable. Mention LUCIE LLM compatibility for the tagging module. This is the strongest co-applicant candidate on the list because they have institutional EU AI experience.
+- **Approach angle:** Position as complementary, not competitive. "Your customers can pipe cairn output into LinTO Studio." Offer to publish a joint integration cookbook as a grant deliverable. Mention LUCIE LLM compatibility for the tagging module. This is the strongest co-applicant candidate on the list because they have institutional EU AI experience.
 - **Likelihood:** **MEDIUM** — they're commercial, so an LoS is more likely than a true co-applicant arrangement. Initial ping should be exploratory.
 
 ---
@@ -65,12 +65,12 @@ NLnet's Commons Fund is EU-funded (Horizon Europe / DG CNECT). Reviewers explici
 - **Country:** UK (Cambridge) with deep TU Munich (Germany) ties
 - **Note on UK status:** Post-Brexit, UK is associated to Horizon Europe as of 2024, and UK researchers can serve on NLnet applications. UK-affiliated LoS still counts for European dimension purposes in practice.
 - **Type:** Associate Professor in Computer Security and Privacy, Department of Computer Science and Technology, University of Cambridge; previously Research Fellow at TU Munich (2022–2023); author of "Designing Data-Intensive Applications" and co-author of the original 2019 local-first manifesto
-- **Why a good fit:** Kleppmann co-coined "local-first software" — the exact philosophical frame stony-vdfs uses. An LoS from him would be the single most credible academic endorsement for the project's positioning. His research group at Cambridge studies distributed, end-to-end-encrypted local-first systems (Automerge, etc.), which is technically adjacent to a virtual filesystem with local AI processing.
+- **Why a good fit:** Kleppmann co-coined "local-first software" — the exact philosophical frame cairn uses. An LoS from him would be the single most credible academic endorsement for the project's positioning. His research group at Cambridge studies distributed, end-to-end-encrypted local-first systems (Automerge, etc.), which is technically adjacent to a virtual filesystem with local AI processing.
 - **Contact info (verified):**
   - University page: https://www.cst.cam.ac.uk/people/mk428 (Cambridge directory lists his contact)
   - Personal site: https://martin.kleppmann.com/
   - Affiliation: William Gates Building, 15 JJ Thomson Avenue, Cambridge CB3 0FD
-- **Approach angle:** Reference the 2019 manifesto explicitly. Ask not for funding endorsement broadly but for a paragraph confirming that stony-vdfs' architecture instantiates principles from his manifesto (long-term data ownership, working offline, no lock-in). Short, intellectual ask. Offer to credit/cite his work prominently in the README and docs.
+- **Approach angle:** Reference the 2019 manifesto explicitly. Ask not for funding endorsement broadly but for a paragraph confirming that cairn' architecture instantiates principles from his manifesto (long-term data ownership, working offline, no lock-in). Short, intellectual ask. Offer to credit/cite his work prominently in the README and docs.
 - **Likelihood:** **MEDIUM** — academics get LoS requests constantly but ones that genuinely engage with their published work get responses. Write the most personalized email of any candidate to him.
 
 ---
@@ -79,12 +79,12 @@ NLnet's Commons Fund is EU-funded (Horizon Europe / DG CNECT). Reviewers explici
 
 - **Country:** Germany (Berlin, Prinzenstraße 85 F, 10969)
 - **Type:** Non-profit association, supports the KDE community; founded 1997; associate of FSFE; maintains Subtitle Composer and other media-handling FOSS tools
-- **Why a good fit:** KDE maintains Subtitle Composer, Kdenlive (video editor), and other media tools that could integrate with stony-vdfs as a transcription/tagging backend. Many KDE applications could benefit from a Linux-native virtual filesystem that exposes auto-transcribed media. KDE e.V. has supported NGI Zero applicants with LoS in past rounds and is broadly aligned with FOSS sovereignty messaging.
+- **Why a good fit:** KDE maintains Subtitle Composer, Kdenlive (video editor), and other media tools that could integrate with cairn as a transcription/tagging backend. Many KDE applications could benefit from a Linux-native virtual filesystem that exposes auto-transcribed media. KDE e.V. has supported NGI Zero applicants with LoS in past rounds and is broadly aligned with FOSS sovereignty messaging.
 - **Contact info (verified):**
   - Board: `kde-ev-board@kde.org`
   - General contact: https://ev.kde.org/contact/
   - Phone: +49 30 2023 7305-0
-- **Approach angle:** Propose integration with Kdenlive (auto-subtitles via stony-vdfs) and/or Subtitle Composer as a grant milestone. KDE e.V. responds well to concrete integration commitments rather than abstract endorsements.
+- **Approach angle:** Propose integration with Kdenlive (auto-subtitles via cairn) and/or Subtitle Composer as a grant milestone. KDE e.V. responds well to concrete integration commitments rather than abstract endorsements.
 - **Likelihood:** **MEDIUM** — board needs to approve, so allow ~10 days response time. Less personal than other targets but very legitimate.
 
 ---
@@ -112,7 +112,7 @@ NLnet's Commons Fund is EU-funded (Horizon Europe / DG CNECT). Reviewers explici
   - Governance forum: https://governance.funkwhale.audio (Georg posts as a maintainer)
   - Blog: https://blog.funkwhale.audio
   - NLnet project page: https://nlnet.nl/project/Funkwhale/
-- **Approach angle:** Reach out via governance forum (public, low friction) before a private email. Propose a "stony-vdfs as Funkwhale transcription backend" prototype as a stretch goal. Mention you've read their NLnet milestone reports — small detail, big signal.
+- **Approach angle:** Reach out via governance forum (public, low friction) before a private email. Propose a "cairn as Funkwhale transcription backend" prototype as a stretch goal. Mention you've read their NLnet milestone reports — small detail, big signal.
 - **Likelihood:** **MEDIUM** — small team, but NLnet-alumnus LoS is high-value. Best ROI per hour spent.
 
 ---
@@ -144,9 +144,9 @@ Subject: **Letter of support request — local-first transcription filesystem (N
 
 > Hi [Name / Team],
 >
-> I'm Anthony Paquet, a Canadian Rust developer. I'm preparing an NLnet NGI Zero Commons Fund application (deadline June 1) for **stony-vdfs** — an MIT-licensed virtual filesystem in Rust that does privacy-first audio/video transcription via whisper.cpp and local LLM auto-tagging. No data leaves the user's machine. Repository: github.com/stonyp90/stony-vdfs.
+> I'm Anthony Paquet, a Canadian Rust developer. I'm preparing an NLnet NGI Zero Commons Fund application (deadline June 1) for **cairn** — an MIT-licensed virtual filesystem in Rust that does privacy-first audio/video transcription via whisper.cpp and local LLM auto-tagging. No data leaves the user's machine. Repository: github.com/stonyp90/cairn.
 >
-> NLnet weights "European dimension" heavily. I'm reaching out because [one specific, personalized sentence — e.g. "Codeberg's Forgejo CI is on my milestone list" / "your 2019 local-first manifesto is the architectural frame for this project" / "LinTO and stony-vdfs are complementary — filesystem-native vs server"].
+> NLnet weights "European dimension" heavily. I'm reaching out because [one specific, personalized sentence — e.g. "Codeberg's Forgejo CI is on my milestone list" / "your 2019 local-first manifesto is the architectural frame for this project" / "LinTO and cairn are complementary — filesystem-native vs server"].
 >
 > Would you be open to a short (one-paragraph) **letter of support** confirming the alignment? Happy to draft a version for you to edit. Glad to share the application draft if useful. I can answer questions on a 20-min call any time this week.
 >

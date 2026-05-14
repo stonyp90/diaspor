@@ -1,7 +1,7 @@
 # Benchmarks
 
 This file will track measured performance characteristics of the
-`stony-vdfs` workspace over the milestone series.
+`cairn` workspace over the milestone series.
 
 ## Status: draft, populated through M2–M6
 
@@ -15,7 +15,7 @@ indexing pipeline (M5–M6) to land first.
 The following measurements will land tagged to the corresponding
 milestone:
 
-### M2 — `stony-vdfs-backend-local` micro-benchmarks
+### M2 — `cairn-backend-local` micro-benchmarks
 
 - Sequential read / write throughput vs `tokio::fs` baseline.
 - `list()` of directories with 10, 100, 1 000, 10 000 entries.
