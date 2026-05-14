@@ -17,6 +17,11 @@ categories.workspace = true
 name = "stony-vdfs"
 path = "src/main.rs"
 
+# Examples in `examples/` are auto-discovered by Cargo. The transcribe-demo
+# example demonstrates the public Transcriber/Tagger/MediaExtractor trait
+# surface that M5 (FFmpeg + whisper.cpp) will fill in with production
+# implementations.
+
 [lints]
 workspace = true
 
@@ -24,7 +29,10 @@ workspace = true
 stony-vdfs-core.workspace = true
 stony-vdfs-backend-memory.workspace = true
 stony-vdfs-backend-local.workspace = true
+stony-vdfs-index.workspace = true
+async-trait.workspace = true
+bytes.workspace = true
 clap.workspace = true
-tokio = { workspace = true, features = ["rt-multi-thread", "macros", "io-util", "io-std"] }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "io-util", "io-std", "fs"] }
 tracing.workspace = true
 tracing-subscriber.workspace = true

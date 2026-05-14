@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/stonyp90/stony-vdfs/blob/main/docs/schema/sidecar-v1.json",
+  "title": "Stony VDFS Sidecar Record v1",
+  "description": "Forward-looking JSON Schema for the sidecar records that the stony-vdfs-index pipeline will persist alongside indexed media files. v1 is published in advance of the M6 milestone so that downstream tooling can target a stable shape from the v0.1.0-alpha.1 release onward. The corresponding in-memory Rust type lives in `crates/stony-vdfs-index/src/sidecar.rs`.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "path",
+    "media",
+    "transcript",
+    "tags",
+    "extracted_with",
+    "extracted_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "description": "Schema version constant. v1 records always carry the literal string \"1\".",
+      "type": "string",
+      "const": "1"
+    },
+    "path": {
+      "description": "VFS-absolute path of the file this record describes, normalized to forward slashes.",
+      "type": "string",
+      "pattern": "^/.*$",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "media": {
+      "$ref": "#/$defs/MediaInfo"
+    },
+    "transcript": {
+      "$ref": "#/$defs/Transcript"
+    },
+    "tags": {
+      "$ref": "#/$defs/TagSet"
+    },
+    "extracted_with": {
+      "description": "Identifier of the transcriber+tagger backends used to produce the record. Convention: `<transcriber_name>@<version>+<tagger_name>@<version>` (for example, `whisper.cpp@v1.5.4+llama3-1b@q4`). Free-form string so backends may include build metadata, model hashes, or quantization markers.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "examples": [
+        "whisper.cpp@v1.5.4+llama3-1b@q4",
+        "whisper-rs@0.10.0+ollama-llama3.1:8b"
+      ]
+    },
+    "extracted_at": {
+      "description": "ISO 8601 / RFC 3339 timestamp of when the indexing run finished. Must include a timezone offset (`Z` for UTC).",
+      "type": "string",
+      "format": "date-time"
+    },
+    "confidence": {
+      "description": "Optional aggregate confidence of the transcriber across the audio (0 = no confidence, 1 = full confidence). Semantics are transcriber-defined; this field exists so callers can filter low-quality records without parsing model-specific signals.",
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "model_provenance": {
+      "$ref": "#/$defs/ModelProvenance"
+    }
+  },
+  "$defs": {
+    "MediaInfo": {
+      "description": "FFmpeg probe output for the source file.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["container"],
+      "properties": {
+        "container": {
+          "description": "Container format reported by FFmpeg (mp4, mkv, mp3, wav, etc.).",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "duration_seconds": {
+          "description": "Duration of the media file in seconds, if known. Absent for streams of unknown length.",
+          "type": ["number", "null"],
+          "minimum": 0.0
+        },
+        "audio_codec": {
+          "description": "Codec name of the primary audio stream (aac, opus, mp3, …) or null if there is no audio track.",
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "audio_sample_rate": {
+          "description": "Sample rate of the primary audio stream in Hz, or null if unknown / absent.",
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 768000
+        },
+        "audio_channels": {
+          "description": "Number of audio channels in the primary audio stream, or null if unknown / absent.",
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 64
+        },
+        "video_codec": {
+          "description": "Codec name of the primary video stream (h264, hevc, av1, …) or null if there is no video track.",
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    },
+    "Transcript": {
+      "description": "Whisper-style transcript with optional segment timestamps.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "segments"],
+      "properties": {
+        "language": {
+          "description": "ISO 639-1 language code detected by the transcriber, or null if unknown.",
+          "type": ["string", "null"],
+          "pattern": "^[a-z]{2,3}(-[A-Z]{2})?$"
+        },
+        "text": {
+          "description": "Full transcript text. May be empty if the audio was silent.",
+          "type": "string"
+        },
+        "segments": {
+          "description": "Optional segment timestamps. Empty array allowed for transcribers that do not produce them.",
+          "type": "array",
+          "items": { "$ref": "#/$defs/TranscriptSegment" }
+        }
+      }
+    },
+    "TranscriptSegment": {
+      "description": "One timestamped segment of a transcript.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start_seconds", "end_seconds", "text"],
+      "properties": {
+        "start_seconds": {
+          "description": "Start of the segment in seconds from the beginning of the audio.",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "end_seconds": {
+          "description": "End of the segment in seconds from the beginning of the audio. Must be >= start_seconds.",
+          "type": "number",
+          "minimum": 0.0
+        },
+        "text": {
+          "description": "Text of the segment.",
+          "type": "string"
+        }
+      }
+    },
+    "TagSet": {
+      "description": "Tags produced by the local-LLM tagger.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tags", "categories"],
+      "properties": {
+        "tags": {
+          "description": "Semantic tags inferred from the transcript or other text content.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "uniqueItems": true
+        },
+        "categories": {
+          "description": "Suggested categories (broader than tags). E.g. \"meeting\", \"interview\", \"music\".",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "uniqueItems": true
+        },
+        "summary": {
+          "description": "One-sentence summary, if the tagger produces one. Null otherwise.",
+          "type": ["string", "null"],
+          "maxLength": 2048
+        }
+      }
+    },
+    "ModelProvenance": {
+      "description": "Optional structured record of which exact model produced the transcript/tags. Useful when `extracted_with` is not granular enough — for instance, when reproducing or auditing results.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_name"],
+      "properties": {
+        "model_name": {
+          "description": "Identifier of the model (e.g. `ggml-large-v3`, `llama3.1:8b-instruct-q4_K_M`).",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "model_hash": {
+          "description": "Optional cryptographic hash of the model file (hex-encoded SHA-256 by convention).",
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-fA-F]{32,128}$"
+        },
+        "temperature": {
+          "description": "Optional sampling temperature used for the inference run.",
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 2.0
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1",
+      "path": "/podcasts/2026-04-01-pilot.mp3",
+      "media": {
+        "container": "mp3",
+        "duration_seconds": 1834.5,
+        "audio_codec": "mp3",
+        "audio_sample_rate": 44100,
+        "audio_channels": 2,
+        "video_codec": null
+      },
+      "transcript": {
+        "language": "en",
+        "text": "Welcome to the pilot episode. Today we are going to talk about virtual filesystems.",
+        "segments": [
+          { "start_seconds": 0.0, "end_seconds": 2.4, "text": "Welcome to the pilot episode." },
+          { "start_seconds": 2.4, "end_seconds": 7.1, "text": "Today we are going to talk about virtual filesystems." }
+        ]
+      },
+      "tags": {
+        "tags": ["podcast", "filesystems", "introduction"],
+        "categories": ["technology"],
+        "summary": "Pilot episode introducing the show's focus on virtual filesystems."
+      },
+      "extracted_with": "whisper.cpp@v1.5.4+llama3-1b@q4",
+      "extracted_at": "2026-04-02T15:30:00Z",
+      "confidence": 0.92,
+      "model_provenance": {
+        "model_name": "ggml-large-v3",
+        "model_hash": "3a7f1c2b9d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a",
+        "temperature": 0.0
+      }
+    }
+  ]
+}

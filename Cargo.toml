@@ -29,6 +29,7 @@ categories = ["filesystem", "multimedia", "asynchronous"]
 stony-vdfs-core = { version = "0.1.0-alpha.1", path = "crates/stony-vdfs-core" }
 stony-vdfs-backend-memory = { version = "0.1.0-alpha.1", path = "crates/stony-vdfs-backend-memory" }
 stony-vdfs-backend-local = { version = "0.1.0-alpha.1", path = "crates/stony-vdfs-backend-local" }
+stony-vdfs-index = { version = "0.1.0-alpha.1", path = "crates/stony-vdfs-index" }
 
 # Error handling
 thiserror = "2.0"

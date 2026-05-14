@@ -553,10 +553,13 @@ dependencies = [
 name = "stony-vdfs-cli"
 version = "0.1.0-alpha.1"
 dependencies = [
+ "async-trait",
+ "bytes",
  "clap",
  "stony-vdfs-backend-local",
  "stony-vdfs-backend-memory",
  "stony-vdfs-core",
+ "stony-vdfs-index",
  "tokio",
  "tracing",
  "tracing-subscriber",
