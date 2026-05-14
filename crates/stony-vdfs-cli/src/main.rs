@@ -30,11 +30,11 @@ struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Command {
-    /// List the entries of a directory at <path>.
+    /// List the entries of a directory at `path`.
     List { backend: String, path: String },
-    /// Print the contents of <path> to stdout.
+    /// Print the contents of `path` to stdout.
     Cat { backend: String, path: String },
-    /// Write stdin into <path>, truncating any existing data.
+    /// Write stdin into `path`, truncating any existing data.
     Put { backend: String, path: String },
 }
 

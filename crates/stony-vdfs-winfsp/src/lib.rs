@@ -4,7 +4,7 @@
 //!
 //! This crate is a **stub** in the v0.1.0-alpha line. The full `WinFsp` integration arrives
 //! in roadmap milestone M4; until then, callers should depend on
-//! [`stony-vdfs-backend-memory`] or [`stony-vdfs-backend-local`] directly.
+//! `stony-vdfs-backend-memory` or `stony-vdfs-backend-local` directly.
 
 #![doc(html_root_url = "https://docs.rs/stony-vdfs-winfsp/0.1.0-alpha.1")]
 
