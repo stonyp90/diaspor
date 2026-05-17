@@ -18,6 +18,9 @@ Cargo.lock.bak
 .env
 .env.local
 
+# Site deploy helper that holds AWS creds (template-only in tree)
+**/deploy-with-credentials.sh
+
 # Local notes
 /NOTES.local.md
 
