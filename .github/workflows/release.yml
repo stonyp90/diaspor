@@ -15,7 +15,7 @@ permissions:
 
 env:
   CARGO_TERM_COLOR: always
-  BIN_NAME: diaspor
+  BIN_NAMES: "diaspor diaspor-agent"
 
 jobs:
   build:
@@ -68,7 +68,9 @@ jobs:
         run: |
           STAGE="diaspor-${{ github.ref_name }}-${{ matrix.target }}"
           mkdir -p "$STAGE"
-          cp "target/${{ matrix.target }}/release/${BIN_NAME}" "$STAGE/"
+          for bin in $BIN_NAMES; do
+            cp "target/${{ matrix.target }}/release/${bin}" "$STAGE/"
+          done
           cp README.md LICENSE "$STAGE/"
           tar -czf "${STAGE}.tar.gz" "$STAGE"
           shasum -a 256 "${STAGE}.tar.gz" > "${STAGE}.tar.gz.sha256"
@@ -79,7 +81,9 @@ jobs:
         run: |
           $stage = "diaspor-${{ github.ref_name }}-${{ matrix.target }}"
           New-Item -ItemType Directory -Path $stage | Out-Null
-          Copy-Item "target/${{ matrix.target }}/release/${env:BIN_NAME}.exe" $stage
+          foreach ($bin in $env:BIN_NAMES.Split(" ")) {
+            Copy-Item "target/${{ matrix.target }}/release/$bin.exe" $stage
+          }
           Copy-Item README.md, LICENSE $stage
           Compress-Archive -Path $stage -DestinationPath "$stage.zip"
           (Get-FileHash -Algorithm SHA256 "$stage.zip").Hash + "  $stage.zip" | Out-File "$stage.zip.sha256" -Encoding ascii

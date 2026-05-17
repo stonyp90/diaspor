@@ -1,7 +1,12 @@
 //! # `diaspor` CLI
 //!
-//! Operator tooling for exercising backends. Useful for demos, smoke tests, and as a
-//! reference implementation of common workflows on top of the library.
+//! Diaspor — operator CLI for the self-hosted non-verbal AI runtime.
+//!
+//! `diaspor` is the one-shot operator entry point. It exercises the storage
+//! backends that the long-running runtime (see `diaspor-agent`) uses for
+//! recorded interviews, transcripts and scored evidence.
+//!
+//! For the long-running analysis daemon, see the `diaspor-agent` binary.
 //!
 //! ```text
 //! diaspor list <backend> <vfs-path>
@@ -21,8 +26,28 @@ use diaspor_backend_memory::MemoryBackend;
 use diaspor_core::{OpenFlags, Result, VfsBackend, VfsError, VfsPath};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
+const ABOUT: &str = "Diaspor · operator CLI for the non-verbal AI runtime";
+
+const LONG_ABOUT: &str = "\
+Diaspor · self-hosted non-verbal AI for Canadian security and legal teams.
+
+This is the one-shot operator CLI. It exercises the storage backends used
+by the runtime (see `diaspor-agent` for the long-running daemon) — listing,
+reading and writing recorded evidence, transcripts and scored sidecars.
+
+Compliance: Loi 25 · PIPEDA · Bill 96 · AGPL-3.0
+Site:       https://diaspor.io
+Releases:   https://github.com/stonyp90/diaspor/releases
+Agent:      diaspor-agent --help";
+
 #[derive(Parser, Debug)]
-#[command(name = "diaspor", version, about, long_about = None)]
+#[command(
+    name = "diaspor",
+    version,
+    about = ABOUT,
+    long_about = LONG_ABOUT,
+    propagate_version = true,
+)]
 struct Cli {
     #[command(subcommand)]
     command: Command,

@@ -1,6 +1,6 @@
 [package]
 name = "diaspor-cli"
-description = "Command-line interface for diaspor (demos and operator tooling)"
+description = "Diaspor CLI and runtime daemon - self-hosted non-verbal AI for Canadian security and legal teams. Ships two binaries: `diaspor` (one-shot operator CLI) and `diaspor-agent` (long-running runtime daemon)."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -16,6 +16,10 @@ categories.workspace = true
 [[bin]]
 name = "diaspor"
 path = "src/main.rs"
+
+[[bin]]
+name = "diaspor-agent"
+path = "src/bin/diaspor-agent.rs"
 
 # Examples in `examples/` are auto-discovered by Cargo. The transcribe-demo
 # example demonstrates the public Transcriber/Tagger/MediaExtractor trait

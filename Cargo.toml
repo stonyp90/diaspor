@@ -15,14 +15,14 @@ members = [
 version = "0.1.0-alpha.1"
 edition = "2024"
 rust-version = "1.85"
-authors = ["Anthony Paquet <anthonypaquet1508@gmail.com>"]
-license = "MIT"
+authors = ["Anthony Paquet <anthony@diaspor.io>"]
+license = "AGPL-3.0-only"
 repository = "https://github.com/stonyp90/diaspor"
-homepage = "https://github.com/stonyp90/diaspor"
+homepage = "https://diaspor.io"
 documentation = "https://docs.rs/diaspor-core"
 readme = "README.md"
-keywords = ["filesystem", "vfs", "transcription", "ffmpeg", "ai"]
-categories = ["filesystem", "multimedia", "asynchronous"]
+keywords = ["non-verbal-ai", "scoring", "vfs", "self-hosted", "video"]
+categories = ["multimedia::video", "filesystem", "command-line-utilities", "asynchronous"]
 
 [workspace.dependencies]
 # Internal crates

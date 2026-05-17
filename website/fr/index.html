@@ -498,7 +498,7 @@
               <li>Modèles vérifiés SHA-256</li>
               <li>Zéro service réseau actif</li>
             </ul>
-            <code class="deployment-cmd">$ diaspor serve --air-gap --models ./models.tar</code>
+            <code class="deployment-cmd">$ diaspor-agent serve --air-gap --models ./models.tar</code>
           </li>
           <li class="deployment-step">
             <div class="deployment-step-head">
@@ -745,7 +745,7 @@
   diaspor-backend-*    local · S3 · NAS · memory
   diaspor-index        vector index · embeddings
   diaspor-fuse/winfsp  POSIX · NTFS mount layer
-  diaspor-cli          binary entry point
+  diaspor-cli          livre `diaspor` (CLI) + `diaspor-agent` (daemon)
 build     : cargo --release · LTO=thin · panic=abort
 toolchain : stable rust &ge; 1.85
 safety    : zero unsafe except FFI shims
@@ -800,7 +800,7 @@ module "diaspor" {
 }
 
 # 3. Binaire seul — laptop d'enquêteur
-$ diaspor serve --local --gpu=auto --port 7733</code></pre>
+$ diaspor-agent serve --local --gpu=auto --port 7733</code></pre>
           </article>
 
           <article class="engineering-block">
@@ -836,8 +836,8 @@ runtime              : builds signés · journaux d'audit complets</code></pre>
       <div class="container">
         <div class="section-header section-header-asym">
           <span class="section-tag section-tag-bleed" data-cli-version>CLI · v0.1.0-alpha.1</span>
-          <h2 class="section-title">Exécutez Diaspor en local. Un binaire signé, toutes les plateformes.</h2>
-          <p class="section-description">Builds signés directement depuis notre pipeline de publication. Vérifiés SHA-256, reproductibles depuis la source, zéro télémétrie d'installation. Posez le binaire sur un poste, lancez <code>diaspor serve --local</code>, c'est en marche.</p>
+          <h2 class="section-title">Exécutez Diaspor en local. Deux binaires signés, toutes les plateformes.</h2>
+          <p class="section-description">Chaque publication livre <code>diaspor</code> (la CLI d'opérateur) et <code>diaspor-agent</code> (le daemon runtime). Builds signés directement depuis notre pipeline, vérifiés SHA-256, reproductibles depuis la source, zéro télémétrie d'installation. Posez les binaires sur un poste, lancez <code>diaspor-agent serve --local</code>, c'est en marche.</p>
         </div>
 
         <div class="cli-grid" role="list">
@@ -901,8 +901,8 @@ runtime              : builds signés · journaux d'audit complets</code></pre>
 cd diaspor
 cargo build --release -p diaspor-cli
 
-# binaire à target/release/diaspor
-./target/release/diaspor serve --local --gpu=auto --port 7733</code></pre>
+# binaires à target/release/{diaspor, diaspor-agent}
+./target/release/diaspor-agent serve --local --gpu=auto --port 7733</code></pre>
         </div>
 
         <p class="cli-footnote">
