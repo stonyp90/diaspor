@@ -122,11 +122,12 @@ jobs:
           if-no-files-found: error
 
   # ---------------------------------------------------------------------------
-  # Build the API server (`diaspor-api-server`). Linux-only for now: the API
-  # server is deployed behind a load balancer on Linux hosts; macOS/Windows
-  # builds would not be exercised in production. macOS arm64 is added for local
-  # dev convenience.
-  # Emits: diaspor-api-server-<tag>-<target>.tar.gz + .sha256
+  # Build the API server (`diaspor-api-server`) for every target the CLI ships
+  # on. Production deployments target Linux; macOS and Windows builds are for
+  # local dev parity and operator tooling. The crate has no unix-only deps —
+  # axum / tower / tokio compile cleanly everywhere — so symmetry with the CLI
+  # matrix is free.
+  # Emits: diaspor-api-server-<tag>-<target>.<archive_ext> + .sha256
   # ---------------------------------------------------------------------------
   build-api-server:
     name: build api-server (${{ matrix.target }})
@@ -135,12 +136,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-          - os: ubuntu-latest
-            target: aarch64-unknown-linux-gnu
           - os: macos-latest
             target: aarch64-apple-darwin
+            archive: tar.gz
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            archive: tar.gz
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive: tar.gz
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            archive: tar.gz
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: zip
     steps:
       - uses: actions/checkout@v4
 
@@ -163,7 +173,8 @@ jobs:
       - name: Build (api-server)
         run: cargo build --release --locked --target ${{ matrix.target }} -p diaspor-api-server --bins
 
-      - name: Package api-server
+      - name: Package api-server (unix)
+        if: matrix.archive == 'tar.gz'
         run: |
           STAGE="diaspor-api-server-${{ github.event.inputs.tag || github.ref_name }}-${{ matrix.target }}"
           mkdir -p "$STAGE"
@@ -177,6 +188,20 @@ jobs:
           tar -czf "${STAGE}.tar.gz" "$STAGE"
           shasum -a 256 "${STAGE}.tar.gz" > "${STAGE}.tar.gz.sha256"
 
+      - name: Package api-server (windows)
+        if: matrix.archive == 'zip'
+        shell: pwsh
+        run: |
+          $tag = "${{ github.event.inputs.tag || github.ref_name }}"
+          $stage = "diaspor-api-server-$tag-${{ matrix.target }}"
+          New-Item -ItemType Directory -Path $stage | Out-Null
+          Get-ChildItem "target/${{ matrix.target }}/release" -Filter "diaspor-api*.exe" |
+            Select-Object -First 5 |
+            ForEach-Object { Copy-Item $_.FullName $stage }
+          Copy-Item README.md, LICENSE $stage
+          Compress-Archive -Path $stage -DestinationPath "$stage.zip"
+          (Get-FileHash -Algorithm SHA256 "$stage.zip").Hash + "  $stage.zip" | Out-File "$stage.zip.sha256" -Encoding ascii
+
       - name: Upload api-server artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -184,6 +209,8 @@ jobs:
           path: |
             diaspor-api-server-*.tar.gz
             diaspor-api-server-*.tar.gz.sha256
+            diaspor-api-server-*.zip
+            diaspor-api-server-*.zip.sha256
           if-no-files-found: error
 
   # ---------------------------------------------------------------------------
