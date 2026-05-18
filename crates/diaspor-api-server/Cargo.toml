@@ -1,0 +1,57 @@
+[package]
+name = "diaspor-api-server"
+description = "Hosted HTTP + WebSocket API server for diaspor — api.diaspor.io route table, per-key vertical attestation, usage metering."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["api", "http", "websocket", "axum", "diaspor"]
+categories = ["web-programming::http-server", "api-bindings", "multimedia"]
+
+[[bin]]
+name = "diaspor-api-server"
+path = "src/main.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+# Internal — at v0.1.0-alpha.1 the api-server exposes only the route table
+# + auth / rate-limit middleware. The M7+ pipeline crates (vision/infer/
+# events/stream-ingest/train) wire in as `use` paths from real handlers in
+# M10; declaring them here today would drag pre-M10 compile state from
+# unfinished sibling crates into the api-server's `cargo test` run for no
+# benefit. They come back when the stubs become real.
+diaspor-core.workspace = true
+
+# Web stack
+axum = { workspace = true, features = ["ws", "multipart"] }
+tower.workspace = true
+tower-http.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+# Async / utility
+tokio = { workspace = true, features = ["full"] }
+async-trait.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+thiserror.workspace = true
+bytes.workspace = true
+time = { workspace = true }
+
+# Auth + rate-limit (M10 prep — HS256 JWT API keys, per-key token bucket,
+# per-day hard cap; everything keyed on the `api_key_id` JWT claim).
+jsonwebtoken.workspace = true
+dashmap.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tower = { workspace = true, features = ["util"] }
+jsonwebtoken.workspace = true
+time = { workspace = true }

@@ -1,0 +1,36 @@
+[package]
+name = "diaspor-train"
+description = "Custom-tier LoRA training pipeline for diaspor: corpus ingest, annotation, foundation-model embedding, adapter training, eval gate, signed handoff."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["lora", "training", "fine-tuning", "internvideo2", "multi-tenant"]
+categories = ["science", "api-bindings", "multimedia"]
+
+[lints]
+workspace = true
+
+[dependencies]
+diaspor-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["sync", "rt", "macros"] }
+bytes = { workspace = true, features = ["serde"] }
+tracing.workspace = true
+time = { workspace = true }
+thiserror.workspace = true
+# serde + base64 — the AdapterArtifact and EvalReport types are part of the
+# tenant-facing handoff envelope (signed safetensors plus eval verdict) and
+# need to JSON-round-trip cleanly. `safetensors_bytes` + the two signatures
+# are carried opaquely via `bytes/serde`.
+serde = { workspace = true, features = ["derive"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+serde_json.workspace = true
+jsonschema.workspace = true

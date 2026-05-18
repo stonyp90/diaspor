@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "diaspor-train"
+version = "0.1.0a1"
+description = "LoRA training recipes for diaspor — fine-tune the open-source foundation backbones cataloged in models.toml against tenant-owned corpora."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "AGPL-3.0-only" }
+authors = [{ name = "Anthony Paquet", email = "anthony@diaspor.io" }]
+
+# Runtime deps for the recipes. Pinned to ranges that:
+#   - Keep CPU-only training feasible on a developer laptop.
+#   - Match HF model formats published on the dates the catalog entries in
+#     ../models.toml were pinned. Bumping these may require re-pinning the
+#     downstream safetensors checksums on the Rust side.
+dependencies = [
+  "torch>=2.2,<3",
+  "transformers>=4.40,<5",
+  "peft>=0.10,<1",
+  "safetensors>=0.4,<1",
+  "datasets>=2.18,<3",
+  "soundfile>=0.12,<1",
+  "numpy>=1.26,<3",
+]
+
+[project.optional-dependencies]
+# Pulled in only when a recipe needs them. Kept out of `dependencies` so the
+# core toolchain stays small.
+video = [
+  "decord>=0.6,<1",
+  "av>=11,<14",
+]
+dev = [
+  "pytest>=8,<9",
+  "pytest-asyncio>=0.23,<1",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["diaspor_train"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

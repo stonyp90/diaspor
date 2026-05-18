@@ -1,0 +1,51 @@
+[package]
+name = "diaspor-vision"
+description = "Non-verbal video analysis pipeline for diaspor: pose, facial landmarks, prosody."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["vision", "pose", "face", "prosody", "mediapipe"]
+categories = ["multimedia", "science", "api-bindings"]
+
+[lints]
+workspace = true
+
+[features]
+default = []
+# Wires the `RtmposePoseExtractor` real backend, which pulls in `diaspor-infer`
+# with its `ort-cpu` + `hub` features. Default builds stay light — production
+# deployments opt in explicitly.
+rtmpose-ort = ["dep:diaspor-infer"]
+
+[dependencies]
+diaspor-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["sync", "rt", "macros"] }
+bytes.workspace = true
+tracing.workspace = true
+thiserror.workspace = true
+time.workspace = true
+# serde + base64 for the wire-shape (`score-v1.json`) that VisionRecord
+# serializes into; in-memory types stay independent of the wire shape via
+# `From` conversions in `crate::score`.
+serde = { workspace = true, features = ["derive"] }
+base64 = { workspace = true }
+# `rtmpose-ort` feature: real ORT-backed pose extractor. Pulled with the ort
+# + hub features so the extractor can ask the ModelHub to fetch & verify the
+# rtmpose-l-coco@1 weights from `models.toml`.
+diaspor-infer = { workspace = true, optional = true, features = ["ort-cpu", "hub"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+serde_json.workspace = true
+jsonschema.workspace = true
+# `MockBackend` in the rtmpose unit tests speaks the same trait surface as the
+# real `OrtCpuInferenceBackend`, so the decode logic is tested without
+# requiring libonnxruntime on the build machine.
+async-trait.workspace = true

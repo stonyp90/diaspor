@@ -17,6 +17,7 @@ supersede an earlier one are filed as new ADRs that reference the original.
 | 0004 | [Call FFmpeg as a subprocess rather than binding libav-sys](0004-ffmpeg-subprocess-not-libav.md) | Process boundary contains codec memory bugs; users can upgrade ffmpeg independently. |
 | 0005 | [Default to whisper.cpp for on-device transcription](0005-whisper-cpp-default.md)       | Cross-platform, no Python, swappable via the public `Transcriber` trait. |
 | 0006 | [Per-file sidecar JSON, not a central SQLite database](0006-sidecar-json-not-sqlite.md) | Index travels with data; grep-able; encrypts transparently with VFS.   |
+| 0007 | [Stream-window score records get their own schema, not a sidecar v2](0007-score-sidecar-schema.md) | Sidecar describes a file; score describes a window of a stream — different identities, cadences, and privacy posture. |
 
 ## Proposing a new ADR
 

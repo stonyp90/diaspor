@@ -9,6 +9,15 @@ members = [
     "crates/diaspor-winfsp",
     "crates/diaspor-index",
     "crates/diaspor-cli",
+    # M7+ non-verbal AI pipeline scaffolding (trait surface only at v0.1.0-alpha;
+    # see docs/schema/score-v1.json and ROADMAP M7-M10 for the implementation arc).
+    "crates/diaspor-frame-pipeline",
+    "crates/diaspor-vision",
+    "crates/diaspor-infer",
+    "crates/diaspor-stream-ingest",
+    "crates/diaspor-events",
+    "crates/diaspor-train",
+    "crates/diaspor-api-server",
 ]
 
 [workspace.package]
@@ -30,6 +39,26 @@ diaspor-core = { version = "0.1.0-alpha.1", path = "crates/diaspor-core" }
 diaspor-backend-memory = { version = "0.1.0-alpha.1", path = "crates/diaspor-backend-memory" }
 diaspor-backend-local = { version = "0.1.0-alpha.1", path = "crates/diaspor-backend-local" }
 diaspor-index = { version = "0.1.0-alpha.1", path = "crates/diaspor-index" }
+# M7+ non-verbal AI pipeline (trait surface only at v0.1.0-alpha)
+diaspor-frame-pipeline = { version = "0.1.0-alpha.1", path = "crates/diaspor-frame-pipeline" }
+diaspor-vision = { version = "0.1.0-alpha.1", path = "crates/diaspor-vision" }
+diaspor-infer = { version = "0.1.0-alpha.1", path = "crates/diaspor-infer" }
+diaspor-stream-ingest = { version = "0.1.0-alpha.1", path = "crates/diaspor-stream-ingest" }
+diaspor-events = { version = "0.1.0-alpha.1", path = "crates/diaspor-events" }
+diaspor-train = { version = "0.1.0-alpha.1", path = "crates/diaspor-train" }
+diaspor-api-server = { version = "0.1.0-alpha.1", path = "crates/diaspor-api-server" }
+
+# HTTP / web framework (M10 — api.diaspor.io)
+axum = "0.7"
+tower = "0.5"
+tower-http = { version = "0.6", features = ["trace", "cors", "limit"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Base64 codec — used for the `landmarks_quantized` field in
+# docs/schema/score-v1.json which carries INT8 quantization as a base64
+# string. Already in the lockfile via axum / jsonschema transitives;
+# locking the major version here so the wire shape stays stable.
+base64 = "0.22"
 
 # Error handling
 thiserror = "2.0"
@@ -48,17 +77,58 @@ parking_lot = "0.12"
 dashmap = "6.1"
 
 # Utilities
-bytes = "1.9"
+bytes = { version = "1.9", features = ["serde"] }
 bitflags = "2.6"
 
 # CLI
 clap = { version = "4.5", features = ["derive"] }
 
-# Time
-time = { version = "0.3", features = ["serde", "macros"] }
+# Time. `formatting` + `parsing` are required to enable the
+# `time::serde::rfc3339` helper module used by the score-v1.json wire shape
+# (`crates/diaspor-vision/src/score.rs`) for the `extracted_at` field.
+# `serde-well-known` enables the well-known format modules in `time::serde`.
+time = { version = "0.3", features = ["serde", "macros", "formatting", "parsing", "serde-well-known"] }
+
+# Auth — HS256 JWT verification on api.diaspor.io. Signing secret is
+# read once from `DIASPOR_JWT_SECRET` at server start (panics if absent).
+jsonwebtoken = "9.3"
+
+# HTTP client — used by diaspor-events WebhookEventSink (M8) and by
+# diaspor-infer's ModelHub for model weight downloads. rustls-tls keeps the
+# dep small by avoiding native TLS; `stream` is required by ModelHub for
+# chunked streaming + sha256 verification of large ONNX files.
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "stream"] }
+
+# HMAC / SHA-256 — used by diaspor-events WebhookEventSink to sign payloads
+# under the `X-Diaspor-Signature: sha256=<hex>` header.
+hmac = "0.12"
+sha2 = "0.10"
+
+# Minimal HTTP/1.1 parser — used by the webhook sink integration test to
+# verify the request body and HMAC signature without spinning up a full HTTP
+# server.
+httparse = "1.9"
 
 # Testing
 tempfile = "3.14"
+# JSON Schema 2020-12 validator — used by diaspor-conformance to lock the
+# docs/schema/*.json examples in CI so consumer changes are caught early.
+jsonschema = "0.30"
+
+# ML inference (Phase 1 of the capability arc — see plan). `ort` is the Rust
+# wrapper around ONNX Runtime; we use `load-dynamic` so the runtime library
+# is loaded from the host system at runtime rather than baked in at build
+# time. That keeps the no-network CI sandbox green and lets users swap in a
+# CUDA-enabled ORT without rebuilding. `ndarray` is the tensor type that ORT
+# inputs / outputs round-trip through.
+ort = { version = "2.0.0-rc.10", default-features = false, features = ["load-dynamic", "ndarray"] }
+ndarray = "0.16"
+
+# Catalog + hash + filesystem helpers for diaspor-infer's ModelHub.
+toml = "0.8"
+hex = "0.4"
+dirs = "5"
+futures-util = "0.3"
 
 [workspace.lints.rust]
 unsafe_op_in_unsafe_fn = "warn"

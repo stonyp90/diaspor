@@ -1,0 +1,427 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/stonyp90/diaspor/blob/main/docs/schema/score-v1.json",
+  "title": "Diaspor Score Record v1",
+  "description": "Forward-looking JSON Schema for the score records that the diaspor-vision + diaspor-events pipeline will emit per analyzed time window of a media stream. Score records describe a stream window (stream_id + tenant + [t_start_ms, t_end_ms]); they are distinct from sidecar records (which describe a file's transcript + tags — see sidecar-v1.json). Both schemas may be persisted into the same VFS but at different paths: sidecars at /.index/<file>.json, scores at /.streams/<stream_id>/windows/<timestamp>.score.json (with threshold-crossing events at /.streams/<stream_id>/events/<timestamp>.event.json reusing this same shape). v1 is published in advance of the M7 milestone so that downstream tooling can target a stable shape from the v0.1.0-alpha.1 release onward. The corresponding in-memory Rust types live in `crates/diaspor-vision/src/record.rs` and `crates/diaspor-events/src/event.rs`.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "stream_id",
+    "tenant",
+    "t_start_ms",
+    "t_end_ms",
+    "modalities",
+    "extracted_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "description": "Schema version constant. v1 records always carry the literal string \"1\".",
+      "type": "string",
+      "const": "1"
+    },
+    "stream_id": {
+      "description": "Opaque, tenant-unique identifier for the stream being analyzed. For batch uploads, the stream_id is derived from the file's content hash. For live ingest (WHIP, meeting-bot, HLS), the stream_id is allocated at session start.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "tenant": {
+      "description": "Opaque tenant identifier the stream belongs to. Routing key for per-tenant LoRA adapter selection and for VFS sidecar placement (sinks namespace by tenant).",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "t_start_ms": {
+      "description": "Inclusive lower bound of the analyzed time window, in milliseconds from the start of the stream.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "t_end_ms": {
+      "description": "Exclusive upper bound of the analyzed time window, in milliseconds from the start of the stream. Must be > t_start_ms.",
+      "type": "integer",
+      "minimum": 0
+    },
+    "kind": {
+      "description": "Whether this record represents a periodic window aggregate or a single threshold-crossing event. Defaults to \"window\" if absent.",
+      "type": "string",
+      "enum": ["window", "event"],
+      "default": "window"
+    },
+    "modalities": {
+      "$ref": "#/$defs/Modalities"
+    },
+    "extracted_at": {
+      "description": "ISO 8601 / RFC 3339 timestamp of when the record was finalized. Must include a timezone offset (`Z` for UTC).",
+      "type": "string",
+      "format": "date-time"
+    },
+    "model_provenance": {
+      "description": "Optional array of model-provenance records, one per modality that contributed to this score. Useful for reproducing and auditing results. The shape of each entry matches the ModelProvenance definition in sidecar-v1.json.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/ModelProvenance" }
+    }
+  },
+  "$defs": {
+    "Modalities": {
+      "description": "Per-modality outputs. Each key is optional — a window record may carry only a subset (for example, pose-only for sport judging, or face+prosody for credibility). At least one modality must be present.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "pose": { "$ref": "#/$defs/PoseModality" },
+        "face": { "$ref": "#/$defs/FaceModality" },
+        "prosody": { "$ref": "#/$defs/ProsodyModality" },
+        "credibility": { "$ref": "#/$defs/CredibilityModality" },
+        "judge": { "$ref": "#/$defs/JudgeModality" }
+      }
+    },
+    "PoseModality": {
+      "description": "33-keypoint 3D body pose output. Topology matches MediaPipe BlazePose 3D.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "keypoints"],
+      "properties": {
+        "model": {
+          "description": "Identifier of the pose model used, e.g. \"diaspor-pose-3d-v1\".",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "keypoints": {
+          "description": "Array of 33 keypoints in BlazePose topology order. Each keypoint is { x, y, z, visibility } where x/y are normalized [0,1], z is normalized depth, and visibility ∈ [0,1].",
+          "type": "array",
+          "minItems": 33,
+          "maxItems": 33,
+          "items": { "$ref": "#/$defs/Keypoint3d" }
+        },
+        "joint_angles_deg": {
+          "description": "Optional joint-angle measurements in degrees, keyed by joint name (e.g. \"left_elbow\", \"right_knee\").",
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        },
+        "velocity_mps": {
+          "description": "Optional per-keypoint velocity in normalized units per second. Same length and order as `keypoints`.",
+          "type": "array",
+          "items": { "type": "number" }
+        }
+      }
+    },
+    "FaceModality": {
+      "description": "478-landmark facial geometry output. Topology matches MediaPipe FaceMesh.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model"],
+      "properties": {
+        "model": {
+          "description": "Identifier of the face-mesh model, e.g. \"diaspor-face-mesh-v1\".",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "landmarks_quantized": {
+          "description": "Base64-encoded INT8 quantization of the 478 landmark (x,y,z) triples. Encoding: 478 × 3 × 1 byte = 1434 bytes; landmark_i_axis = (byte_i - 128) / 127.0 → normalized [-1,1]. Quantized to keep JSON payload small; full-precision floats available in the binary sidecar.",
+          "type": ["string", "null"]
+        },
+        "microexpr": {
+          "description": "Optional Facial Action Unit intensities, keyed by AU code (e.g. \"AU4\" = brow lowerer). Values in [0,1].",
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          }
+        },
+        "gaze": {
+          "description": "Optional gaze direction { yaw_deg, pitch_deg } in degrees relative to head pose.",
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "yaw_deg": { "type": "number" },
+            "pitch_deg": { "type": "number" }
+          }
+        }
+      }
+    },
+    "ProsodyModality": {
+      "description": "Vocal prosody feature extractor output. Default backend: openSMILE eGeMAPSv02 + ComParE2016.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model"],
+      "properties": {
+        "model": {
+          "description": "Identifier of the prosody extractor, e.g. \"diaspor-prosody-v1\".",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tremor_index": {
+          "description": "Composite tremor indicator in [0,1]. Derived from jitter and shimmer features.",
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "f0_var": {
+          "description": "Variance of fundamental frequency (Hz²) over the window.",
+          "type": ["number", "null"],
+          "minimum": 0.0
+        },
+        "pace_words_per_minute": {
+          "description": "Estimated speaking rate over the window.",
+          "type": ["number", "null"],
+          "minimum": 0.0
+        },
+        "features_dim": {
+          "description": "Dimensionality of the full feature vector emitted alongside this summary record. For eGeMAPSv02 + ComParE2016 deduped, expect 6552.",
+          "type": ["integer", "null"],
+          "minimum": 1
+        }
+      }
+    },
+    "CredibilityModality": {
+      "description": "Composite credibility-signal output. NOT a lie-detection verdict — a per-window indicator of stress + incongruence with disclosed accuracy ceiling and human baseline. Forensic, legal, hiring, insurance, and law-enforcement adjudication use cases are out of scope and refused at the API layer. EU workplace and education contexts are blocked under the EU AI Act (Aug 2026).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "score", "confidence_band", "human_baseline_disclosed", "ceiling_disclosed"],
+      "properties": {
+        "model": {
+          "description": "Identifier of the credibility model, e.g. \"diaspor-credibility-v1\".",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "score": {
+          "description": "Indicator score in [0,1]. Higher means more stress/incongruence signal present. Not a probability of deception.",
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "confidence_band": {
+          "description": "Calibrated uncertainty bucket for the score. Consumers should display this prominently next to the score.",
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "human_baseline_disclosed": {
+          "description": "The human baseline accuracy for video-based deception inference, disclosed alongside every credibility score for honesty. Approximately 0.54 (peer-reviewed meta-analysis).",
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "ceiling_disclosed": {
+          "description": "The accuracy ceiling for video-based deception inference in the peer-reviewed literature, disclosed alongside every credibility score. Approximately 0.74.",
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "labs_preview": {
+          "description": "True if the model is still in private beta (Labs preview). Consumers should clearly label the score as preview-quality.",
+          "type": "boolean",
+          "default": true
+        },
+        "vertical_attestation": {
+          "description": "Vertical declared by the tenant at API-key creation time. Used by the API layer to refuse forbidden verticals before invoking the model. Recorded here for audit.",
+          "type": ["string", "null"],
+          "enum": [
+            "coaching",
+            "sport_judging",
+            "interview_platform",
+            "deposition_recording",
+            "research",
+            null
+          ]
+        }
+      }
+    },
+    "JudgeModality": {
+      "description": "Sport-judging score output. Per-discipline model fine-tuned on the discipline's reference rubric.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "discipline", "score"],
+      "properties": {
+        "model": {
+          "description": "Identifier of the judge model, e.g. \"diaspor-judge-v1\".",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "discipline": {
+          "description": "Sport discipline this score applies to. Diving first, then weightlifting / martial-arts forms / gymnastics.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "score": {
+          "description": "Discipline-specific score on the rubric's native scale. Diving: typically [0, 30] for execution * difficulty.",
+          "type": "number"
+        },
+        "execution_score": {
+          "description": "Optional execution-only sub-score on the rubric's native scale.",
+          "type": ["number", "null"]
+        },
+        "difficulty_multiplier": {
+          "description": "Optional difficulty multiplier (degree of difficulty), where applicable.",
+          "type": ["number", "null"]
+        },
+        "rubric_version": {
+          "description": "Identifier of the discipline rubric the model was calibrated against (e.g. \"fina-2025\", \"fig-2025\").",
+          "type": ["string", "null"],
+          "maxLength": 64
+        }
+      }
+    },
+    "Keypoint3d": {
+      "description": "One 3D keypoint with visibility score.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "z", "visibility"],
+      "properties": {
+        "x": {
+          "description": "Normalized x coordinate in [0,1] (frame-relative).",
+          "type": "number"
+        },
+        "y": {
+          "description": "Normalized y coordinate in [0,1] (frame-relative).",
+          "type": "number"
+        },
+        "z": {
+          "description": "Normalized depth (negative is closer to the camera).",
+          "type": "number"
+        },
+        "visibility": {
+          "description": "Visibility score in [0,1]; lower indicates occluded or out-of-frame.",
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      }
+    },
+    "ModelProvenance": {
+      "description": "Structured record of which exact model produced one modality's output. Same shape as sidecar-v1's ModelProvenance for cross-schema consistency.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_name"],
+      "properties": {
+        "model_name": {
+          "description": "Identifier of the model (e.g. \"diaspor-pose-3d-v1@blazepose-heavy\", \"diaspor-credibility-v1@internvideo2-1b+lora-r16\").",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "model_hash": {
+          "description": "Optional cryptographic hash of the model file (hex-encoded SHA-256 by convention).",
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-fA-F]{32,128}$"
+        },
+        "adapter_id": {
+          "description": "Optional per-tenant LoRA adapter identifier active for this inference. Present only for custom-tier deployments.",
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "runtime": {
+          "description": "Inference backend that ran the model, e.g. \"triton\", \"coreml\", \"ort-cpu\".",
+          "type": ["string", "null"],
+          "enum": ["triton", "coreml", "ort-cpu", "deepstream", null]
+        },
+        "latency_us": {
+          "description": "End-to-end inference latency for this modality in microseconds.",
+          "type": ["integer", "null"],
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1",
+      "stream_id": "abc123",
+      "tenant": "acme",
+      "t_start_ms": 12000,
+      "t_end_ms": 13000,
+      "kind": "window",
+      "modalities": {
+        "pose": {
+          "model": "diaspor-pose-3d-v1",
+          "keypoints": [
+            { "x": 0.51, "y": 0.20, "z": 0.0, "visibility": 0.99 },
+            { "x": 0.52, "y": 0.21, "z": 0.01, "visibility": 0.98 },
+            { "x": 0.50, "y": 0.21, "z": 0.01, "visibility": 0.98 },
+            { "x": 0.53, "y": 0.22, "z": 0.02, "visibility": 0.97 },
+            { "x": 0.49, "y": 0.22, "z": 0.02, "visibility": 0.97 },
+            { "x": 0.54, "y": 0.23, "z": 0.03, "visibility": 0.95 },
+            { "x": 0.48, "y": 0.23, "z": 0.03, "visibility": 0.95 },
+            { "x": 0.55, "y": 0.24, "z": 0.04, "visibility": 0.93 },
+            { "x": 0.47, "y": 0.24, "z": 0.04, "visibility": 0.93 },
+            { "x": 0.52, "y": 0.26, "z": 0.0, "visibility": 0.99 },
+            { "x": 0.50, "y": 0.26, "z": 0.0, "visibility": 0.99 },
+            { "x": 0.58, "y": 0.32, "z": 0.05, "visibility": 0.99 },
+            { "x": 0.44, "y": 0.32, "z": 0.05, "visibility": 0.99 },
+            { "x": 0.62, "y": 0.42, "z": 0.10, "visibility": 0.98 },
+            { "x": 0.40, "y": 0.42, "z": 0.10, "visibility": 0.98 },
+            { "x": 0.65, "y": 0.50, "z": 0.15, "visibility": 0.97 },
+            { "x": 0.37, "y": 0.50, "z": 0.15, "visibility": 0.97 },
+            { "x": 0.66, "y": 0.52, "z": 0.16, "visibility": 0.96 },
+            { "x": 0.36, "y": 0.52, "z": 0.16, "visibility": 0.96 },
+            { "x": 0.67, "y": 0.51, "z": 0.16, "visibility": 0.96 },
+            { "x": 0.35, "y": 0.51, "z": 0.16, "visibility": 0.96 },
+            { "x": 0.66, "y": 0.53, "z": 0.17, "visibility": 0.96 },
+            { "x": 0.36, "y": 0.53, "z": 0.17, "visibility": 0.96 },
+            { "x": 0.55, "y": 0.55, "z": 0.0, "visibility": 0.99 },
+            { "x": 0.47, "y": 0.55, "z": 0.0, "visibility": 0.99 },
+            { "x": 0.56, "y": 0.70, "z": 0.05, "visibility": 0.98 },
+            { "x": 0.46, "y": 0.70, "z": 0.05, "visibility": 0.98 },
+            { "x": 0.57, "y": 0.85, "z": 0.10, "visibility": 0.97 },
+            { "x": 0.45, "y": 0.85, "z": 0.10, "visibility": 0.97 },
+            { "x": 0.58, "y": 0.88, "z": 0.11, "visibility": 0.96 },
+            { "x": 0.44, "y": 0.88, "z": 0.11, "visibility": 0.96 },
+            { "x": 0.60, "y": 0.92, "z": 0.13, "visibility": 0.95 },
+            { "x": 0.42, "y": 0.92, "z": 0.13, "visibility": 0.95 }
+          ],
+          "joint_angles_deg": {
+            "left_elbow": 142.3,
+            "right_elbow": 138.7,
+            "left_knee": 175.1,
+            "right_knee": 174.8
+          }
+        },
+        "face": {
+          "model": "diaspor-face-mesh-v1",
+          "landmarks_quantized": "<base64 INT8 quantization elided in example>",
+          "microexpr": { "AU4": 0.31, "AU7": 0.18 },
+          "gaze": { "yaw_deg": -2.4, "pitch_deg": 5.1 }
+        },
+        "prosody": {
+          "model": "diaspor-prosody-v1",
+          "tremor_index": 0.07,
+          "f0_var": 12.4,
+          "pace_words_per_minute": 142.0,
+          "features_dim": 6552
+        },
+        "credibility": {
+          "model": "diaspor-credibility-v1",
+          "score": 0.41,
+          "confidence_band": "low",
+          "human_baseline_disclosed": 0.54,
+          "ceiling_disclosed": 0.74,
+          "labs_preview": true,
+          "vertical_attestation": "coaching"
+        }
+      },
+      "extracted_at": "2026-05-15T12:30:13Z",
+      "model_provenance": [
+        {
+          "model_name": "diaspor-pose-3d-v1@blazepose-heavy",
+          "model_hash": "3a7f1c2b9d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a",
+          "runtime": "coreml",
+          "latency_us": 8400
+        },
+        {
+          "model_name": "diaspor-credibility-v1@internvideo2-1b+lora-r16",
+          "adapter_id": "acme-credibility-v3",
+          "runtime": "triton",
+          "latency_us": 31200
+        }
+      ]
+    }
+  ]
+}

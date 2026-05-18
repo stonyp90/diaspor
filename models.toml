@@ -1,0 +1,221 @@
+# diaspor model catalog — workspace-wide source of truth for the OSS model
+# weights that `diaspor-infer`'s ModelHub knows how to resolve. Embedded into
+# the `diaspor-infer` crate at compile time via `include_str!` and parsed by
+# `crates/diaspor-infer/src/catalog.rs`.
+#
+# # How entries land here
+#
+# 1. A Phase 2 adapter (e.g. `MediaPipePoseExtractor`) needs an ONNX file.
+# 2. We pin the exact upstream URL, format, byte size, sha256, and license.
+# 3. ModelHub::resolve downloads the file once, verifies the sha256, and
+#    caches it under `~/.diaspor/models/<id>@<sha256-prefix>/`.
+#
+# # Pinning policy
+#
+# An entry is considered *pinned* once its `sha256` field is set to a 64-char
+# hex string AND its `bytes` field is set to a positive integer. Unpinned
+# entries (the placeholder `"PENDING_FIRST_PULL"` value) are refused at
+# runtime UNLESS the environment variable `DIASPOR_TRUST_UNPINNED=1` is set,
+# in which case ModelHub downloads, prints the observed sha256, and
+# instructs the operator to commit the value here.
+#
+# # License policy
+#
+# Default install ships only Apache-2.0, MIT, BSD, or other clearly
+# permissive weights. Research / non-commercial weights (pyannote, DINOv2,
+# …) are marked `nonfree = true` and require building with
+# `--features nonfree-models` to be returned by ModelHub::resolve. The
+# runtime additionally prints a one-line license notice the first time such
+# a model is loaded in a session.
+#
+# # Provenance
+#
+# Every adapter that consumes a model must emit `model_provenance` rows
+# matching `docs/schema/score-v1.json`'s shape, with `id`, `sha256`, and
+# `version` echoed from this catalog. This is how a downstream score sidecar
+# stays traceable back to the exact bytes that produced it.
+
+schema_version = 1
+
+# ---------------------------------------------------------------------------
+# Test fixture (pinned). This entry exists so the ModelHub end-to-end test in
+# `crates/diaspor-infer/tests/hub_smoke.rs` can drive every code path
+# (download, sha256-verify, cache hit, offline-block) against a real but
+# trivially small ONNX file that does not require network access at test
+# time — the test ships the bytes inline.
+# ---------------------------------------------------------------------------
+[[models]]
+id = "test-identity-fp32@1"
+description = "1x1 identity ONNX fixture used by the diaspor-infer test suite. Trivially exposes the ORT load + Session::run path without any real model weights."
+format = "onnx"
+url = "file://crates/diaspor-infer/tests/fixtures/identity.onnx"
+# The sha256 + bytes are filled in by the test harness once the fixture is
+# generated and frozen. See `crates/diaspor-infer/tests/fixtures/README.md`.
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "Apache-2.0"
+feature_gate = "ort-cpu"
+nonfree = false
+notes = "Test fixture. Operators should not enable this in production catalogs."
+
+# ---------------------------------------------------------------------------
+# Phase 2 — pose estimation
+# ---------------------------------------------------------------------------
+[[models]]
+id = "mediapipe-pose-heavy@1"
+description = "MediaPipe BlazePose GHUM Heavy (33 keypoints, 3D). Primary pose extractor; matches the BlazePose topology that score-v1.json's `modalities.pose.keypoints[33]` field is contractually committed to."
+format = "task"
+url = "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "Apache-2.0"
+feature_gate = "mediapipe-pose"
+nonfree = false
+notes = "MediaPipe ships a .task bundle. The Phase 2 adapter extracts the tflite blob from the bundle and converts to ORT inputs via the mediapipe-rs crate; see crates/diaspor-vision/src/pose.rs."
+
+[[models]]
+id = "rtmpose-l-coco@1"
+description = "RTMPose-l body keypoint estimator (Apache-2.0). Alternate pose extractor for benchmarking against the MediaPipe primary."
+format = "onnx"
+url = "https://huggingface.co/openmmlab/rtmpose-l-coco/resolve/main/rtmpose-l-coco.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "Apache-2.0"
+feature_gate = "rtmpose"
+nonfree = false
+
+# ---------------------------------------------------------------------------
+# Phase 2 — face landmarks + action units
+# ---------------------------------------------------------------------------
+[[models]]
+id = "mediapipe-facemesh@1"
+description = "MediaPipe FaceMesh + iris (478 landmarks). Drives `modalities.face.landmarks_quantized` in score-v1.json."
+format = "task"
+url = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "Apache-2.0"
+feature_gate = "mediapipe-face"
+nonfree = false
+
+[[models]]
+id = "openface-3-au@1"
+description = "OpenFace 3.0 (Action Units + gaze + head pose). Drives `modalities.face.action_units` and `modalities.face.gaze` in score-v1.json. Real-time on CPU (no GPU required)."
+format = "onnx"
+url = "https://huggingface.co/cmu-mlsp/openface-3.0/resolve/main/openface3_au.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "Apache-2.0"
+feature_gate = "openface-au"
+nonfree = false
+
+# ---------------------------------------------------------------------------
+# Phase 2 — action recognition + sport judging
+# ---------------------------------------------------------------------------
+[[models]]
+id = "internvideo2-1b-vision@1"
+description = "InternVideo2 1B vision tower (ONNX export). Foundation backbone for action recognition and the credibility composite. Source LoRAs (judge-diving, credibility) live in `training/recipes/` and are downloaded as separate small adapter weights."
+format = "onnx"
+url = "https://huggingface.co/OpenGVLab/InternVideo2_5/resolve/main/vision_tower.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "MIT"
+feature_gate = "internvideo2-action"
+nonfree = false
+notes = "Upstream license must be re-confirmed on first download — the InternVideo2 family carries an MIT license on the code but some checkpoint cards add downstream-use clauses. ModelHub prints the upstream model card URL on first resolve so the operator can audit."
+
+[[models]]
+id = "posec3d-ntu60@1"
+description = "PoseConv3D pretrained on NTU60. Skeleton-action branch fused with InternVideo2 for sport judging (judge.skeleton_score in score-v1.json)."
+format = "onnx"
+url = "https://huggingface.co/mmaction/posec3d-ntu60/resolve/main/posec3d-ntu60.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "Apache-2.0"
+feature_gate = "poseconv3d"
+nonfree = false
+
+# ---------------------------------------------------------------------------
+# Phase 2 — audio (speech, embeddings, prosody, diarization)
+# ---------------------------------------------------------------------------
+[[models]]
+id = "whisper-cpp-small-en@1"
+description = "Whisper small.en (ggml). Default transcriber for the M5 transcription pipeline."
+format = "ggml"
+url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-small.en.bin"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "MIT"
+feature_gate = "whisper"
+nonfree = false
+
+[[models]]
+id = "wav2vec2-base@1"
+description = "Wav2Vec2 base (Apache-2.0). Audio embeddings for the credibility composite + downstream LoRAs."
+format = "onnx"
+url = "https://huggingface.co/facebook/wav2vec2-base/resolve/main/model.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "Apache-2.0"
+feature_gate = "wav2vec2"
+nonfree = false
+
+[[models]]
+id = "hubert-large-ll60k@1"
+description = "HuBERT-large (LL60k). Stronger audio backbone; optional alternative to Wav2Vec2 for high-resource deployments."
+format = "onnx"
+url = "https://huggingface.co/facebook/hubert-large-ll60k/resolve/main/model.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "MIT"
+feature_gate = "hubert"
+nonfree = false
+
+[[models]]
+id = "silero-vad@1"
+description = "Silero Voice Activity Detection. Permissive default for the diarization pipeline (paired with sherpa-speaker-id for embedding-based clustering)."
+format = "onnx"
+url = "https://huggingface.co/silero/silero-vad/resolve/main/silero_vad.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "MIT"
+feature_gate = "diarization-silero"
+nonfree = false
+
+[[models]]
+id = "sherpa-speaker-id@1"
+description = "sherpa-onnx speaker embedding model. Apache-2.0 alternative to pyannote/embedding."
+format = "onnx"
+url = "https://huggingface.co/csukuangfj/sherpa-onnx-speaker-id/resolve/main/wespeaker_en_voxceleb_resnet34.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "Apache-2.0"
+feature_gate = "diarization-silero"
+nonfree = false
+
+# ---------------------------------------------------------------------------
+# Non-free models — research / non-commercial licenses. Hidden by default;
+# require building with `--features nonfree-models` to load. ModelHub prints a
+# license notice at runtime the first time one of these is resolved.
+# ---------------------------------------------------------------------------
+[[models]]
+id = "pyannote-segmentation-3@1"
+description = "pyannote 3 speaker segmentation. Higher-quality diarization than Silero+sherpa for multi-speaker depositions, but carries a research / non-commercial license restriction — read the model card on HF before using in a production deployment."
+format = "onnx"
+url = "https://huggingface.co/pyannote/segmentation-3.0/resolve/main/pytorch_model.bin"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "pyannote-research-noncommercial"
+feature_gate = "nonfree-models"
+nonfree = true
+
+[[models]]
+id = "dinov2-vitl14@1"
+description = "DINOv2 ViT-L/14 self-supervised dense features. Optional foundation backbone; carries a CC-BY-NC-4.0 license restriction."
+format = "onnx"
+url = "https://huggingface.co/facebook/dinov2-large/resolve/main/model.onnx"
+sha256 = "PENDING_FIRST_PULL"
+bytes = 0
+license = "CC-BY-NC-4.0"
+feature_gate = "nonfree-models"
+nonfree = true

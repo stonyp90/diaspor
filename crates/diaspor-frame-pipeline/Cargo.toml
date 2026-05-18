@@ -1,0 +1,29 @@
+[package]
+name = "diaspor-frame-pipeline"
+description = "Video frame decoding and sampling for diaspor-vision: FFmpeg, DeepStream, VideoToolbox backends."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["video", "ffmpeg", "deepstream", "videotoolbox", "frames"]
+categories = ["multimedia", "multimedia::video", "api-bindings"]
+
+[lints]
+workspace = true
+
+[dependencies]
+diaspor-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["sync", "rt", "macros", "process"] }
+bytes.workspace = true
+futures.workspace = true
+tracing.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

@@ -1,0 +1,1084 @@
+openapi: 3.1.0
+x-internal-status: scaffolding
+info:
+  title: Diaspor API
+  version: 0.1.0-alpha.1
+  summary: Non-verbal video analysis REST and WebSocket surface (planned M10 deliverable).
+  description: |
+    This document is the **planned** public REST + WebSocket surface for
+    `api.diaspor.io`, scoped under milestone **M10 — Public SDK + API** of the
+    project roadmap (see [`ROADMAP.md`](../../ROADMAP.md), section "M10 — Public
+    SDK + API").
+
+    **Current implementation status**
+
+    The Rust server binary at `crates/diaspor-api-server/` is being scaffolded
+    in parallel with this spec. **Every endpoint currently returns
+    `501 Not Implemented` except `GET /v1/health`** (which returns the
+    advertised `{status, version}` shape). The Python SDK (`sdk/python/`) and
+    TypeScript SDK (`sdk/typescript/`) are generated against this spec; until
+    the server is wired, SDK methods will receive 501s.
+
+    **License posture**
+
+    - **This OpenAPI document** is Apache-2.0 — anyone may consume it,
+      generate clients from it, and ship those clients in closed-source
+      products with no copyleft obligation.
+    - **The thin client SDKs** (`pip install diaspor`,
+      `npm install @diaspor/sdk`, `cargo add diaspor-client`) are Apache-2.0
+      for the same reason: SDK users embed clients in proprietary code.
+    - **The heavy self-hosted core** (the Rust workspace at
+      <https://github.com/stonyp90/diaspor>) is dual-licensed under
+      **AGPL-3.0-or-later** OR a commercial license. The split keeps SDK
+      embedders free of AGPL exposure while still requiring AGPL or
+      commercial terms for anyone running the server itself.
+
+    **Vertical attestation (credibility endpoint)**
+
+    Calls to `POST /v1/credibility` are gated on a per-API-key vertical
+    declared at key-creation time and presented on every request via the
+    `X-Diaspor-Vertical` header. The gateway refuses calls from forbidden
+    verticals (`forensic`, `hiring`, `insurance`, `law_enforcement`,
+    `eu_workplace`, `eu_education`) **before** invoking the model. See
+    [ADR 0007](../adr/0007-score-sidecar-schema.md) for the privacy /
+    disclosure invariants that propagate from the gateway into every
+    `CredibilityModality` response.
+
+    **Live ingest (M8 deliverables)**
+
+    The WebSocket `/v1/stream` endpoint described below covers two ingest
+    modes — direct WHIP push and meeting-bot wrappers for Zoom / Google
+    Meet / Microsoft Teams. Both depend on the M8 milestone (live ingest +
+    Triton serving). The endpoint is documented here so SDKs can generate
+    the call signatures, but the runtime path is not online until M8 ships.
+
+    **Score record shape**
+
+    Every analysis response is or contains a `ScoreRecord`. The authoritative
+    schema is `docs/schema/score-v1.json` in this repository, referenced via
+    `$ref: '../schema/score-v1.json'` below — OpenAPI 3.1.0 is JSON-Schema
+    compatible, so we do not duplicate any type definitions.
+
+  termsOfService: https://diaspor.io/terms
+  contact:
+    name: Diaspor
+    email: hello@diaspor.io
+    url: https://diaspor.io
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+
+servers:
+  - url: https://api.diaspor.io
+    description: Production
+  - url: http://127.0.0.1:7733
+    description: Local development server (diaspor-api-server crate)
+
+tags:
+  - name: meta
+    description: Health and service-metadata endpoints. No authentication required.
+  - name: batch
+    description: |
+      Synchronous and asynchronous batch analysis of uploaded media. Returns
+      score records. Per-modality endpoints carve out a single modality so
+      callers can opt into the minimum surface they need.
+  - name: streaming
+    description: |
+      Live ingest. WebSocket upgrade for WHIP push and meeting-bot
+      wrappers. M8 deliverable — schema published in advance of
+      implementation so SDKs can target a stable shape.
+  - name: training
+    description: |
+      Per-tenant LoRA adapter training and activation. Approval-gated;
+      reserved for custom-tier deployments.
+
+security:
+  - bearerAuth: []
+
+paths:
+  /v1/health:
+    get:
+      operationId: health
+      summary: Liveness probe.
+      description: |
+        Returns the service status and the running server version. The only
+        endpoint in the spec that does not require authentication and the
+        only endpoint guaranteed to be wired during the scaffolding phase.
+      tags: [meta]
+      security: []
+      x-internal-status: scaffolding
+      responses:
+        '200':
+          description: Service is up.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [status, version]
+                properties:
+                  status:
+                    type: string
+                    enum: [ok, degraded]
+                    description: Coarse liveness state. `degraded` means the server is up but at least one downstream dependency is unhealthy.
+                  version:
+                    type: string
+                    description: Semver string of the running `diaspor-api-server` binary.
+                    example: 0.1.0-alpha.1
+              examples:
+                healthy:
+                  value:
+                    status: ok
+                    version: 0.1.0-alpha.1
+
+  /v1/analyze:
+    post:
+      operationId: analyze
+      summary: Submit a media file for full multi-modal analysis.
+      description: |
+        Run pose, face-mesh, and prosody (and credibility / judge where
+        permitted by the API key) over the supplied media. The request body
+        may be either a `multipart/form-data` upload **or** a JSON document
+        carrying a pre-signed S3 URL — both encodings produce the same
+        `ScoreRecord` response shape.
+
+        Short inputs return `200` with the score record inline. Longer
+        inputs return `202 Accepted` with a `Location` header pointing at
+        `/v1/analyses/{id}`; callers poll that URL until the score record
+        is ready.
+      tags: [batch]
+      x-internal-status: scaffolding
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Media file (mp4, mov, mkv, wav). Max 2 GiB per upload on the shared tier.
+                modalities:
+                  type: array
+                  description: Optional explicit list of modalities to compute. Defaults to all modalities the API key is permitted to invoke.
+                  items:
+                    type: string
+                    enum: [pose, face, prosody, credibility, judge]
+                discipline:
+                  type: string
+                  description: Required if `judge` is requested. See `/v1/judge`.
+                  enum: [diving, gymnastics, weightlifting, martial_arts]
+          application/json:
+            schema:
+              type: object
+              required: [signed_s3_url]
+              additionalProperties: false
+              properties:
+                signed_s3_url:
+                  type: string
+                  format: uri
+                  description: Pre-signed S3 (or S3-compatible) URL the server can `GET` to fetch the media. Avoids round-tripping large files through the API gateway.
+                modalities:
+                  type: array
+                  items:
+                    type: string
+                    enum: [pose, face, prosody, credibility, judge]
+                discipline:
+                  type: string
+                  enum: [diving, gymnastics, weightlifting, martial_arts]
+      responses:
+        '200':
+          $ref: '#/components/responses/ScoreRecordInline'
+        '202':
+          $ref: '#/components/responses/AnalysisAccepted'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/analyses/{id}:
+    get:
+      operationId: pollAnalysis
+      summary: Poll a previously submitted analysis job.
+      description: |
+        Returns the score record once the job is finished. While the job
+        is still running, returns `202 Accepted` with a `Retry-After`
+        header indicating the recommended poll interval in seconds.
+      tags: [batch]
+      x-internal-status: scaffolding
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Analysis identifier returned by `POST /v1/analyze` (the trailing path segment of the `Location` header).
+      responses:
+        '200':
+          $ref: '#/components/responses/ScoreRecordInline'
+        '202':
+          description: Still processing — poll again after `Retry-After` seconds.
+          headers:
+            Retry-After:
+              schema:
+                type: integer
+                minimum: 1
+              description: Number of seconds the caller should wait before re-polling.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, status]
+                properties:
+                  id:
+                    type: string
+                  status:
+                    type: string
+                    enum: [queued, running]
+                  progress:
+                    type: number
+                    minimum: 0
+                    maximum: 1
+                    description: Optional progress fraction.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: No analysis with this id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/pose:
+    post:
+      operationId: pose
+      summary: Pose-only analysis (33-keypoint BlazePose).
+      description: |
+        Compute 33-keypoint 3D body pose over the input. Returns a score
+        record whose `modalities` block carries only `pose`. Useful for
+        sport-judging clients that want pose without paying for face or
+        prosody compute.
+      tags: [batch]
+      x-internal-status: scaffolding
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Score record with `modalities.pose` populated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/face-mesh:
+    post:
+      operationId: faceMesh
+      summary: Face-mesh-only analysis (478-landmark MediaPipe FaceMesh).
+      description: |
+        Compute 478-landmark facial geometry over the input. Returns a
+        score record whose `modalities` block carries only `face`.
+        Landmarks are returned base64-INT8 quantized — see the
+        `FaceModality` schema for the decoding recipe.
+      tags: [batch]
+      x-internal-status: scaffolding
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Score record with `modalities.face` populated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/prosody:
+    post:
+      operationId: prosody
+      summary: Vocal-prosody-only analysis (openSMILE eGeMAPSv02 + ComParE2016).
+      description: |
+        Extract prosody features from the audio track of the input. Returns
+        a score record whose `modalities` block carries only `prosody`.
+      tags: [batch]
+      x-internal-status: scaffolding
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Score record with `modalities.prosody` populated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/credibility:
+    post:
+      operationId: credibility
+      summary: Credibility-signal analysis (Labs preview, per-key vertical-attested).
+      description: |
+        **Privacy and disclosure invariants — read before integrating.**
+
+        Credibility signals are **NOT lie detection**. The peer-reviewed
+        ceiling for video-based deception inference is ~74%, and the
+        human baseline is ~54%. Every response carries these numbers
+        explicitly in `ceiling_disclosed` and `human_baseline_disclosed`;
+        consumers are required by terms of service to surface both
+        alongside the score.
+
+        **The endpoint is refused for the following verticals** — at the
+        gateway, before any model is invoked: `forensic`, `hiring`,
+        `insurance`, `law_enforcement`, `eu_workplace`, `eu_education`.
+        The full list of permitted verticals lives in the
+        `VerticalAttestation` enum.
+
+        **Per-key vertical attestation is REQUIRED.** Every request must
+        carry an `X-Diaspor-Vertical` header whose value matches the
+        vertical declared at API-key creation time. A mismatch or a
+        forbidden value returns `403 Vertical Refused`.
+
+        See `docs/adr/0007-score-sidecar-schema.md` for the schema-level
+        rationale.
+      tags: [batch]
+      x-internal-status: scaffolding
+      security:
+        - bearerAuth: []
+          verticalAttestation: []
+      parameters:
+        - name: X-Diaspor-Vertical
+          in: header
+          required: true
+          schema:
+            $ref: '#/components/schemas/VerticalAttestation'
+          description: Vertical declared at API-key creation. Must match key metadata. Forbidden verticals return 403.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: |
+            Score record with `modalities.credibility` populated. The
+            response **MUST** include `human_baseline_disclosed`,
+            `ceiling_disclosed`, `confidence_band`, `labs_preview`, and
+            `vertical_attestation` — see `CredibilityModality` for the
+            full shape. Consumers must surface the baseline and ceiling
+            adjacent to the score.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/VerticalRefused'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/judge:
+    post:
+      operationId: judge
+      summary: Sport-judging score (per-discipline rubric).
+      description: |
+        Score a routine against the discipline's reference rubric. Diving
+        is the first supported discipline; gymnastics, weightlifting, and
+        martial-arts forms follow per the M9 roadmap.
+      tags: [batch]
+      x-internal-status: scaffolding
+      parameters:
+        - name: discipline
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [diving, gymnastics, weightlifting, martial_arts]
+          description: Sport discipline rubric to apply.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Score record with `modalities.judge` populated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScoreRecord'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/train:
+    post:
+      operationId: train
+      summary: Submit a per-tenant LoRA adapter training job.
+      description: |
+        Approval-gated. Submit a corpus reference plus an evaluation
+        configuration; the server provisions a training job and returns
+        a job handle. Poll the returned `Location` URL (under
+        `/v1/analyses/{id}` or a future `/v1/jobs/{id}`) for completion.
+      tags: [training]
+      x-internal-status: scaffolding
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [corpus, eval]
+              additionalProperties: false
+              properties:
+                corpus:
+                  type: object
+                  description: Reference to the training corpus.
+                  required: [source]
+                  properties:
+                    source:
+                      type: string
+                      enum: [vfs, s3]
+                    path:
+                      type: string
+                      description: VFS path or S3 URI depending on `source`.
+                    sample_count:
+                      type: integer
+                      minimum: 1
+                eval:
+                  type: object
+                  description: Held-out eval configuration.
+                  required: [metric]
+                  properties:
+                    metric:
+                      type: string
+                      enum: [pck_at_0_05, judge_mae, credibility_auc]
+                    holdout_fraction:
+                      type: number
+                      minimum: 0.01
+                      maximum: 0.5
+                base_model:
+                  type: string
+                  description: Base model identifier to LoRA-adapt.
+                lora_rank:
+                  type: integer
+                  minimum: 1
+                  maximum: 128
+                  default: 16
+      responses:
+        '202':
+          description: Training job accepted. Approval may be pending.
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri-reference
+              description: Path to poll for job status.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [job_id, status]
+                properties:
+                  job_id:
+                    type: string
+                  status:
+                    type: string
+                    enum: [pending_approval, queued, running]
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Training is not enabled for this API key (custom-tier only).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/adapters/{id}/activate:
+    post:
+      operationId: activateAdapter
+      summary: Activate a trained LoRA adapter for subsequent inference.
+      description: |
+        Once `POST /v1/train` returns a completed adapter, call this
+        endpoint to make it the active adapter for the tenant. Subsequent
+        analyses route through Triton with the adapter loaded.
+      tags: [training]
+      x-internal-status: scaffolding
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Adapter identifier returned by `POST /v1/train`.
+      responses:
+        '200':
+          description: Adapter activated.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [active_adapter_id]
+                properties:
+                  active_adapter_id:
+                    type: string
+                  activated_at:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          description: Adapter is not owned by this tenant or training is not enabled for this API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: No adapter with this id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /v1/stream:
+    get:
+      operationId: liveStream
+      summary: WebSocket upgrade for live ingest (WHIP or meeting-bot).
+      description: |
+        **WebSocket endpoint.** This is a `GET` that the server upgrades
+        to a WebSocket connection (RFC 6455). The endpoint is documented
+        here under a regular path with the `x-websocket: true` extension,
+        because OpenAPI 3.1 does not model WebSocket framing natively.
+        Client SDKs treat this as a stream of `IngestEvent` JSON messages.
+
+        **Two ingest modes** are dispatched by the `ingest` query parameter:
+
+        - `ingest=whip&token=...` — direct WHIP push. The caller publishes
+          media into the WHIP endpoint advertised in the upgrade handshake;
+          score events stream back over this WebSocket.
+        - `bot=meeting&platform=zoom|meet|teams&meeting_url=...&consent_script=...`
+          — meeting-bot mode. Diaspor's Recall.ai-backed bot joins the
+          named meeting, plays the `consent_script` audio for all-party
+          consent, and streams score events back over this WebSocket.
+          Closing the WebSocket retracts the bot.
+
+        Score events on the wire match the `IngestEvent` schema below
+        (which embeds a `ScoreRecord` with `kind: "event"`). The first
+        message on a healthy connection is a `session_started` control
+        frame; the last is a `session_ended` control frame with a
+        `SessionEndReason`.
+
+        **M8 dependency.** The runtime path (WHIP receiver, Recall.ai
+        integration) is gated on the M8 milestone. Spec is published in
+        advance so the Python and TS SDKs can ship their `liveStream`
+        method against a stable shape.
+      tags: [streaming]
+      x-internal-status: scaffolding
+      x-websocket: true
+      parameters:
+        - name: ingest
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [whip]
+          description: Set to `whip` for direct WHIP push mode.
+        - name: token
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Short-lived WHIP session token. Required when `ingest=whip`.
+        - name: bot
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [meeting]
+          description: Set to `meeting` for meeting-bot mode.
+        - name: platform
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [zoom, meet, teams]
+          description: Meeting platform. Required when `bot=meeting`.
+        - name: meeting_url
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uri
+          description: Full URL of the meeting the bot should join. Required when `bot=meeting`.
+        - name: consent_script
+          in: query
+          required: false
+          schema:
+            type: string
+          description: |
+            Text the bot reads aloud on join to obtain all-party consent.
+            Required when `bot=meeting`; TOS mandates an explicit
+            disclosure script.
+      responses:
+        '101':
+          description: Switching protocols to WebSocket. Subsequent frames carry `IngestEvent` JSON payloads.
+        '400':
+          description: Malformed query parameters (e.g. `bot=meeting` without `meeting_url`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: |
+        API key passed in the `Authorization` header as
+        `Authorization: Bearer dk_live_...`. Keys are issued by the
+        `developers.diaspor.io` portal and scoped to a tenant. Per-key
+        rate limits and vertical attestation are enforced at the gateway.
+    verticalAttestation:
+      type: apiKey
+      in: header
+      name: X-Diaspor-Vertical
+      description: |
+        Tenant-declared vertical (e.g. `coaching`, `sport_judging`,
+        `research`). The gateway compares this header against the
+        vertical recorded at API-key creation time and refuses calls
+        from forbidden verticals (`forensic`, `hiring`, `insurance`,
+        `law_enforcement`, `eu_workplace`, `eu_education`). Required
+        on `/v1/credibility`.
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid `Authorization` bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            missing_key:
+              value:
+                code: unauthorized
+                message: API key missing or invalid.
+                details:
+                  hint: "Set the `Authorization: Bearer dk_live_...` header."
+
+    RateLimited:
+      description: Per-key rate limit or per-key per-day cap exceeded.
+      headers:
+        Retry-After:
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: Seconds the caller should wait before retrying.
+        X-RateLimit-Limit:
+          schema:
+            type: integer
+          description: Configured request budget for the current window.
+        X-RateLimit-Remaining:
+          schema:
+            type: integer
+          description: Requests remaining in the current window.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            rate_limited:
+              value:
+                code: rate_limited
+                message: Per-key per-minute rate limit exceeded.
+                details:
+                  limit: 60
+                  window_seconds: 60
+                  retry_after_seconds: 12
+
+    VerticalRefused:
+      description: |
+        The `X-Diaspor-Vertical` header does not match the key's
+        declared vertical, or declares one of the forbidden verticals
+        (`forensic`, `hiring`, `insurance`, `law_enforcement`,
+        `eu_workplace`, `eu_education`). Refusal happens at the
+        gateway before any model is invoked.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            forbidden_vertical:
+              value:
+                code: vertical_refused
+                message: Credibility endpoint is refused for the declared vertical.
+                details:
+                  declared_vertical: hiring
+                  permitted_verticals:
+                    - coaching
+                    - sport_judging
+                    - interview_platform
+                    - deposition_recording
+                    - research
+
+    NotImplemented:
+      description: |
+        Endpoint is scaffolded but not yet wired. Every endpoint except
+        `/v1/health` currently returns this response. The `details`
+        object surfaces the milestone that gates the implementation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+          examples:
+            scaffolding:
+              value:
+                code: not_implemented
+                message: Endpoint is scaffolded; implementation gated on milestone M10.
+                details:
+                  status: scaffolding
+                  gating_milestone: M10
+
+    ScoreRecordInline:
+      description: |
+        Score record returned inline. The body is the full `ScoreRecord`
+        shape defined in `docs/schema/score-v1.json`.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ScoreRecord'
+          examples:
+            multi_modal:
+              summary: Window record with pose, face, prosody, and credibility populated.
+              value:
+                schema_version: '1'
+                stream_id: abc123
+                tenant: acme
+                t_start_ms: 12000
+                t_end_ms: 13000
+                kind: window
+                modalities:
+                  pose:
+                    model: diaspor-pose-3d-v1
+                    keypoints:
+                      - { x: 0.51, y: 0.20, z: 0.0,  visibility: 0.99 }
+                      - { x: 0.52, y: 0.21, z: 0.01, visibility: 0.98 }
+                      - { x: 0.50, y: 0.21, z: 0.01, visibility: 0.98 }
+                      - { x: 0.53, y: 0.22, z: 0.02, visibility: 0.97 }
+                      - { x: 0.49, y: 0.22, z: 0.02, visibility: 0.97 }
+                      - { x: 0.54, y: 0.23, z: 0.03, visibility: 0.95 }
+                      - { x: 0.48, y: 0.23, z: 0.03, visibility: 0.95 }
+                      - { x: 0.55, y: 0.24, z: 0.04, visibility: 0.93 }
+                      - { x: 0.47, y: 0.24, z: 0.04, visibility: 0.93 }
+                      - { x: 0.52, y: 0.26, z: 0.0,  visibility: 0.99 }
+                      - { x: 0.50, y: 0.26, z: 0.0,  visibility: 0.99 }
+                      - { x: 0.58, y: 0.32, z: 0.05, visibility: 0.99 }
+                      - { x: 0.44, y: 0.32, z: 0.05, visibility: 0.99 }
+                      - { x: 0.62, y: 0.42, z: 0.10, visibility: 0.98 }
+                      - { x: 0.40, y: 0.42, z: 0.10, visibility: 0.98 }
+                      - { x: 0.65, y: 0.50, z: 0.15, visibility: 0.97 }
+                      - { x: 0.37, y: 0.50, z: 0.15, visibility: 0.97 }
+                      - { x: 0.66, y: 0.52, z: 0.16, visibility: 0.96 }
+                      - { x: 0.36, y: 0.52, z: 0.16, visibility: 0.96 }
+                      - { x: 0.67, y: 0.51, z: 0.16, visibility: 0.96 }
+                      - { x: 0.35, y: 0.51, z: 0.16, visibility: 0.96 }
+                      - { x: 0.66, y: 0.53, z: 0.17, visibility: 0.96 }
+                      - { x: 0.36, y: 0.53, z: 0.17, visibility: 0.96 }
+                      - { x: 0.55, y: 0.55, z: 0.0,  visibility: 0.99 }
+                      - { x: 0.47, y: 0.55, z: 0.0,  visibility: 0.99 }
+                      - { x: 0.56, y: 0.70, z: 0.05, visibility: 0.98 }
+                      - { x: 0.46, y: 0.70, z: 0.05, visibility: 0.98 }
+                      - { x: 0.57, y: 0.85, z: 0.10, visibility: 0.97 }
+                      - { x: 0.45, y: 0.85, z: 0.10, visibility: 0.97 }
+                      - { x: 0.58, y: 0.88, z: 0.11, visibility: 0.96 }
+                      - { x: 0.44, y: 0.88, z: 0.11, visibility: 0.96 }
+                      - { x: 0.60, y: 0.92, z: 0.13, visibility: 0.95 }
+                      - { x: 0.42, y: 0.92, z: 0.13, visibility: 0.95 }
+                    joint_angles_deg:
+                      left_elbow: 142.3
+                      right_elbow: 138.7
+                      left_knee: 175.1
+                      right_knee: 174.8
+                  face:
+                    model: diaspor-face-mesh-v1
+                    landmarks_quantized: '<base64 INT8 quantization elided in example>'
+                    microexpr: { AU4: 0.31, AU7: 0.18 }
+                    gaze: { yaw_deg: -2.4, pitch_deg: 5.1 }
+                  prosody:
+                    model: diaspor-prosody-v1
+                    tremor_index: 0.07
+                    f0_var: 12.4
+                    pace_words_per_minute: 142.0
+                    features_dim: 6552
+                  credibility:
+                    model: diaspor-credibility-v1
+                    score: 0.41
+                    confidence_band: low
+                    human_baseline_disclosed: 0.54
+                    ceiling_disclosed: 0.74
+                    labs_preview: true
+                    vertical_attestation: coaching
+                extracted_at: '2026-05-15T12:30:13Z'
+                model_provenance:
+                  - model_name: diaspor-pose-3d-v1@blazepose-heavy
+                    model_hash: 3a7f1c2b9d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a
+                    runtime: coreml
+                    latency_us: 8400
+                  - model_name: diaspor-credibility-v1@internvideo2-1b+lora-r16
+                    adapter_id: acme-credibility-v3
+                    runtime: triton
+                    latency_us: 31200
+
+    AnalysisAccepted:
+      description: |
+        Analysis accepted for asynchronous processing. The `Location`
+        header points at `/v1/analyses/{id}`; the caller polls that URL
+        until the score record is ready.
+      headers:
+        Location:
+          required: true
+          schema:
+            type: string
+            format: uri-reference
+          description: URL to poll for the score record.
+        Retry-After:
+          schema:
+            type: integer
+            minimum: 1
+          description: Seconds to wait before the first poll.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [id, status]
+            properties:
+              id:
+                type: string
+              status:
+                type: string
+                enum: [queued, running]
+
+  schemas:
+    ScoreRecord:
+      description: |
+        Full score record. Authoritative schema is
+        `docs/schema/score-v1.json`. OpenAPI 3.1 is JSON-Schema-compatible,
+        so we `$ref` the existing file rather than duplicating the
+        definition.
+      $ref: '../schema/score-v1.json'
+
+    Modalities:
+      description: Per-modality outputs (at least one present).
+      $ref: '../schema/score-v1.json#/$defs/Modalities'
+
+    PoseModality:
+      description: 33-keypoint 3D body pose (BlazePose topology).
+      $ref: '../schema/score-v1.json#/$defs/PoseModality'
+
+    FaceModality:
+      description: 478-landmark facial geometry (MediaPipe FaceMesh).
+      $ref: '../schema/score-v1.json#/$defs/FaceModality'
+
+    ProsodyModality:
+      description: Vocal-prosody features (eGeMAPSv02 + ComParE2016).
+      $ref: '../schema/score-v1.json#/$defs/ProsodyModality'
+
+    CredibilityModality:
+      description: |
+        Credibility-signal output. **NOT lie detection.** Peer-reviewed
+        ceiling ~74%, human baseline ~54%. Refused at the gateway for
+        `forensic`, `hiring`, `insurance`, `law_enforcement`,
+        `eu_workplace`, and `eu_education` verticals. Every response
+        carries `human_baseline_disclosed`, `ceiling_disclosed`,
+        `confidence_band`, `labs_preview`, and `vertical_attestation`.
+      $ref: '../schema/score-v1.json#/$defs/CredibilityModality'
+
+    JudgeModality:
+      description: Per-discipline sport-judge score.
+      $ref: '../schema/score-v1.json#/$defs/JudgeModality'
+
+    Keypoint3d:
+      description: One 3D keypoint with a visibility score.
+      $ref: '../schema/score-v1.json#/$defs/Keypoint3d'
+
+    ModelProvenance:
+      description: Model identity / adapter / runtime / latency record for one modality.
+      $ref: '../schema/score-v1.json#/$defs/ModelProvenance'
+
+    VerticalAttestation:
+      description: |
+        Tenant-declared vertical for `/v1/credibility`. Forbidden verticals
+        (`forensic`, `hiring`, `insurance`, `law_enforcement`,
+        `eu_workplace`, `eu_education`) are intentionally absent — they
+        are refused at the gateway and are not part of the enum surfaced
+        to clients. The set of permitted values mirrors the
+        `vertical_attestation` enum in `score-v1.json`'s
+        `CredibilityModality`.
+      type: string
+      enum:
+        - coaching
+        - sport_judging
+        - interview_platform
+        - deposition_recording
+        - research
+
+    ApiError:
+      description: |
+        Canonical error envelope. Every non-2xx response in the spec
+        uses this shape. The Python and TypeScript SDKs raise
+        `ApiError` (or its subclasses keyed off `code`) for any
+        response with this body.
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          description: |
+            Stable machine-readable error identifier. SDKs branch on this
+            value, not on `message` (which is human-readable and may
+            change without notice).
+          enum:
+            - unauthorized
+            - forbidden
+            - not_found
+            - rate_limited
+            - vertical_refused
+            - validation_error
+            - not_implemented
+            - internal_error
+        message:
+          type: string
+          description: Human-readable error message. Not stable across releases.
+        details:
+          type: object
+          description: |
+            Optional structured details. Shape varies by `code`. For
+            `rate_limited`, carries `limit`, `window_seconds`,
+            `retry_after_seconds`. For `vertical_refused`, carries
+            `declared_vertical` and `permitted_verticals`. For
+            `not_implemented`, carries `status: "scaffolding"` and a
+            `gating_milestone` reference.
+          additionalProperties: true
+        request_id:
+          type: string
+          description: Server-assigned request identifier — quote this when filing a support ticket.
+
+    SessionEndReason:
+      description: Why a `/v1/stream` session ended.
+      type: string
+      enum:
+        - client_closed
+        - server_closed
+        - whip_disconnected
+        - bot_left_meeting
+        - meeting_ended
+        - consent_withdrawn
+        - daily_cap_reached
+        - rate_limited
+        - error
+
+    IngestEvent:
+      description: |
+        One message on the `/v1/stream` WebSocket. Either a score event
+        (`type: "score"`, carrying a `ScoreRecord` with `kind: "event"`
+        or `"window"`) or a control frame announcing session lifecycle.
+      type: object
+      additionalProperties: false
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [session_started, session_ended, score, error]
+          description: Frame discriminator.
+        session_id:
+          type: string
+          description: Server-assigned session identifier. Present on every frame.
+        ts:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp the server emitted this frame.
+        score:
+          description: Score record. Present when `type == "score"`.
+          $ref: '#/components/schemas/ScoreRecord'
+        reason:
+          description: Reason the session ended. Present when `type == "session_ended"`.
+          $ref: '#/components/schemas/SessionEndReason'
+        error:
+          description: Error envelope. Present when `type == "error"`.
+          $ref: '#/components/schemas/ApiError'

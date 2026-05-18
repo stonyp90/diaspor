@@ -1,0 +1,34 @@
+[package]
+name = "diaspor-stream-ingest"
+description = "Stream ingest for diaspor: file upload, HLS pull, WHIP push, meeting-bot (Zoom/Meet/Teams)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["streaming", "webrtc", "whip", "hls", "ingest"]
+categories = ["multimedia", "network-programming", "api-bindings"]
+
+[lints]
+workspace = true
+
+[dependencies]
+diaspor-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["sync", "rt", "macros", "fs", "io-util"] }
+bytes.workspace = true
+futures.workspace = true
+tracing.workspace = true
+time = { workspace = true }
+thiserror.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+# Used by the `live-meeting-bot` example to demonstrate MultiSink composition over
+# the stub VfsEventSink + WebhookEventSink (see ROADMAP M8 — live ingest).
+diaspor-events.workspace = true
+diaspor-backend-memory.workspace = true

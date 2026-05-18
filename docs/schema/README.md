@@ -31,7 +31,8 @@ application (§10: "Stable JSON schema for `SidecarRecord` published in-repo at
 
 | File              | Purpose                                                                 |
 |-------------------|-------------------------------------------------------------------------|
-| `sidecar-v1.json` | JSON Schema draft 2020-12 definition for `schema_version = "1"`.        |
+| `sidecar-v1.json` | JSON Schema draft 2020-12 definition for sidecar records (one per file). |
+| `score-v1.json`   | JSON Schema draft 2020-12 definition for score records (one per stream window). Forward-looking for M7+. See [ADR 0007](../adr/0007-score-sidecar-schema.md) for the decision to keep this schema separate from sidecar. |
 | `README.md`       | This file — overview, stability contract, and validation instructions.  |
 
 ## Versioning

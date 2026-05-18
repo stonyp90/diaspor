@@ -21,3 +21,9 @@ diaspor-core.workspace = true
 async-trait.workspace = true
 bytes.workspace = true
 tokio = { workspace = true, features = ["rt", "macros"] }
+
+[dev-dependencies]
+# Used by tests/score_schema.rs to validate that the published
+# docs/schema/score-v1.json examples remain valid against the schema itself.
+jsonschema.workspace = true
+serde_json.workspace = true

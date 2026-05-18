@@ -1,0 +1,38 @@
+[package]
+name = "diaspor-events"
+description = "Event fan-out for diaspor inference outputs: VFS sidecar, WebSocket broadcast, webhook POST."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["filesystem", "vfs", "events", "webhook", "websocket"]
+categories = ["filesystem", "asynchronous", "web-programming"]
+
+[lints]
+workspace = true
+
+[dependencies]
+diaspor-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["sync", "rt", "macros", "time"] }
+bytes.workspace = true
+parking_lot.workspace = true
+tracing.workspace = true
+thiserror.workspace = true
+futures.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+reqwest.workspace = true
+hmac.workspace = true
+sha2.workspace = true
+time.workspace = true
+
+[dev-dependencies]
+diaspor-backend-memory.workspace = true
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "net", "io-util", "time"] }
+httparse.workspace = true

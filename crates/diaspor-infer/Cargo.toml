@@ -1,0 +1,85 @@
+[package]
+name = "diaspor-infer"
+description = "Multi-runtime ML inference abstraction for diaspor: Triton, CoreML, ONNX Runtime, with a model hub that resolves model ids to local ONNX files."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["inference", "triton", "coreml", "onnx", "ml"]
+categories = ["science", "api-bindings", "multimedia"]
+
+[lints]
+workspace = true
+
+[features]
+# No features enabled by default — the trait surface (InferenceBackend,
+# InferencePipeline, Tensor*, *Id) is always available without pulling in
+# ONNX Runtime, reqwest, or the catalog. CIs that just need to typecheck the
+# wire shape can build with default features; everything else opts in.
+default = []
+
+# `ort-cpu` brings in the `ort` crate with the CPU execution provider only.
+# `load-dynamic` means the binary loads libonnxruntime at runtime, so users
+# can swap in a CUDA / TensorRT / CoreML variant without rebuilding.
+ort-cpu = ["dep:ort", "dep:ndarray"]
+# Marker features for execution providers — the actual EP selection happens
+# at runtime via `Session::builder().with_execution_providers(...)`. The
+# build-time concern is identical to `ort-cpu`; we keep separate feature
+# names so the heavy-release workflow can fingerprint what's compiled in.
+ort-cuda = ["ort-cpu"]
+ort-coreml = ["ort-cpu"]
+ort-tensorrt = ["ort-cpu"]
+
+# `hub` brings in the ModelHub: a catalog parser (models.toml), a sha256
+# downloader, and a local cache under `~/.diaspor/models/`. The privacy
+# contract is enforced via `DIASPOR_OFFLINE=1` (see SECURITY.md).
+hub = ["dep:reqwest", "dep:sha2", "dep:toml", "dep:hex", "dep:dirs", "dep:futures-util", "dep:serde_json"]
+
+# Allow research-license models (pyannote, DINOv2, …) to load from the
+# embedded catalog. Without this feature, `ModelHub::resolve` returns
+# `NonfreeBlocked` for those ids. Default is permissive-only — opting in
+# requires an explicit `--features nonfree-models` at build time AND
+# accepting the runtime license notice.
+nonfree-models = []
+
+[dependencies]
+diaspor-core.workspace = true
+async-trait.workspace = true
+tokio = { workspace = true, features = ["sync", "rt", "macros", "fs", "io-util"] }
+bytes = { workspace = true, features = ["serde"] }
+parking_lot.workspace = true
+tracing.workspace = true
+thiserror.workspace = true
+# serde — every public type is part of the score-v1.json model_provenance
+# wire shape or addressable via JSON in the API layer (TenantId / ModelId /
+# AdapterId as opaque strings, DType / Tensor / TensorBatch for tensor
+# inspection endpoints). `bytes/serde` keeps `Tensor::bytes` JSON-friendly.
+serde = { workspace = true, features = ["derive"] }
+
+# `ort-cpu` feature deps. `optional = true` so default builds don't pull
+# them in; the workspace `--all-features` build enables them.
+ort = { workspace = true, optional = true }
+ndarray = { workspace = true, optional = true }
+
+# `hub` feature deps.
+reqwest = { workspace = true, optional = true }
+sha2 = { workspace = true, optional = true }
+toml = { workspace = true, optional = true }
+hex = { workspace = true, optional = true }
+dirs = { workspace = true, optional = true }
+futures-util = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+serde_json.workspace = true
+# jsonschema — the round-trip test in tests/serde_roundtrip.rs validates
+# the per-modality model_provenance fragment we emit against the published
+# score-v1.json schema.
+jsonschema.workspace = true
+tempfile.workspace = true
