@@ -84,18 +84,20 @@
   gap: 6px;
 }
 
-/* Metric Tile - Uses global VFS surface colors */
+/* Metric Tile - Uses brand triad (cyan / indigo / violet).
+   Health states stay neutral; only warning/critical bump into a warm/red
+   hue because that's a safety signal, not a brand color. */
 .metric-tile {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 6px 4px;
+  padding: 5px 4px;
   background: var(--vfs-bg-secondary);
   border: 1px solid var(--vfs-border);
   border-radius: 6px;
-  min-height: 52px;
+  min-height: 50px;
   transition: all 0.2s ease;
   overflow: hidden;
 }
@@ -107,44 +109,37 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: var(--vfs-text-tertiary);
-  opacity: 0.3;
+  background: var(--vfs-primary);
+  opacity: 0.5;
 }
 
+/* "good" = normal operating range: brand primary stripe, full opacity */
 .metric-tile.good::before {
-  background: var(--vfs-success);
-  opacity: 1;
+  background: var(--vfs-primary);
+  opacity: 0.9;
 }
 
+/* Safety signal — kept warm amber, not neon yellow. Used when a value
+   crosses the user-configured warning threshold. */
 .metric-tile.warning::before {
   background: var(--vfs-warning);
-  opacity: 1;
+  opacity: 0.9;
 }
 
+/* Critical is a real signal, not branding. Static, no pulse. */
 .metric-tile.critical::before {
   background: var(--vfs-error);
-  opacity: 1;
-  animation: pulse-critical 1s ease-in-out infinite;
+  opacity: 0.9;
 }
 
 .metric-tile.inactive::before {
   background: var(--vfs-text-tertiary);
-  opacity: 0.3;
+  opacity: 0.25;
 }
 
 .metric-tile.network::before {
-  background: var(--vfs-primary);
-  opacity: 1;
-}
-
-@keyframes pulse-critical {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+  background: var(--vfs-accent);
+  opacity: 0.9;
 }
 
 .tile-icon {
@@ -159,8 +154,9 @@
   height: 100%;
 }
 
+/* Good state icon — primary indigo at full saturation but no glow */
 .metric-tile.good .tile-icon {
-  color: var(--vfs-success);
+  color: var(--vfs-primary);
 }
 
 .metric-tile.warning .tile-icon {
@@ -172,7 +168,7 @@
 }
 
 .metric-tile.network .tile-icon {
-  color: var(--vfs-primary);
+  color: var(--vfs-accent);
 }
 
 .metric-tile.inactive .tile-icon {
@@ -181,8 +177,8 @@
 }
 
 .tile-value {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   font-family: var(--vfs-font-mono, 'JetBrains Mono', monospace);
   color: var(--vfs-text-primary);
   line-height: 1;
@@ -192,39 +188,39 @@
   font-size: 9px;
   color: var(--vfs-text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   margin-top: 2px;
 }
 
-/* Network tile special label */
-/* Disk tile */
+/* Disk tile → muted brand secondary (violet) at 70% */
 .metric-tile.disk::before {
-  background: var(--tier-nearline);
-  opacity: 1;
+  background: var(--vfs-secondary);
+  opacity: 0.7;
 }
 
 .metric-tile.disk .tile-icon {
-  color: var(--tier-nearline);
+  color: var(--vfs-secondary);
+  opacity: 0.85;
 }
 
-/* Upload tile */
+/* Upload tile → primary indigo (was success green) */
 .metric-tile.upload::before {
-  background: var(--vfs-success);
-  opacity: 1;
+  background: var(--vfs-primary);
+  opacity: 0.85;
 }
 
 .metric-tile.upload .tile-icon {
-  color: var(--vfs-success);
+  color: var(--vfs-primary);
 }
 
-/* Download tile */
+/* Download tile → accent cyan (was primary blue, now distinct from upload) */
 .metric-tile.download::before {
-  background: var(--vfs-primary);
-  opacity: 1;
+  background: var(--vfs-accent);
+  opacity: 0.85;
 }
 
 .metric-tile.download .tile-icon {
-  color: var(--vfs-primary);
+  color: var(--vfs-accent);
 }
 
 /* Open Metrics Button */

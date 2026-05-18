@@ -1,13 +1,17 @@
 /**
  * Select Component Styles
- * Uses global CSS variables from theme for consistent styling
- * Modern, polished dropdown with smooth animations and theme integration
+ * Lean alpha.8 aesthetic — compact trigger, subtle borders, primary-tinted focus ring.
+ *
+ * NOTE: This component wraps a native <select>. <option> elements are rendered by the
+ * OS / browser shell and cannot be fully styled (hover bg, padding, focus rings on
+ * items are ignored on most platforms). We style the trigger thoroughly and pass what
+ * we can to the option list.
  */
 
 .vfs-select-wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2, 8px);
+  gap: var(--space-1, 4px);
   position: relative;
 }
 
@@ -16,7 +20,7 @@
 }
 
 .vfs-select-label {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
   font-family: var(--vfs-font-sans, inherit);
@@ -31,20 +35,22 @@
   width: 100%;
 }
 
+/* Chevron — small, 12-14px equivalent, drawn with borders */
 .vfs-select-container::after {
   content: '';
   position: absolute;
-  right: var(--space-3, 12px);
+  right: 10px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-60%);
   width: 0;
   height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 6px solid var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--vfs-text-muted, var(--text-muted, #8e8e93));
   pointer-events: none;
-  transition: all var(--vfs-transition-fast, 150ms);
-  margin-top: 1px;
+  transition:
+    transform 120ms ease,
+    border-top-color 120ms ease;
   z-index: 1;
 }
 
@@ -54,73 +60,81 @@
 
 .vfs-select-wrapper:focus-within .vfs-select-container::after {
   border-top-color: var(--vfs-primary, var(--primary, #0a84ff));
-  transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-40%) rotate(180deg);
 }
 
+/* Trigger — lean: 6px 10px, 12px font, 6px radius, 1px border */
 .vfs-select {
   width: 100%;
-  padding: var(--space-3, 12px) 40px var(--space-3, 12px) var(--space-4, 16px);
-  font-size: 0.875rem;
+  padding: 6px 28px 6px 10px;
+  font-size: 12px;
   font-family: var(--vfs-font-sans, inherit);
   font-weight: 400;
   line-height: 1.4;
   color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
   background: var(--vfs-bg-primary, var(--background, #1c1c1e));
   border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.12)));
-  border-radius: var(--radius-md, 8px);
+  border-radius: 6px;
   cursor: pointer;
-  transition: all var(--vfs-transition-fast, 150ms);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    box-shadow 120ms ease;
   outline: none;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   min-width: 120px;
-  box-shadow: var(--vfs-shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.2));
+  box-shadow: none;
 }
 
 .vfs-select:hover:not(:disabled) {
-  background: var(--vfs-bg-elevated, var(--surface-elevated, #3a3a3c));
-  border-color: var(
-    --vfs-border-hover,
-    var(--border-hover, rgba(255, 255, 255, 0.18))
-  );
-  box-shadow: var(--vfs-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.3));
+  border-color: var(--vfs-primary, var(--primary, #0a84ff));
+  background: var(--vfs-bg-primary, var(--background, #1c1c1e));
 }
 
-.vfs-select:focus {
+/* Focus ring — 2px primary-tinted ring, no glow */
+.vfs-select:focus-visible {
   border-color: var(--vfs-primary, var(--primary, #0a84ff));
-  box-shadow:
-    0 0 0 3px
-      rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.15),
-    var(
-      --vfs-shadow-glow,
-      0 0 12px
-        rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.2)
-    );
-  background: var(--vfs-bg-elevated, var(--surface-elevated, #3a3a3c));
+  box-shadow: 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.35);
+}
+
+/* Keep :focus quiet for mouse users; :focus-visible covers keyboard */
+.vfs-select:focus:not(:focus-visible) {
+  border-color: var(--vfs-primary, var(--primary, #0a84ff));
 }
 
 .vfs-select:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: var(--vfs-bg-tertiary, var(--surface, #3a3a3c));
+  background: var(--vfs-bg-tertiary, var(--surface, #2c2c2e));
   border-color: var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
 }
 
+/* Native option list — limited stylability; pass what we can */
 .vfs-select option {
-  background: var(--vfs-bg-elevated, var(--surface-elevated, #3a3a3c));
+  background: var(--vfs-bg-elevated, var(--surface-elevated, #2c2c2e));
   color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
-  padding: var(--space-3, 12px) var(--space-4, 16px);
+  padding: 6px 10px;
+  font-size: 12px;
   font-family: var(--vfs-font-sans, inherit);
 }
 
-.vfs-select option:hover,
 .vfs-select option:checked {
   background: rgba(
     var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
-    0.1
+    0.12
   );
   color: var(--vfs-primary, var(--primary, #0a84ff));
+}
+
+.vfs-select option:hover {
+  background: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.08
+  );
+  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
 }
 
 .vfs-select option:disabled {
@@ -129,71 +143,63 @@
   color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
 }
 
-/* Compact variant for inline use (e.g., in table headers) */
+/* Compact variant — even tighter for inline use */
 .vfs-select-wrapper.compact {
-  gap: var(--space-1, 4px);
+  gap: 2px;
 }
 
 .vfs-select-wrapper.compact .vfs-select-label {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   margin-bottom: 0;
 }
 
 .vfs-select-wrapper.compact .vfs-select {
-  padding: var(--space-2, 8px) 32px var(--space-2, 8px) var(--space-2, 8px);
-  font-size: 0.8125rem;
+  padding: 4px 24px 4px 8px;
+  font-size: 11px;
   min-width: 80px;
-  border-radius: var(--radius-sm, 6px);
-  box-shadow: none;
+  border-radius: 5px;
 }
 
 .vfs-select-wrapper.compact .vfs-select-container::after {
-  right: var(--space-2, 8px);
-  border-left-width: 4px;
-  border-right-width: 4px;
-  border-top-width: 5px;
+  right: 8px;
+  border-left-width: 3px;
+  border-right-width: 3px;
+  border-top-width: 4px;
 }
 
-.vfs-select-wrapper.compact .vfs-select:hover:not(:disabled) {
-  box-shadow: var(--vfs-shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-/* Small variant */
+/* Small variant — between default and compact */
 .vfs-select-wrapper.small {
-  gap: var(--space-1, 4px);
+  gap: 2px;
 }
 
 .vfs-select-wrapper.small .vfs-select-label {
-  font-size: 0.8125rem;
+  font-size: 0.6875rem;
 }
 
 .vfs-select-wrapper.small .vfs-select {
-  padding: var(--space-2, 8px) 32px var(--space-2, 8px) var(--space-3, 12px);
-  font-size: 0.8125rem;
+  padding: 5px 26px 5px 10px;
+  font-size: 11.5px;
   min-width: 100px;
+  border-radius: 6px;
 }
 
 .vfs-select-wrapper.small .vfs-select-container::after {
-  right: var(--space-2, 8px);
-  border-left-width: 4px;
-  border-right-width: 4px;
-  border-top-width: 5px;
+  right: 9px;
+  border-left-width: 3px;
+  border-right-width: 3px;
+  border-top-width: 4px;
 }
 
 /* Light theme adjustments */
 [data-theme='light'] .vfs-select {
   background: var(--vfs-bg-primary, var(--background, #ffffff));
   border-color: var(--vfs-border, var(--border, rgba(0, 0, 0, 0.1)));
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: var(--vfs-text-primary, var(--text-primary, #1c1c1e));
 }
 
 [data-theme='light'] .vfs-select:hover:not(:disabled) {
-  background: var(--vfs-bg-elevated, var(--surface-elevated, #f5f5f7));
-  border-color: var(
-    --vfs-border-hover,
-    var(--border-hover, rgba(0, 0, 0, 0.15))
-  );
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-color: var(--vfs-primary, var(--primary, #0a84ff));
+  background: var(--vfs-bg-primary, var(--background, #ffffff));
 }
 
 [data-theme='light'] .vfs-select option {

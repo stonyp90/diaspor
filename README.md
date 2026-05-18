@@ -162,8 +162,8 @@ renamed to `<dir>/diaspor` if the new path doesn't already exist.
 
 ```toml
 [dependencies]
-diaspor-core = "0.1.0-alpha.8"
-diaspor-backend-memory = "0.1.0-alpha.8"
+diaspor-core = "0.1.0-alpha.9"
+diaspor-backend-memory = "0.1.0-alpha.9"
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 ```
 

@@ -2,8 +2,7 @@
  * MetricsPage - Cutting-Edge Performance Dashboard
  * Professional monitoring UI with real-time visualizations
  */
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useToast } from '../../components/Toast';
+import { useState, useEffect, useCallback } from 'react';
 import { isTauriAvailable } from '../../hooks';
 import { getStoredPollingInterval } from '../SettingsPage/SettingsPage';
 import './MetricsPage.css';
@@ -319,6 +318,8 @@ const MetricCard = ({
   statusColor,
   children,
   status,
+  alerting = false,
+  alertId,
 }: {
   icon: React.ReactNode;
   title: string;
@@ -328,8 +329,14 @@ const MetricCard = ({
   statusColor?: string;
   children?: React.ReactNode;
   status?: 'good' | 'warn' | 'crit';
+  alerting?: boolean;
+  alertId?: string;
 }) => (
-  <div className={`metric-card ${status ? `status-${status}` : ''}`}>
+  <div
+    className={`metric-card ${status ? `status-${status}` : ''}`}
+    data-alert={alerting ? 'true' : undefined}
+    data-alert-id={alertId}
+  >
     <div className="card-header">
       <div className="card-icon">{icon}</div>
       <div className="card-title">
@@ -337,6 +344,11 @@ const MetricCard = ({
         {subtitle && <span className="card-subtitle">{subtitle}</span>}
       </div>
       <div className="card-value-wrapper">
+        {alerting && (
+          <span className="card-alert-indicator" aria-label="Threshold breached">
+            ⚠
+          </span>
+        )}
         {/* Small color indicator dot */}
         {statusColor && (
           <span className="status-dot" style={{ background: statusColor }} />
@@ -512,38 +524,16 @@ const LoadIcon = () => (
 
 // Main Component
 export function MetricsPage() {
-  const { showToast } = useToast();
   const [metrics, setMetrics] = useState<AllMetrics | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [thresholds, setThresholds] = useState<ThresholdConfig>(loadThresholds);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const alertedRef = useRef<Set<string>>(new Set());
+  const [activeAlerts, setActiveAlerts] = useState<Set<string>>(new Set());
+  const [alertsPanelOpen, setAlertsPanelOpen] = useState(false);
 
-  // Ensure dialog is closed by default when component mounts
+  // Ensure dialog is closed by default when component mounts and on unmount
   useEffect(() => {
-    // Always close dialog on mount to ensure clean state
     setSettingsOpen(false);
-
-    // Show alert thresholds dialog on first login (but not during onboarding)
-    const hasSeenThresholds = localStorage.getItem('diaspor-thresholds-seen');
-    if (!hasSeenThresholds) {
-      // Check if onboarding tour is running by looking for joyride overlay
-      // Use a longer delay to ensure onboarding has completed if it was running
-      const checkAndShow = () => {
-        const isOnboardingActive =
-          document.querySelector('.react-joyride__overlay') !== null;
-        if (!isOnboardingActive) {
-          setSettingsOpen(true);
-          localStorage.setItem('diaspor-thresholds-seen', 'true');
-        }
-      };
-
-      // Wait longer to avoid showing during onboarding tour
-      const timeoutId = setTimeout(checkAndShow, 1500);
-      return () => clearTimeout(timeoutId);
-    }
-
-    // Cleanup: ensure dialog is closed when navigating away
     return () => {
       setSettingsOpen(false);
     };
@@ -567,62 +557,78 @@ export function MetricsPage() {
     netTx: [],
   });
 
+  // Silent state collector: maintains the active-alert set with hysteresis.
+  // Cards inspect this set via `data-alert` and the header badge shows the count.
+  // No toasts — breaches surface on-demand instead of interrupting the user.
   const checkAlerts = useCallback(
     (m: AllMetrics) => {
-      const alerts = alertedRef.current;
-      if (m.system.cpu_usage >= thresholds.cpu && !alerts.has('cpu')) {
-        showToast({
-          type: 'warning',
-          message: `CPU at ${m.system.cpu_usage.toFixed(0)}%`,
+      setActiveAlerts((prev) => {
+        const next = new Set(prev);
+
+        // CPU
+        if (m.system.cpu_usage >= thresholds.cpu) next.add('cpu');
+        else if (m.system.cpu_usage < thresholds.cpu * 0.9) next.delete('cpu');
+
+        // Memory
+        if (m.system.memory_usage_percent >= thresholds.memory) next.add('mem');
+        else if (m.system.memory_usage_percent < thresholds.memory * 0.9)
+          next.delete('mem');
+
+        // Per-GPU utilization and temperature
+        m.gpus.forEach((g, i) => {
+          const gpuKey = `gpu${i}`;
+          if (g.current.gpu_utilization >= thresholds.gpu) next.add(gpuKey);
+          else if (g.current.gpu_utilization < thresholds.gpu * 0.9)
+            next.delete(gpuKey);
+
+          const tempKey = `temp${i}`;
+          const temp = g.current.temperature_celsius;
+          if (temp != null && temp >= thresholds.temperature) next.add(tempKey);
+          else if (temp == null || temp < thresholds.temperature * 0.9)
+            next.delete(tempKey);
         });
-        alerts.add('cpu');
-      } else if (m.system.cpu_usage < thresholds.cpu * 0.9)
-        alerts.delete('cpu');
 
-      if (
-        m.system.memory_usage_percent >= thresholds.memory &&
-        !alerts.has('mem')
-      ) {
-        showToast({
-          type: 'warning',
-          message: `Memory at ${m.system.memory_usage_percent.toFixed(0)}%`,
-        });
-        alerts.add('mem');
-      } else if (m.system.memory_usage_percent < thresholds.memory * 0.9)
-        alerts.delete('mem');
-
-      m.gpus.forEach((g, i) => {
+        // Skip the state update if nothing changed — avoids re-renders every poll
         if (
-          g.current.gpu_utilization >= thresholds.gpu &&
-          !alerts.has(`gpu${i}`)
+          next.size === prev.size &&
+          [...next].every((k) => prev.has(k))
         ) {
-          showToast({
-            type: 'warning',
-            message: `GPU at ${g.current.gpu_utilization.toFixed(0)}%`,
-          });
-          alerts.add(`gpu${i}`);
-        } else if (g.current.gpu_utilization < thresholds.gpu * 0.9)
-          alerts.delete(`gpu${i}`);
-
-        if (
-          g.current.temperature_celsius &&
-          g.current.temperature_celsius >= thresholds.temperature &&
-          !alerts.has(`temp${i}`)
-        ) {
-          showToast({
-            type: 'error',
-            message: `GPU temp ${g.current.temperature_celsius.toFixed(0)}°C`,
-          });
-          alerts.add(`temp${i}`);
-        } else if (
-          !g.current.temperature_celsius ||
-          g.current.temperature_celsius < thresholds.temperature * 0.9
-        )
-          alerts.delete(`temp${i}`);
+          return prev;
+        }
+        return next;
       });
     },
-    [showToast, thresholds],
+    [thresholds],
   );
+
+  // Human-readable labels for the alerts popover
+  const buildAlertList = (): { key: string; label: string }[] => {
+    if (!metrics) return [];
+    const out: { key: string; label: string }[] = [];
+    if (activeAlerts.has('cpu'))
+      out.push({
+        key: 'cpu',
+        label: `CPU at ${metrics.system.cpu_usage.toFixed(0)}%`,
+      });
+    if (activeAlerts.has('mem'))
+      out.push({
+        key: 'mem',
+        label: `Memory at ${metrics.system.memory_usage_percent.toFixed(0)}%`,
+      });
+    metrics.gpus.forEach((g, i) => {
+      if (activeAlerts.has(`gpu${i}`))
+        out.push({
+          key: `gpu${i}`,
+          label: `GPU at ${g.current.gpu_utilization.toFixed(0)}%`,
+        });
+      if (activeAlerts.has(`temp${i}`) && g.current.temperature_celsius != null)
+        out.push({
+          key: `temp${i}`,
+          label: `GPU temp ${g.current.temperature_celsius.toFixed(0)}°C`,
+        });
+    });
+    return out;
+  };
 
   const fetchMetrics = useCallback(async () => {
     try {
@@ -706,7 +712,7 @@ export function MetricsPage() {
   const handleSaveThresholds = (t: ThresholdConfig) => {
     setThresholds(t);
     saveThresholds(t);
-    alertedRef.current.clear();
+    setActiveAlerts(new Set());
   };
 
   if (error) {
@@ -768,9 +774,52 @@ export function MetricsPage() {
             </span>
           </div>
         </div>
-        <button className="settings-btn" onClick={() => setSettingsOpen(true)}>
-          <SettingsIcon />
-        </button>
+        <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          {activeAlerts.size > 0 && (
+            <div className="alerts-badge-wrapper" style={{ position: 'relative' }}>
+              <button
+                type="button"
+                className="alerts-badge"
+                onClick={() => setAlertsPanelOpen((o) => !o)}
+                aria-label={`${activeAlerts.size} active alert${activeAlerts.size === 1 ? '' : 's'}`}
+                aria-expanded={alertsPanelOpen}
+              >
+                <span aria-hidden="true">⚠</span>
+                <span className="alerts-badge-count">{activeAlerts.size}</span>
+              </button>
+              {alertsPanelOpen && (
+                <div className="alerts-popover" role="dialog" aria-label="Active alerts">
+                  <div className="alerts-popover-header">Active alerts</div>
+                  <ul className="alerts-popover-list">
+                    {buildAlertList().map(({ key, label }) => (
+                      <li key={key}>
+                        <button
+                          type="button"
+                          className="alerts-popover-item"
+                          onClick={() => {
+                            // alertId is a space-separated list (e.g. "gpu0 temp0")
+                            // so we match with ~= which finds whole-word tokens
+                            const el = document.querySelector<HTMLElement>(
+                              `[data-alert-id~="${key}"]`,
+                            );
+                            if (el)
+                              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            setAlertsPanelOpen(false);
+                          }}
+                        >
+                          {label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+          <button className="settings-btn" onClick={() => setSettingsOpen(true)}>
+            <SettingsIcon />
+          </button>
+        </div>
       </header>
 
       {/* Quick Stats Bar */}
@@ -833,6 +882,8 @@ export function MetricsPage() {
           value={sys.cpu_usage.toFixed(1)}
           unit="%"
           statusColor={cpuColor}
+          alerting={activeAlerts.has('cpu')}
+          alertId="cpu"
           status={
             sys.cpu_usage >= thresholds.cpu
               ? 'crit'
@@ -857,6 +908,8 @@ export function MetricsPage() {
           unit="%"
           subtitle={`${(sys.memory_used_mb / 1024).toFixed(1)} / ${(sys.memory_total_mb / 1024).toFixed(0)} GB`}
           statusColor={memColor}
+          alerting={activeAlerts.has('mem')}
+          alertId="mem"
         >
           <LiveChart data={history.mem} color={memColor} height={80} />
           {sys.swap_total_mb > 0 && (
@@ -882,6 +935,8 @@ export function MetricsPage() {
             unit="%"
             subtitle={gpu.info.name}
             statusColor={gpuColor}
+            alerting={activeAlerts.has('gpu0') || activeAlerts.has('temp0')}
+            alertId="gpu0 temp0"
           >
             <LiveChart data={history.gpu} color={gpuColor} height={80} />
             <div className="gpu-stats">
