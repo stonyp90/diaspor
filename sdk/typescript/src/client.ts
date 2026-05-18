@@ -412,8 +412,11 @@ function toBlob(file: UploadablePayload): Blob {
     return file;
   }
   if (file instanceof Uint8Array) {
-    // Cast through ArrayBuffer to avoid SharedArrayBuffer typing surprises.
-    return new Blob([file], { type: "application/octet-stream" });
+    // TS 5.7+ widened Uint8Array to be generic over ArrayBufferLike, which the
+    // Blob constructor's BlobPart union doesn't accept (it wants the narrower
+    // ArrayBuffer-backed variant). Cast through BlobPart since at runtime any
+    // Uint8Array is a valid Blob input regardless of backing buffer.
+    return new Blob([file as BlobPart], { type: "application/octet-stream" });
   }
   if (file instanceof ArrayBuffer) {
     return new Blob([file], { type: "application/octet-stream" });

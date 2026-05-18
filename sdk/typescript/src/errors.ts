@@ -47,7 +47,9 @@ export abstract class DiasporError extends Error {
  * it lets us correlate against gateway and inference logs.
  */
 export class ApiError extends DiasporError {
-  public readonly code = "api_error";
+  // Typed as `string` (not a literal) so subclasses can narrow it to their
+  // own discriminant — e.g. `"vertical_refused"` on VerticalRefusedError.
+  public override readonly code: string = "api_error";
 
   /** HTTP status code returned by the API. */
   public readonly status: number;

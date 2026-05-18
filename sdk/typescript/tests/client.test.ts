@@ -70,7 +70,6 @@ describe("DiasporClient construction", () => {
 
   it("throws when no fetch is available and none is provided", () => {
     const originalFetch = globalThis.fetch;
-    // @ts-expect-error — simulating a missing fetch
     delete (globalThis as unknown as { fetch?: unknown }).fetch;
     try {
       expect(() => new DiasporClient({ apiKey: "sk_test" })).toThrow(TypeError);

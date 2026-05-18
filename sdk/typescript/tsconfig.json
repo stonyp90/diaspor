@@ -23,8 +23,7 @@
     "verbatimModuleSyntax": false,
     "skipLibCheck": true,
 
-    "outDir": "./dist",
-    "rootDir": "./src"
+    "outDir": "./dist"
   },
   "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules", "dist", "coverage", ".vitest-cache"]
