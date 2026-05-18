@@ -27,4 +27,7 @@ time = { workspace = true }
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
-diaspor-conformance = { path = "../diaspor-conformance" }
+# Version pinned (not wildcard) so cargo-deny's bans-wildcard-dep check
+# stays clean; the workspace shares one version via the root Cargo.toml so
+# the explicit constraint never drifts out of sync.
+diaspor-conformance = { version = "0.1.0-alpha.1", path = "../diaspor-conformance" }

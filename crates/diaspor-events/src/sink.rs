@@ -21,8 +21,8 @@ use hmac::{Hmac, Mac};
 use sha2::Sha256;
 use tokio::sync::broadcast;
 
-use crate::event::Event;
 use crate::EventError;
+use crate::event::Event;
 
 type HmacSha256 = Hmac<Sha256>;
 
@@ -247,11 +247,7 @@ impl WebhookEventSink {
     /// this is intentional: a misconfigured sink is a configuration bug, not a runtime
     /// condition, and we want to surface it at startup rather than per-request.
     #[must_use]
-    pub fn new(
-        url: impl Into<String>,
-        hmac_secret: impl Into<String>,
-        timeout: Duration,
-    ) -> Self {
+    pub fn new(url: impl Into<String>, hmac_secret: impl Into<String>, timeout: Duration) -> Self {
         let client = reqwest::Client::builder()
             .timeout(timeout)
             .build()
@@ -270,8 +266,8 @@ impl WebhookEventSink {
     /// duplicating the construction.
     #[must_use]
     pub fn sign(secret: &[u8], body: &[u8]) -> String {
-        let mut mac = HmacSha256::new_from_slice(secret)
-            .expect("HMAC-SHA256 accepts keys of any length");
+        let mut mac =
+            HmacSha256::new_from_slice(secret).expect("HMAC-SHA256 accepts keys of any length");
         mac.update(body);
         let result = mac.finalize().into_bytes();
         let mut hex = String::with_capacity(result.len() * 2);
@@ -295,10 +291,7 @@ impl EventSink for WebhookEventSink {
             Event::Threshold(t) => t.payload_bytes,
         };
 
-        let signature = format!(
-            "sha256={}",
-            Self::sign(self.hmac_secret.as_bytes(), &body)
-        );
+        let signature = format!("sha256={}", Self::sign(self.hmac_secret.as_bytes(), &body));
 
         let response = self
             .client

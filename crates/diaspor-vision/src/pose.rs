@@ -87,8 +87,8 @@ pub struct PoseFrame {
 mod serde_keypoints {
     use super::{POSE_LANDMARK_COUNT, PoseKeypoint};
     use serde::de::{Error, SeqAccess, Visitor};
-    use serde::{Deserializer, Serializer};
     use serde::ser::SerializeSeq;
+    use serde::{Deserializer, Serializer};
 
     pub(super) fn serialize<S>(
         value: &[PoseKeypoint; POSE_LANDMARK_COUNT],
@@ -116,7 +116,10 @@ mod serde_keypoints {
             type Value = [PoseKeypoint; POSE_LANDMARK_COUNT];
 
             fn expecting(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                write!(f, "an array of exactly {POSE_LANDMARK_COUNT} PoseKeypoint objects")
+                write!(
+                    f,
+                    "an array of exactly {POSE_LANDMARK_COUNT} PoseKeypoint objects"
+                )
             }
 
             fn visit_seq<A>(self, mut seq: A) -> Result<Self::Value, A::Error>
@@ -128,14 +131,12 @@ mod serde_keypoints {
                     y: 0.0,
                     z: 0.0,
                     visibility: 0.0,
-                }; POSE_LANDMARK_COUNT];
+                };
+                    POSE_LANDMARK_COUNT];
                 let mut idx = 0usize;
                 while let Some(kp) = seq.next_element::<PoseKeypoint>()? {
                     if idx >= POSE_LANDMARK_COUNT {
-                        return Err(A::Error::invalid_length(
-                            idx + 1,
-                            &"exactly 33 keypoints",
-                        ));
+                        return Err(A::Error::invalid_length(idx + 1, &"exactly 33 keypoints"));
                     }
                     out[idx] = kp;
                     idx += 1;

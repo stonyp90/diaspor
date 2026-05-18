@@ -83,9 +83,7 @@ fn main() {
 
     match cli.command {
         Command::Serve { local, gpu, port } => {
-            eprintln!(
-                "diaspor-agent serve · local={local} · gpu={gpu} · port={port}"
-            );
+            eprintln!("diaspor-agent serve · local={local} · gpu={gpu} · port={port}");
             not_yet_implemented("runtime daemon");
         }
         Command::Status => not_yet_implemented("status"),

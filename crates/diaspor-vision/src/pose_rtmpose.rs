@@ -40,8 +40,8 @@ use async_trait::async_trait;
 use bytes::Bytes;
 use diaspor_core::{Result, VfsError};
 use diaspor_infer::{
-    AdapterId, DType, InferenceBackend, ModelHub, ModelId, OrtCpuConfig,
-    OrtCpuInferenceBackend, Tensor, TensorBatch,
+    AdapterId, DType, InferenceBackend, ModelHub, ModelId, OrtCpuConfig, OrtCpuInferenceBackend,
+    Tensor, TensorBatch,
 };
 use tracing::{debug, info};
 
@@ -74,23 +74,23 @@ pub const IMAGENET_STD: [f32; 3] = [0.229, 0.224, 0.225];
 /// detail, hip midpoint) stay at `visibility = 0.0`. Indexing follows the published
 /// `BlazePose` topology — see the upstream `MediaPipe` docs for the slot names.
 const COCO_TO_BLAZEPOSE: [(usize, usize); RTMPOSE_KEYPOINTS] = [
-    (0, 0),    // nose
-    (1, 2),    // left_eye
-    (2, 5),    // right_eye
-    (3, 7),    // left_ear
-    (4, 8),    // right_ear
-    (5, 11),   // left_shoulder
-    (6, 12),   // right_shoulder
-    (7, 13),   // left_elbow
-    (8, 14),   // right_elbow
-    (9, 15),   // left_wrist
-    (10, 16),  // right_wrist
-    (11, 23),  // left_hip
-    (12, 24),  // right_hip
-    (13, 25),  // left_knee
-    (14, 26),  // right_knee
-    (15, 27),  // left_ankle
-    (16, 28),  // right_ankle
+    (0, 0),   // nose
+    (1, 2),   // left_eye
+    (2, 5),   // right_eye
+    (3, 7),   // left_ear
+    (4, 8),   // right_ear
+    (5, 11),  // left_shoulder
+    (6, 12),  // right_shoulder
+    (7, 13),  // left_elbow
+    (8, 14),  // right_elbow
+    (9, 15),  // left_wrist
+    (10, 16), // right_wrist
+    (11, 23), // left_hip
+    (12, 24), // right_hip
+    (13, 25), // left_knee
+    (14, 26), // right_knee
+    (15, 27), // left_ankle
+    (16, 28), // right_ankle
 ];
 
 /// An ORT-backed pose extractor that loads `RTMPose` via [`ModelHub`].
@@ -200,7 +200,12 @@ impl PoseExtractor for RtmposePoseExtractor {
 // mantissa precision — the cast_precision_loss lint fires on the cast but there is none.
 #[allow(clippy::cast_precision_loss)]
 pub fn decode_rtmpose_heatmap(heatmap: &Tensor, timestamp_ms: u64) -> Result<PoseFrame> {
-    let expected_shape = [1, RTMPOSE_KEYPOINTS, RTMPOSE_HEATMAP_HEIGHT, RTMPOSE_HEATMAP_WIDTH];
+    let expected_shape = [
+        1,
+        RTMPOSE_KEYPOINTS,
+        RTMPOSE_HEATMAP_HEIGHT,
+        RTMPOSE_HEATMAP_WIDTH,
+    ];
     if heatmap.shape != expected_shape {
         return Err(VisionError::PoseFailed(format!(
             "rtmpose: heatmap shape {:?} does not match expected {:?}",
@@ -228,16 +233,13 @@ pub fn decode_rtmpose_heatmap(heatmap: &Tensor, timestamp_ms: u64) -> Result<Pos
     let stride_h = RTMPOSE_HEATMAP_HEIGHT * RTMPOSE_HEATMAP_WIDTH;
     for (coco_idx, blaze_idx) in COCO_TO_BLAZEPOSE {
         let channel_start = coco_idx * stride_h * 4;
-        let (peak_y, peak_x, peak_value) = argmax_heatmap_channel(
-            &heatmap.bytes[channel_start..channel_start + stride_h * 4],
-        );
+        let (peak_y, peak_x, peak_value) =
+            argmax_heatmap_channel(&heatmap.bytes[channel_start..channel_start + stride_h * 4]);
         // Normalize to [0, 1] in input-image coordinates so callers can scale to the
         // original frame. Input is 256x192, heatmap is 64x48, so we multiply by stride
         // and divide by input dims.
-        let x_norm =
-            (peak_x as f32 * RTMPOSE_STRIDE as f32) / RTMPOSE_INPUT_WIDTH as f32;
-        let y_norm =
-            (peak_y as f32 * RTMPOSE_STRIDE as f32) / RTMPOSE_INPUT_HEIGHT as f32;
+        let x_norm = (peak_x as f32 * RTMPOSE_STRIDE as f32) / RTMPOSE_INPUT_WIDTH as f32;
+        let y_norm = (peak_y as f32 * RTMPOSE_STRIDE as f32) / RTMPOSE_INPUT_HEIGHT as f32;
         // RTMPose heatmap peak is roughly a Gaussian; clamp the visibility to [0, 1].
         let visibility = peak_value.clamp(0.0, 1.0);
         frame.keypoints[blaze_idx] = PoseKeypoint {
@@ -268,7 +270,11 @@ fn argmax_heatmap_channel(channel_bytes: &[u8]) -> (usize, usize, f32) {
             best_idx = i;
         }
     }
-    (best_idx / RTMPOSE_HEATMAP_WIDTH, best_idx % RTMPOSE_HEATMAP_WIDTH, best)
+    (
+        best_idx / RTMPOSE_HEATMAP_WIDTH,
+        best_idx % RTMPOSE_HEATMAP_WIDTH,
+        best,
+    )
 }
 
 /// Preprocessing helper: turns a row-major RGB `[H, W, 3]` `u8` buffer into the
@@ -336,7 +342,12 @@ mod tests {
             }
             Ok(TensorBatch::new(vec![Tensor::new(
                 "heatmap",
-                vec![1, RTMPOSE_KEYPOINTS, RTMPOSE_HEATMAP_HEIGHT, RTMPOSE_HEATMAP_WIDTH],
+                vec![
+                    1,
+                    RTMPOSE_KEYPOINTS,
+                    RTMPOSE_HEATMAP_HEIGHT,
+                    RTMPOSE_HEATMAP_WIDTH,
+                ],
                 DType::F32,
                 Bytes::from(self.canned_output.clone()),
             )]))
@@ -344,7 +355,8 @@ mod tests {
     }
 
     fn synth_heatmap_with_peak_at(channel: usize, peak_y: usize, peak_x: usize) -> Vec<u8> {
-        let mut buf = vec![0u8; RTMPOSE_KEYPOINTS * RTMPOSE_HEATMAP_HEIGHT * RTMPOSE_HEATMAP_WIDTH * 4];
+        let mut buf =
+            vec![0u8; RTMPOSE_KEYPOINTS * RTMPOSE_HEATMAP_HEIGHT * RTMPOSE_HEATMAP_WIDTH * 4];
         let stride_channel = RTMPOSE_HEATMAP_HEIGHT * RTMPOSE_HEATMAP_WIDTH * 4;
         let idx = peak_y * RTMPOSE_HEATMAP_WIDTH + peak_x;
         let off = channel * stride_channel + idx * 4;
@@ -368,8 +380,14 @@ mod tests {
         let extractor = RtmposePoseExtractor::with_backend(backend, ModelId::new("rtmpose-test"));
 
         // Caller-supplied [1, 3, 256, 192] f32 NCHW; contents don't matter for the mock.
-        let dummy_input = Bytes::from(vec![0u8; 3 * RTMPOSE_INPUT_HEIGHT * RTMPOSE_INPUT_WIDTH * 4]);
-        let frame = extractor.extract(&dummy_input, 1234).await.expect("decode must succeed");
+        let dummy_input = Bytes::from(vec![
+            0u8;
+            3 * RTMPOSE_INPUT_HEIGHT * RTMPOSE_INPUT_WIDTH * 4
+        ]);
+        let frame = extractor
+            .extract(&dummy_input, 1234)
+            .await
+            .expect("decode must succeed");
 
         assert_eq!(frame.timestamp_ms, 1234);
         let kp = frame.keypoints[11]; // BlazePose left_shoulder
@@ -377,7 +395,11 @@ mod tests {
         // image, which normalizes to (0.5, 0.5).
         assert!((kp.x - (96.0 / 192.0)).abs() < 1e-6, "kp.x = {}", kp.x);
         assert!((kp.y - (128.0 / 256.0)).abs() < 1e-6, "kp.y = {}", kp.y);
-        assert!((kp.visibility - 0.95).abs() < 1e-6, "kp.visibility = {}", kp.visibility);
+        assert!(
+            (kp.visibility - 0.95).abs() < 1e-6,
+            "kp.visibility = {}",
+            kp.visibility
+        );
         assert_eq!(kp.z, 0.0);
 
         // Slots BlazePose doesn't have a COCO source for stay zeroed.
@@ -408,9 +430,15 @@ mod tests {
             return_zero_outputs: true,
         });
         let extractor = RtmposePoseExtractor::with_backend(backend, ModelId::new("rtmpose-test"));
-        let dummy = Bytes::from(vec![0u8; 3 * RTMPOSE_INPUT_HEIGHT * RTMPOSE_INPUT_WIDTH * 4]);
+        let dummy = Bytes::from(vec![
+            0u8;
+            3 * RTMPOSE_INPUT_HEIGHT * RTMPOSE_INPUT_WIDTH * 4
+        ]);
         let err = extractor.extract(&dummy, 0).await.expect_err("must error");
-        assert!(err.to_string().contains("zero output tensors"), "err: {err}");
+        assert!(
+            err.to_string().contains("zero output tensors"),
+            "err: {err}"
+        );
     }
 
     #[test]
@@ -426,7 +454,10 @@ mod tests {
         // First pixel R: 128/255 - 0.485 / 0.229 ≈ (0.5019 - 0.485) / 0.229 ≈ 0.07396
         let expected = (128.0_f32 / 255.0 - IMAGENET_MEAN[0]) / IMAGENET_STD[0];
         let actual = f32::from_ne_bytes([encoded[0], encoded[1], encoded[2], encoded[3]]);
-        assert!((actual - expected).abs() < 1e-5, "actual = {actual}, expected = {expected}");
+        assert!(
+            (actual - expected).abs() < 1e-5,
+            "actual = {actual}, expected = {expected}"
+        );
     }
 
     #[test]

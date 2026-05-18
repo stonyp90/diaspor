@@ -78,8 +78,14 @@ async fn main() -> ExitCode {
             println!();
             println!("UNEXPECTED Ok at the alpha — VisionRecord produced:");
             println!("  extracted_at      = {}", record.extracted_at);
-            println!("  pose_provenance   = {}", record.pose_provenance.model_name);
-            println!("  face_provenance   = {}", record.face_provenance.model_name);
+            println!(
+                "  pose_provenance   = {}",
+                record.pose_provenance.model_name
+            );
+            println!(
+                "  face_provenance   = {}",
+                record.face_provenance.model_name
+            );
             println!(
                 "  prosody_provenance = {}",
                 record.prosody_provenance.model_name

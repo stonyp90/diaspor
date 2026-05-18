@@ -109,9 +109,9 @@ mod tests {
     use bytes::Bytes;
 
     use super::*;
+    use crate::InferError;
     use crate::backend::{CoreMLConfig, CoreMLInferenceBackend};
     use crate::tensor::{DType, Tensor};
-    use crate::InferError;
 
     #[tokio::test]
     async fn coreml_pipeline_returns_not_implemented() {
@@ -126,8 +126,8 @@ mod tests {
             "pixel_values",
             vec![1, 3, 224, 224],
             DType::F32,
-            Bytes::from_static(&[0u8; 4])),
-        ]);
+            Bytes::from_static(&[0u8; 4]),
+        )]);
 
         let err = pipeline
             .infer(&tenant, &model, inputs)

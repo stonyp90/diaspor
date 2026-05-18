@@ -55,11 +55,7 @@ pub trait EvalGate: Send + Sync {
     fn name(&self) -> &'static str;
 
     /// Evaluates `adapter` against `held_out_set` and returns the verdict.
-    async fn evaluate(
-        &self,
-        adapter: &AdapterArtifact,
-        held_out_set: &Path,
-    ) -> Result<EvalReport>;
+    async fn evaluate(&self, adapter: &AdapterArtifact, held_out_set: &Path) -> Result<EvalReport>;
 }
 
 /// No-op eval gate used for trait-surface scaffolding and tests.

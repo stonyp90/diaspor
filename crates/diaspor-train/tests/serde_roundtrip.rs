@@ -86,9 +86,8 @@ fn corpus_manifest_roundtrips_through_json() {
         tenant_id: TenantId::new("cust_acme"),
         clip_count: 1024,
         total_duration_seconds: 12_345.678,
-        sha256_manifest:
-            "3a7f1c2b9d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
-                .to_string(),
+        sha256_manifest: "3a7f1c2b9d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
+            .to_string(),
         ingested_at: OffsetDateTime::from_unix_timestamp(1_768_000_000)
             .expect("hard-coded epoch must parse"),
     };
@@ -130,8 +129,7 @@ fn corpus_source_adjacent_tag_roundtrips() {
 #[test]
 fn lora_config_default_roundtrips() {
     let original = LoraConfig::default();
-    let json_string =
-        serde_json::to_string_pretty(&original).expect("LoraConfig must serialize");
+    let json_string = serde_json::to_string_pretty(&original).expect("LoraConfig must serialize");
     let round_tripped: LoraConfig =
         serde_json::from_str(&json_string).expect("LoraConfig must deserialize");
     assert_eq!(original, round_tripped);

@@ -127,7 +127,9 @@ pub enum TrainError {
 
     /// The eval gate ran successfully but reported [`EvalReport::passed`] as `false`. The
     /// adapter is dropped and the tenant is notified.
-    #[error("eval gate rejected adapter: metric={metric} baseline={baseline} new={new} delta={delta}")]
+    #[error(
+        "eval gate rejected adapter: metric={metric} baseline={baseline} new={new} delta={delta}"
+    )]
     EvalGateRejected {
         /// Name of the metric that failed.
         metric: String,

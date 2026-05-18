@@ -15,7 +15,7 @@ use std::path::PathBuf;
 
 use bytes::Bytes;
 use diaspor_infer::{
-    AdapterId, DType, ModelId, OrtCpuConfig, OrtCpuInferenceBackend, Tensor, TenantId,
+    AdapterId, DType, ModelId, OrtCpuConfig, OrtCpuInferenceBackend, TenantId, Tensor,
 };
 
 fn fixture_path() -> PathBuf {

@@ -88,11 +88,7 @@ pub trait CorpusIngest: Send + Sync {
     fn name(&self) -> &'static str;
 
     /// Walks `source` under `tenant_id`'s scope and returns its manifest.
-    async fn ingest(
-        &self,
-        tenant_id: &TenantId,
-        source: &CorpusSource,
-    ) -> Result<CorpusManifest>;
+    async fn ingest(&self, tenant_id: &TenantId, source: &CorpusSource) -> Result<CorpusManifest>;
 }
 
 /// No-op corpus ingest used for trait-surface scaffolding and tests.

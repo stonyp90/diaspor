@@ -122,7 +122,9 @@ impl TokenBucket {
     /// Refills the bucket up to `max_tokens` based on time since the
     /// last refill. Pure function over `(now - last_refill_at)`.
     fn refill(&mut self, now: Instant) {
-        let elapsed = now.saturating_duration_since(self.last_refill_at).as_secs_f64();
+        let elapsed = now
+            .saturating_duration_since(self.last_refill_at)
+            .as_secs_f64();
         // `mul_add` is the FP-accurate form clippy nudges us to use; the
         // numbers in play are small (< 1e6 either way) so the precision
         // win is theoretical, but the lint is canonical.
@@ -160,8 +162,7 @@ impl TokenBucket {
             // those bounds are explicit, but it can't prove that, so
             // silence the lint locally.
             #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-            let retry_after_seconds =
-                seconds_f.ceil().clamp(1.0, f64::from(u32::MAX)) as u32;
+            let retry_after_seconds = seconds_f.ceil().clamp(1.0, f64::from(u32::MAX)) as u32;
             BucketOutcome::RateLimited {
                 retry_after_seconds,
             }
@@ -238,9 +239,7 @@ impl DailyCounter {
 /// `[1, SECONDS_PER_DAY]` so the client always sees a non-zero
 /// `Retry-After` even at the millisecond cusp of midnight.
 fn seconds_until_utc_midnight(now: OffsetDateTime) -> u32 {
-    let midnight = now
-        .replace_time(Time::MIDNIGHT)
-        + time::Duration::days(1);
+    let midnight = now.replace_time(Time::MIDNIGHT) + time::Duration::days(1);
     let secs = (midnight - now).whole_seconds();
     let clamped = secs.clamp(1, SECONDS_PER_DAY);
     u32::try_from(clamped).unwrap_or(u32::MAX)

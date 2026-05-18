@@ -7,8 +7,8 @@
 //!    not an error), the overall `MultiSink::emit` returns `Ok(())`;
 //! 3. when one sink fails, the rest still run to completion before the error is surfaced.
 
-use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 use async_trait::async_trait;
 use bytes::Bytes;

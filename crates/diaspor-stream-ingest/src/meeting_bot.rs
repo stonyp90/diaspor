@@ -194,8 +194,7 @@ mod tests {
             provider,
             api_key: "test-key".to_string(),
             bot_display_name: "Diaspor Recording Bot".to_string(),
-            consent_script: "This meeting is being recorded for sport judging review."
-                .to_string(),
+            consent_script: "This meeting is being recorded for sport judging review.".to_string(),
             recording_delay_seconds: 5,
             meeting_url: "https://meet.example.com/abc-defg-hij".to_string(),
         }

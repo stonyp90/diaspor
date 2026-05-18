@@ -23,10 +23,10 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use bytes::Bytes;
-use parking_lot::RwLock;
 use diaspor_core::{
     NodeKind, OpenFlags, Result, VfsBackend, VfsError, VfsHandle, VfsMetadata, VfsPath,
 };
+use parking_lot::RwLock;
 use time::OffsetDateTime;
 
 /// In-memory representation of a single filesystem node (file or directory).

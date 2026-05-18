@@ -12,9 +12,9 @@ use std::time::Duration;
 use async_trait::async_trait;
 use diaspor_core::Result;
 
+use crate::InferError;
 use crate::tenant::{AdapterId, ModelId};
 use crate::tensor::TensorBatch;
-use crate::InferError;
 
 /// The single trait every inference runtime implements.
 ///
@@ -209,19 +209,21 @@ impl OrtCpuInferenceBackend {
             reason: format!("Session::builder: {e}"),
         })?;
         if config.threads > 0 {
-            builder = builder
-                .with_intra_threads(config.threads)
+            builder =
+                builder
+                    .with_intra_threads(config.threads)
+                    .map_err(|e| InferError::ModelLoad {
+                        backend: "ort-cpu",
+                        reason: format!("with_intra_threads: {e}"),
+                    })?;
+        }
+        let session =
+            builder
+                .commit_from_file(&config.onnx_path)
                 .map_err(|e| InferError::ModelLoad {
                     backend: "ort-cpu",
-                    reason: format!("with_intra_threads: {e}"),
+                    reason: format!("commit_from_file({}): {e}", config.onnx_path.display()),
                 })?;
-        }
-        let session = builder
-            .commit_from_file(&config.onnx_path)
-            .map_err(|e| InferError::ModelLoad {
-                backend: "ort-cpu",
-                reason: format!("commit_from_file({}): {e}", config.onnx_path.display()),
-            })?;
         Ok(Self {
             config,
             session: parking_lot::Mutex::new(session),
@@ -328,12 +330,13 @@ impl InferenceBackend for OrtCpuInferenceBackend {
         // ort 2.x's `try_extract_tensor` returns `(&Shape, &[T])`.
         let mut out_tensors = Vec::with_capacity(outputs.len());
         for (name, value) in &outputs {
-            let (shape, data) = value
-                .try_extract_tensor::<f32>()
-                .map_err(|e| InferError::BackendFailure {
-                    backend: "ort-cpu",
-                    reason: format!("try_extract_tensor::<f32>({name}): {e}"),
-                })?;
+            let (shape, data) =
+                value
+                    .try_extract_tensor::<f32>()
+                    .map_err(|e| InferError::BackendFailure {
+                        backend: "ort-cpu",
+                        reason: format!("try_extract_tensor::<f32>({name}): {e}"),
+                    })?;
             let shape_vec: Vec<usize> = shape
                 .iter()
                 .copied()

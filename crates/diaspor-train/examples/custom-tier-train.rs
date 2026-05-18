@@ -57,12 +57,8 @@ async fn main() -> ExitCode {
     println!("Canonical S3 key the trained adapter will live at:");
     println!("  {canonical_path}");
     println!();
-    println!(
-        "(This is the AdapterArtifact::path_in_tenant_bucket() contract — the serving"
-    );
-    println!(
-        "layer resolves a (TenantId, AdapterId) pair into this exact shape with no"
-    );
+    println!("(This is the AdapterArtifact::path_in_tenant_bucket() contract — the serving");
+    println!("layer resolves a (TenantId, AdapterId) pair into this exact shape with no");
     println!("extra database round-trip.)");
     println!();
 
@@ -92,9 +88,8 @@ async fn main() -> ExitCode {
     // ------------------------------------------------------------------------
     // Step 3 — drive the pipeline. v0.1.0-alpha SHORT-CIRCUITS at the corpus stage.
     // ------------------------------------------------------------------------
-    let corpus_source = CorpusSource::S3Prefix(
-        "s3://acme-diaspor-corpus/judge-v1/clips/".to_string(),
-    );
+    let corpus_source =
+        CorpusSource::S3Prefix("s3://acme-diaspor-corpus/judge-v1/clips/".to_string());
     let lora_config = default_judge_lora_config();
     let held_out_set = PathBuf::from("/nonexistent/acme-judge-v1-heldout");
 

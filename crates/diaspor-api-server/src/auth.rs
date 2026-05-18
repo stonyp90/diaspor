@@ -170,15 +170,10 @@ impl Config {
             Err(VarError::NotUnicode(_)) => return Err(ConfigError::EmptyJwtSecret),
         };
 
-        let default_rate_limit_per_min = parse_optional_u32(
-            ENV_DEFAULT_RATE_LIMIT,
-            Self::DEFAULT_RATE_LIMIT_PER_MIN,
-        )?;
+        let default_rate_limit_per_min =
+            parse_optional_u32(ENV_DEFAULT_RATE_LIMIT, Self::DEFAULT_RATE_LIMIT_PER_MIN)?;
 
-        let default_daily_cap = parse_optional_u32(
-            ENV_DEFAULT_DAILY_CAP,
-            Self::DEFAULT_DAILY_CAP,
-        )?;
+        let default_daily_cap = parse_optional_u32(ENV_DEFAULT_DAILY_CAP, Self::DEFAULT_DAILY_CAP)?;
 
         Ok(Self {
             jwt_secret: Arc::new(jwt_secret),

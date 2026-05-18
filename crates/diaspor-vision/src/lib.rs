@@ -171,11 +171,7 @@ where
     /// Bubbles up the first error from any modality. With the `Noop*` stubs in place,
     /// every call returns [`VisionError::NotImplemented`] for the pose modality (the
     /// first one in the chain).
-    pub async fn process(
-        &self,
-        frame_bytes: &Bytes,
-        audio_pcm: &Bytes,
-    ) -> Result<VisionRecord> {
+    pub async fn process(&self, frame_bytes: &Bytes, audio_pcm: &Bytes) -> Result<VisionRecord> {
         let timestamp_ms: u64 = 0;
         let pose = self.pose.extract(frame_bytes, timestamp_ms).await?;
         let face = self.face.extract(frame_bytes, timestamp_ms).await?;

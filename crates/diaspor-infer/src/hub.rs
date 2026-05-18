@@ -57,7 +57,9 @@ pub enum HubError {
     /// the binary was built without it. Build with
     /// `--features nonfree-models` to unlock — and read the model's license
     /// before doing so.
-    #[error("model {id} carries a research / non-commercial license ({license}); rebuild with --features nonfree-models to unlock")]
+    #[error(
+        "model {id} carries a research / non-commercial license ({license}); rebuild with --features nonfree-models to unlock"
+    )]
     NonfreeBlocked {
         /// The blocked id.
         id: String,
@@ -69,7 +71,9 @@ pub enum HubError {
     /// has not set `DIASPOR_TRUST_UNPINNED=1`. `ModelHub` refuses by default
     /// to use unpinned entries because there is no way to authenticate the
     /// downloaded file.
-    #[error("model {id} is not pinned in the catalog (sha256 is PENDING_FIRST_PULL); set DIASPOR_TRUST_UNPINNED=1 to download anyway and record the observed hash")]
+    #[error(
+        "model {id} is not pinned in the catalog (sha256 is PENDING_FIRST_PULL); set DIASPOR_TRUST_UNPINNED=1 to download anyway and record the observed hash"
+    )]
     Unpinned {
         /// The unpinned id.
         id: String,
@@ -89,7 +93,9 @@ pub enum HubError {
 
     /// The privacy contract refused a network fetch. Set when
     /// `DIASPOR_OFFLINE=1` and the requested model is not already cached.
-    #[error("network access is disabled (DIASPOR_OFFLINE=1) and model {id} is not in the local cache")]
+    #[error(
+        "network access is disabled (DIASPOR_OFFLINE=1) and model {id} is not in the local cache"
+    )]
     NetworkBlocked {
         /// The id that would have required a fetch.
         id: String,
@@ -189,7 +195,10 @@ fn default_cache_root() -> PathBuf {
     // POSIX, more common in stripped CI containers). Fall back to a
     // process-local temp path so we never panic — the caller can always
     // override via `HubConfig::with_root`.
-    dirs::home_dir().map_or_else(|| std::env::temp_dir().join("diaspor").join("models"), |h| h.join(".diaspor").join("models"))
+    dirs::home_dir().map_or_else(
+        || std::env::temp_dir().join("diaspor").join("models"),
+        |h| h.join(".diaspor").join("models"),
+    )
 }
 
 fn env_flag(name: &str) -> bool {
@@ -395,12 +404,20 @@ impl ModelHub {
 
 fn slug(id: &str) -> String {
     id.chars()
-        .map(|c| if c.is_ascii_alphanumeric() || c == '-' || c == '.' { c } else { '-' })
+        .map(|c| {
+            if c.is_ascii_alphanumeric() || c == '-' || c == '.' {
+                c
+            } else {
+                '-'
+            }
+        })
         .collect()
 }
 
 fn url_basename(url: &str) -> Option<&str> {
-    url.rsplit_once('/').map(|(_, base)| base).filter(|b| !b.is_empty())
+    url.rsplit_once('/')
+        .map(|(_, base)| base)
+        .filter(|b| !b.is_empty())
 }
 
 async fn sha256_of_file(path: &Path) -> Result<String, std::io::Error> {
@@ -477,9 +494,7 @@ fn resolve_file_url(local: &str) -> Result<PathBuf, std::io::Error> {
         .parent()
         .and_then(Path::parent)
         .ok_or_else(|| {
-            std::io::Error::other(
-                "CARGO_MANIFEST_DIR must live two levels below workspace root",
-            )
+            std::io::Error::other("CARGO_MANIFEST_DIR must live two levels below workspace root")
         })?;
     Ok(workspace_root.join(path))
 }
@@ -530,8 +545,7 @@ nonfree = {nonfree}
 
     #[tokio::test]
     async fn unknown_id_errors() {
-        let hub =
-            ModelHub::with_catalog(HubConfig::default(), Catalog::embedded().unwrap());
+        let hub = ModelHub::with_catalog(HubConfig::default(), Catalog::embedded().unwrap());
         let err = hub.resolve("definitely-not-here@99").await.unwrap_err();
         assert!(matches!(err, HubError::UnknownId { .. }));
     }

@@ -176,9 +176,7 @@ impl WirePoseModality {
             Some(
                 pose.joint_velocities
                     .iter()
-                    .map(|(dx, dy, dz)| {
-                        f64::from(dx.mul_add(*dx, dy.mul_add(*dy, dz * dz)).sqrt())
-                    })
+                    .map(|(dx, dy, dz)| f64::from(dx.mul_add(*dx, dy.mul_add(*dy, dz * dz)).sqrt()))
                     .collect(),
             )
         } else {
@@ -344,10 +342,7 @@ impl WireProsodyModality {
     /// — they are derived by the production backend's functional layer, which hasn't
     /// landed yet.
     #[must_use]
-    pub fn from_prosody(
-        model: impl Into<String>,
-        prosody: &ProsodyFeatures,
-    ) -> Self {
+    pub fn from_prosody(model: impl Into<String>, prosody: &ProsodyFeatures) -> Self {
         let features_dim = if prosody.features.is_empty() {
             None
         } else {

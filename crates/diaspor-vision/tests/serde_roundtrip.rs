@@ -26,9 +26,7 @@ use diaspor_vision::{
     VisionRecord, WireConfidenceBand, WireCredibilityModality, WireFaceModality, WireGaze,
     WireJudgeModality, WireKeypoint3d, WireModalities, WireModelNames, WireModelProvenance,
     WirePoseModality, WireProsodyModality, WireRecordKind, WireRuntime, WireScoreFraming,
-    WireScoreRecord, WireVerticalAttestation,
-    face::FACE_LANDMARK_COUNT,
-    pose::POSE_LANDMARK_COUNT,
+    WireScoreRecord, WireVerticalAttestation, face::FACE_LANDMARK_COUNT, pose::POSE_LANDMARK_COUNT,
 };
 use jsonschema::validator_for;
 use serde_json::Value;
@@ -167,15 +165,10 @@ fn realistic_record() -> WireScoreRecord {
 /// test is meaningless without the schema.
 fn load_schema() -> Value {
     let path = score_schema_path();
-    let raw = fs::read_to_string(&path).unwrap_or_else(|e| {
-        panic!("failed to read score schema at {}: {e}", path.display())
-    });
-    serde_json::from_str(&raw).unwrap_or_else(|e| {
-        panic!(
-            "score schema at {} is not valid JSON: {e}",
-            path.display()
-        )
-    })
+    let raw = fs::read_to_string(&path)
+        .unwrap_or_else(|e| panic!("failed to read score schema at {}: {e}", path.display()));
+    serde_json::from_str(&raw)
+        .unwrap_or_else(|e| panic!("score schema at {} is not valid JSON: {e}", path.display()))
 }
 
 #[test]
@@ -284,8 +277,8 @@ fn wire_score_record_lifted_from_vision_record_validates() {
     };
     let lifted = WireScoreRecord::from_vision(framing, models, &record);
 
-    let json_string = serde_json::to_string_pretty(&lifted)
-        .expect("lifted WireScoreRecord must serialize");
+    let json_string =
+        serde_json::to_string_pretty(&lifted).expect("lifted WireScoreRecord must serialize");
     let schema = load_schema();
     let validator = validator_for(&schema).expect("schema must parse");
     let parsed: Value = serde_json::from_str(&json_string).expect("must be valid JSON");

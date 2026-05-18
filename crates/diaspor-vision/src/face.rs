@@ -75,8 +75,8 @@ pub struct FaceLandmarkFrame {
 mod serde_landmarks {
     use super::{FACE_LANDMARK_COUNT, FaceLandmark};
     use serde::de::{Error, SeqAccess, Visitor};
-    use serde::{Deserializer, Serializer};
     use serde::ser::SerializeSeq;
+    use serde::{Deserializer, Serializer};
 
     pub(super) fn serialize<S>(
         value: &[FaceLandmark; FACE_LANDMARK_COUNT],
@@ -124,10 +124,7 @@ mod serde_landmarks {
                 let mut idx = 0usize;
                 while let Some(lm) = seq.next_element::<FaceLandmark>()? {
                     if idx >= FACE_LANDMARK_COUNT {
-                        return Err(A::Error::invalid_length(
-                            idx + 1,
-                            &"exactly 478 landmarks",
-                        ));
+                        return Err(A::Error::invalid_length(idx + 1, &"exactly 478 landmarks"));
                     }
                     out[idx] = lm;
                     idx += 1;
@@ -188,11 +185,7 @@ impl FaceLandmarkExtractor for NoopFaceLandmarkExtractor {
         "noop-face"
     }
 
-    async fn extract(
-        &self,
-        _frame_bytes: &Bytes,
-        _timestamp_ms: u64,
-    ) -> Result<FaceLandmarkFrame> {
+    async fn extract(&self, _frame_bytes: &Bytes, _timestamp_ms: u64) -> Result<FaceLandmarkFrame> {
         Err(VfsError::from(VisionError::NotImplemented {
             backend: "noop-face",
         }))

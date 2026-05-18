@@ -42,9 +42,7 @@ mod test_helpers {
     use std::sync::Arc;
     use std::time::{SystemTime, UNIX_EPOCH};
 
-    use diaspor_api_server::auth::{
-        Claims, JWT_AUDIENCE, JWT_ISSUER, VerticalAttestation,
-    };
+    use diaspor_api_server::auth::{Claims, JWT_AUDIENCE, JWT_ISSUER, VerticalAttestation};
     use diaspor_api_server::{AppState, Config};
     use jsonwebtoken::{Algorithm, EncodingKey, Header, encode};
 
@@ -72,10 +70,7 @@ mod test_helpers {
     }
 
     /// Wraps `test_config_with_limits` into a fresh `AppState`.
-    pub(super) fn test_state_with_limits(
-        rate_limit_per_min: u32,
-        daily_cap: u32,
-    ) -> Arc<AppState> {
+    pub(super) fn test_state_with_limits(rate_limit_per_min: u32, daily_cap: u32) -> Arc<AppState> {
         AppState::new(test_config_with_limits(rate_limit_per_min, daily_cap))
     }
 
@@ -589,4 +584,3 @@ async fn daily_cap_returns_429_until_midnight() {
         "Retry-After must be 1..=86400 seconds (until UTC midnight)"
     );
 }
-

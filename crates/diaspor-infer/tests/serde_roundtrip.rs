@@ -20,7 +20,7 @@ use std::fs;
 use std::path::PathBuf;
 
 use bytes::Bytes;
-use diaspor_infer::{AdapterId, DType, ModelId, Tensor, TensorBatch, TenantId};
+use diaspor_infer::{AdapterId, DType, ModelId, TenantId, Tensor, TensorBatch};
 use jsonschema::validator_for;
 use serde_json::{Value, json};
 
@@ -38,12 +38,10 @@ fn score_schema_path() -> PathBuf {
 
 fn load_schema() -> Value {
     let path = score_schema_path();
-    let raw = fs::read_to_string(&path).unwrap_or_else(|e| {
-        panic!("failed to read score schema at {}: {e}", path.display())
-    });
-    serde_json::from_str(&raw).unwrap_or_else(|e| {
-        panic!("score schema at {} is not valid JSON: {e}", path.display())
-    })
+    let raw = fs::read_to_string(&path)
+        .unwrap_or_else(|e| panic!("failed to read score schema at {}: {e}", path.display()));
+    serde_json::from_str(&raw)
+        .unwrap_or_else(|e| panic!("score schema at {} is not valid JSON: {e}", path.display()))
 }
 
 #[test]
@@ -63,8 +61,8 @@ fn tensor_batch_roundtrips_through_json() {
         ),
     ]);
 
-    let json_string = serde_json::to_string_pretty(&original)
-        .expect("TensorBatch must serialize cleanly");
+    let json_string =
+        serde_json::to_string_pretty(&original).expect("TensorBatch must serialize cleanly");
     let parsed: Value =
         serde_json::from_str(&json_string).expect("serialized output must be valid JSON");
     // Spot-check the dtype rename.
@@ -72,8 +70,8 @@ fn tensor_batch_roundtrips_through_json() {
         parsed["tensors"][0]["dtype"], "fp32",
         "DType::F32 should serialize as `fp32` to match Triton convention; got {parsed}"
     );
-    let round_tripped: TensorBatch = serde_json::from_str(&json_string)
-        .expect("TensorBatch must deserialize cleanly");
+    let round_tripped: TensorBatch =
+        serde_json::from_str(&json_string).expect("TensorBatch must deserialize cleanly");
     assert_eq!(
         original, round_tripped,
         "TensorBatch must round-trip identity through JSON"
@@ -162,10 +160,8 @@ fn infer_outputs_compose_into_valid_score_v1_record() {
 
     // Serialize → parse round-trip asserts the schema-validated payload survives
     // a JSON edge. Short-decimal values above keep this exact.
-    let serialized =
-        serde_json::to_string(&score_record).expect("score record must serialize");
-    let reparsed: Value =
-        serde_json::from_str(&serialized).expect("score record must reparse");
+    let serialized = serde_json::to_string(&score_record).expect("score record must serialize");
+    let reparsed: Value = serde_json::from_str(&serialized).expect("score record must reparse");
     assert_eq!(
         score_record, reparsed,
         "score-v1 JSON must round-trip identity through serialize+parse"

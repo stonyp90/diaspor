@@ -38,8 +38,8 @@ pub fn mount(_backend: Arc<dyn VfsBackend>, _mount_point: &Path) -> Result<FuseM
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::PathBuf;
     use diaspor_core::{OpenFlags, VfsHandle, VfsMetadata, VfsPath};
+    use std::path::PathBuf;
 
     struct Stub;
 

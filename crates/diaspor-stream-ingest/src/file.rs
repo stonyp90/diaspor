@@ -76,9 +76,9 @@ impl FileIngest {
 
     /// Derives a [`SessionId`] from the wrapped path when the caller did not supply one.
     fn derive_session_id(&self) -> SessionId {
-        self.session_id.clone().unwrap_or_else(|| {
-            SessionId::new(format!("file::{}", self.path.display()))
-        })
+        self.session_id
+            .clone()
+            .unwrap_or_else(|| SessionId::new(format!("file::{}", self.path.display())))
     }
 }
 
@@ -92,10 +92,7 @@ impl StreamIngest for FileIngest {
         // Read the full file once. M7 will swap this for a chunked VfsBackend read so
         // arbitrarily large files don't materialize entirely in memory.
         let bytes = tokio::fs::read(&self.path).await.map_err(|err| {
-            StreamIngestError::Transport(format!(
-                "failed to read {}: {err}",
-                self.path.display()
-            ))
+            StreamIngestError::Transport(format!("failed to read {}: {err}", self.path.display()))
         })?;
 
         let session_id = self.derive_session_id();

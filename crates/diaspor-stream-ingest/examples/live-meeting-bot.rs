@@ -39,8 +39,7 @@ use std::time::Duration;
 use diaspor_backend_memory::MemoryBackend;
 use diaspor_events::{MultiSink, VfsEventSink, WebhookEventSink};
 use diaspor_stream_ingest::{
-    BotProvider, IngestEvent, MeetingBotConfig, MeetingBotIngest, SessionEndReason,
-    StreamIngest,
+    BotProvider, IngestEvent, MeetingBotConfig, MeetingBotIngest, SessionEndReason, StreamIngest,
 };
 use futures::StreamExt;
 
@@ -88,10 +87,9 @@ async fn main() -> ExitCode {
         provider: BotProvider::RecallAi,
         api_key: "demo-recall-ai-key".to_string(),
         bot_display_name: "Diaspor Recording Bot".to_string(),
-        consent_script:
-            "This meeting is being recorded for sport-judging review. \
+        consent_script: "This meeting is being recorded for sport-judging review. \
              Please decline if you do not consent."
-                .to_string(),
+            .to_string(),
         recording_delay_seconds: 5,
         meeting_url: meeting_url.clone(),
     };
@@ -140,10 +138,17 @@ async fn main() -> ExitCode {
     // ------------------------------------------------------------------------
     while let Some(event_result) = stream.next().await {
         match event_result {
-            Ok(IngestEvent::SessionStarted { session_id, started_at }) => {
+            Ok(IngestEvent::SessionStarted {
+                session_id,
+                started_at,
+            }) => {
                 println!("session_started: id={session_id} at={started_at}");
             }
-            Ok(IngestEvent::FramesArrived { session_id, batch_bytes, timestamp_us }) => {
+            Ok(IngestEvent::FramesArrived {
+                session_id,
+                batch_bytes,
+                timestamp_us,
+            }) => {
                 println!(
                     "frames_arrived: id={session_id} ts={timestamp_us}us bytes={}",
                     batch_bytes.len()
@@ -151,7 +156,11 @@ async fn main() -> ExitCode {
                 // Real M8: feed `batch_bytes` into diaspor-frame-pipeline +
                 // diaspor-vision, then emit aggregate Events through `multi_sink`.
             }
-            Ok(IngestEvent::SessionEnded { session_id, reason, ended_at }) => {
+            Ok(IngestEvent::SessionEnded {
+                session_id,
+                reason,
+                ended_at,
+            }) => {
                 let reason_str = match reason {
                     SessionEndReason::Completed => "completed",
                     SessionEndReason::ClientDisconnected => "client_disconnected",

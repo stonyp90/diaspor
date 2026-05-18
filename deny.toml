@@ -7,6 +7,9 @@ ignore = []
 
 [licenses]
 allow = [
+    # Workspace's own license — every `diaspor-*` crate publishes under this.
+    "AGPL-3.0-only",
+    # Permissive licenses we accept from upstream crates.
     "MIT",
     "Apache-2.0",
     "Apache-2.0 WITH LLVM-exception",
@@ -17,6 +20,9 @@ allow = [
     "Zlib",
     "CC0-1.0",
     "BSL-1.0",
+    # Transitive deps that need explicit allowance:
+    "MPL-2.0",                # option-ext (via dirs crate)
+    "CDLA-Permissive-2.0",    # webpki-roots (via rustls)
 ]
 confidence-threshold = 0.93
 
