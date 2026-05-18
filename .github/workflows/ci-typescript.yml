@@ -1,0 +1,48 @@
+name: CI (TypeScript SDK)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "sdk/typescript/**"
+      - "docs/schema/score-v1.json"
+      - ".github/workflows/ci-typescript.yml"
+  pull_request:
+    paths:
+      - "sdk/typescript/**"
+      - "docs/schema/score-v1.json"
+      - ".github/workflows/ci-typescript.yml"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: sdk/typescript
+
+jobs:
+  lint-and-test:
+    name: lint-and-test (node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["20", "22"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: sdk/typescript/package-lock.json
+      - name: Install dependencies (npm ci)
+        run: npm ci
+      - name: Type check
+        run: npx tsc --noEmit
+      - name: Test
+        run: npm test -- --run
+      - name: Build
+        run: npm run build

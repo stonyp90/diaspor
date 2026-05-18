@@ -1,0 +1,23 @@
+apiVersion: v2
+name: diaspor-api-server
+description: Hosted HTTP + WebSocket API server for Diaspor non-verbal video AI.
+type: application
+# Chart version tracks the Helm chart shape; bump on chart-shape changes.
+version: 0.1.0-alpha.1
+# appVersion tracks the Diaspor release the chart's default image points at.
+# Pinned to the workspace version from /Cargo.toml so chart and binary
+# release together.
+appVersion: "0.1.0-alpha.1"
+keywords:
+  - diaspor
+  - api
+  - websocket
+  - video-ai
+  - non-verbal
+home: https://github.com/stonyp90/diaspor
+sources:
+  - https://github.com/stonyp90/diaspor
+maintainers:
+  - name: Anthony Paquet
+    email: anthonypaquet1508@gmail.com
+    url: https://github.com/stonyp90

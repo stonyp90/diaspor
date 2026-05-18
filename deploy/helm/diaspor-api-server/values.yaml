@@ -1,0 +1,130 @@
+# Default values for diaspor-api-server.
+# Override at install time with `--set` or `--values my-values.yaml`.
+
+# -- Number of API server pods. The binary is stateless behind a shared
+# JWT secret, so this scales horizontally without coordination.
+replicaCount: 2
+
+image:
+  # -- Container image repository.
+  repository: ghcr.io/stonyp90/diaspor-api-server
+  # -- Image tag. Defaults to the chart's appVersion at render time if
+  # left empty; set explicitly here for reproducible rollouts.
+  tag: "0.1.0-alpha.1"
+  # -- Image pull policy. `IfNotPresent` is correct for pinned tags; use
+  # `Always` only if you're tracking a moving tag like `:latest`.
+  pullPolicy: IfNotPresent
+
+# -- imagePullSecrets for private registries. Leave empty for ghcr.io
+# public images.
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Whether to create a dedicated ServiceAccount.
+  create: true
+  # -- Annotations to attach to the ServiceAccount (e.g. IAM role bindings).
+  annotations: {}
+  # -- Name override. Empty means use the chart fullname.
+  name: ""
+
+service:
+  type: ClusterIP
+  # -- Service port. Must match `containerPort` and the bind port encoded
+  # in `env.DIASPOR_BIND_ADDR` below.
+  port: 7733
+
+# -- Plain (non-secret) environment variables passed to the container.
+# `DIASPOR_BIND_ADDR` must bind 0.0.0.0 in-container so kube-proxy can
+# reach it; the API server binary defaults to 127.0.0.1 for local-dev,
+# which would be unreachable from outside the pod.
+env:
+  DIASPOR_BIND_ADDR: "0.0.0.0:7733"
+  RUST_LOG: "diaspor_api_server=info,axum=info,tower=info"
+
+# -- Secret environment variables. Each non-empty value is materialised
+# into a Kubernetes Secret and mounted via envFrom. `DIASPOR_JWT_SECRET`
+# is required — `helm install` fails fast if it's empty.
+secretEnv:
+  DIASPOR_JWT_SECRET: ""
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  # -- Optional: scale on memory pressure as well. Leave 0 to disable.
+  targetMemoryUtilizationPercentage: 0
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  host: api.diaspor.io
+  path: /
+  pathType: Prefix
+  # -- TLS secret holding the cert/key pair for `host`. Required when
+  # `ingress.enabled` is true and TLS is desired. Leave empty for plain
+  # HTTP (only sensible behind a TLS-terminating ingress controller).
+  tlsSecretName: ""
+
+# Pod-level security context — runs as the distroless `nonroot` user
+# (UID 65532). These values match the runtime stage of the bundled
+# Dockerfile.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+# Container-level security context. Drops all caps and locks the root
+# filesystem read-only; the API server writes no files at runtime.
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+# Liveness probe — kicks if /v1/health stops responding.
+livenessProbe:
+  httpGet:
+    path: /v1/health
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 2
+  failureThreshold: 3
+
+# Readiness probe — gates traffic until /v1/health is up.
+readinessProbe:
+  httpGet:
+    path: /v1/health
+    port: http
+  initialDelaySeconds: 2
+  periodSeconds: 5
+  timeoutSeconds: 2
+  failureThreshold: 3
+
+# -- Scheduling hints. Empty by default; configure for node-pool pinning.
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# -- Extra labels applied to all resources rendered by this chart.
+commonLabels: {}
+
+# -- Extra annotations applied to the pod template (useful for
+# Prometheus scrape config, Vault injection, etc.).
+podAnnotations: {}

@@ -1,0 +1,137 @@
+name: CI (Rust)
+
+# Consolidated Rust CI: replaces the legacy `ci.yml`. Runs format, clippy,
+# test, doc, audit, conformance, and a `no-network` job that structurally
+# enforces the privacy contract (no default code path may open a socket).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "crates/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "models.toml"
+      - "docs/schema/**"
+      - "docs/adr/**"
+      - ".github/workflows/ci-rust.yml"
+  pull_request:
+    paths:
+      - "crates/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "models.toml"
+      - "docs/schema/**"
+      - "docs/adr/**"
+      - ".github/workflows/ci-rust.yml"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  fmt:
+    name: rustfmt
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.85"
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.85"
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+
+  test:
+    name: test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.85"
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test --workspace --lib --tests
+
+  check-docs:
+    name: cargo doc
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      RUSTDOCFLAGS: "-D warnings"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.85"
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo doc --workspace --no-deps --document-private-items --all-features
+
+  audit:
+    name: cargo-audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.85"
+      - uses: Swatinem/rust-cache@v2
+      - name: Install cargo-audit
+        run: cargo install cargo-audit --locked
+      - name: Run cargo audit
+        run: cargo audit
+
+  no-network:
+    # Structurally enforces the privacy contract from PRIVACY.md and
+    # THREAT_MODEL.md: if any default code path opens a socket, the syscall
+    # fails inside the network namespace and the job fails. Preserved
+    # verbatim from the legacy ci.yml (commit history: cairn era).
+    name: no-network sandbox (Linux)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.85"
+      - uses: Swatinem/rust-cache@v2
+      - name: Pre-fetch dependencies (network allowed here only)
+        run: cargo fetch --locked
+      - name: Build and test inside an unshare(--net) sandbox
+        # GitHub Actions runners disallow user-namespace unshare, so we use
+        # passwordless sudo to create the netns. `secure_path` in /etc/sudoers
+        # strips PATH even with `-E`, so we list each variable explicitly
+        # under `--preserve-env`. Additionally, the diaspor-infer ModelHub
+        # respects `DIASPOR_OFFLINE=1` so that downloads abort with a clear
+        # error rather than a generic socket failure.
+        env:
+          DIASPOR_OFFLINE: "1"
+        run: |
+          sudo --preserve-env=PATH,HOME,CARGO_HOME,RUSTUP_HOME,DIASPOR_OFFLINE unshare --net -- bash -c '
+            set -e
+            cargo build --workspace --all-features --offline
+            cargo test --workspace --all-features --offline
+          '

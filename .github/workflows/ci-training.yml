@@ -1,0 +1,63 @@
+name: CI (training)
+
+# Fast path only. The wav2vec2 smoke test in `recipes/prosody_lora.py` is
+# heavyweight (~360 MB model download + ~5 min CPU training); we run that on
+# demand via `release-heavy.yml` when a release is cut, not on every PR.
+#
+# Here we install `training/` with the dev extras and exercise the artifact
+# contract test (`tests/test_artifact.py`). That's enough to catch drift in
+# the path convention / safetensors metadata shape — the load-bearing
+# contract between this package and the Rust `diaspor-train` crate.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "training/**"
+      - "crates/diaspor-train/src/adapter.rs"
+      - "crates/diaspor-train/src/lora.rs"
+      - ".github/workflows/ci-training.yml"
+  pull_request:
+    paths:
+      - "training/**"
+      - "crates/diaspor-train/src/adapter.rs"
+      - "crates/diaspor-train/src/lora.rs"
+      - ".github/workflows/ci-training.yml"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: training
+
+jobs:
+  artifact-contract:
+    name: artifact-contract (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: training/pyproject.toml
+
+      - name: Install training package (cpu-only torch)
+        run: |
+          python -m pip install --upgrade pip
+          # CPU-only torch keeps the install under ~250 MB; the artifact
+          # test only exercises tensor allocation + safetensors round-trip.
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -e ".[dev]"
+
+      - name: Pytest (artifact contract only)
+        run: pytest tests/test_artifact.py -q

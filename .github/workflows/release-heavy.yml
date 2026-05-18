@@ -1,0 +1,367 @@
+name: Release (heavy)
+
+# On-demand workflow for "big" release variants that should not run on every
+# tag push:
+#
+#   1. Linux + Windows binaries with CUDA / TensorRT execution providers and
+#      every default ML feature flag enabled. These need the CUDA toolkit
+#      and produce multi-hundred-MB archives.
+#   2. Bundled-models archives — the default release ships the CLI alone
+#      (~30 MB) and `ModelHub` pulls weights on first use. The heavy variant
+#      runs `diaspor models pull --all` ahead of packaging so the archive is
+#      self-contained (~2 GB).
+#   3. Multi-arch Docker image of `diaspor-api-server` pushed to GHCR.
+#
+# Trigger: `workflow_dispatch` only (operator picks a tag + which extras to
+# build). Default release.yml stays fast and boring; heavy variants are an
+# opt-in by-product.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to build (must already exist, e.g. v0.1.0-alpha.2)'
+        required: true
+      build_cuda:
+        description: 'Build CUDA / TensorRT binaries (Linux x86_64 + Windows)'
+        required: false
+        default: 'true'
+      build_bundled:
+        description: 'Build bundled-models binaries (Linux/macOS aarch64, no CUDA)'
+        required: false
+        default: 'true'
+      build_docker:
+        description: 'Build + push multi-arch Docker image of diaspor-api-server to GHCR'
+        required: false
+        default: 'true'
+
+permissions:
+  contents: write
+  packages: write       # GHCR push
+  id-token: write       # attest-build-provenance
+  attestations: write
+
+env:
+  CARGO_TERM_COLOR: always
+  # Common feature set for every heavy variant — every Phase 2 model adapter
+  # the catalog ships. Heavy CUDA variants add `ort-cuda,ort-tensorrt`. The
+  # `bundled-models` feature triggers the ModelHub-bundling code path in
+  # `crates/diaspor-cli`.
+  HEAVY_FEATURES: >-
+    bundled-models,mediapipe-pose,mediapipe-face,openface-au,
+    internvideo2-action,poseconv3d,whisper,wav2vec2,hubert,
+    prosody-opensmile,diarization-silero
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # CUDA / TensorRT binaries for Linux x86_64 + Windows x86_64.
+  # ---------------------------------------------------------------------------
+  build-cuda:
+    if: ${{ github.event.inputs.build_cuda == 'true' }}
+    name: cuda (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            archive: tar.gz
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: zip
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: heavy-cuda-${{ matrix.target }}
+
+      - name: Install CUDA toolkit
+        uses: Jimver/cuda-toolkit@v0.2.19
+        with:
+          cuda: '12.5.0'
+          method: 'network'
+          # Linker + nvcc are enough; runtime libs ship with the user's host
+          # NVIDIA driver. This keeps the toolkit install under 5 minutes.
+          sub-packages: '["nvcc", "cudart", "cublas", "cudnn"]'
+
+      - name: Build (CUDA features)
+        run: cargo build --release --locked --target ${{ matrix.target }} -p diaspor-cli --bins --features "${{ env.HEAVY_FEATURES }},ort-cuda,ort-tensorrt"
+
+      - name: Pull models for bundling (best-effort)
+        # The CLI's `models pull --all` walks the embedded catalog and downloads
+        # every default-enabled entry into a local `./models/` directory that the
+        # packaging step zips alongside the binary. If a future Phase 2 catalog
+        # change breaks pulling for one model, we still ship a usable binary;
+        # bundling is best-effort, not a release gate.
+        continue-on-error: true
+        run: |
+          mkdir -p staged/models
+          DIASPOR_MODELS_DIR=$(pwd)/staged/models target/${{ matrix.target }}/release/diaspor models pull --all --features "${{ env.HEAVY_FEATURES }},ort-cuda,ort-tensorrt" || true
+        shell: bash
+
+      - name: Package (unix)
+        if: matrix.archive == 'tar.gz'
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.inputs.tag }}"
+          STAGE="diaspor-cuda-${TAG}-${{ matrix.target }}"
+          mkdir -p "$STAGE"
+          for bin in diaspor diaspor-agent; do
+            cp "target/${{ matrix.target }}/release/${bin}" "$STAGE/"
+          done
+          if [ -d staged/models ]; then
+            cp -r staged/models "$STAGE/models"
+          fi
+          cp README.md LICENSE "$STAGE/"
+          tar -czf "${STAGE}.tar.gz" "$STAGE"
+          shasum -a 256 "${STAGE}.tar.gz" > "${STAGE}.tar.gz.sha256"
+
+      - name: Package (windows)
+        if: matrix.archive == 'zip'
+        shell: pwsh
+        run: |
+          $tag = "${{ github.event.inputs.tag }}"
+          $stage = "diaspor-cuda-$tag-${{ matrix.target }}"
+          New-Item -ItemType Directory -Path $stage | Out-Null
+          foreach ($bin in @("diaspor", "diaspor-agent")) {
+            Copy-Item "target/${{ matrix.target }}/release/$bin.exe" $stage
+          }
+          if (Test-Path staged/models) {
+            Copy-Item -Recurse staged/models "$stage/models"
+          }
+          Copy-Item README.md, LICENSE $stage
+          Compress-Archive -Path $stage -DestinationPath "$stage.zip"
+          (Get-FileHash -Algorithm SHA256 "$stage.zip").Hash + "  $stage.zip" | Out-File "$stage.zip.sha256" -Encoding ascii
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: heavy-cuda-${{ matrix.target }}
+          path: |
+            diaspor-cuda-*.tar.gz
+            diaspor-cuda-*.tar.gz.sha256
+            diaspor-cuda-*.zip
+            diaspor-cuda-*.zip.sha256
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------------
+  # Bundled-models binaries (no CUDA) for aarch64 Linux + macOS arm64.
+  # ---------------------------------------------------------------------------
+  build-bundled:
+    if: ${{ github.event.inputs.build_bundled == 'true' }}
+    name: bundled (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+          - os: macos-latest
+            target: aarch64-apple-darwin
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: heavy-bundled-${{ matrix.target }}
+
+      - name: Install aarch64 linux cross-compiler
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+          echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> "$GITHUB_ENV"
+
+      - name: Build (bundled-models features, no CUDA)
+        run: cargo build --release --locked --target ${{ matrix.target }} -p diaspor-cli --bins --features "${{ env.HEAVY_FEATURES }}"
+
+      - name: Pull models for bundling (best-effort)
+        continue-on-error: true
+        shell: bash
+        run: |
+          mkdir -p staged/models
+          # On macOS aarch64 we can run the resulting binary natively; on Linux
+          # aarch64 we cross-compiled, so model-pull would need qemu-user. Skip
+          # bundling in that case — operator can `diaspor models pull --all`
+          # post-install.
+          if [ "${{ matrix.target }}" = "aarch64-apple-darwin" ]; then
+            DIASPOR_MODELS_DIR=$(pwd)/staged/models target/${{ matrix.target }}/release/diaspor models pull --all --features "${{ env.HEAVY_FEATURES }}" || true
+          fi
+
+      - name: Package
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.inputs.tag }}"
+          STAGE="diaspor-bundled-${TAG}-${{ matrix.target }}"
+          mkdir -p "$STAGE"
+          for bin in diaspor diaspor-agent; do
+            cp "target/${{ matrix.target }}/release/${bin}" "$STAGE/"
+          done
+          if [ -d staged/models ]; then
+            cp -r staged/models "$STAGE/models"
+          fi
+          cp README.md LICENSE "$STAGE/"
+          tar -czf "${STAGE}.tar.gz" "$STAGE"
+          shasum -a 256 "${STAGE}.tar.gz" > "${STAGE}.tar.gz.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: heavy-bundled-${{ matrix.target }}
+          path: |
+            diaspor-bundled-*.tar.gz
+            diaspor-bundled-*.tar.gz.sha256
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------------
+  # Multi-arch Docker image of diaspor-api-server -> GHCR.
+  # ---------------------------------------------------------------------------
+  build-docker:
+    if: ${{ github.event.inputs.build_docker == 'true' }}
+    name: docker (api-server)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image tags
+        id: tags
+        run: |
+          TAG="${{ github.event.inputs.tag }}"
+          # Strip leading "v" for OCI semver-style tags but also publish the
+          # raw tag so links from the GH release page resolve.
+          STRIPPED="${TAG#v}"
+          echo "tag_raw=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "tag_stripped=${STRIPPED}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push (multi-arch)
+        uses: docker/build-push-action@v6
+        id: build-push
+        with:
+          context: .
+          file: deploy/docker/diaspor-api-server/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/stonyp90/diaspor-api-server:${{ steps.tags.outputs.tag_raw }}
+            ghcr.io/stonyp90/diaspor-api-server:${{ steps.tags.outputs.tag_stripped }}
+            ghcr.io/stonyp90/diaspor-api-server:latest
+          build-args: |
+            IMAGE_VERSION=${{ steps.tags.outputs.tag_stripped }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true
+          sbom: true
+
+      - name: Attest container image provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ghcr.io/stonyp90/diaspor-api-server
+          subject-digest: ${{ steps.build-push.outputs.digest }}
+          push-to-registry: true
+
+  # ---------------------------------------------------------------------------
+  # Sign + attach heavy archives to the existing release.
+  # ---------------------------------------------------------------------------
+  publish-heavy:
+    name: sign + attach heavy archives
+    needs: [build-cuda, build-bundled]
+    # If both upstream jobs were skipped (operator only ran build_docker),
+    # there's nothing to publish here.
+    if: |
+      always() &&
+      (github.event.inputs.build_cuda == 'true' || github.event.inputs.build_bundled == 'true') &&
+      (needs.build-cuda.result == 'success' || needs.build-cuda.result == 'skipped') &&
+      (needs.build-bundled.result == 'success' || needs.build-bundled.result == 'skipped')
+    runs-on: ubuntu-latest
+    env:
+      MINISIGN_SECRET: ${{ secrets.MINISIGN_SECRET }}
+      MINISIGN_PASSWORD: ${{ secrets.MINISIGN_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+          pattern: heavy-*
+
+      - run: ls -lah dist || true
+
+      - name: Install rsign2
+        if: env.MINISIGN_SECRET != ''
+        run: cargo install --locked rsign2
+
+      - name: Sign heavy archives (minisign / Ed25519)
+        if: env.MINISIGN_SECRET != ''
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.rsign"
+          printf '%s' "$MINISIGN_SECRET" > "$HOME/.rsign/rsign.key"
+          chmod 600 "$HOME/.rsign/rsign.key"
+          shopt -s nullglob
+          for archive in dist/diaspor-cuda-*.tar.gz dist/diaspor-cuda-*.zip dist/diaspor-bundled-*.tar.gz; do
+            echo "Signing $archive"
+            printf '%s\n' "$MINISIGN_PASSWORD" | rsign sign \
+              -s "$HOME/.rsign/rsign.key" \
+              -t "diaspor heavy release $(basename "$archive")" \
+              "$archive"
+          done
+          shred -u "$HOME/.rsign/rsign.key" 2>/dev/null || rm -f "$HOME/.rsign/rsign.key"
+
+      - name: Attest build provenance (heavy)
+        if: hashFiles('dist/diaspor-cuda-*.tar.gz', 'dist/diaspor-cuda-*.zip', 'dist/diaspor-bundled-*.tar.gz') != ''
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/diaspor-cuda-*.tar.gz
+            dist/diaspor-cuda-*.zip
+            dist/diaspor-bundled-*.tar.gz
+
+      - name: Upload to existing release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+          fail_on_unmatched_files: false
+          files: |
+            dist/diaspor-cuda-*.tar.gz
+            dist/diaspor-cuda-*.tar.gz.sha256
+            dist/diaspor-cuda-*.tar.gz.minisig
+            dist/diaspor-cuda-*.zip
+            dist/diaspor-cuda-*.zip.sha256
+            dist/diaspor-cuda-*.zip.minisig
+            dist/diaspor-bundled-*.tar.gz
+            dist/diaspor-bundled-*.tar.gz.sha256
+            dist/diaspor-bundled-*.tar.gz.minisig

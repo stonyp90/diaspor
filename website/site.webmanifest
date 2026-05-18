@@ -1,0 +1,33 @@
+{
+  "name": "Diaspor — One pane for every storage backend",
+  "short_name": "Diaspor",
+  "description": "Unify AWS S3, Azure Blob, Google Cloud, and NAS in a single workspace. Eliminate vendor lock-in.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0b14",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "favicon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "favicon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
+
+
+
+
+
+
+

@@ -1,0 +1,62 @@
+name: CI (Website)
+
+# Ensures the asset-name pattern the website JS expects to find on the GitHub
+# releases page (`website/index.html` -> `initCliDownloads`) stays in lockstep
+# with the matrix in `.github/workflows/release.yml`. Without this guard, an
+# innocent rename in either file silently breaks every download button on
+# diaspor.io.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "website/**"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/ci-website.yml"
+      - "tools/check_asset_pattern.py"
+  pull_request:
+    paths:
+      - "website/**"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/ci-website.yml"
+      - "tools/check_asset_pattern.py"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  asset-pattern-check:
+    name: asset-pattern check (release.yml <-> website JS)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PyYAML
+        run: pip install pyyaml
+      - name: Run asset-pattern check
+        run: python3 tools/check_asset_pattern.py
+
+  html-validity:
+    name: HTML validity (EN + FR)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install html-validate
+        run: npm install --no-save html-validate@8
+      - name: Validate website/index.html
+        run: npx html-validate website/index.html
+      - name: Validate website/fr/index.html
+        run: npx html-validate website/fr/index.html
+        # The site sets `script` blocks inside template literals; html-validate
+        # is strict about a few inline-style patterns that are harmless. Treat
+        # this as a soft gate for now; the asset-pattern check is the
+        # load-bearing one.
+        continue-on-error: true

@@ -1,0 +1,56 @@
+{{- $fullName := include "diaspor-api-server.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+Thanks for installing {{ .Chart.Name }} ({{ .Chart.Version }}).
+
+The diaspor-api-server is now running in namespace
+{{ .Release.Namespace | quote }} as release {{ .Release.Name | quote }}.
+
+1. Verify the pods are ready:
+
+    kubectl --namespace {{ .Release.Namespace }} get pods \
+        -l app.kubernetes.io/instance={{ .Release.Name }}
+
+2. Port-forward and hit the health endpoint:
+
+    kubectl --namespace {{ .Release.Namespace }} \
+        port-forward svc/{{ $fullName }} {{ $svcPort }}:{{ $svcPort }}
+    curl http://localhost:{{ $svcPort }}/v1/health
+
+3. Read the JWT secret back (for debugging only — never log it):
+
+    kubectl --namespace {{ .Release.Namespace }} get secret \
+        {{ include "diaspor-api-server.secretName" . }} \
+        -o jsonpath='{.data.DIASPOR_JWT_SECRET}' | base64 -d ; echo
+
+{{- if .Values.ingress.enabled }}
+
+4. The Ingress is enabled. Once your cluster's ingress controller has
+   wired up the route, the API will be reachable at:
+
+    {{- if .Values.ingress.tlsSecretName }}
+    https://{{ .Values.ingress.host }}/v1/health
+    {{- else }}
+    http://{{ .Values.ingress.host }}/v1/health   (no TLS configured)
+    {{- end }}
+{{- else }}
+
+4. To expose the API externally, enable the Ingress in your values:
+
+    ingress:
+      enabled: true
+      className: nginx   # or your controller's class
+      host: api.diaspor.io
+      tlsSecretName: diaspor-api-tls
+
+   Then `helm upgrade` to apply.
+{{- end }}
+
+{{- if .Values.autoscaling.enabled }}
+
+5. Autoscaling is enabled ({{ .Values.autoscaling.minReplicas }}–{{ .Values.autoscaling.maxReplicas }} pods, target CPU
+   {{ .Values.autoscaling.targetCPUUtilizationPercentage }}%). Check the HPA status with:
+
+    kubectl --namespace {{ .Release.Namespace }} get hpa {{ $fullName }}
+{{- end }}
+
+Documentation: https://github.com/stonyp90/diaspor/blob/main/deploy/README.md

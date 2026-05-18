@@ -1,5 +1,19 @@
 name: Release
 
+# Tag-triggered release: builds the CLI (`diaspor` + `diaspor-agent`) and the API
+# server (`diaspor-api-server`) for every supported target, attaches sha256 checksums,
+# optionally attaches minisign Ed25519 signatures (when MINISIGN_SECRET is set), and
+# generates an in-toto SLSA build-provenance attestation tied to this workflow run.
+#
+# The website (`website/index.html` -> `initCliDownloads`) fetches
+# `https://api.github.com/repos/stonyp90/diaspor/releases/latest`, then reads asset
+# names matching the exact pattern `diaspor-<tag>-<target>.<archive_ext>`. The
+# `ci-website` workflow enforces that this pattern stays in sync.
+#
+# Heavy variants (CUDA / bundled-models / Docker image) are built on demand by
+# `.github/workflows/release-heavy.yml` (workflow_dispatch only) so tag -> release
+# stays fast.
+
 on:
   push:
     tags:
@@ -10,16 +24,23 @@ on:
         description: 'Tag name to release (e.g. v0.1.0-alpha.1)'
         required: true
 
+# `id-token` + `attestations` are required by actions/attest-build-provenance@v1.
+# `contents: write` is what softprops/action-gh-release needs to create the release.
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 env:
   CARGO_TERM_COLOR: always
-  BIN_NAMES: "diaspor diaspor-agent"
 
 jobs:
-  build:
-    name: build (${{ matrix.target }})
+  # ---------------------------------------------------------------------------
+  # Build the CLI (`diaspor`, `diaspor-agent`) for every target.
+  # Emits: diaspor-<tag>-<target>.<ext> + .sha256
+  # ---------------------------------------------------------------------------
+  build-cli:
+    name: build cli (${{ matrix.target }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -60,38 +81,39 @@ jobs:
           sudo apt-get install -y gcc-aarch64-linux-gnu
           echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> "$GITHUB_ENV"
 
-      - name: Build
-        run: cargo build --release --locked --target ${{ matrix.target }} -p diaspor-cli
+      - name: Build (cli)
+        run: cargo build --release --locked --target ${{ matrix.target }} -p diaspor-cli --bins
 
-      - name: Package (unix)
+      - name: Package cli (unix)
         if: matrix.archive == 'tar.gz'
         run: |
-          STAGE="diaspor-${{ github.ref_name }}-${{ matrix.target }}"
+          STAGE="diaspor-${{ github.event.inputs.tag || github.ref_name }}-${{ matrix.target }}"
           mkdir -p "$STAGE"
-          for bin in $BIN_NAMES; do
+          for bin in diaspor diaspor-agent; do
             cp "target/${{ matrix.target }}/release/${bin}" "$STAGE/"
           done
           cp README.md LICENSE "$STAGE/"
           tar -czf "${STAGE}.tar.gz" "$STAGE"
           shasum -a 256 "${STAGE}.tar.gz" > "${STAGE}.tar.gz.sha256"
 
-      - name: Package (windows)
+      - name: Package cli (windows)
         if: matrix.archive == 'zip'
         shell: pwsh
         run: |
-          $stage = "diaspor-${{ github.ref_name }}-${{ matrix.target }}"
+          $tag = "${{ github.event.inputs.tag || github.ref_name }}"
+          $stage = "diaspor-$tag-${{ matrix.target }}"
           New-Item -ItemType Directory -Path $stage | Out-Null
-          foreach ($bin in $env:BIN_NAMES.Split(" ")) {
+          foreach ($bin in @("diaspor", "diaspor-agent")) {
             Copy-Item "target/${{ matrix.target }}/release/$bin.exe" $stage
           }
           Copy-Item README.md, LICENSE $stage
           Compress-Archive -Path $stage -DestinationPath "$stage.zip"
           (Get-FileHash -Algorithm SHA256 "$stage.zip").Hash + "  $stage.zip" | Out-File "$stage.zip.sha256" -Encoding ascii
 
-      - name: Upload build artifacts
+      - name: Upload cli artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: diaspor-${{ matrix.target }}
+          name: cli-${{ matrix.target }}
           path: |
             diaspor-*.tar.gz
             diaspor-*.tar.gz.sha256
@@ -99,10 +121,85 @@ jobs:
             diaspor-*.zip.sha256
           if-no-files-found: error
 
+  # ---------------------------------------------------------------------------
+  # Build the API server (`diaspor-api-server`). Linux-only for now: the API
+  # server is deployed behind a load balancer on Linux hosts; macOS/Windows
+  # builds would not be exercised in production. macOS arm64 is added for local
+  # dev convenience.
+  # Emits: diaspor-api-server-<tag>-<target>.tar.gz + .sha256
+  # ---------------------------------------------------------------------------
+  build-api-server:
+    name: build api-server (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+          - os: macos-latest
+            target: aarch64-apple-darwin
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: api-${{ matrix.target }}
+
+      - name: Install aarch64 linux cross-compiler
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+          echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> "$GITHUB_ENV"
+
+      - name: Build (api-server)
+        run: cargo build --release --locked --target ${{ matrix.target }} -p diaspor-api-server --bins
+
+      - name: Package api-server
+        run: |
+          STAGE="diaspor-api-server-${{ github.event.inputs.tag || github.ref_name }}-${{ matrix.target }}"
+          mkdir -p "$STAGE"
+          # The api-server crate may ship one or more binaries; copy them all.
+          for bin in $(ls target/${{ matrix.target }}/release/ | grep -E '^diaspor-api' | head -n 5); do
+            if [ -f "target/${{ matrix.target }}/release/${bin}" ] && [ -x "target/${{ matrix.target }}/release/${bin}" ]; then
+              cp "target/${{ matrix.target }}/release/${bin}" "$STAGE/"
+            fi
+          done
+          cp README.md LICENSE "$STAGE/"
+          tar -czf "${STAGE}.tar.gz" "$STAGE"
+          shasum -a 256 "${STAGE}.tar.gz" > "${STAGE}.tar.gz.sha256"
+
+      - name: Upload api-server artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-server-${{ matrix.target }}
+          path: |
+            diaspor-api-server-*.tar.gz
+            diaspor-api-server-*.tar.gz.sha256
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------------
+  # Sign every archive with minisign (Ed25519) when MINISIGN_SECRET is set,
+  # produce SLSA build-provenance attestations for every archive, and publish
+  # the release.
+  # ---------------------------------------------------------------------------
   publish:
-    name: publish github release
-    needs: build
+    name: sign + publish github release
+    needs: [build-cli, build-api-server]
     runs-on: ubuntu-latest
+    # Job-level env so the `if:` predicates below can see `env.MINISIGN_SECRET`.
+    # Step-level env is not in scope for the step's own `if:` expression.
+    env:
+      MINISIGN_SECRET: ${{ secrets.MINISIGN_SECRET }}
+      MINISIGN_PASSWORD: ${{ secrets.MINISIGN_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
@@ -114,14 +211,59 @@ jobs:
       - name: List artifacts
         run: ls -lah dist
 
+      - name: Install rsign2 (minisign-compatible signer)
+        if: env.MINISIGN_SECRET != ''
+        run: cargo install --locked rsign2
+
+      - name: Sign archives (minisign / Ed25519)
+        if: env.MINISIGN_SECRET != ''
+        run: |
+          set -euo pipefail
+          # Materialize the secret key from the repository secret. The secret
+          # holds the contents of an rsign .key file (the minisign-compatible
+          # private key blob). Password is supplied via stdin.
+          mkdir -p "$HOME/.rsign"
+          printf '%s' "$MINISIGN_SECRET" > "$HOME/.rsign/rsign.key"
+          chmod 600 "$HOME/.rsign/rsign.key"
+          shopt -s nullglob
+          for archive in dist/diaspor-*.tar.gz dist/diaspor-*.zip; do
+            echo "Signing $archive"
+            # rsign emits <archive>.minisig alongside the archive.
+            printf '%s\n' "$MINISIGN_PASSWORD" | rsign sign \
+              -s "$HOME/.rsign/rsign.key" \
+              -t "diaspor release $(basename "$archive")" \
+              "$archive"
+          done
+          ls -lah dist
+          shred -u "$HOME/.rsign/rsign.key" 2>/dev/null || rm -f "$HOME/.rsign/rsign.key"
+
+      - name: Note unsigned release
+        if: env.MINISIGN_SECRET == ''
+        run: |
+          echo "::warning title=Release is not signed::MINISIGN_SECRET is not configured." \
+               "Archives ship with sha256 checksums + SLSA build provenance only." \
+               "See SECURITY.md for key bootstrap."
+
+      - name: Attest build provenance (in-toto / SLSA)
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/diaspor-*.tar.gz
+            dist/diaspor-*.zip
+
       - name: Create / update release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag || github.ref_name }}
           generate_release_notes: true
-          fail_on_unmatched_files: true
+          # .minisig files are optional (only produced when MINISIGN_SECRET is
+          # configured), so we don't fail-on-unmatched here. The build steps
+          # above already use `if-no-files-found: error` for the archives + sha256.
+          fail_on_unmatched_files: false
           files: |
             dist/diaspor-*.tar.gz
             dist/diaspor-*.tar.gz.sha256
+            dist/diaspor-*.tar.gz.minisig
             dist/diaspor-*.zip
             dist/diaspor-*.zip.sha256
+            dist/diaspor-*.zip.minisig

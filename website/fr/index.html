@@ -775,7 +775,7 @@ entraînement : fine-tuning supervisé · RLHF · RLAIF
                calibration : cohortes fondatrices canadiennes
 runtime      : NVIDIA · AMD · Apple Silicon · CPU AVX-512
 licence      : poids propriétaires · binaires runtime signés
-attestation  : SHA-256 + Ed25519 par version</code></pre>
+attestation  : SHA-256 + Ed25519 (minisign) + SLSA prov.</code></pre>
           </article>
 
           <article class="engineering-block">
@@ -806,7 +806,7 @@ $ diaspor-agent serve --local --gpu=auto --port 7733</code></pre>
           <article class="engineering-block">
             <header class="engineering-head">
               <span class="engineering-tag">SÉCURITÉ</span>
-              <span class="engineering-version">FIPS 140-3 ciphers · BYOK · SLSA-3</span>
+              <span class="engineering-version">FIPS 140-3 ciphers · BYOK · prov. SLSA</span>
             </header>
 <pre class="engineering-pre"><code>chiffrement repos    : AES-256-GCM
 chiffrement transit  : TLS 1.3 · mTLS optionnel
@@ -816,14 +816,14 @@ auth                 : OIDC · SAML · mTLS · API tokens
 RBAC                 : par dossier · modèle · signal
 audit                : append-only WORM · signé Ed25519
 secrets en mémoire   : zeroize · pas de swap
-supply chain         : SLSA-3 · cosign · in-toto attest.
+supply chain         : prov. SLSA · in-toto · minisign
 modèles              : poids propriétaires signés SHA-256
 runtime              : builds signés · journaux d'audit complets</code></pre>
           </article>
         </div>
 
         <p class="engineering-footnote">
-          OpenAPI schema, threat-model détaillé, sub-processor list, SBOM, attestations SLSA et tests de pénétration : disponibles sous NDA avant signature.
+          OpenAPI schema, threat-model détaillé, sub-processor list, SBOM, attestations de provenance SLSA et tests de pénétration : disponibles sous NDA avant signature.
         </p>
         <p class="engineering-footnote">
           <strong>Cadre de conformité.</strong> Les sorties de signaux de crédibilité (<code>diaspor-credibility-v1</code>) ne sont pas disponibles pour usage dans les contextes de travail ou d'éducation dans l'UE (AI Act européen, en vigueur août 2026). Le traitement de données biométriques faciales en Illinois requiert un flux de consentement BIPA explicite, fourni dans le déploiement standard. Les usages forensiques, d'embauche, d'assurance et d'adjudication policière sont hors-cadre et exclus par nos conditions d'utilisation.
@@ -845,7 +845,7 @@ runtime              : builds signés · journaux d'audit complets</code></pre>
             <header class="cli-card-head">
               <span class="cli-card-tag">macOS</span>
               <h3>Apple Silicon et Intel</h3>
-              <p class="cli-card-sub">Darwin · macOS 12+ · vérifié cosign</p>
+              <p class="cli-card-sub">Darwin · macOS 12+ · vérifié minisign</p>
             </header>
             <div class="cli-actions">
               <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="aarch64-apple-darwin" rel="noopener" aria-label="Télécharger Diaspor pour Apple Silicon">
@@ -864,7 +864,7 @@ runtime              : builds signés · journaux d'audit complets</code></pre>
             <header class="cli-card-head">
               <span class="cli-card-tag">Windows</span>
               <h3>10, 11 et Server 2022</h3>
-              <p class="cli-card-sub">MSVC · x86_64 · signé Authenticode</p>
+              <p class="cli-card-sub">MSVC · x86_64 · vérifié minisign</p>
             </header>
             <div class="cli-actions">
               <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="x86_64-pc-windows-msvc" rel="noopener" aria-label="Télécharger Diaspor pour Windows x86_64">
@@ -879,7 +879,7 @@ runtime              : builds signés · journaux d'audit complets</code></pre>
             <header class="cli-card-head">
               <span class="cli-card-tag">Linux</span>
               <h3>glibc 2.31+ · x86_64 et aarch64</h3>
-              <p class="cli-card-sub">GNU · vérifié cosign</p>
+              <p class="cli-card-sub">GNU · vérifié minisign</p>
             </header>
             <div class="cli-actions">
               <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="x86_64-unknown-linux-gnu" rel="noopener" aria-label="Télécharger Diaspor pour Linux x86_64">
@@ -932,7 +932,7 @@ cargo build --release -p diaspor-cli
               <li>Bindings Rust, Python, TypeScript, Swift, Kotlin</li>
               <li>Inférence locale ou déléguée à votre tenancy</li>
               <li>Licence commerciale — embarquable dans vos propres produits</li>
-              <li>Mises à jour de modèles signées, attestation SLSA-3</li>
+              <li>Mises à jour de modèles signées, attestation de provenance SLSA</li>
             </ul>
 <pre class="sdk-api-code"><code>use diaspor::client::Diaspor;
 
