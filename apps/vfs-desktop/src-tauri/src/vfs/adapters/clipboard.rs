@@ -747,35 +747,18 @@ impl IClipboardService for ClipboardAdapter {
     }
     
     async fn get_clipboard(&self) -> Result<Option<ClipboardContent>> {
-        // #region agent log
-        use std::fs::OpenOptions;
-        use std::io::Write;
-        let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
-            let _ = writeln!(f, r#"{{"location":"clipboard.rs:469","message":"get_clipboard ENTRY","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-            
-        });
-        // #endregion
+        tracing::debug!(target: "agent_log", r#"{{"location":"clipboard.rs:469","message":"get_clipboard ENTRY","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
         // First check internal clipboard
         let internal = self.internal_clipboard.read().await;
         if let Some(ref content) = *internal {
             debug!("get_clipboard: Found internal clipboard content: source={:?}, paths={:?}", content.source, content.paths);
-            // #region agent log
-            let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
-                let _ = writeln!(f, r#"{{"location":"clipboard.rs:473","message":"get_clipboard INTERNAL FOUND","data":{{"paths_count":{},"source":"{:?}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, content.paths.len(), content.source, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                
-            });
-            // #endregion
+            tracing::debug!(target: "agent_log", r#"{{"location":"clipboard.rs:473","message":"get_clipboard INTERNAL FOUND","data":{{"paths_count":{},"source":"{:?}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, content.paths.len(), content.source, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
             return Ok(Some(content.clone()));
         }
         
         // Fall back to OS clipboard
         debug!("get_clipboard: Internal clipboard empty, checking native clipboard");
-        // #region agent log
-        let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
-            let _ = writeln!(f, r#"{{"location":"clipboard.rs:479","message":"get_clipboard INTERNAL EMPTY","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-            
-        });
-        // #endregion
+        tracing::debug!(target: "agent_log", r#"{{"location":"clipboard.rs:479","message":"get_clipboard INTERNAL EMPTY","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
         if let Some(paths) = self.read_native_clipboard().await? {
             if !paths.is_empty() {
                 debug!("get_clipboard: Found {} paths in native clipboard", paths.len());
@@ -786,12 +769,7 @@ impl IClipboardService for ClipboardAdapter {
                 
                 if !existing_paths.is_empty() {
                     debug!("get_clipboard: Returning {} existing paths from native clipboard", existing_paths.len());
-                    // #region agent log
-                    let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
-                        let _ = writeln!(f, r#"{{"location":"clipboard.rs:488","message":"get_clipboard NATIVE FOUND","data":{{"paths_count":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, existing_paths.len(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                        
-                    });
-                    // #endregion
+                    tracing::debug!(target: "agent_log", r#"{{"location":"clipboard.rs:488","message":"get_clipboard NATIVE FOUND","data":{{"paths_count":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, existing_paths.len(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
                     // Cache the native clipboard content internally to avoid re-reading
                     // This prevents macOS permission dialogs on subsequent reads (e.g., when using keyboard shortcuts)
                     let content = ClipboardContent::copy(ClipboardSource::Native, existing_paths.clone());
@@ -802,12 +780,7 @@ impl IClipboardService for ClipboardAdapter {
                     return Ok(Some(content));
                 } else {
                     debug!("get_clipboard: All native clipboard paths no longer exist");
-                    // #region agent log
-                    let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
-                        let _ = writeln!(f, r#"{{"location":"clipboard.rs:499","message":"get_clipboard NATIVE PATHS MISSING","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                        
-                    });
-                    // #endregion
+                    tracing::debug!(target: "agent_log", r#"{{"location":"clipboard.rs:499","message":"get_clipboard NATIVE PATHS MISSING","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
                 }
             }
         }

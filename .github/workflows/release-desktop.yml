@@ -95,6 +95,17 @@ jobs:
         working-directory: apps/vfs-desktop
         run: npm ci --prefer-offline --no-audit --no-fund
 
+      - name: Note macOS signing posture
+        if: matrix.os == 'macos-latest'
+        env:
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+        run: |
+          if [ -n "$APPLE_SIGNING_IDENTITY" ]; then
+            echo "::notice title=macOS code signing ENABLED::Building signed + notarized .dmg with identity \"$APPLE_SIGNING_IDENTITY\"."
+          else
+            echo "::warning title=macOS code signing DISABLED::APPLE_SIGNING_IDENTITY secret is not configured. The .dmg will be unsigned; users will see a Gatekeeper warning. See SECURITY.md for setup."
+          fi
+
       - name: Build Desktop (macOS/Linux)
         if: matrix.os != 'windows-latest'
         working-directory: apps/vfs-desktop
@@ -107,7 +118,21 @@ jobs:
             npm run tauri:build
           fi
         env:
+          # Updater signing (Ed25519, used by tauri-plugin-updater)
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          # macOS code signing + notarization. When these are set, Tauri's
+          # bundler auto-runs `codesign` and `notarytool` so the .dmg ships
+          # signed + notarized and Gatekeeper accepts it without prompt.
+          # When any are empty, Tauri logs a warning and produces an
+          # unsigned .dmg (still functional, but users will see a "damaged
+          # app" warning on first launch).
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           RUST_BACKTRACE: full
 
       - name: Build Desktop (Windows)

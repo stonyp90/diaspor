@@ -7,6 +7,7 @@ pub mod gpu;
 pub mod system;
 pub mod commands;
 pub mod logging;
+pub mod migrate_config;
 pub mod settings;
 
 use tauri::{Manager, tray::TrayIconEvent};
@@ -137,6 +138,15 @@ fn close_devtools(_window: tauri::Window) {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // One-shot directory rename from the legacy `ursly` brand to
+    // `diaspor`. Must run BEFORE settings::get_settings(), otherwise the
+    // settings loader sees an empty `<data_dir>/diaspor` and writes
+    // defaults, leaving the prior install's state orphaned next to it.
+    // Returns silently on fresh installs (nothing to migrate); logging
+    // is not initialized yet so the function uses tracing macros which
+    // become no-ops if no subscriber is attached.
+    let _migrated = migrate_config::migrate_ursly_to_diaspor();
+
     // Initialize settings first (before logging, as logging path may come from settings)
     let settings = settings::get_settings();
     

@@ -131,12 +131,39 @@ Full design notes in [ARCHITECTURE.md](ARCHITECTURE.md).
 - **Bring-your-own-model.** The library ships traits, not weights. Callers point the
   pipeline at their preferred `whisper.cpp` build, GGUF model, or LLM runtime.
 
+## Install the desktop app
+
+Prebuilt installers for the multi-tier cloud file browser (Tauri 2 frontend
+over the diaspor VFS) are published on the [GitHub releases page][releases].
+
+| Platform | File | Requirements |
+|----------|------|--------------|
+| **macOS** (Apple Silicon + Intel, universal) | `diaspor-vfs.dmg` | macOS 10.15+ |
+| **Windows** | `diaspor-vfs.msi` | Windows 10/11 |
+| **Linux** | `diaspor-vfs.AppImage` | glibc 2.31+ (Ubuntu 22.04+, Fedora 36+) |
+
+The macOS .dmg is unsigned at pre-1.0 alpha. Gatekeeper will warn on first
+launch — right-click the app and choose "Open" once, or run
+`xattr -d com.apple.quarantine /Applications/Diaspor.app` from the
+Terminal. Signing + notarization will land before the first non-alpha tag
+(see `.github/workflows/release-desktop.yml` for the wired-but-dormant
+APPLE_SIGNING_IDENTITY path).
+
+State (settings, audit log, cache) lives under the standard XDG paths:
+`~/.config/diaspor`, `~/.local/share/diaspor`, and `~/.cache/diaspor` on
+Linux, with platform equivalents on macOS / Windows. Anyone upgrading from
+v0.1.0-alpha.4 or earlier (when the brand was Ursly) is migrated
+automatically on first launch — the old `<dir>/ursly` directories are
+renamed to `<dir>/diaspor` if the new path doesn't already exist.
+
+[releases]: https://github.com/stonyp90/diaspor/releases/latest
+
 ## Quick start — plain VFS
 
 ```toml
 [dependencies]
-diaspor-core = "0.1.0-alpha.5"
-diaspor-backend-memory = "0.1.0-alpha.5"
+diaspor-core = "0.1.0-alpha.6"
+diaspor-backend-memory = "0.1.0-alpha.6"
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 ```
 

@@ -373,12 +373,9 @@ impl StorageAdapter for S3StorageAdapter {
                              std::env::var("aws_secret_access_key").is_ok();
         let has_session_token = std::env::var("AWS_SESSION_TOKEN").is_ok() || 
                                 std::env::var("aws_session_token").is_ok();
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let _ = writeln!(file, r#"{{"location":"s3_storage.rs:294","message":"list_files entry","data":{{"bucket":"{}","region":"{}","path":"{:?}","key":"{}","prefix":"{}","hasAccessKey":{},"hasSecretKey":{},"hasSessionToken":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+        tracing::debug!(target: "agent_log", r#"{{"location":"s3_storage.rs:294","message":"list_files entry","data":{{"bucket":"{}","region":"{}","path":"{:?}","key":"{}","prefix":"{}","hasAccessKey":{},"hasSecretKey":{},"hasSessionToken":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                 self.bucket, self.region, path, key, prefix, has_access_key, has_secret_key, has_session_token, 
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
         // #endregion
         
         // OpenDAL's list() returns all entries with the given prefix
@@ -466,13 +463,10 @@ impl StorageAdapter for S3StorageAdapter {
         info!("[S3] Received {} entries from OpenDAL for prefix '{}'", entries.len(), prefix);
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let entry_names: Vec<String> = entries.iter().take(5).map(|e| e.name().to_string()).collect();
-            let _ = writeln!(file, r#"{{"location":"s3_storage.rs:379","message":"list_files entries received","data":{{"bucket":"{}","prefix":"{}","entryCount":{},"firstEntries":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+        let entry_names: Vec<String> = entries.iter().take(5).map(|e| e.name().to_string()).collect();
+        tracing::debug!(target: "agent_log", r#"{{"location":"s3_storage.rs:379","message":"list_files entries received","data":{{"bucket":"{}","prefix":"{}","entryCount":{},"firstEntries":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                 self.bucket, prefix, entries.len(), entry_names,
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
         // #endregion
         
         if entries.is_empty() {
@@ -482,14 +476,9 @@ impl StorageAdapter for S3StorageAdapter {
             let has_secret_key = std::env::var("AWS_SECRET_ACCESS_KEY").is_ok() || 
                                  std::env::var("aws_secret_access_key").is_ok();
             
-            // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                use std::io::Write;
-                let _ = writeln!(file, r#"{{"location":"s3_storage.rs:393","message":"list_files empty result","data":{{"bucket":"{}","prefix":"{}","hasAccessKey":{},"hasSecretKey":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+            tracing::debug!(target: "agent_log", r#"{{"location":"s3_storage.rs:393","message":"list_files empty result","data":{{"bucket":"{}","prefix":"{}","hasAccessKey":{},"hasSecretKey":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                     self.bucket, prefix, has_access_key, has_secret_key,
                     std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-            }
-            // #endregion
             
             if !has_access_key || !has_secret_key {
                 warn!("[S3] No entries returned and credentials may be missing. Check AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.");
@@ -575,14 +564,9 @@ impl StorageAdapter for S3StorageAdapter {
             info!("[S3] ✓ Adding: child='{}', path={:?}, is_dir={}, size={}", 
                 child_name, file_path, is_dir, size);
             
-            // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                use std::io::Write;
-                let _ = writeln!(file, r#"{{"location":"s3_storage.rs:446","message":"processing entry","data":{{"entryName":"{}","childName":"{}","isDir":{},"size":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
+            tracing::debug!(target: "agent_log", r#"{{"location":"s3_storage.rs:446","message":"processing entry","data":{{"entryName":"{}","childName":"{}","isDir":{},"size":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
                     entry_name, child_name, is_dir, size,
                     std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-            }
-            // #endregion
             
             let mut vfile = VirtualFile::new(
                 child_name.to_string(),
@@ -620,13 +604,10 @@ impl StorageAdapter for S3StorageAdapter {
         }
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let file_names: Vec<String> = files.iter().take(10).map(|f| f.name.clone()).collect();
-            let _ = writeln!(file, r#"{{"location":"s3_storage.rs:481","message":"list_files returning files","data":{{"bucket":"{}","prefix":"{}","totalEntries":{},"filesReturned":{},"fileNames":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
+        let file_names: Vec<String> = files.iter().take(10).map(|f| f.name.clone()).collect();
+        tracing::debug!(target: "agent_log", r#"{{"location":"s3_storage.rs:481","message":"list_files returning files","data":{{"bucket":"{}","prefix":"{}","totalEntries":{},"filesReturned":{},"fileNames":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
                 self.bucket, prefix, entries.len(), files.len(), file_names,
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
         // #endregion
         
         info!("[S3] Returning {} files after processing {} entries", files.len(), entries.len());
@@ -941,26 +922,16 @@ impl IFileOperations for S3StorageAdapter {
             return Ok(());
         }
         
-        // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let _ = writeln!(file, r#"{{"location":"s3_storage.rs:793","message":"mkdir entry","data":{{"bucket":"{}","path":"{:?}","baseKey":"{}","finalKey":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+        tracing::debug!(target: "agent_log", r#"{{"location":"s3_storage.rs:793","message":"mkdir entry","data":{{"bucket":"{}","path":"{:?}","baseKey":"{}","finalKey":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                 self.bucket, path, base_key, key,
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
-        // #endregion
         
         match self.operator.write(&key, vec![]).await {
             Ok(_) => {
                 info!("[S3] Successfully created directory marker: {}", key);
-                // #region agent log
-                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                    use std::io::Write;
-                    let _ = writeln!(file, r#"{{"location":"s3_storage.rs:810","message":"mkdir success","data":{{"bucket":"{}","key":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+                tracing::debug!(target: "agent_log", r#"{{"location":"s3_storage.rs:810","message":"mkdir success","data":{{"bucket":"{}","key":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                         self.bucket, key,
                         std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                }
-                // #endregion
                 Ok(())
             }
             Err(e) => {
@@ -993,14 +964,9 @@ impl IFileOperations for S3StorageAdapter {
                 }
                 
                 error!("[S3] Failed to create directory marker '{}': {}", key, error_msg);
-                // #region agent log
-                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                    use std::io::Write;
-                    let _ = writeln!(file, r#"{{"location":"s3_storage.rs:820","message":"mkdir error","data":{{"bucket":"{}","key":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+                tracing::debug!(target: "agent_log", r#"{{"location":"s3_storage.rs:820","message":"mkdir error","data":{{"bucket":"{}","key":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                         self.bucket, key, error_msg,
                         std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                }
-                // #endregion
                 Err(anyhow::anyhow!("Failed to create directory '{}': {}", key, error_msg))
             }
         }

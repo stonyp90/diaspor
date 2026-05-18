@@ -221,6 +221,16 @@ jobs:
   publish:
     name: sign + publish github release
     needs: [build-cli, build-api-server]
+    # Allow this job to run even if one build matrix entry's `Post Cache`
+    # post-step flaked. We previously saw v0.1.0-alpha.1's Windows job
+    # cleanup fail AFTER the binary was already produced and uploaded as
+    # an artifact, which blocked the publish job and left the release page
+    # empty. The artifact-count guard below still gates on real builds
+    # having succeeded — if no archives downloaded, we fail loudly.
+    if: |
+      always() &&
+      needs.build-cli.result != 'cancelled' &&
+      needs.build-api-server.result != 'cancelled'
     runs-on: ubuntu-latest
     # Job-level env so the `if:` predicates below can see `env.MINISIGN_SECRET`.
     # Step-level env is not in scope for the step's own `if:` expression.
@@ -235,8 +245,18 @@ jobs:
           path: dist
           merge-multiple: true
 
-      - name: List artifacts
-        run: ls -lah dist
+      - name: List artifacts + guard against empty publish
+        run: |
+          ls -lah dist || true
+          # If every build matrix entry failed before uploading, dist may
+          # be empty. In that case fail loudly rather than producing an
+          # empty release.
+          ARCHIVES=$(find dist -maxdepth 1 -type f \( -name 'diaspor-*.tar.gz' -o -name 'diaspor-*.zip' \) | wc -l)
+          if [ "$ARCHIVES" -eq 0 ]; then
+            echo "::error title=No archives::publish: no build archives present in dist/. Aborting."
+            exit 1
+          fi
+          echo "Found $ARCHIVES build archive(s) to publish."
 
       - name: Install rsign2 (minisign-compatible signer)
         if: env.MINISIGN_SECRET != ''

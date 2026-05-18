@@ -208,14 +208,9 @@ pub async fn vfs_mkdir(
     
     info!("[vfs_mkdir] Creating directory - source_id: {}, path: {:?}", source_id, path_buf);
     
-    // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let _ = writeln!(file, r#"{{"location":"files.rs:150","message":"vfs_mkdir entry","data":{{"sourceId":"{}","path":"{:?}","pathString":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
+    tracing::debug!(target: "agent_log", r#"{{"location":"files.rs:150","message":"vfs_mkdir entry","data":{{"sourceId":"{}","path":"{:?}","pathString":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
             source_id, path_buf, path_buf.to_string_lossy(),
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
-    // #endregion
     
     let operation_id = OperationTrackingHelper::track_operation_start(
         OperationType::CreateDir,
@@ -228,14 +223,9 @@ pub async fn vfs_mkdir(
     match service.mkdir(&source_id, path_buf).await {
         Ok(()) => {
             info!("[vfs_mkdir] Successfully created directory: {:?}", path_buf);
-            // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                use std::io::Write;
-                let _ = writeln!(file, r#"{{"location":"files.rs:162","message":"vfs_mkdir success","data":{{"sourceId":"{}","path":"{:?}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
+            tracing::debug!(target: "agent_log", r#"{{"location":"files.rs:162","message":"vfs_mkdir success","data":{{"sourceId":"{}","path":"{:?}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
                     source_id, path_buf, operation_id,
                     std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-            }
-            // #endregion
             OperationTrackingHelper::complete_operation(&operation_id)
                 .unwrap_or_else(|e| error!("Failed to complete mkdir operation: {}", e));
             Ok(operation_id)
@@ -243,14 +233,9 @@ pub async fn vfs_mkdir(
         Err(e) => {
             let error_msg = format!("{}", e);
             error!("[vfs_mkdir] Failed to create directory {:?}: {}", path_buf, error_msg);
-            // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                use std::io::Write;
-                let _ = writeln!(file, r#"{{"location":"files.rs:172","message":"vfs_mkdir error","data":{{"sourceId":"{}","path":"{:?}","error":"{}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
+            tracing::debug!(target: "agent_log", r#"{{"location":"files.rs:172","message":"vfs_mkdir error","data":{{"sourceId":"{}","path":"{:?}","error":"{}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                     source_id, path_buf, error_msg, operation_id,
                     std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-            }
-            // #endregion
             OperationTrackingHelper::fail_operation(&operation_id, error_msg.clone())
                 .unwrap_or_else(|err| error!("Failed to fail mkdir operation: {}", err));
             // Append operation_id to error message for frontend tracking (format: "error|OPERATION_ID:operation_id")

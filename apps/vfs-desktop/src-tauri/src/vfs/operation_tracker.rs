@@ -335,14 +335,9 @@ impl OperationTracker {
             });
         }
         
-        // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let _ = writeln!(file, r#"{{"location":"operation_tracker.rs:336","message":"Created operation","data":{{"operation_id":"{}","operation_type":"{:?}","source_id":"{}","source_path":"{}","status":"{:?}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
+        tracing::debug!(target: "agent_log", r#"{{"location":"operation_tracker.rs:336","message":"Created operation","data":{{"operation_id":"{}","operation_type":"{:?}","source_id":"{}","source_path":"{}","status":"{:?}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                 operation_id, operation.operation_type, operation.source_id, operation.source_path, operation.status,
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
-        // #endregion
         info!("Created operation: {}", operation_id);
         operation_id
     }
@@ -717,16 +712,13 @@ impl OperationTracker {
         let operations: Vec<Operation> = ops.values().cloned().collect();
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let copy_move_rename: Vec<_> = operations.iter()
-                .filter(|op| matches!(op.operation_type, OperationType::Copy | OperationType::Move | OperationType::Rename | OperationType::CreateDir))
-                .map(|op| format!(r#"{{"id":"{}","type":"{:?}","status":"{:?}"}}"#, op.operation_id, op.operation_type, op.status))
-                .collect();
-            let _ = writeln!(file, r#"{{"location":"operation_tracker.rs:718","message":"get_all_operations returning","data":{{"total_ops":{},"copy_move_rename_count":{},"copy_move_rename_ops":[{}]}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
+        let copy_move_rename: Vec<_> = operations.iter()
+            .filter(|op| matches!(op.operation_type, OperationType::Copy | OperationType::Move | OperationType::Rename | OperationType::CreateDir))
+            .map(|op| format!(r#"{{"id":"{}","type":"{:?}","status":"{:?}"}}"#, op.operation_id, op.operation_type, op.status))
+            .collect();
+        tracing::debug!(target: "agent_log", r#"{{"location":"operation_tracker.rs:718","message":"get_all_operations returning","data":{{"total_ops":{},"copy_move_rename_count":{},"copy_move_rename_ops":[{}]}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                 operations.len(), copy_move_rename.len(), copy_move_rename.join(","),
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
         // #endregion
         
         operations
@@ -896,26 +888,16 @@ impl OperationTracker {
             for (id, _) in completed.iter().skip(self.max_history) {
                 ops.remove(id);
             }
-            // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                use std::io::Write;
-                let _ = writeln!(file, r#"{{"location":"operation_tracker.rs:870","message":"Removed operations during cleanup","data":{{"removed_ids":{:?},"removed_count":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
+            tracing::debug!(target: "agent_log", r#"{{"location":"operation_tracker.rs:870","message":"Removed operations during cleanup","data":{{"removed_ids":{:?},"removed_count":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                     removed_ids, to_remove,
                     std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-            }
-            // #endregion
             to_remove
         } else {
             0
         };
         
-        // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let _ = writeln!(file, r#"{{"location":"operation_tracker.rs:878","message":"cleanup_old_operations","data":{{"ops_before":{},"ops_after":{},"completed_count":{},"removed_count":{},"max_history":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
+        tracing::debug!(target: "agent_log", r#"{{"location":"operation_tracker.rs:878","message":"cleanup_old_operations","data":{{"ops_before":{},"ops_after":{},"completed_count":{},"removed_count":{},"max_history":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                 ops_before, ops.len(), completed.len(), removed_count, self.max_history,
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
-        // #endregion
     }
 }

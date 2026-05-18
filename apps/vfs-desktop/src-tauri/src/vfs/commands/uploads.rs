@@ -26,13 +26,8 @@ pub async fn vfs_list_uploads() -> Result<Vec<serde_json::Value>, String> {
     use super::helpers::get_upload_manager;
     use serde_json::json;
     
-    // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:25","message":"vfs_list_uploads entry","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:25","message":"vfs_list_uploads entry","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
-    // #endregion
     
     let upload_manager = get_upload_manager();
     
@@ -43,13 +38,10 @@ pub async fn vfs_list_uploads() -> Result<Vec<serde_json::Value>, String> {
     let uploads = upload_manager.list_uploads().await;
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let upload_ids: Vec<String> = uploads.iter().map(|u| u.upload_id.clone()).collect();
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:35","message":"vfs_list_uploads got uploads from manager","data":{{"uploadCount":{},"uploadIds":{:?},"statuses":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
+    let upload_ids: Vec<String> = uploads.iter().map(|u| u.upload_id.clone()).collect();
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:35","message":"vfs_list_uploads got uploads from manager","data":{{"uploadCount":{},"uploadIds":{:?},"statuses":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
             uploads.len(), upload_ids, uploads.iter().map(|u| format!("{:?}", u.status)).collect::<Vec<_>>(),
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
     // #endregion
     
     // Convert uploads to JSON format expected by frontend
@@ -78,14 +70,9 @@ pub async fn vfs_list_uploads() -> Result<Vec<serde_json::Value>, String> {
         })
     }).collect();
     
-    // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:58","message":"vfs_list_uploads returning","data":{{"jsonUploadCount":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:58","message":"vfs_list_uploads returning","data":{{"jsonUploadCount":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
             json_uploads.len(),
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
-    // #endregion
     
     Ok(json_uploads)
 }
@@ -258,16 +245,13 @@ pub async fn vfs_list_operations() -> Result<Vec<serde_json::Value>, String> {
     let operations = tracker.get_all_operations();
 
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let ops_summary: Vec<_> = operations.iter().map(|op| {
-            format!("{{\"id\":\"{}\",\"type\":\"{:?}\",\"status\":\"{:?}\"}}", op.operation_id, op.operation_type, op.status)
-        }).collect();
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:258","message":"vfs_list_operations result","data":{{"totalOps":{},"opsTypes":[{}]}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
+    let ops_summary: Vec<_> = operations.iter().map(|op| {
+        format!("{{\"id\":\"{}\",\"type\":\"{:?}\",\"status\":\"{:?}\"}}", op.operation_id, op.operation_type, op.status)
+    }).collect();
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:258","message":"vfs_list_operations result","data":{{"totalOps":{},"opsTypes":[{}]}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
             operations.len(),
             ops_summary.join(","),
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
     // #endregion
 
     // Convert operations to JSON values
@@ -449,14 +433,9 @@ pub async fn vfs_batch_upload(
         operation_files.len()
     );
     
-    // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:213","message":"vfs_batch_upload entry","data":{{"sourceId":"{}","itemCount":{},"s3BasePath":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:213","message":"vfs_batch_upload entry","data":{{"sourceId":"{}","itemCount":{},"s3BasePath":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
             source_id, items.len(), s3_base_path,
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
-    // #endregion
     
     // Get the service to access source information
     let service = _state.get_service()
@@ -466,14 +445,9 @@ pub async fn vfs_batch_upload(
     let source = service.get_source(&source_id)
         .ok_or_else(|| format!("Storage source not found: {}", source_id))?;
     
-    // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:225","message":"source retrieved","data":{{"sourceId":"{}","sourceType":"{:?}","bucket":"{}","region":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:225","message":"source retrieved","data":{{"sourceId":"{}","sourceType":"{:?}","bucket":"{}","region":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
             source_id, source.source_type, source.config.path_or_bucket, source.config.region.as_ref().unwrap_or(&"N/A".to_string()),
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
-    // #endregion
     
     // Check if this is S3 storage
     use crate::vfs::domain::StorageSourceType;
@@ -502,15 +476,12 @@ pub async fn vfs_batch_upload(
     }
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let has_access_key = access_key.is_some();
-        let has_secret_key = secret_key.is_some();
-        let has_session_token = session_token.is_some();
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:240","message":"credentials check","data":{{"hasAccessKey":{},"hasSecretKey":{},"hasSessionToken":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+    let has_access_key = access_key.is_some();
+    let has_secret_key = secret_key.is_some();
+    let has_session_token = session_token.is_some();
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:240","message":"credentials check","data":{{"hasAccessKey":{},"hasSecretKey":{},"hasSessionToken":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
             has_access_key, has_secret_key, has_session_token,
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
     // #endregion
     
     // Create temporary S3 adapter to get operator
@@ -524,27 +495,17 @@ pub async fn vfs_batch_upload(
         endpoint,
         name,
     ).await.map_err(|e| {
-        // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let _ = writeln!(file, r#"{{"location":"uploads.rs:255","message":"S3 adapter creation failed","data":{{"error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+        tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:255","message":"S3 adapter creation failed","data":{{"error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                 e,
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
-        // #endregion
         format!("Failed to create S3 adapter: {}", e)
     })?;
     
     let operator = s3_adapter.operator().clone();
     
-    // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:265","message":"S3 adapter created","data":{{"bucket":"{}","region":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:265","message":"S3 adapter created","data":{{"bucket":"{}","region":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
             bucket, region,
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
-    // #endregion
     
     // Get upload manager
     use super::helpers::get_upload_manager;
@@ -635,13 +596,10 @@ pub async fn vfs_batch_upload(
     info!("[vfs_batch_upload] Collected {} files to upload", files_to_upload.len());
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let file_names: Vec<String> = files_to_upload.iter().take(5).map(|(_, r)| r.clone()).collect();
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:336","message":"files collected","data":{{"fileCount":{},"firstFiles":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+    let file_names: Vec<String> = files_to_upload.iter().take(5).map(|(_, r)| r.clone()).collect();
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:336","message":"files collected","data":{{"fileCount":{},"firstFiles":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
             files_to_upload.len(), file_names,
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
     // #endregion
     
     // Start uploads for each file
@@ -657,14 +615,9 @@ pub async fn vfs_batch_upload(
         let operation_id_clone = operation_id.clone();
         let local_path_clone = local_path.clone();
         
-        // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-            use std::io::Write;
-            let _ = writeln!(file, r#"{{"location":"uploads.rs:355","message":"starting upload","data":{{"localPath":"{}","s3Key":"{}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+        tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:355","message":"starting upload","data":{{"localPath":"{}","s3Key":"{}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                 local_path, s3_key, operation_id_clone,
                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-        }
-        // #endregion
         
         match upload_manager.start_upload_with_operation_id(
             &operator_clone,
@@ -677,41 +630,26 @@ pub async fn vfs_batch_upload(
             Ok(upload_id) => {
                 info!("[vfs_batch_upload] Started upload: {} -> {} (upload_id: {})", local_path, s3_key, upload_id);
                 
-                // #region agent log
-                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                    use std::io::Write;
-                    let _ = writeln!(file, r#"{{"location":"uploads.rs:368","message":"upload started","data":{{"uploadId":"{}","localPath":"{}","s3Key":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+                tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:368","message":"upload started","data":{{"uploadId":"{}","localPath":"{}","s3Key":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                         upload_id, local_path, s3_key,
                         std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                }
-                // #endregion
                 
                 // Start the actual upload in background
                 let operator_upload = operator.clone();
                 let upload_id_clone = upload_id.clone();
                 let local_path_error = local_path_clone.clone();
                 tokio::spawn(async move {
-                    // #region agent log
-                    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                        use std::io::Write;
-                        let _ = writeln!(file, r#"{{"location":"uploads.rs:378","message":"upload_chunks starting","data":{{"uploadId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+                    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:378","message":"upload_chunks starting","data":{{"uploadId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                             upload_id_clone,
                             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                    }
-                    // #endregion
                     
                     let upload_manager_ref = get_upload_manager();
                     if let Err(e) = upload_manager_ref.upload_chunks(&operator_upload, &upload_id_clone).await {
                         error!("[vfs_batch_upload] Upload failed for {}: {}", upload_id_clone, e);
                         
-                        // #region agent log
-                        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                            use std::io::Write;
-                            let _ = writeln!(file, r#"{{"location":"uploads.rs:388","message":"upload_chunks failed","data":{{"uploadId":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+                        tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:388","message":"upload_chunks failed","data":{{"uploadId":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                                 upload_id_clone, e,
                                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                        }
-                        // #endregion
                         
                         // Extract user-friendly error message
                         let error_msg = format!("{}", e);
@@ -750,28 +688,18 @@ pub async fn vfs_batch_upload(
                             }
                         }
                     } else {
-                        // #region agent log
-                        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                            use std::io::Write;
-                            let _ = writeln!(file, r#"{{"location":"uploads.rs:402","message":"upload_chunks completed","data":{{"uploadId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+                        tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:402","message":"upload_chunks completed","data":{{"uploadId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                                 upload_id_clone,
                                 std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                        }
-                        // #endregion
                     }
                 });
             }
             Err(e) => {
                 error!("[vfs_batch_upload] Failed to start upload for {}: {}", local_path, e);
                 
-                // #region agent log
-                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-                    use std::io::Write;
-                    let _ = writeln!(file, r#"{{"location":"uploads.rs:415","message":"start_upload failed","data":{{"localPath":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
+                tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:415","message":"start_upload failed","data":{{"localPath":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                         local_path, e,
                         std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-                }
-                // #endregion
                 
                 // Update operation tracker to mark this file as failed
                 let tracker = get_operation_tracker();
@@ -785,14 +713,9 @@ pub async fn vfs_batch_upload(
         }
     }
     
-    // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
-        use std::io::Write;
-        let _ = writeln!(file, r#"{{"location":"uploads.rs:432","message":"vfs_batch_upload completed","data":{{"operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
+    tracing::debug!(target: "agent_log", r#"{{"location":"uploads.rs:432","message":"vfs_batch_upload completed","data":{{"operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
             operation_id,
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
-    }
-    // #endregion
     
     Ok(operation_id)
 }

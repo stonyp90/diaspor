@@ -357,7 +357,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-api-server"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "axum",
@@ -378,7 +378,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-backend-local"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -390,7 +390,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-backend-memory"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -404,7 +404,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-cli"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -420,7 +420,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-conformance"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -432,7 +432,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-core"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bitflags",
@@ -445,7 +445,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-events"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -467,7 +467,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-frame-pipeline"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -480,7 +480,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-fuse"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "diaspor-core",
@@ -490,7 +490,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-index"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -504,7 +504,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-infer"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -529,7 +529,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-stream-ingest"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -545,7 +545,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-train"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "bytes",
@@ -561,7 +561,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-vision"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "base64",
@@ -579,7 +579,7 @@ dependencies = [
 
 [[package]]
 name = "diaspor-winfsp"
-version = "0.1.0-alpha.5"
+version = "0.1.0-alpha.6"
 dependencies = [
  "async-trait",
  "diaspor-core",
