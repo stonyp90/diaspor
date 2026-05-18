@@ -31,7 +31,7 @@
 //! pick it up with the standard [`axum::extract::FromRequestParts`]
 //! mechanism:
 //!
-//! ```ignore
+//! ```text
 //! async fn analyze(ApiKey { tenant_id, vertical, .. }: ApiKey) -> Result<_, ApiError> { … }
 //! ```
 //!
@@ -226,7 +226,7 @@ fn parse_optional_u32(var: &'static str, default: u32) -> Result<u32, ConfigErro
 /// pick it up via the [`FromRequestParts`] impl below — pattern-matching
 /// the fields directly is the recommended style:
 ///
-/// ```ignore
+/// ```text
 /// async fn pose(ApiKey { vertical, .. }: ApiKey) -> Result<_, ApiError> { … }
 /// ```
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -493,7 +493,7 @@ pub fn extract_api_key_from_request(
 /// into `request.extensions_mut()` after successfully decoding the JWT.
 /// Handlers then pull it back out via this extractor:
 ///
-/// ```ignore
+/// ```text
 /// async fn pose(ApiKey { vertical, .. }: ApiKey) -> Result<_, ApiError> { … }
 /// ```
 ///

@@ -2,7 +2,7 @@
 //!
 //! Placeholder for a Low-Latency HLS pull-based ingest path. Given a manifest URL, the
 //! M9 implementation will poll the HLS playlist, fetch new media segments as they
-//! appear, and convert each segment into an [`IngestEvent::FramesArrived`] batch.
+//! appear, and convert each segment into an [`crate::IngestEvent::FramesArrived`] batch.
 //!
 //! Unlike [`WhipIngest`](crate::WhipIngest), this adapter is *pull*-based: the source
 //! publisher decides when bytes are available, and we lag behind by at most

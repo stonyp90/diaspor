@@ -9,8 +9,8 @@
 //!   meeting-bot wrapper that joins the meeting and pipes A/V into the
 //!   pipeline (Zoom / Meet / Teams).
 //!
-//! In production the upgraded socket carries
-//! [`diaspor_events::Event`]s back to the client as JSON frames. At
+//! In production the upgraded socket carries `diaspor_events::Event`s
+//! back to the client as JSON frames. At
 //! v0.1.0-alpha.1 the handler authenticates the caller, accepts the
 //! upgrade, sends a single
 //! `{"type":"error","code":"not_implemented","message":"M8 deliverable"}`

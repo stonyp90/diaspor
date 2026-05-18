@@ -134,8 +134,7 @@ pub enum HubError {
     },
 }
 
-/// Configuration knobs for [`ModelHub`]. Most callers want
-/// [`ModelHub::default()`].
+/// Configuration knobs for [`ModelHub`]. Most callers want [`HubConfig::default`].
 #[derive(Debug, Clone)]
 pub struct HubConfig {
     /// Absolute path to the cache root. Defaults to
