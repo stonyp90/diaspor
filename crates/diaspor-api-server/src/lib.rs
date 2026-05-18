@@ -81,6 +81,7 @@ use std::sync::Arc;
 
 use axum::Router;
 use axum::routing::{get, post};
+use tower_http::classify::ServerErrorsFailureClass;
 use tower_http::cors::CorsLayer;
 use tower_http::limit::RequestBodyLimitLayer;
 use tower_http::trace::TraceLayer;
@@ -158,7 +159,25 @@ pub fn build_router(state: Arc<AppState>) -> Router {
         // Outermost layers — order intentionally listed CORS → trace →
         // body-limit so the trace span sees the post-CORS request.
         .layer(CorsLayer::permissive())
-        .layer(TraceLayer::new_for_http())
+        // Custom on_failure: 501 is documented behavior (M5-M10 endpoints are
+        // intentional stubs); logging it as ERROR drowns the dev log in noise.
+        // Demote 501 to DEBUG and let real 5xx still surface as ERROR.
+        .layer(
+            TraceLayer::new_for_http().on_failure(
+                |error: ServerErrorsFailureClass, latency: std::time::Duration, _span: &tracing::Span| {
+                    match error {
+                        ServerErrorsFailureClass::StatusCode(code)
+                            if code == axum::http::StatusCode::NOT_IMPLEMENTED =>
+                        {
+                            tracing::debug!(?latency, "501 Not Implemented (documented stub)");
+                        }
+                        _ => {
+                            tracing::error!(error = ?error, ?latency, "response failed");
+                        }
+                    }
+                },
+            ),
+        )
         .layer(RequestBodyLimitLayer::new(MAX_REQUEST_BYTES))
         .with_state(state)
 }
