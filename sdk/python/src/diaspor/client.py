@@ -105,18 +105,19 @@ def _raise_for_status(response: httpx.Response, *, endpoint: str) -> None:
         # error body. Anything else 403 (revoked key, network policy) maps
         # to the generic ApiError so callers don't accidentally branch on
         # VerticalRefusedError for unrelated 403s.
-        if isinstance(body, dict):
-            err = body.get("error") if isinstance(body.get("error"), dict) else {}
-            assert isinstance(err, dict)  # narrowed by the line above
-            if err.get("code") == "vertical_refused":
-                raise VerticalRefusedError(
-                    message,
-                    status_code=status,
-                    request_id=request_id,
-                    vertical=err.get("vertical") if isinstance(err.get("vertical"), str) else None,
-                    endpoint=endpoint,
-                    body=body,
-                )
+        refusal_block: dict[str, Any] = {}
+        if isinstance(body, dict) and isinstance(body.get("error"), dict):
+            refusal_block = body["error"]
+        if refusal_block.get("code") == "vertical_refused":
+            vert = refusal_block.get("vertical")
+            raise VerticalRefusedError(
+                message,
+                status_code=status,
+                request_id=request_id,
+                vertical=vert if isinstance(vert, str) else None,
+                endpoint=endpoint,
+                body=body,
+            )
 
     if status == 501:
         raise NotImplementedYetError(
@@ -581,8 +582,8 @@ class AsyncClient(_BaseClient):
 
 
 __all__ = [
-    "AsyncClient",
-    "Client",
     "DEFAULT_BASE_URL",
     "DEFAULT_TIMEOUT_SECONDS",
+    "AsyncClient",
+    "Client",
 ]

@@ -49,39 +49,39 @@ from .models import (
 from .streaming import BotProvider, LiveSession, MeetingPlatform
 
 __all__ = [
-    # Clients
-    "AsyncClient",
-    "Client",
     "DEFAULT_BASE_URL",
     "DEFAULT_TIMEOUT_SECONDS",
-    # Streaming
-    "BotProvider",
-    "LiveSession",
-    "MeetingPlatform",
     # Errors
     "ApiError",
-    "DiasporError",
-    "NotImplementedYetError",
-    "RateLimitedError",
-    "VerticalRefusedError",
-    # Models — top-level record
-    "ScoreRecord",
-    "Modalities",
-    "RecordKind",
-    "ModelProvenance",
-    "IngestEvent",
+    # Clients
+    "AsyncClient",
+    # Streaming
+    "BotProvider",
+    "Client",
     # Models — per-modality
     "CredibilityModality",
+    "DiasporError",
     "FaceModality",
     "GazeDirection",
-    "JudgeModality",
-    "PoseModality",
-    "ProsodyModality",
     # Models — primitives + enums
     "InferenceRuntime",
+    "IngestEvent",
+    "JudgeModality",
     "Keypoint3d",
+    "LiveSession",
+    "MeetingPlatform",
+    "Modalities",
+    "ModelProvenance",
+    "NotImplementedYetError",
+    "PoseModality",
+    "ProsodyModality",
+    "RateLimitedError",
+    "RecordKind",
+    # Models — top-level record
+    "ScoreRecord",
     "Severity",
     "VerticalAttestation",
+    "VerticalRefusedError",
     # Version
     "__version__",
 ]

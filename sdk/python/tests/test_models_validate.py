@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from pydantic import ValidationError
 
 from diaspor import (
     CredibilityModality,
@@ -163,5 +164,7 @@ def test_unknown_fields_are_rejected() -> None:
     example = _load_example()
     bad = dict(example)
     bad["definitely_not_a_real_field"] = True
-    with pytest.raises(Exception):
+    # pydantic raises ValidationError specifically; asserting that (not
+    # blind Exception) catches genuine drift if the validation layer changes.
+    with pytest.raises(ValidationError):
         ScoreRecord.model_validate(bad)

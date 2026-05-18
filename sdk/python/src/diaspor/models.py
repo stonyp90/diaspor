@@ -19,7 +19,6 @@ from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field
 
-
 # ---------------------------------------------------------------------------
 # Enums
 # ---------------------------------------------------------------------------
@@ -170,7 +169,7 @@ class FaceModality(_DiasporModel):
     """478-landmark facial geometry (MediaPipe FaceMesh topology).
 
     Required: ``model``. Optional / nullable: ``landmarks_quantized``
-    (base64 INT8 478×3 quantization — 1434 bytes; full-precision floats
+    (base64 INT8 478x3 quantization - 1434 bytes; full-precision floats
     live in the binary sidecar), ``microexpr`` (FAU intensities in [0,1]),
     ``gaze`` (head-relative direction).
     """
@@ -237,7 +236,9 @@ class CredibilityModality(_DiasporModel):
         description="Identifier of the credibility model.",
     )
     score: Annotated[float, Field(ge=0.0, le=1.0)] = Field(
-        description="Indicator score in [0,1]. Higher = more stress/incongruence. Not a P(deception).",
+        description=(
+            "Indicator score in [0,1]. Higher = more stress/incongruence. Not a P(deception)."
+        ),
     )
     confidence_band: Severity = Field(
         description="Calibrated uncertainty bucket. Display prominently next to the score.",
@@ -246,7 +247,9 @@ class CredibilityModality(_DiasporModel):
         description="Human baseline accuracy for video-based deception inference (~0.54).",
     )
     ceiling_disclosed: Annotated[float, Field(ge=0.0, le=1.0)] = Field(
-        description="Accuracy ceiling for video-based deception inference in peer-reviewed lit (~0.74).",
+        description=(
+            "Accuracy ceiling for video-based deception inference in peer-reviewed lit (~0.74)."
+        ),
     )
     labs_preview: bool = Field(
         default=True,
