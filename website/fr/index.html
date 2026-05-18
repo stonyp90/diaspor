@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 
-  <title>Diaspor — L'IA non-verbale pour la sécurité et le droit canadiens.</title>
-  <meta name="title" content="Diaspor — L'IA non-verbale pour la sécurité et le droit canadiens.">
-  <meta name="description" content="IA non-verbale auto-hébergée pour dépositions, interrogatoires et enquêtes. Hébergement 100 % canadien. Aligné Loi 25, PIPEDA et Bill 96 par conception. Zéro donnée ne quitte votre périmètre.">
-  <meta name="keywords" content="Diaspor, IA non-verbale Canada, signaux de crédibilité, analyse de dépositions, IA interrogatoires, Loi 25 IA, PIPEDA IA, Bill 96, IA juridique canadienne, auto-hébergement, AWS ca-central-1, approvisionnement Québec, jugement sportif IA">
+  <title>Diaspor — plateforme Rust d'intelligence des fichiers. Auto-étiquetage vidéo. Transcription. Analyse de flux en direct.</title>
+  <meta name="title" content="Diaspor — plateforme Rust d'intelligence des fichiers. Auto-étiquetage vidéo. Transcription. Analyse de flux en direct.">
+  <meta name="description" content="Diaspor est une plateforme d'intelligence des fichiers en Rust qui fonctionne sur toute infrastructure on-prem à coût quasi-nul. Auto-étiquetage des vidéos, génération de transcriptions sur l'appareil, analyse de flux en direct (WebRTC, HLS, RTSP). Trois produits : application Desktop, SDK Engine, modèles d'IA propriétaires dont Assistant Juge AI pour le scoring de neutralité.">
+  <meta name="keywords" content="Diaspor, Diaspor Desktop, Diaspor Engine, Modèles Diaspor, intelligence des fichiers, IA sur appareil, Rust code propriétaire, VDFS, système de fichiers virtuel distribué, CLI Rust, SDK Rust, API REST, auto-étiquetage vidéo, transcription vidéo, analyse WebRTC, analyse HLS, analyse RTSP, Assistant Juge AI, scoring de neutralité, IA on-prem, sans facturation par appel, coût d'infrastructure quasi-nul, auto-hébergement, whisper.cpp, FUSE, WinFsp, AWS ca-central-1">
   <meta name="author" content="Diaspor">
   <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="https://diaspor.io/fr/">
@@ -16,15 +16,15 @@
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://diaspor.io/fr/">
-  <meta property="og:title" content="Diaspor — L'IA non-verbale pour la sécurité et le droit canadiens.">
-  <meta property="og:description" content="IA non-verbale auto-hébergée pour dépositions, interrogatoires et enquêtes. Hébergement 100 % canadien. Aligné Loi 25 et PIPEDA par conception.">
+  <meta property="og:title" content="Diaspor — plateforme Rust d'intelligence des fichiers. Auto-étiquetage vidéo. Transcription. Analyse de flux en direct.">
+  <meta property="og:description" content="Diaspor est une plateforme d'intelligence des fichiers en Rust qui fonctionne sur toute infrastructure on-prem à coût quasi-nul. Auto-étiquetage des vidéos, génération de transcriptions sur l'appareil, analyse de flux en direct (WebRTC, HLS, RTSP). Trois produits : application Desktop, SDK Engine, modèles d'IA propriétaires dont Assistant Juge AI pour le scoring de neutralité.">
   <meta property="og:site_name" content="Diaspor">
   <meta property="og:locale" content="fr_CA">
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:url" content="https://diaspor.io/fr/">
-  <meta name="twitter:title" content="Diaspor — L'IA non-verbale pour la sécurité et le droit canadiens.">
-  <meta name="twitter:description" content="IA non-verbale auto-hébergée pour dépositions, interrogatoires et enquêtes. Hébergement canadien. Zéro donnée ne quitte votre périmètre.">
+  <meta name="twitter:title" content="Diaspor — plateforme Rust d'intelligence des fichiers. Auto-étiquetage vidéo. Transcription. Analyse de flux en direct.">
+  <meta name="twitter:description" content="Diaspor est une plateforme d'intelligence des fichiers en Rust qui fonctionne sur toute infrastructure on-prem à coût quasi-nul. Auto-étiquetage des vidéos, génération de transcriptions sur l'appareil, analyse de flux en direct (WebRTC, HLS, RTSP). Trois produits : application Desktop, SDK Engine, modèles d'IA propriétaires dont Assistant Juge AI pour le scoring de neutralité.">
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="manifest" href="/site.webmanifest">
@@ -42,7 +42,7 @@
     "name": "Diaspor",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "macOS, Windows, Linux",
-    "description": "IA non-verbale auto-hébergée pour les équipes de sécurité et de droit canadiennes. Signaux de crédibilité, stress et engagement comme aide à la décision pour dépositions, interrogatoires et enquêtes. Hébergement canadien, aligné Loi 25 et PIPEDA.",
+    "description": "Diaspor est une plateforme d'intelligence des fichiers en Rust qui fonctionne sur toute infrastructure on-prem à coût quasi-nul. Auto-étiquetage des vidéos, génération de transcriptions sur l'appareil, analyse de flux en direct (WebRTC, HLS, RTSP). Trois produits : application Desktop, SDK Engine, modèles d'IA propriétaires dont Assistant Juge AI pour le scoring de neutralité.",
     "url": "https://diaspor.io/fr/",
     "inLanguage": "fr-CA"
   }
@@ -65,9 +65,9 @@
         <span class="logo-text">diaspor<span class="logo-dot">.</span></span>
       </a>
       <div class="nav-links" role="menubar">
+        <a href="#products" role="menuitem">Gamme de produits</a>
+        <a href="#vdfs" role="menuitem">VDFS</a>
         <a href="#usecases" role="menuitem">Cas d'usage</a>
-        <a href="#deployment" role="menuitem">Déploiement</a>
-        <a href="#compliance" role="menuitem">Conformité</a>
         <a href="#tech" role="menuitem">Technologie</a>
         <a href="#contact" role="menuitem">Contact</a>
         <a href="/" role="menuitem" lang="en" title="English version" aria-label="English version">EN</a>
@@ -81,9 +81,9 @@
 
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="mobile-menu" role="menu" aria-label="Navigation mobile">
+    <a href="#products" role="menuitem">Gamme de produits</a>
+    <a href="#vdfs" role="menuitem">VDFS</a>
     <a href="#usecases" role="menuitem">Cas d'usage</a>
-    <a href="#deployment" role="menuitem">Déploiement</a>
-    <a href="#compliance" role="menuitem">Conformité</a>
     <a href="#tech" role="menuitem">Technologie</a>
     <a href="#contact" role="menuitem">Contact</a>
     <a href="/" role="menuitem" lang="en">English version</a>
@@ -232,14 +232,14 @@
       <div class="hero-content">
         <span class="hero-eyebrow">
           <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-          Auto-hébergé · Loi 25 · Pour avocats et enquêteurs
+          Auto-hébergé · Loi 25 · Auto-étiquetage · Transcription · Analyse de flux
         </span>
         <h1 class="hero-title" itemprop="headline">
-          <span class="gradient-text">L'IA non-verbale</span><br>
-          <span class="gradient-text-secondary hero-creative-text">qui s'installe dans <em>votre</em> serveur.</span>
+          <span class="gradient-text">L'intelligence des fichiers</span><br>
+          <span class="gradient-text-secondary hero-creative-text">sur votre <em>matériel</em>.</span>
         </h1>
         <p class="hero-description" itemprop="description">
-          Signaux non-verbaux d'aide à la décision pour dépositions, interrogatoires et enquêtes. Auto-hébergés sur votre matériel ou votre nuage canadien. Aligné Loi 25, PIPEDA, Bill 96 dès la conception. <strong>Zéro donnée ne quitte votre périmètre.</strong>
+          Diaspor est une <strong>plateforme d'intelligence des fichiers en Rust</strong>. Le Engine fonctionne sur toute infrastructure on-prem à <strong>coût d'infrastructure quasi-nul</strong>. L'app Desktop auto-étiquette les vidéos, génère les transcriptions sur l'appareil et analyse les flux en direct (<strong>WebRTC · HLS · RTSP</strong>). Les Modèles ajoutent des IA propriétaires dont un <strong>Assistant Juge</strong> pour le scoring de neutralité. <strong>Rien ne quitte votre périmètre, par construction.</strong>
         </p>
         <div class="hero-snippet" aria-label="Exemple d'utilisation en ligne de commande">
           <span class="hero-snippet-prompt">$</span>
@@ -255,6 +255,14 @@
           <a href="#waitlist" class="btn-secondary">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
             Demander une version d'aperçu
+          </a>
+          <a href="#waitlist" class="btn-secondary">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Rejoindre la liste d'attente Desktop
+          </a>
+          <a href="#vdfs" class="btn-secondary">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            Essayer la CLI
           </a>
         </div>
         <div class="hero-stats">
@@ -280,395 +288,306 @@
     <section class="trust-strip" aria-label="Posture canadienne et conformité">
       <div class="container">
         <ul class="trust-strip-badges">
-          <li><span class="badge-dot dot-success"></span>Loi 25, PIPEDA, Bill 96 par conception</li>
+          <li><span class="badge-dot dot-success"></span>Loi 25, PIPEDA, Loi 96 par conception</li>
           <li><span class="badge-dot dot-success"></span>MSA bilingue prête pour BSP &amp; SQI</li>
-          <li><span class="badge-dot dot-warning"></span>SOC 2 Type II en cours · 2026</li>
-          <li><span class="badge-dot dot-info"></span>Données dans <strong>ca-central-1</strong> uniquement</li>
+          <li><span class="badge-dot dot-info"></span>Données et inférence dans <strong>AWS ca-central-1</strong></li>
           <li><span class="badge-dot dot-info"></span>Zéro sous-traitant américain</li>
-          <li><span class="badge-dot dot-info"></span>Binaires signés, journal d'audit complet</li>
+          <li><span class="badge-dot dot-warning"></span>SOC 2 Type II en cours · 2026</li>
+          <li><span class="badge-dot dot-info"></span>Binaires signés · journaux d'audit Ed25519</li>
+          <li><span class="badge-dot dot-info"></span>Conçu à Stoneham (Québec) · fonctionne partout</li>
         </ul>
       </div>
     </section>
 
-    <!-- Built in Canada — credibility band -->
-    <section id="canada" class="canada-band">
+    <!-- Gamme de produits — Diaspor Desktop, Engine, Modèles -->
+    <section id="products" class="tech-section">
       <div class="container">
+        <div class="section-header">
+          <span class="section-tag">02 · Gamme de produits</span>
+          <h2 class="section-title">Trois produits commerciaux. Une pile Rust.</h2>
+          <p class="section-description">Tout est en code propriétaire. Tout est hébergé au Canada (<code>ca-central-1</code>). Tout est construit et maintenu au Québec.</p>
+        </div>
+
         <div class="canada-band-grid">
-          <article class="canada-band-card canada-band-flag">
+          <article class="canada-band-card">
             <span class="canada-band-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 5.6L20 8l-4.2 4 1.1 5.8L12 15l-4.9 2.8L8.2 12 4 8l5.6-.4L12 2z"/></svg>
+              <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
             </span>
             <div>
-              <h3>Par des Canadiens, pour le Canada.</h3>
-              <p>Conçu à Montréal avec procureurs, avocats plaideurs, enquêteurs internes et corps policiers d'ici. Le ton, le vocabulaire et les flux viennent du terrain canadien, pas d'un blueprint importé.</p>
+              <h3>Diaspor Desktop.</h3>
+              <p>App multi-plateforme (macOS · Windows · Linux). <strong>Auto-étiquetage</strong> de toute archive vidéo. <strong>Transcription</strong> de réunions sur l'appareil. <strong>Analyse de flux en direct</strong> (WebRTC, HLS, RTSP). Multi-stockage (local · nuage · NAS · S3). <strong>15 $ CAD/mois prosumer · 50 $ CAD/siège/mois équipe · 199 $ CAD perpétuel</strong>. <a href="#waitlist">Rejoindre la liste d'attente →</a></p>
             </div>
           </article>
           <article class="canada-band-card">
             <span class="canada-band-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+              <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
             </span>
             <div>
-              <h3>Souveraineté complète des données.</h3>
-              <p>Stockage et inférence dans <strong>AWS ca-central-1 (Montréal)</strong>. Aucune file, aucune métadonnée, aucun journal ne traverse la frontière. Sous-traitants publiés trimestriellement.</p>
+              <h3>Diaspor Engine.</h3>
+              <p><strong>Système de Fichiers Virtuel Distribué</strong> en Rust 2024. SDK Rust · CLI · API REST · cargo-installable pour les intégrateurs sous licence. API async unique sur backends mémoire · local · FUSE · WinFsp · S3 · NAS. Fonctionne sur poste, serveur, cluster, nuage ou bord. <strong>Coût d'infrastructure quasi-nul</strong> — votre matériel fait le travail. <strong>5K $ CAD/an par développeur ou 25-100K $ CAD/an entreprise</strong>. <a href="mailto:hello@diaspor.io?subject=Diaspor%20Engine">Parlons-en →</a></p>
             </div>
           </article>
           <article class="canada-band-card">
             <span class="canada-band-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4L21 6"/><path d="M3 18l4 4L21 12"/></svg>
+              <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3a4 4 0 0 0-4 4 4 4 0 0 0-2 7 4 4 0 0 0 3 7 4 4 0 0 0 3 3 4 4 0 0 0 3-3 4 4 0 0 0 3-7 4 4 0 0 0-2-7 4 4 0 0 0-4-4z"/><path d="M12 7v14"/></svg>
             </span>
             <div>
-              <h3>Prêt pour l'audit dès le premier jour.</h3>
-              <p>Loi 25, PIPEDA, Bill 96 intégrés à l'architecture. Journaux append-only signés Ed25519. MSA bilingue pré-vérifiée pour cadres BSP, SQI et procureurs généraux.</p>
-            </div>
-          </article>
-          <article class="canada-band-card">
-            <span class="canada-band-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            </span>
-            <div>
-              <h3>Secret professionnel protégé.</h3>
-              <p>Zéro rétention au niveau de l'inférence. Aucun entraînement croisé. Le modèle voit une preuve, la traite, l'oublie. Chaque prompt et embedding est journalisé et signé.</p>
+              <h3>Modèles Diaspor.</h3>
+              <p>Capacités d'IA propriétaires. Auto-étiquetage, transcription FR/EN, vision, pose 3D, prosodie, crédibilité, <strong>Assistant Juge AI pour le scoring de neutralité</strong>, diarisation. Se branchent au Engine + Desktop. <strong>25K+ $ CAD/siège/an auto-hébergé ou SaaS hébergé</strong>. <a href="mailto:hello@diaspor.io?subject=Mod%C3%A8les%20Diaspor">Parlons-en →</a></p>
             </div>
           </article>
         </div>
-      </div>
-    </section>
 
-    <!-- Use cases — Canadian security & legal first -->
-    <section id="usecases" class="usecases-section">
-      <div class="container">
-        <div class="section-header section-header-asym">
-          <span class="section-tag section-tag-bleed">Sécurité &amp; droit canadien</span>
-          <h2 class="section-title">Conçu pour ceux qui doivent prouver.</h2>
-          <p class="section-description">Six terrains où la mesure quantifiable remplace l'opinion subjective. Chaque signal documenté, horodaté, exportable. Restitution humaine obligatoire. Hébergement canadien sans exception.</p>
-        </div>
-
-        <ul class="usecases-grid">
-          <li class="usecase-tile usecase-tile-flagship">
-            <span class="usecase-beta" title="Fonctionnalité en bêta sous développement actif">
-              <span class="usecase-beta-dot" aria-hidden="true"></span>
-              Bêta · en développement actif
-            </span>
-            <span class="usecase-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-            </span>
-            <h3>Interrogatoires &amp; dépositions</h3>
-            <p>Micro-expressions, prosodie vocale, regard, tremblements, latence de réponse. Indicateurs de stress et d'incongruence horodatés avec bandes de confiance. Aide à la décision pour l'enquêteur — jamais un verdict, jamais une conclusion forensique.</p>
-            <span class="usecase-meta">SQ · SPVM · GRC · cabinets de procureurs · témoins-experts</span>
-          </li>
-
-          <li class="usecase-tile usecase-tile-flagship">
-            <span class="usecase-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M9 14h6"/><path d="M9 17h4"/></svg>
-            </span>
-            <h3>Litige &amp; preuve vidéo</h3>
-            <p>Authenticité du témoin, congruence entre versions, anomalies dans les contre-interrogatoires. Citations à la trame près, prêtes pour le dossier.</p>
-            <span class="usecase-meta">Plaideurs · cabinets de notaires · preuve criminelle &amp; civile</span>
-          </li>
-
-          <li class="usecase-tile">
-            <span class="usecase-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l3 3 6-6"/><path d="M3 18l3 3 6-6"/><path d="M14 12h7"/><path d="M14 18h7"/></svg>
-            </span>
-            <h3>Audits &amp; enquêtes internes</h3>
-            <p>Entrevues structurées en éthique, conformité, fraude. Indicateurs de stress et d'incongruence flagués avec bandes de confiance pour révision par enquêteur.</p>
-            <span class="usecase-meta">Conformité · vérification interne · OAQ · ordres professionnels</span>
-          </li>
-
-          <li class="usecase-tile">
-            <span class="usecase-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg>
-            </span>
-            <h3>Réclamations &amp; expertise</h3>
-            <p>Détection de fraude sur entrevues d'assurance, expertise médicolégale, accidents du travail. Comparaison entre versions vidéo et déclarations.</p>
-            <span class="usecase-meta">Assureurs · CNESST · IVAC · experts indépendants</span>
-          </li>
-
-          <li class="usecase-tile usecase-tile-flagship">
-            <span class="usecase-beta" title="Fonctionnalité en bêta sous développement actif">
-              <span class="usecase-beta-dot" aria-hidden="true"></span>
-              Bêta · en développement actif
-            </span>
-            <span class="usecase-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M3 12h18"/></svg>
-            </span>
-            <h3>Jugement sportif</h3>
-            <p>Pose 3D, angle articulaire, vitesse, équilibre. Note technique et d'exécution comparée à la référence de la discipline.</p>
-            <span class="usecase-meta">Sport Canada · fédérations · entraîneurs · juges</span>
-          </li>
-
-          <li class="usecase-tile">
-            <span class="usecase-icon" aria-hidden="true">
-              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
-            </span>
-            <h3>Coaching à l'oral</h3>
-            <p>Plaideurs, dirigeants, témoins-experts. Posture, débit, contact visuel, micro-expressions. Boucle de rétroaction objective avant l'audience.</p>
-            <span class="usecase-meta">Préparation au procès · médias · commissions d'enquête</span>
-          </li>
-        </ul>
-
-        <p class="usecases-disclaimer">
-          <strong>Bêta · en développement actif.</strong> Les <strong>signaux de crédibilité</strong> et le <strong>jugement sportif</strong> sont en bêta privée et évoluent fréquemment. Calibration en cours avec des cohortes canadiennes du droit, de la sécurité et du sport.<br>
-          <strong>Les signaux de crédibilité ne sont pas de la détection de mensonge.</strong> Le plafond de précision dans la littérature scientifique pour l'inférence de tromperie sur vidéo est d'environ 74&nbsp;%; la base humaine est d'environ 54&nbsp;%. Diaspor publie des fiches de précision par version. Les verdicts forensiques, décisions d'embauche, réclamations d'assurance et adjudications policières sont hors-cadre et exclus par nos conditions d'utilisation. Les contextes de travail et d'éducation dans l'UE sont exclus en vertu du AI Act européen (en vigueur août 2026). Flux de consentement BIPA requis en Illinois.<br>
-          Les scores et marqueurs sont des aides à la décision basées sur les signaux observés. Diaspor n'émet pas de verdict de culpabilité, de mensonge ou d'inaptitude. Restitution humaine obligatoire dans tout contexte légal, employeur ou disciplinaire.
+        <p class="tech-cta" style="margin-top: 1.5rem;">
+          Bâti en Rust 2024 · fonctionne sur toute infrastructure on-prem · code propriétaire · marque déposée « Diaspor » 2026-05-19 · hébergé au Canada (<code>ca-central-1</code>) lorsque hébergé · Loi 25 + PIPEDA + Loi 96 alignés.
         </p>
       </div>
     </section>
 
-    <!-- Capabilities — promoted right after use cases for feature-first IA -->
-    <section id="capabilities" class="capabilities-section capabilities-v2">
+    <!-- VDFS — maquette d'arbre + capacités -->
+    <style>@media(max-width:880px){.vdfs-grid{grid-template-columns:1fr!important;}}</style>
+    <section id="vdfs" class="vdfs-section" style="padding:72px 0;border-top:1px solid #1f2937;">
       <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Capacités</span>
-          <h2 class="section-title">Lire le non-verbal, à la précision d'un capteur</h2>
-          <p class="section-description">Une capacité de pointe. Trois compléments. Toute l'inférence dans des centres de données canadiens.</p>
+        <div class="section-header" style="text-align:center;margin-bottom:48px;">
+          <span class="section-tag" style="display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:#22d3ee;font-weight:600;margin-bottom:14px;">Système de Fichiers Virtuel Distribué · Rust 2024</span>
+          <h2 class="section-title" style="font-size:clamp(28px,3.4vw,42px);font-weight:700;color:#fff;letter-spacing:-0.025em;margin-bottom:14px;">Un arbre de fichiers. <span style="background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Tous vos stockages.</span></h2>
+          <p class="section-description" style="font-size:16px;color:#c9d1d9;max-width:680px;margin:0 auto;line-height:1.6;">Montez disques locaux, buckets S3, partages NAS, volumes FUSE, caméras RTSP — tous sous une seule API async. Recherchez · transcrivez · étiquetez · analysez à travers les sources sans copier un seul octet.</p>
         </div>
 
-        <div class="capabilities-feature-grid">
-          <article class="capability-feature">
-            <span class="capability-feature-eyebrow">Frontière de l'IA</span>
-            <h3 class="capability-feature-title">Mesurer ce que les mots cachent</h3>
-            <p class="capability-feature-lede">
-              Diaspor fusionne micro-expressions, pose 3D, regard et prosodie en signaux quantifiables. Scores de crédibilité, stress, engagement et authenticité avec bandes de confiance. Note technique du geste sportif. Tout, horodaté à la trame près, prêt à annexer au dossier comme aide à la décision.
-            </p>
-            <ul class="capability-feature-grid-list">
-              <li>
-                <strong>Signaux de crédibilité · bêta</strong>
-                <span>Micro-expressions, latence, incongruence.</span>
-              </li>
-              <li>
-                <strong>Stress vocal</strong>
-                <span>Tremblement, débit, prosodie, pauses.</span>
-              </li>
-              <li>
-                <strong>Pose et geste</strong>
-                <span>Squelette 3D, angle, vitesse, équilibre.</span>
-              </li>
-              <li>
-                <strong>Regard et attention</strong>
-                <span>Fixation, évitement, contact visuel.</span>
-              </li>
-              <li>
-                <strong>Score sportif</strong>
-                <span>Technique, exécution, comparaison référence.</span>
-              </li>
-              <li>
-                <strong>Recherche par moment</strong>
-                <span>« Trouve quand le pouls a grimpé. »</span>
-              </li>
-            </ul>
-          </article>
+        <div class="vdfs-grid" style="display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start;">
 
-          <ul class="capabilities-companion">
-            <li>
-              <h4>Intelligence média</h4>
-              <p>Transcription, sous-titrage, traduction EN ↔ FR et chapitrage automatique de tout votre audio et vidéo.</p>
-            </li>
-            <li>
-              <h4>Intelligence visuelle</h4>
-              <p>Étiquetage de chaque image et trame. OCR français et anglais. Recherche par contenu, pas par nom de fichier.</p>
-            </li>
-            <li>
-              <h4>Demandez à votre stockage</h4>
-              <p>Recherche sémantique avec citations sur PDF, transcriptions, courriels et texte OCR.</p>
-            </li>
-          </ul>
+          <!-- Gauche : maquette d'arbre -->
+          <div class="vdfs-tree" style="background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:24px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:1.8;color:#c9d1d9;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid #1f2937;padding-bottom:12px;">
+              <span style="color:#7d8590;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:600;">$ diaspor tree /dossiers</span>
+              <span style="font-size:11px;color:#22d3ee;">● connecté</span>
+            </div>
+            <div>&#128193; <strong style="color:#22d3ee;">dossiers/</strong></div>
+            <div style="padding-left:14px;">├─ &#128190; <span style="color:#a5b4fc;">local/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">2,1 To · SSD NVMe</span></div>
+            <div style="padding-left:30px;color:#8b949e;">│  ├─ dossiers-2026/</div>
+            <div style="padding-left:30px;color:#8b949e;">│  └─ archives/</div>
+            <div style="padding-left:14px;">├─ &#9729;&#65039; <span style="color:#a5b4fc;">s3-preuves/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">47 To · AWS ca-central-1</span></div>
+            <div style="padding-left:30px;color:#8b949e;">│  ├─ video/</div>
+            <div style="padding-left:30px;color:#8b949e;">│  └─ audio/</div>
+            <div style="padding-left:14px;">├─ &#128230; <span style="color:#a5b4fc;">nas-archive/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">120 To · partage SMB</span></div>
+            <div style="padding-left:30px;color:#8b949e;">│  └─ 2024-2025/</div>
+            <div style="padding-left:14px;">├─ &#127909; <span style="color:#a5b4fc;">rtsp-cam-01/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">en direct · auto-indexé</span></div>
+            <div style="padding-left:14px;">└─ &#128274; <span style="color:#a5b4fc;">coffre-chiffre/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">FUSE · AES-256</span></div>
+            <div style="margin-top:22px;padding-top:14px;border-top:1px solid #1f2937;color:#7d8590;font-size:12px;">→ <strong style="color:#22d3ee;">169 To</strong> sur 5 backends · une API async · zéro copie · zéro donnée qui quitte votre périmètre</div>
+          </div>
+
+          <!-- Droite : liste de capacités -->
+          <div class="vdfs-features" style="display:flex;flex-direction:column;gap:18px;">
+            <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+              <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128204; Montez n'importe où</h3>
+              <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">Mémoire · disque local · FUSE (macOS/Linux) · WinFsp (Windows) · S3 · NAS/SMB · RTSP. Une API async, un modèle mental.</p>
+            </article>
+            <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+              <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#9889; Indexer sans copier</h3>
+              <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">Le pipeline lit les fichiers en place. Étiquetage, transcription, embeddings vivent dans un magasin de métadonnées séparé. Les originaux restent sur leur backend.</p>
+            </article>
+            <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+              <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128274; Pas-de-réseau par construction</h3>
+              <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">CI exécute tous les tests dans <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#22d3ee;font-size:0.9em;">unshare --net</code>. La compilation échoue si un module ouvre un socket sans opt-in explicite. Le contrat de confidentialité est structurel, pas aspirationnel.</p>
+            </article>
+            <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+              <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128176; Payez votre matériel</h3>
+              <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">Pas de facture cloud par-token. Votre CPU, GPU et disque font le travail. Diaspor évolue linéairement avec votre infrastructure — et rien d'autre.</p>
+            </article>
+          </div>
+        </div>
+
+        <!-- Bas : exemples de commandes CLI -->
+        <div style="margin-top:36px;background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:24px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:2;color:#c9d1d9;">
+          <div style="color:#7d8590;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;font-weight:600;margin-bottom:14px;">Trois commandes · toute infrastructure</div>
+          <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor mount</span> --backend s3 --bucket evidence --to /cases/s3-evidence</div>
+          <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor index</span> /cases --pipeline whisper-cpp --tag-with llama3</div>
+          <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor search</span> "interview about Q3 budget" --speaker A --confidence 0.8</div>
         </div>
       </div>
     </section>
 
-    <!-- Self-hosting / Deployment ladder -->
-    <section id="deployment" class="deployment-section">
+    <!-- Téléchargements bureau — installateurs natifs du navigateur multi-tiers -->
+    <style>
+      .download-card{position:relative;display:flex;align-items:center;gap:16px;background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:18px 18px 18px 20px;color:#fff;text-decoration:none;transition:border-color 150ms ease, background 150ms ease, transform 150ms ease;}
+      .download-card:hover{background:rgba(34,211,238,0.04);border-color:rgba(34,211,238,0.4);transform:translateY(-1px);}
+      .download-card:focus-visible{outline:2px solid #22d3ee;outline-offset:2px;}
+      .download-card-icon{flex-shrink:0;color:#a5b4fc;transition:color 150ms ease;}
+      .download-card:hover .download-card-icon{color:#22d3ee;}
+      .download-card-label{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;}
+      .download-card-platform{font-size:14px;font-weight:600;color:#fff;letter-spacing:-0.01em;}
+      .download-card-hint{font-size:11px;color:#7d8590;letter-spacing:0.02em;}
+      .download-card-ext{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;color:#7d8590;background:rgba(255,255,255,0.04);padding:3px 7px;border-radius:4px;letter-spacing:0.02em;}
+      .download-card.is-recommended{border-color:rgba(34,211,238,0.45);background:linear-gradient(135deg,rgba(34,211,238,0.05),rgba(79,70,229,0.05));}
+      .download-card.is-recommended .download-card-icon{color:#22d3ee;}
+      .download-card.is-recommended::after{content:"Recommandé";position:absolute;top:-9px;right:14px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:#0a0b14;background:#22d3ee;padding:3px 8px;border-radius:4px;}
+    </style>
+    <section id="download" class="download-section" style="padding:72px 0;border-top:1px solid #1f2937;">
+      <div class="container">
+        <div class="section-header" style="text-align:center;margin-bottom:36px;">
+          <span class="section-tag" style="display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:#22d3ee;font-weight:600;margin-bottom:14px;">Diaspor Desktop · <span data-desktop-version>latest</span></span>
+          <h2 class="section-title" style="font-size:clamp(28px,3.4vw,42px);font-weight:700;color:#fff;letter-spacing:-0.025em;margin-bottom:14px;">Installez-le sur votre machine.</h2>
+          <p class="section-description" style="font-size:16px;color:#c9d1d9;max-width:640px;margin:0 auto;line-height:1.6;">Installateurs natifs pour le navigateur de fichiers multi-tiers. Étiquetage et transcription sur l'appareil, analyse de flux en direct — tout ce que la CLI fait, dans une fenêtre.</p>
+        </div>
+
+        <div class="download-grid" role="list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:880px;margin:0 auto;">
+          <a class="download-card" data-download-platform="macos" role="listitem" href="https://github.com/stonyp90/diaspor/releases/latest/download/diaspor-vfs.dmg" rel="noopener" aria-label="Télécharger Diaspor Desktop pour macOS (.dmg)">
+            <svg class="download-card-icon" aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>
+            <span class="download-card-label">
+              <span class="download-card-platform">macOS</span>
+              <span class="download-card-hint">Universel · Apple Silicon &amp; Intel</span>
+            </span>
+            <span class="download-card-ext" aria-hidden="true">.dmg</span>
+          </a>
+          <a class="download-card" data-download-platform="windows" role="listitem" href="https://github.com/stonyp90/diaspor/releases/latest/download/diaspor-vfs.msi" rel="noopener" aria-label="Télécharger Diaspor Desktop pour Windows (.msi)">
+            <svg class="download-card-icon" aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.479l7.42-1.01v7.158H3V5.479zm0 13.042l7.42 1.01v-7.062H3v6.052zm8.418 1.169L21 21V12.668h-9.582v6.022zm0-15.06v7.226H21V3L11.418 4.63z"/></svg>
+            <span class="download-card-label">
+              <span class="download-card-platform">Windows</span>
+              <span class="download-card-hint">Windows 10 et 11 · x86_64</span>
+            </span>
+            <span class="download-card-ext" aria-hidden="true">.msi</span>
+          </a>
+          <a class="download-card" data-download-platform="linux" role="listitem" href="https://github.com/stonyp90/diaspor/releases/latest/download/diaspor-vfs.AppImage" rel="noopener" aria-label="Télécharger Diaspor Desktop pour Linux (.AppImage)">
+            <svg class="download-card-icon" aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.077 1.092-.3 1.953-1.05 3.02-.886 1.052-2.13 2.75-2.732 4.392-.287.78-.41 1.514-.31 2.19a.602.602 0 0 0-.073.073C4.367 16.69 4.165 17.213 3.99 17.7c-.226.485-.487.94-.74 1.32-.193.288-.434.524-.624.747-.176.21-.318.39-.42.566a.999.999 0 0 0-.131.643.999.999 0 0 0 .457.755c.302.205.722.343 1.142.4.42.058.84.058 1.236.058.397 0 .788 0 1.124-.058.336-.057.66-.182.84-.4.179-.218.218-.484.225-.747.007-.262-.029-.516-.073-.755-.073-.402-.18-.79-.297-1.181-.116-.39-.218-.776-.218-1.087 0-.31.069-.554.218-.776.149-.222.39-.422.776-.629.385-.206.776-.34 1.124-.34.348 0 .67.134 1.123.34.453.207.694.407.843.629.149.222.218.466.218.776 0 .311-.102.697-.218 1.087-.117.391-.224.78-.297 1.181-.044.239-.08.493-.073.755.007.263.046.529.225.747.18.218.504.343.84.4.336.058.727.058 1.124.058.396 0 .816 0 1.236-.058.42-.057.84-.195 1.142-.4a.999.999 0 0 0 .457-.755.999.999 0 0 0-.131-.643c-.102-.176-.244-.356-.42-.566-.19-.223-.43-.46-.625-.747-.252-.38-.513-.835-.74-1.32-.174-.487-.376-1.01-.628-1.687a.602.602 0 0 0-.073-.073c.1-.676-.023-1.41-.31-2.19-.601-1.642-1.845-3.34-2.731-4.392-.75-1.067-.974-1.928-1.05-3.02-.065-1.49 1.055-5.965-3.17-6.298a4.66 4.66 0 0 0-.48-.021Z"/></svg>
+            <span class="download-card-label">
+              <span class="download-card-platform">Linux</span>
+              <span class="download-card-hint">AppImage · glibc 2.31+</span>
+            </span>
+            <span class="download-card-ext" aria-hidden="true">.AppImage</span>
+          </a>
+        </div>
+
+        <p class="download-fineprint" style="text-align:center;margin:28px auto 0;font-size:13px;color:#7d8590;max-width:640px;line-height:1.6;">
+          Le DMG macOS n'est pas signé pendant la phase alpha — cliquez avec le bouton droit sur l'application et choisissez <em>Ouvrir</em> au premier lancement, ou exécutez <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#22d3ee;font-size:0.92em;">xattr -d com.apple.quarantine /Applications/Diaspor.app</code> dans le Terminal. <a href="https://github.com/stonyp90/diaspor/releases/latest" target="_blank" rel="noopener" style="color:#22d3ee;text-decoration:none;border-bottom:1px solid rgba(34,211,238,0.35);">Toutes les versions et sommes de contrôle →</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Use cases — illustrative examples of what the tech enables -->
+    <section id="usecases" class="usecases-section">
       <div class="container">
         <div class="section-header section-header-asym">
-          <span class="section-tag section-tag-bleed">Auto-hébergement</span>
-          <h2 class="section-title">Vos données ne sortent jamais de votre périmètre.</h2>
-          <p class="section-description">Quatre modes de déploiement, du laptop hors-ligne au datacenter classifié. Vous choisissez le rayon d'isolation, nous fournissons le binaire signé, le Helm chart et les modules Terraform. Aucune dépendance à notre infrastructure pour opérer.</p>
+          <span class="section-tag section-tag-bleed">Industries · cas d'usage</span>
+          <h2 class="section-title">12 industries. Une plateforme.</h2>
+          <p class="section-description">Trouvez votre secteur. Le Engine, Desktop et Modèles de Diaspor s'adaptent au flux de travail sans changer le contrat de confidentialité. <strong>Même pile Rust 2024, même coût d'infrastructure quasi-nul, même souveraineté canadienne.</strong></p>
         </div>
-        <ol class="deployment-ladder">
-          <li class="deployment-step">
-            <div class="deployment-step-head">
-              <span class="deployment-step-num">01</span>
-              <span class="deployment-step-iso">Isolation max</span>
-            </div>
-            <h3>Air-gap · Hors-ligne</h3>
-            <p>Binaire unique sur poste classifié ou serveur isolé. Modèles transférés sur clé USB signée. Aucun réseau requis.</p>
-            <ul>
-              <li>Compatible salles SCIF / classifiées</li>
-              <li>Modèles vérifiés SHA-256</li>
-              <li>Zéro service réseau actif</li>
-            </ul>
-            <code class="deployment-cmd">$ diaspor-agent serve --air-gap --models ./models.tar</code>
+
+        <ul class="usecases-grid">
+
+          <li class="usecase-tile usecase-tile-flagship">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M5 6l-3 6h6z"/><path d="M19 6l3 6h-6z"/><path d="M5 6h14"/><path d="M9 22h6"/></svg>
+            </span>
+            <h3>01 · Juridique &amp; justice</h3>
+            <p>Indexation de dépositions + recherche sémantique · transcription bilingue d'audiences (FR/EN) · analyse vidéo de preuves (CCTV, dashcam, body-cam) · préparation de contre-interrogatoire · signaux de crédibilité (aide à la décision uniquement).</p>
+            <span class="usecase-meta">Cabinets de droit · DPCP · cours · notaires · tribunaux administratifs</span>
           </li>
-          <li class="deployment-step">
-            <div class="deployment-step-head">
-              <span class="deployment-step-num">02</span>
-              <span class="deployment-step-iso">Votre infra</span>
-            </div>
-            <h3>On-premise</h3>
-            <p>Votre serveur, votre datacenter, votre cluster Kubernetes. Helm chart fourni. Mises à jour atomiques par tag git.</p>
-            <ul>
-              <li>k8s ≥ 1.28 · OpenShift compatible</li>
-              <li>GPU NVIDIA · AMD · Apple Silicon</li>
-              <li>Pas de pont sortant requis</li>
-            </ul>
-            <code class="deployment-cmd">$ helm install diaspor diaspor/diaspor --version 0.1</code>
+
+          <li class="usecase-tile usecase-tile-flagship">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg>
+            </span>
+            <h3>02 · Sécurité publique &amp; forces de l'ordre</h3>
+            <p>Body-cam : indexation + transcription en lot · vidéo-surveillance RTSP en temps réel · entrevues d'investigation avec analyse non-verbale · pré-divulgation auto-indexée · triage d'archives de preuves vidéo.</p>
+            <span class="usecase-meta">SPVQ · SQ · GRC · polices municipales · sécurité corporative · enquête privée</span>
           </li>
-          <li class="deployment-step deployment-step-featured">
-            <div class="deployment-step-head">
-              <span class="deployment-step-num">03</span>
-              <span class="deployment-step-iso">Recommandé</span>
-            </div>
-            <h3>Votre tenancy nuage canadien</h3>
-            <p>Diaspor déployé dans <em>votre</em> compte AWS · Azure · GCP, région canadienne. Vous gardez les clés (BYOK), les journaux, la facture.</p>
-            <ul>
-              <li>Modules Terraform officiels</li>
-              <li>BYOK · KMS · HSM</li>
-              <li>Co-géré ou auto-géré</li>
-            </ul>
-            <code class="deployment-cmd">module "diaspor" { source = "stonyp90/diaspor/aws" }</code>
+
+          <li class="usecase-tile usecase-tile-flagship">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4a2 2 0 0 1-2-2V5h4"/><path d="M18 9h2a2 2 0 0 0 2-2V5h-4"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            </span>
+            <h3>03 · Sport &amp; fédérations</h3>
+            <p><strong>Assistant Juge AI pour la neutralité d'arbitrage</strong> · analyse technique pose 3D (33 keypoints) · revue vidéo d'entraînement · détection automatique de moments forts · indexation d'archives de compétition.</p>
+            <span class="usecase-meta">Hockey Canada · Judo Canada · gymnastique · plongée · clubs d'élite · Sport-Études</span>
           </li>
-          <li class="deployment-step">
-            <div class="deployment-step-head">
-              <span class="deployment-step-num">04</span>
-              <span class="deployment-step-iso">Géré par Diaspor</span>
-            </div>
-            <h3>Notre nuage canadien</h3>
-            <p>Tenancy multi-locataire dans AWS ca-central-1. Pour cabinets qui ne veulent pas opérer. Chiffrement par locataire, isolation logique stricte.</p>
-            <ul>
-              <li>SLA 99,9 % heures ouvrables QC</li>
-              <li>Mises à jour gérées par Diaspor</li>
-              <li>Modèle d'exploitation coût-plus</li>
-            </ul>
-            <code class="deployment-cmd">$ diaspor login --tenant votre-cabinet</code>
+
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+            </span>
+            <h3>04 · Médias &amp; diffuseurs</h3>
+            <p>Auto-étiquetage d'archives vidéo (catalogue MAM) · sous-titrage bilingue automatique · indexation chronologique de bulletins · <strong>transcription de flux HLS en direct</strong> · monitoring conformité broadcast (Loi 96).</p>
+            <span class="usecase-meta">Radio-Canada · TVA · Bell Media · productions indépendantes · plateformes streaming</span>
           </li>
-        </ol>
-      </div>
-    </section>
 
-    <!-- Compliance matrix -->
-    <section id="compliance" class="compliance-section">
-      <div class="container">
-        <div class="section-header section-header-asym">
-          <span class="section-tag section-tag-bleed">Conformité</span>
-          <h2 class="section-title">Chaque cadre, son statut. Pas de promesses vagues.</h2>
-          <p class="section-description">Ce qu'on prouve aujourd'hui, ce qu'on atteste cette année, ce qui est sur la feuille de route. Posture validée par conseil juridique externe, preuves disponibles sous NDA dès la première conversation.</p>
-        </div>
-        <div class="compliance-grid">
-          <article class="compliance-card compliance-status-ready">
-            <header>
-              <h3>Loi 25 (Québec)</h3>
-              <span class="compliance-pill compliance-pill-ready">Aligné par conception</span>
-            </header>
-            <ul>
-              <li>Résidence des données ca-central-1</li>
-              <li>Modèle d'EFVP (évaluation FVP) fourni</li>
-              <li>Journal d'incidents intégré</li>
-              <li>Classification automatique de RP — T3 2026</li>
-            </ul>
-          </article>
-          <article class="compliance-card compliance-status-ready">
-            <header>
-              <h3>PIPEDA (fédéral)</h3>
-              <span class="compliance-pill compliance-pill-ready">Aligné par conception</span>
-            </header>
-            <ul>
-              <li>10 principes intégrés à l'architecture</li>
-              <li>Consentement contextuel · droit d'accès et d'effacement</li>
-              <li>Hébergement et inférence intégralement canadiens</li>
-            </ul>
-          </article>
-          <article class="compliance-card compliance-status-ready">
-            <header>
-              <h3>Bill 96 (Québec)</h3>
-              <span class="compliance-pill compliance-pill-ready">MSA bilingue prête</span>
-            </header>
-            <ul>
-              <li>UI, docs, support, IA bilingues FR/EN</li>
-              <li>MSA pré-vérifiée pour cadres BSP · SQI</li>
-              <li>Conforme OQLF</li>
-            </ul>
-          </article>
-          <article class="compliance-card compliance-status-progress">
-            <header>
-              <h3>SOC 2 Type II</h3>
-              <span class="compliance-pill compliance-pill-progress">En cours · 2026</span>
-            </header>
-            <ul>
-              <li>Type I terminé T4 2026 (cible)</li>
-              <li>Type II observation 6 mois</li>
-              <li>Preuves disponibles sous NDA durant l'audit</li>
-            </ul>
-          </article>
-          <article class="compliance-card compliance-status-progress">
-            <header>
-              <h3>ISO 27001:2022</h3>
-              <span class="compliance-pill compliance-pill-progress">Préparation · 2027</span>
-            </header>
-            <ul>
-              <li>SMSI en cours d'instauration</li>
-              <li>Politiques alignées Annex A 2022</li>
-              <li>Audit externe ciblé T2 2027</li>
-            </ul>
-          </article>
-          <article class="compliance-card compliance-status-roadmap">
-            <header>
-              <h3>Cadre fédéral GoC</h3>
-              <span class="compliance-pill compliance-pill-roadmap">Sur demande</span>
-            </header>
-            <ul>
-              <li>Évaluation Protégé B prête sur demande</li>
-              <li>Processus d'évaluation SSC accompagné</li>
-              <li>Mode air-gap pour Très Secret</li>
-            </ul>
-          </article>
-        </div>
-        <p class="compliance-footnote">Liste à jour des sous-traitants, gabarit de DPA, threat-model et SBOM disponibles sous NDA avant signature.</p>
-      </div>
-    </section>
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+            </span>
+            <h3>05 · Créateurs &amp; baladodiffuseurs</h3>
+            <p>Auto-transcription de balados (FR québécois + EN) · auto-chapitrage de vidéos longues · recherche dans archive de streams · génération de show notes / résumés · indexation RAW footage pour montage.</p>
+            <span class="usecase-meta">Baladodiffuseurs indépendants · créateurs YouTube · streamers Twitch · agences de contenu</span>
+          </li>
 
-    <!-- Cost — economic positioning, after capabilities -->
-    <section id="cost" class="cost-section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Économie à l'échelle</span>
-          <h2 class="section-title">Une économie qui tient à volume de production.</h2>
-          <p class="section-description">Nos modèles propriétaires <code>diaspor-*</code> sur votre matériel, ou dans notre infonuagique canadienne à prix coûtant. Vous gardez le contrôle du calcul, des données et de la facture.</p>
-        </div>
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </span>
+            <h3>06 · Santé &amp; cliniques</h3>
+            <p>Anonymisation automatique de vidéos médicales (PHIPA + Loi 25) · transcription de consultations · indexation d'archives radiologiques/échographiques · recherche dans archive de consultations · analyse comportementale patient (autisme, troubles moteurs).</p>
+            <span class="usecase-meta">CIUSSS · CISSS · hôpitaux universitaires · cliniques privées · recherche médicale</span>
+          </li>
 
-        <div class="cost-grid">
-          <article class="cost-card">
-            <h3>Transcription d'audio long</h3>
-            <ul class="cost-list">
-              <li><span class="cost-vendor">API étrangères grand public</span><span class="cost-amount">par minute ou par requête</span></li>
-              <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · votre matériel</span><span class="cost-amount"><strong>calcul + électricité</strong></span></li>
-              <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · infonuagique canadienne</span><span class="cost-amount"><strong>à prix coûtant</strong></span></li>
-            </ul>
-            <p class="cost-savings">Économie qui se révèle au volume.</p>
-          </article>
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </span>
+            <h3>07 · Éducation &amp; recherche</h3>
+            <p>Indexation de cours enregistrés (transcriptions cherchables) · sous-titrage FR/EN automatique pour étudiants · analyse de corpus vidéo de recherche (kinésiologie, sciences sociales) · annotation automatique d'expériences en lab · détection plagiat sur présentations vidéo.</p>
+            <span class="usecase-meta">UdeM · ULaval · McGill · Concordia · UQAM · CEGEPs · MILA · IVADO · CRIM</span>
+          </li>
 
-          <article class="cost-card">
-            <h3>Analyse d'images et de trames</h3>
-            <ul class="cost-list">
-              <li><span class="cost-vendor">API vision américaines</span><span class="cost-amount">par image ou par token</span></li>
-              <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · <code>diaspor-vision-v1</code> sur GPU</span><span class="cost-amount"><strong>calcul + électricité</strong></span></li>
-              <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · infonuagique canadienne</span><span class="cost-amount"><strong>à prix coûtant</strong></span></li>
-            </ul>
-            <p class="cost-savings">Pas de surprise à la facturation.</p>
-          </article>
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4 8 4v14"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+            </span>
+            <h3>08 · Gouvernement &amp; municipal</h3>
+            <p>Archive séances conseil municipal (transcription + recherche) · indexation procédures parlementaires bilingues · gestion documentaire conforme Loi 25 · analyse événements caméras de circulation · conformité Loi 96 contenu municipal.</p>
+            <span class="usecase-meta">Villes (Stoneham, Québec, Montréal) · ministères québécois · agences fédérales · BAnQ</span>
+          </li>
 
-          <article class="cost-card">
-            <h3>Recherche sémantique d'archive</h3>
-            <ul class="cost-list">
-              <li><span class="cost-vendor">RAG d'entreprise SaaS</span><span class="cost-amount">par usager / mois</span></li>
-              <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · embeddings locaux</span><span class="cost-amount"><strong>calcul local</strong></span></li>
-              <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · infonuagique canadienne</span><span class="cost-amount"><strong>à prix coûtant</strong></span></li>
-            </ul>
-            <p class="cost-savings">Coût plat, croissance prévisible.</p>
-          </article>
-        </div>
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </span>
+            <h3>09 · Services financiers &amp; conformité</h3>
+            <p>Enregistrements d'appels conformité (AMF, FINRA) · analyse KYC vidéo (intégration client à distance) · indexation entrevues recrutement réglementé · détection fraude par signaux non-verbaux · archive audit-ready avec journaux signés.</p>
+            <span class="usecase-meta">Desjardins · banques · courtage · fintechs · cabinets comptables</span>
+          </li>
 
-        <p class="cost-footnote">Modèle « sur votre matériel » : vous payez le calcul et l'électricité, rien à nous. Modèle « infonuagique canadienne » : facturation à l'usage, à prix coûtant, sans marge masquée. Devis détaillés sur demande, cadrés selon le volume et la posture de conformité.</p>
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.5.5 0 0 1-.96 0L9.68 3.18a.5.5 0 0 0-.96 0l-2.35 8.36A2 2 0 0 1 4.44 13H2"/></svg>
+            </span>
+            <h3>10 · Assurances &amp; réclamations</h3>
+            <p>Analyse vidéo de réclamations · détection fraude par signaux non-verbaux · indexation entrevues réclamants · workflow inspection sinistres en lot · soutien investigateurs SIU.</p>
+            <span class="usecase-meta">Intact · Desjardins Assurances · Co-operators · investigateurs SIU · ajusteurs indépendants</span>
+          </li>
+
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <h3>11 · RH &amp; recrutement à fort volume</h3>
+            <p>Indexation entrevues vidéo (recherche par compétence) · auto-transcription pour notes RH · enregistrements conformité EDI/équité · bibliothèque vidéo d'onboarding cherchable · corpus candidats étiqueté par compétence.</p>
+            <span class="usecase-meta">Grandes entreprises · cabinets de recrutement · agences temporaires · éditeurs RH-tech</span>
+          </li>
+
+          <li class="usecase-tile">
+            <span class="usecase-icon" aria-hidden="true">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9l6 6m-6 0l6-6m-3-3v12M3 3l6 6m-6 0l6-6"/></svg>
+            </span>
+            <h3>12 · Arbitrage · médiation · MARC</h3>
+            <p><strong>Assistant Juge AI pour la neutralité des médiateurs</strong> · indexation séances d'arbitrage (audio + vidéo) · recherche dans corpus de cas similaires · analyse comportementale équilibre des parties.</p>
+            <span class="usecase-meta">Centres d'arbitrage · médiateurs · CRT · TAQ · praticiens MARC indépendants</span>
+          </li>
+
+        </ul>
+
+        <p class="usecases-disclaimer">
+          <strong>Cette liste est illustrative, pas exhaustive.</strong> Toute équipe qui gère une archive média, opère un flux d'enregistrement ou surveille un flux en direct sur une infrastructure qu'elle contrôle peut exécuter Diaspor. <strong>Votre secteur n'y est pas ?</strong> <a href="mailto:hello@diaspor.io?subject=Mon%20secteur%20n%27est%20pas%20list%C3%A9">Parlez-nous de votre cas d'usage →</a><br><br>
+          <strong>Bêta · en développement actif.</strong> Les <strong>signaux de crédibilité</strong>, l'<strong>Assistant Juge AI</strong> et le <strong>jugement sportif</strong> sont en bêta privée. Les signaux de crédibilité ne sont pas de la détection de mensonge (plafond de précision scientifique ≈ 74&nbsp;%, base humaine ≈ 54&nbsp;%). Diaspor publie des fiches de précision par version. Verdicts forensiques, décisions d'embauche, adjudications d'assurance et décisions policières sont hors-cadre. Contextes travail et éducation UE exclus en vertu du AI Act européen (en vigueur août 2026). Flux BIPA requis en Illinois. Scores sont des aides à la décision — restitution humaine obligatoire dans tout contexte légal, employeur ou disciplinaire.
+        </p>
       </div>
     </section>
 
@@ -677,341 +596,68 @@
       <div class="container">
         <div class="section-header">
           <span class="section-tag">Sous le capot</span>
-          <h2 class="section-title">Nos modèles propriétaires, tournés sur vos données</h2>
-          <p class="section-description">Pas d'API boîte noire. Pas de surprise à la facturation. La famille de modèles Diaspor, affinée sur des corpus canadiens du droit, de la sécurité et du sport.</p>
+          <h2 class="section-title">Une pile propriétaire. Construite en Rust 2024.</h2>
+          <p class="section-description">Un système de fichiers virtuel distribué, CLI et SDK qui s'exécutent partout — poste, serveur, grappe GPU on-prem ou votre tenancy nuage — à coût de calcul quasi nul. Une seule base de code, une seule marque, un seul fournisseur canadien.</p>
         </div>
         <div class="tech-bands">
           <div class="tech-band">
             <div class="tech-band-head">
-              <span class="tech-band-tag">Parole</span>
-              <code class="tech-band-code">$ diaspor model pull diaspor-speech-v1</code>
+              <span class="tech-band-tag">Diaspor Engine (propriétaire)</span>
+              <code class="tech-band-code">$ diaspor index /cases --pipeline whisper-cpp --tag-with llama3</code>
             </div>
             <div class="tech-band-body">
-              <p class="tech-band-models"><strong>diaspor-speech-v1</strong> · transcription + diarisation</p>
-              <p class="tech-band-note">Conçu pour le français du Québec et les contextes juridiques canadiens, en calibration avec les cohortes fondatrices. Optimisé pour Apple Silicon et GPU récents.</p>
-            </div>
-          </div>
-          <div class="tech-band">
-            <div class="tech-band-head">
-              <span class="tech-band-tag">Vision</span>
-              <code class="tech-band-code">$ diaspor model pull diaspor-vision-v1</code>
-            </div>
-            <div class="tech-band-body">
-              <p class="tech-band-models"><strong>diaspor-vision-v1</strong> · scènes, objets, OCR FR/EN</p>
-              <p class="tech-band-note">Étiquetage trame par trame, indexation de preuve vidéo, recherche sémantique sur chaque clip.</p>
+              <p class="tech-band-models"><strong>Système de Fichiers Virtuel Distribué · Rust 2024</strong></p>
+              <p class="tech-band-note">
+                API async unique sur backends <strong>mémoire · local · FUSE · WinFsp · S3 · NAS</strong>. CLI pour l'opération · SDK pour l'embarqué · API REST pour le reste.<br>
+                Pipeline sur l'appareil : <strong>ingestion FFmpeg → transcription whisper.cpp → étiquetage LLM local → index vectoriel</strong>.<br>
+                Fonctionne sur <strong>poste, serveur, cluster, nuage ou bord</strong>.<br>
+                <strong>Coût d'infrastructure quasi-nul</strong> — votre matériel fait le travail, aucune facturation par appel d'API.<br>
+                Suite de conformité qui prouve que chaque backend se comporte de manière identique. Embarqué dans Diaspor Desktop · aussi licencié séparément aux ÉPI.
+              </p>
             </div>
           </div>
           <div class="tech-band tech-band-accent">
             <div class="tech-band-head">
-              <span class="tech-band-tag">Non-verbal · bêta</span>
-              <code class="tech-band-code">$ diaspor model pull diaspor-pose-3d,diaspor-prosody</code>
+              <span class="tech-band-tag">Modèles Diaspor (propriétaire · commercial)</span>
+              <code class="tech-band-code">$ diaspor model run diaspor-judge-assistant-v1 --stream rtsp://camera</code>
             </div>
             <div class="tech-band-body">
-              <p class="tech-band-models"><strong>diaspor-pose-3d-v1</strong> · <strong>diaspor-prosody-v1</strong> · <strong>diaspor-face-mesh-v1</strong></p>
-              <p class="tech-band-note">Expressions faciales, prosodie vocale, regard et posture. Score d'engagement et de sentiment par segment. Calibration canadienne en cours.</p>
+              <p class="tech-band-models"><strong>IA propriétaire · 9 capacités</strong></p>
+              <p class="tech-band-note">
+                <strong>Auto-étiquetage</strong> · scène + objet + visage + OCR FR+EN.<br>
+                <strong>Transcription</strong> · diarisation · français québécois + anglais canadien.<br>
+                <strong>Analyse de flux en direct</strong> · WebRTC · HLS · RTSP.<br>
+                <strong>Pose 3D</strong> · 33 keypoints · jugement sportif, geste, posture.<br>
+                <strong>Prosodie vocale</strong> · stress, tremblement, rythme, pauses.<br>
+                <strong>Crédibilité composite</strong> · aide à la décision, jamais un verdict.<br>
+                <strong>Assistant Juge AI</strong> · scoring de neutralité pour le sport, l'arbitrage, le refereeing — en développement actif, lancement Y2.<br>
+                <strong>Diarisation</strong> · qui a dit quoi.<br>
+                <strong>Vision</strong> · détection scène/objet/OCR FR + EN.
+              </p>
             </div>
           </div>
-          <div class="tech-band">
-            <div class="tech-band-head">
-              <span class="tech-band-tag">Composites scoring · bêta</span>
-              <code class="tech-band-code">$ diaspor score --model diaspor-credibility-v1</code>
-            </div>
-            <div class="tech-band-body">
-              <p class="tech-band-models"><strong>diaspor-credibility-v1</strong> · <strong>diaspor-judge-v1</strong> · <strong>diaspor-rag-v1</strong></p>
-              <p class="tech-band-note">Modèles composites propriétaires : signaux de crédibilité (stress + incongruence, pas détection de mensonge), jugement sportif, raisonnement RAG sur preuves. Fiches de précision publiées par version. Calibration sur cohortes canadiennes du droit, de la sécurité et du sport.</p>
-            </div>
+        </div>
+        <p class="tech-cta">Tout propriétaire · fonctionne sur votre matériel · protégé par secret commercial · aucune facturation par appel. <a href="mailto:hello@diaspor.io?subject=Plong%C3%A9e%20technique">Demander une plongée technique.</a></p>
+
+        <!-- Encadré ingénierie : par techniques, pour techniques -->
+        <aside style="margin-top:28px;background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:22px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;">
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Pile</div>
+            <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Rust 2024 · workspace de 8 crates · zéro unsafe sauf FFI · <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#a5b4fc;font-size:0.9em;">cargo --release · LTO=thin</code></div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Engineering depth — by engineers, for engineers -->
-    <section id="engineering" class="engineering-section">
-      <div class="container">
-        <div class="section-header section-header-asym">
-          <span class="section-tag section-tag-bleed">Par techniques · Pour techniques</span>
-          <h2 class="section-title">Précision de capteur. Profondeur d'ingénieur.</h2>
-          <p class="section-description">Pour architectes sécurité, DPO, équipes DevSecOps et juristes techniques. Aucun marketing dilué. Numéros de version, paramètres, primitives cryptographiques, manifestes de déploiement. Tout ce qu'il faut pour décider en cinq minutes.</p>
-        </div>
-
-        <div class="engineering-grid">
-          <article class="engineering-block">
-            <header class="engineering-head">
-              <span class="engineering-tag">RUNTIME</span>
-              <span class="engineering-version">v0.1.0-alpha · Rust 2024</span>
-            </header>
-<pre class="engineering-pre"><code>workspace : 8 crates · resolver = "3"
-  diaspor-core         types · traits · errors
-  diaspor-backend-*    local · S3 · NAS · memory
-  diaspor-index        vector index · embeddings
-  diaspor-fuse/winfsp  POSIX · NTFS mount layer
-  diaspor-cli          livre `diaspor` (CLI) + `diaspor-agent` (daemon)
-build     : cargo --release · LTO=thin · panic=abort
-toolchain : stable rust &ge; 1.85
-safety    : zero unsafe except FFI shims
-lints     : clippy::pedantic + ::nursery -D warnings
-ci        : cargo fmt · clippy · doc · test
-            + no-network sandbox (unshare --net)</code></pre>
-          </article>
-
-          <article class="engineering-block">
-            <header class="engineering-head">
-              <span class="engineering-tag">MODÈLES PROPRIÉTAIRES</span>
-              <span class="engineering-version">famille diaspor-* · poids SHA-256 signés</span>
-            </header>
-<pre class="engineering-pre"><code>parole       : diaspor-speech-v1      transcription + diariz.
-                                      conçu pour FR-QC + cour
-vision       : diaspor-vision-v1      scènes · objets · OCR FR/EN
-                                      indexation de preuve vidéo
-non-verbal   : diaspor-face-mesh-v1   478 landmarks faciaux
-   (bêta)     diaspor-pose-3d-v1     33 keypoints 3D
-              diaspor-prosody-v1     stress vocal
-composites   : diaspor-credibility-v1 signaux de crédib.  (bêta)
-   (bêta)                              stress + incongruence
-              diaspor-judge-v1       jugement sportif    (bêta)
-RAG          : diaspor-rag-v1         raisonnement sur preuves
-entraînement : fine-tuning supervisé · RLHF · RLAIF
-               apprentissage contrastif · adaptation de domaine
-               calibration : cohortes fondatrices canadiennes
-runtime      : NVIDIA · AMD · Apple Silicon · CPU AVX-512
-licence      : poids propriétaires · binaires runtime signés
-attestation  : SHA-256 + Ed25519 (minisign) + SLSA prov.</code></pre>
-          </article>
-
-          <article class="engineering-block">
-            <header class="engineering-head">
-              <span class="engineering-tag">DÉPLOIEMENT</span>
-              <span class="engineering-version">helm · terraform · docker · systemd</span>
-            </header>
-<pre class="engineering-pre"><code># 1. Helm — votre cluster Kubernetes
-helm install diaspor diaspor/diaspor \
-  --set region=ca-central-1 \
-  --set models.stack=diaspor-speech,diaspor-vision,diaspor-pose-3d \
-  --set persistence.size=2Ti \
-  --set byok.kms_key_arn=arn:aws:kms:...
-
-# 2. Terraform — votre tenancy AWS
-module "diaspor" {
-  source  = "stonyp90/diaspor/aws"
-  version = "~&gt; 0.1"
-  region  = "ca-central-1"
-  vpc_id  = aws_vpc.legal.id
-  byok    = true
-}
-
-# 3. Binaire seul — laptop d'enquêteur
-$ diaspor-agent serve --local --gpu=auto --port 7733</code></pre>
-          </article>
-
-          <article class="engineering-block">
-            <header class="engineering-head">
-              <span class="engineering-tag">SÉCURITÉ</span>
-              <span class="engineering-version">FIPS 140-3 ciphers · BYOK · prov. SLSA</span>
-            </header>
-<pre class="engineering-pre"><code>chiffrement repos    : AES-256-GCM
-chiffrement transit  : TLS 1.3 · mTLS optionnel
-clés                 : BYOK · AWS KMS · HashiCorp Vault
-                       · HSM compatible (CloudHSM, Luna)
-auth                 : OIDC · SAML · mTLS · API tokens
-RBAC                 : par dossier · modèle · signal
-audit                : append-only WORM · signé Ed25519
-secrets en mémoire   : zeroize · pas de swap
-supply chain         : prov. SLSA · in-toto · minisign
-modèles              : poids propriétaires signés SHA-256
-runtime              : builds signés · journaux d'audit complets</code></pre>
-          </article>
-        </div>
-
-        <p class="engineering-footnote">
-          OpenAPI schema, threat-model détaillé, sub-processor list, SBOM, attestations de provenance SLSA et tests de pénétration : disponibles sous NDA avant signature.
-        </p>
-        <p class="engineering-footnote">
-          <strong>Cadre de conformité.</strong> Les sorties de signaux de crédibilité (<code>diaspor-credibility-v1</code>) ne sont pas disponibles pour usage dans les contextes de travail ou d'éducation dans l'UE (AI Act européen, en vigueur août 2026). Le traitement de données biométriques faciales en Illinois requiert un flux de consentement BIPA explicite, fourni dans le déploiement standard. Les usages forensiques, d'embauche, d'assurance et d'adjudication policière sont hors-cadre et exclus par nos conditions d'utilisation.
-        </p>
-      </div>
-    </section>
-
-    <!-- CLI · Binaires à la demande · macOS · Windows · Linux -->
-    <section id="cli" class="cli-section">
-      <div class="container">
-        <div class="section-header section-header-asym">
-          <span class="section-tag section-tag-bleed" data-cli-version>CLI · v0.1.0-alpha.1</span>
-          <h2 class="section-title">Exécutez Diaspor en local. Deux binaires signés, toutes les plateformes.</h2>
-          <p class="section-description">Chaque publication livre <code>diaspor</code> (la CLI d'opérateur) et <code>diaspor-agent</code> (le daemon runtime). Builds signés directement depuis notre pipeline, vérifiés SHA-256, reproductibles depuis la source, zéro télémétrie d'installation. Posez les binaires sur un poste, lancez <code>diaspor-agent serve --local</code>, c'est en marche.</p>
-        </div>
-
-        <div class="cli-grid" role="list">
-          <article class="cli-card" lang="fr" data-platform="macos" role="listitem">
-            <header class="cli-card-head">
-              <span class="cli-card-tag">macOS</span>
-              <h3>Apple Silicon et Intel</h3>
-              <p class="cli-card-sub">Darwin · macOS 12+ · vérifié minisign</p>
-            </header>
-            <div class="cli-actions">
-              <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="aarch64-apple-darwin" rel="noopener" aria-label="Télécharger Diaspor pour Apple Silicon">
-                <span class="cli-btn-arch">Apple Silicon · M1+</span>
-                <span class="cli-btn-meta">.tar.gz</span>
-              </a>
-              <a class="cli-btn" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="x86_64-apple-darwin" rel="noopener" aria-label="Télécharger Diaspor pour Mac Intel">
-                <span class="cli-btn-arch">Intel · x86_64</span>
-                <span class="cli-btn-meta">.tar.gz</span>
-              </a>
-            </div>
-            <p class="cli-card-foot"><code>shasum -a 256 -c diaspor-&hellip;.tar.gz.sha256</code></p>
-          </article>
-
-          <article class="cli-card" lang="fr" data-platform="windows" role="listitem">
-            <header class="cli-card-head">
-              <span class="cli-card-tag">Windows</span>
-              <h3>10, 11 et Server 2022</h3>
-              <p class="cli-card-sub">MSVC · x86_64 · vérifié minisign</p>
-            </header>
-            <div class="cli-actions">
-              <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="x86_64-pc-windows-msvc" rel="noopener" aria-label="Télécharger Diaspor pour Windows x86_64">
-                <span class="cli-btn-arch">x86_64</span>
-                <span class="cli-btn-meta">.zip</span>
-              </a>
-            </div>
-            <p class="cli-card-foot"><code>Get-FileHash diaspor-&hellip;.zip -Algorithm SHA256</code></p>
-          </article>
-
-          <article class="cli-card" lang="fr" data-platform="linux" role="listitem">
-            <header class="cli-card-head">
-              <span class="cli-card-tag">Linux</span>
-              <h3>glibc 2.31+ · x86_64 et aarch64</h3>
-              <p class="cli-card-sub">GNU · vérifié minisign</p>
-            </header>
-            <div class="cli-actions">
-              <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="x86_64-unknown-linux-gnu" rel="noopener" aria-label="Télécharger Diaspor pour Linux x86_64">
-                <span class="cli-btn-arch">x86_64</span>
-                <span class="cli-btn-meta">.tar.gz</span>
-              </a>
-              <a class="cli-btn" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="aarch64-unknown-linux-gnu" rel="noopener" aria-label="Télécharger Diaspor pour Linux aarch64">
-                <span class="cli-btn-arch">aarch64</span>
-                <span class="cli-btn-meta">.tar.gz</span>
-              </a>
-            </div>
-            <p class="cli-card-foot"><code>sha256sum -c diaspor-&hellip;.tar.gz.sha256</code></p>
-          </article>
-        </div>
-
-        <div class="cli-source">
-          <h3>Ou compilez depuis la source.</h3>
-<pre class="sdk-api-code"><code>git clone https://github.com/stonyp90/diaspor.git
-cd diaspor
-cargo build --release -p diaspor-cli
-
-# binaires à target/release/{diaspor, diaspor-agent}
-./target/release/diaspor-agent serve --local --gpu=auto --port 7733</code></pre>
-        </div>
-
-        <p class="cli-footnote">
-          <a href="https://github.com/stonyp90/diaspor/releases/latest" target="_blank" rel="noopener">Toutes les versions sur GitHub →</a>
-          · Binaires signés · poids de modèles propriétaires sous licence séparée.
-        </p>
-      </div>
-    </section>
-
-    <!-- SDK + API — embed and integrate -->
-    <section id="sdk-api" class="sdk-api-section">
-      <div class="container">
-        <div class="section-header section-header-asym">
-          <span class="section-tag section-tag-bleed">SDK &amp; API</span>
-          <h2 class="section-title">Intégrez Diaspor à vos systèmes existants.</h2>
-          <p class="section-description">Deux portes d'entrée commerciales pour les éditeurs logiciels, les intégrateurs et les équipes produit qui bâtissent leurs propres outils juridiques, de sécurité ou de coaching. Mêmes modèles propriétaires, même hébergement canadien, même posture conformité.</p>
-        </div>
-
-        <div class="sdk-api-grid">
-          <article class="sdk-api-card">
-            <header class="sdk-api-head">
-              <span class="sdk-api-tag">SDK</span>
-              <h3>SDK Diaspor</h3>
-              <p class="sdk-api-tagline">Embarquez les modèles dans votre application.</p>
-            </header>
-            <ul class="sdk-api-points">
-              <li>Bindings Rust, Python, TypeScript, Swift, Kotlin</li>
-              <li>Inférence locale ou déléguée à votre tenancy</li>
-              <li>Licence commerciale — embarquable dans vos propres produits</li>
-              <li>Mises à jour de modèles signées, attestation de provenance SLSA</li>
-            </ul>
-<pre class="sdk-api-code"><code>use diaspor::client::Diaspor;
-
-let client = Diaspor::local()?;
-let analysis = client
-    .analyze("entrevue.mp4")
-    .with_models(&["diaspor-speech", "diaspor-credibility"])
-    .run()
-    .await?;
-
-for marker in analysis.credibility_signals() {
-    println!("{} · {:.0}%", marker.timestamp, marker.score * 100.0);
-}</code></pre>
-            <div class="sdk-api-footer">
-              <span class="sdk-api-pricing">Sièges illimités par déploiement · engagement annuel</span>
-              <a href="mailto:hello@diaspor.io?subject=SDK%20Diaspor" class="sdk-api-cta">Parlons-en →</a>
-            </div>
-          </article>
-
-          <article class="sdk-api-card sdk-api-card-featured">
-            <header class="sdk-api-head">
-              <span class="sdk-api-tag">API</span>
-              <h3>API Diaspor Cloud</h3>
-              <p class="sdk-api-tagline">Appelez nos modèles depuis vos systèmes, sans rien héberger.</p>
-            </header>
-            <ul class="sdk-api-points">
-              <li>REST &amp; gRPC · OpenAPI 3.1 · streaming Server-Sent Events</li>
-              <li>Hébergement ca-central-1 · zéro sous-traitant américain</li>
-              <li>Clé API par projet, RBAC par modèle et par signal</li>
-              <li>Webhooks signés Ed25519 · journaux d'audit exportables</li>
-            </ul>
-<pre class="sdk-api-code"><code>curl https://api.diaspor.io/v1/analyze \
-  -H "Authorization: Bearer $DIASPOR_KEY" \
-  -H "X-Region: ca-central-1" \
-  -F file=@entrevue.mp4 \
-  -F 'models=["diaspor-speech","diaspor-credibility"]'
-
-# → { "credibility_signals": [...],
-#     "transcript": [...],
-#     "audit_id": "evt_01H..." }</code></pre>
-            <div class="sdk-api-footer">
-              <span class="sdk-api-pricing">Cadré selon votre débit et votre SLA</span>
-              <a href="mailto:hello@diaspor.io?subject=API%20Diaspor%20Cloud" class="sdk-api-cta">Demander une clé d'aperçu →</a>
-            </div>
-          </article>
-        </div>
-
-        <p class="sdk-api-footnote">SDK et API partagent la même posture conformité que le produit principal : journaux append-only, restitution humaine obligatoire pour les signaux de crédibilité, exclusions UE AI Act et BIPA héritées du déploiement standard. Modalités commerciales cadrées par cas d'usage.</p>
-      </div>
-    </section>
-
-    <!-- Custom AI / RL engagements -->
-    <section id="custom" class="custom-section">
-      <div class="container">
-        <div class="custom-card">
-          <span class="section-tag">Engagements sur mesure</span>
-          <h2 class="section-title">Apportez vos données. Nous apportons le modèle.</h2>
-          <p class="section-description">
-            Nous prenons en charge des engagements ML sur mesure : modèles de vision, parole et non-verbal affinés, classificateurs et embeddings spécifiques au domaine, RLHF/RLAIF adaptés à vos critères d'évaluation, juges sportifs entraînés sur votre discipline, modèles de signaux de crédibilité calibrés sur votre corpus pour usages non-forensiques. L'entraînement s'exécute dans votre tenancy ou sur votre matériel. <strong>Les poids restent dans votre environnement sous votre accord de service.</strong>
-          </p>
-          <ul class="custom-pills">
-            <li>Modèles diaspor-* adaptés à votre domaine</li>
-            <li>RLHF / RLAIF sur vos critères d'évaluation</li>
-            <li>Juges en apprentissage par renforcement</li>
-            <li>Modèles de signaux de crédibilité sur mesure</li>
-            <li>Classificateurs et embeddings de domaine</li>
-            <li>Modèles de notation sportive spécifiques</li>
-          </ul>
-          <div class="custom-actions">
-            <a href="mailto:hello@diaspor.io?subject=Engagement%20IA%20personnalis%C3%A9%20%2F%20RL" class="btn-primary">
-              Discuter de votre projet
-              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-            <a href="https://calendly.com/anthonypaquet1508" target="_blank" rel="noopener" class="btn-secondary">
-              Réserver un appel de cadrage
-            </a>
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Builds</div>
+            <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Binaires signés multi-plateformes · SHA-256 + Ed25519 (minisign) + provenance SLSA · reproductibles depuis la source</div>
           </div>
-          <p class="custom-footnote">Conversations dirigées par le fondateur. Engagement typique de 4 à 12 semaines, cadré selon vos données et votre posture de conformité. Cadres d'approvisionnement secteur public québécois pris en charge.</p>
-        </div>
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Code source</div>
+            <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">GitLab privé auto-hébergé · codebase protégée par NDA · revue complète disponible sous NDA pour les équipes sécurité</div>
+          </div>
+          <div>
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Cadre de conformité</div>
+            <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;"><code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#a5b4fc;font-size:0.9em;">diaspor-credibility-v1</code> exclu des contextes travail/éducation UE (AI Act). Consentement BIPA pour biométrie faciale en Illinois. Adjudication forensique/embauche hors-cadre.</div>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -1044,6 +690,8 @@ for marker in analysis.credibility_signals() {
             <p class="contact-card-meta">Conduit par le fondateur depuis Montréal · Réponse sous un jour ouvrable · FR / EN</p>
           </div>
         </div>
+
+        <p style="margin-top:24px;text-align:center;font-size:14px;color:#c9d1d9;max-width:760px;margin-left:auto;margin-right:auto;line-height:1.55;"><strong style="color:#fff;">Engagements sur mesure disponibles</strong> — nous cadrons des déploiements Engine au volume, des quotas SaaS hébergés et des corpus d'entraînement Modèles (modèles diaspor-* adaptés au domaine, RLHF/RLAIF sur vos critères, scoring sportif spécifique, modèles de crédibilité sur mesure). Les poids restent dans votre environnement. Mentionnez-le dans votre premier message.</p>
       </div>
     </section>
 
@@ -1070,9 +718,27 @@ for marker in analysis.credibility_signals() {
 
   </main>
 
+  <!-- Financement & communauté — soutien public non-dilutif -->
+  <section class="trust-strip" aria-label="Financement et communauté">
+    <div class="container">
+      <p style="text-align:center;margin-bottom:0.75rem;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6;font-weight:600;">Financement public non-dilutif · Québec + Canada</p>
+      <ul class="trust-strip-badges">
+        <li><span class="badge-dot dot-info"></span>Investissement Québec · CDAE</li>
+        <li><span class="badge-dot dot-info"></span>Revenu Québec · RS&amp;DE</li>
+        <li><span class="badge-dot dot-info"></span>ARC · SR&amp;DE fédéral</li>
+        <li><span class="badge-dot dot-info"></span>CNRC-PARI</li>
+        <li><span class="badge-dot dot-info"></span>Scale AI Montréal</li>
+        <li><span class="badge-dot dot-info"></span>MITACS</li>
+        <li><span class="badge-dot dot-info"></span>MILA · IVADO</li>
+      </ul>
+      <p style="text-align:center;margin-top:1rem;opacity:0.7;font-size:0.875rem;"><strong>Diaspor est construit et maintenu au Québec, financé par les programmes publics canadiens de R&amp;D (RS&amp;DE · CDAE · CNRC-PARI · Scale AI · MITACS · CRIC). Zéro dilution d'équité par conception.</strong></p>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <div class="container">
+      <p style="text-align:center;margin-bottom:1rem;opacity:0.8;">L'intelligence des fichiers sur votre matériel. Conçu au Québec, fonctionne partout.</p>
       <div class="footer-bottom">
         <p>
           &copy; 2026 Diaspor inc. Conçu à Montréal · Hébergé dans
@@ -1122,6 +788,70 @@ for marker in analysis.credibility_signals() {
         window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
       });
     });
+
+    // Desktop downloads: rewrite href to the actual GitHub asset URL once
+    // the latest release is known, highlight the OS-matched card. Falls back
+    // to /releases/latest/download/<file> which always resolves while the
+    // repo is public.
+    (function initDesktopDownloads() {
+      const REPO = 'stonyp90/diaspor';
+      const ASSETS = {
+        macos:   'diaspor-vfs.dmg',
+        windows: 'diaspor-vfs.msi',
+        linux:   'diaspor-vfs.AppImage',
+      };
+
+      function fallbackUrl(filename) {
+        return 'https://github.com/' + REPO + '/releases/latest/download/' + filename;
+      }
+
+      function detectPlatform() {
+        const ua = (navigator.userAgent || '').toLowerCase();
+        if (ua.indexOf('windows') >= 0) return 'windows';
+        if (ua.indexOf('mac') >= 0) return 'macos';
+        if (ua.indexOf('linux') >= 0 || ua.indexOf('x11') >= 0) return 'linux';
+        return null;
+      }
+
+      function applyAssets(tag, assetMap) {
+        document.querySelectorAll('[data-download-platform]').forEach(el => {
+          const p = el.dataset.downloadPlatform;
+          const filename = ASSETS[p];
+          if (!filename) return;
+          el.href = (assetMap && assetMap[filename]) || fallbackUrl(filename);
+        });
+        document.querySelectorAll('[data-desktop-version]').forEach(el => {
+          el.textContent = tag;
+        });
+      }
+
+      function highlightCurrentPlatform() {
+        const p = detectPlatform();
+        if (!p) return;
+        const card = document.querySelector('[data-download-platform="' + p + '"]');
+        if (card) card.classList.add('is-recommended');
+      }
+
+      async function refreshLatest() {
+        try {
+          const res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest', {
+            headers: { 'Accept': 'application/vnd.github+json' }
+          });
+          if (!res.ok) return;
+          const data = await res.json();
+          const assetMap = (data.assets || []).reduce((acc, a) => {
+            acc[a.name] = a.browser_download_url;
+            return acc;
+          }, {});
+          applyAssets(data.tag_name || 'latest', assetMap);
+        } catch (_) {
+        }
+      }
+
+      applyAssets('latest', null);
+      highlightCurrentPlatform();
+      refreshLatest();
+    })();
 
     // CLI downloads: detect platform, fetch latest release, populate URLs
     (function initCliDownloads() {

@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   
   <!-- Primary Meta Tags -->
-  <title>Diaspor — Non-verbal AI for Canadian security and legal teams.</title>
-  <meta name="title" content="Diaspor — Non-verbal AI for Canadian security and legal teams.">
-  <meta name="description" content="Self-hosted non-verbal AI for depositions, interrogations and investigations. Hosted in Canada. Loi 25, PIPEDA, Bill 96 aligned by design. Zero data leaves your perimeter.">
-  <meta name="keywords" content="Diaspor, non-verbal AI Canada, credibility signals, deposition analysis, interrogation AI, Loi 25 AI, PIPEDA AI, Bill 96 vendor, Canadian legal AI, self-hosted AI, AWS ca-central-1, Quebec procurement, sport judging AI">
+  <title>Diaspor — Rust file intelligence platform. Auto-tag videos. Transcribe. Analyze live streams.</title>
+  <meta name="title" content="Diaspor — Rust file intelligence platform. Auto-tag videos. Transcribe. Analyze live streams.">
+  <meta name="description" content="Diaspor is a Rust-powered file intelligence platform that runs on any on-prem infrastructure at near-zero cost. Auto-tag videos, generate transcriptions on-device, analyze live streams (WebRTC, HLS, RTSP). Three products: Desktop app, Engine SDK, proprietary AI models including Judge Assistant for neutrality scoring.">
+  <meta name="keywords" content="Diaspor, Diaspor Desktop, Diaspor Engine, Diaspor Models, file intelligence, on-device AI, closed source Rust, VDFS, virtual distributed filesystem, Rust CLI, Rust SDK, REST API, auto-tag video, video transcription, WebRTC analysis, HLS analysis, RTSP analysis, judge assistant AI, on-prem AI, no per-call pricing, near-zero infrastructure cost, self-hosted AI, whisper.cpp, FUSE, WinFsp, AWS ca-central-1">
   <meta name="author" content="Diaspor">
   <meta name="robots" content="noindex, nofollow">
   <link rel="canonical" href="https://diaspor.io">
@@ -16,16 +16,16 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://diaspor.io/">
-  <meta property="og:title" content="Diaspor — Non-verbal AI for Canadian security and legal teams.">
-  <meta property="og:description" content="Self-hosted non-verbal AI for depositions, interrogations and investigations. 100% hosted in Canada. Loi 25, PIPEDA, Bill 96 aligned by design.">
+  <meta property="og:title" content="Diaspor — Rust file intelligence platform. Auto-tag videos. Transcribe. Analyze live streams.">
+  <meta property="og:description" content="Diaspor is a Rust-powered file intelligence platform that runs on any on-prem infrastructure at near-zero cost. Auto-tag videos, generate transcriptions on-device, analyze live streams (WebRTC, HLS, RTSP). Three products: Desktop app, Engine SDK, proprietary AI models including Judge Assistant for neutrality scoring.">
   <meta property="og:site_name" content="Diaspor">
   <meta property="og:locale" content="en_US">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:url" content="https://diaspor.io/">
-  <meta name="twitter:title" content="Diaspor — Non-verbal AI for Canadian security and legal teams.">
-  <meta name="twitter:description" content="Self-hosted non-verbal AI for depositions, interrogations and investigations. Hosted in Canada. Zero data leaves your perimeter.">
+  <meta name="twitter:title" content="Diaspor — Rust file intelligence platform. Auto-tag videos. Transcribe. Analyze live streams.">
+  <meta name="twitter:description" content="Diaspor is a Rust-powered file intelligence platform that runs on any on-prem infrastructure at near-zero cost. Auto-tag videos, generate transcriptions on-device, analyze live streams (WebRTC, HLS, RTSP). Three products: Desktop app, Engine SDK, proprietary AI models including Judge Assistant for neutrality scoring.">
 
   <!-- Favicon - Complete Set -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -48,7 +48,7 @@
     "name": "Diaspor",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "macOS, Windows, Linux",
-    "description": "Self-hosted non-verbal AI for Canadian security and legal teams. Decision-aid credibility, stress and engagement signals for depositions, interrogations and investigations. Hosted in Canada, Loi 25 and PIPEDA aligned.",
+    "description": "Diaspor is a Rust-powered file intelligence platform that runs on any on-prem infrastructure at near-zero cost. Auto-tag videos, generate transcriptions on-device, analyze live streams (WebRTC, HLS, RTSP). Three products: Desktop app, Engine SDK, proprietary AI models including Judge Assistant for neutrality scoring.",
     "url": "https://diaspor.io",
     "inLanguage": "en-CA"
   }
@@ -72,9 +72,9 @@
         <span class="logo-text">diaspor<span class="logo-dot">.</span></span>
       </a>
       <div class="nav-links" role="menubar">
+        <a href="#products" role="menuitem">Product line</a>
+        <a href="#vdfs" role="menuitem">VDFS</a>
         <a href="#usecases" role="menuitem">Use cases</a>
-        <a href="#deployment" role="menuitem">Deployment</a>
-        <a href="#compliance" role="menuitem">Compliance</a>
         <a href="#tech" role="menuitem">Technology</a>
         <a href="#contact" role="menuitem">Contact</a>
         <a href="/fr/" role="menuitem" lang="fr" title="Version française" aria-label="Version française">FR</a>
@@ -90,9 +90,9 @@
 
   <!-- Mobile Menu -->
   <div id="mobile-menu" class="mobile-menu" role="menu" aria-label="Mobile navigation">
+    <a href="#products" role="menuitem">Product line</a>
+    <a href="#vdfs" role="menuitem">VDFS</a>
     <a href="#usecases" role="menuitem">Use cases</a>
-    <a href="#deployment" role="menuitem">Deployment</a>
-    <a href="#compliance" role="menuitem">Compliance</a>
     <a href="#tech" role="menuitem">Technology</a>
     <a href="#contact" role="menuitem">Contact</a>
     <a href="/fr/" role="menuitem" lang="fr">Version française</a>
@@ -236,14 +236,14 @@
     <div class="hero-content">
       <span class="hero-eyebrow">
         <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-        Self-hosted · Loi 25 · For lawyers and investigators
+        Self-hosted · Loi 25 · Auto-tag · Transcribe · Stream analysis
       </span>
       <h1 class="hero-title" itemprop="headline">
-        <span class="gradient-text">Non-verbal AI</span><br>
-        <span class="gradient-text-secondary hero-creative-text">that installs on <em>your</em> server.</span>
+        <span class="gradient-text">File intelligence</span><br>
+        <span class="gradient-text-secondary hero-creative-text">on your <em>hardware</em>.</span>
       </h1>
       <p class="hero-description" itemprop="description">
-        Decision-aid non-verbal signals for depositions, interrogations and investigations. Self-hosted on your hardware or your Canadian cloud tenancy. Loi 25, PIPEDA, Bill 96 aligned by design. <strong>Zero data leaves your perimeter.</strong>
+        Diaspor is a <strong>Rust-powered file intelligence platform</strong>. The Engine runs on any on-prem infrastructure at <strong>near-zero cost</strong>. The Desktop app auto-tags videos, generates transcriptions on-device, and analyzes live streams (<strong>WebRTC · HLS · RTSP</strong>). The Models add proprietary AI including a <strong>Judge Assistant</strong> for neutrality scoring. <strong>Nothing leaves your perimeter, by construction.</strong>
       </p>
       <div class="hero-snippet" aria-label="Example command-line usage">
         <span class="hero-snippet-prompt">$</span>
@@ -259,6 +259,14 @@
         <a href="#waitlist" class="btn-secondary">
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
           Request preview build
+        </a>
+        <a href="#waitlist" class="btn-secondary">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Join Desktop waitlist
+        </a>
+        <a href="#vdfs" class="btn-secondary">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+          Explore the VDFS
         </a>
       </div>
       <div class="hero-stats">
@@ -280,744 +288,380 @@
     </div>
   </section>
 
-  <!-- Trust Strip — Canadian posture right under the fold -->
+  <!-- Trust Strip — Canadian posture & sovereignty right under the fold -->
   <section class="trust-strip" aria-label="Canadian posture and compliance">
     <div class="container">
       <ul class="trust-strip-badges">
         <li><span class="badge-dot dot-success"></span>Loi 25, PIPEDA, Bill 96 by design</li>
         <li><span class="badge-dot dot-success"></span>Bilingual MSA ready for BSP &amp; SQI</li>
-        <li><span class="badge-dot dot-warning"></span>SOC 2 Type II in progress · 2026</li>
-        <li><span class="badge-dot dot-info"></span>Data in <strong>ca-central-1</strong> only</li>
+        <li><span class="badge-dot dot-info"></span>Data &amp; inference in <strong>AWS ca-central-1</strong></li>
         <li><span class="badge-dot dot-info"></span>Zero US sub-processors</li>
-        <li><span class="badge-dot dot-info"></span>Signed binaries, full audit logs</li>
+        <li><span class="badge-dot dot-warning"></span>SOC 2 Type II in progress · 2026</li>
+        <li><span class="badge-dot dot-info"></span>Signed binaries · Ed25519 audit logs</li>
+        <li><span class="badge-dot dot-info"></span>Built in Stoneham (Québec) · runs anywhere</li>
       </ul>
     </div>
   </section>
 
-  <!-- Built in Canada — credibility band -->
-  <section id="canada" class="canada-band">
+  <!-- Product line — Diaspor Desktop, Engine, Models -->
+  <section id="products" class="tech-section">
     <div class="container">
+      <div class="section-header">
+        <span class="section-tag">02 · Product line</span>
+        <h2 class="section-title">Three commercial products. One Rust platform.</h2>
+        <p class="section-description">All closed source. All hosted in Canada (<code>ca-central-1</code>). All built and maintained in Québec.</p>
+      </div>
+
       <div class="canada-band-grid">
-        <article class="canada-band-card canada-band-flag">
+        <article class="canada-band-card">
           <span class="canada-band-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 5.6L20 8l-4.2 4 1.1 5.8L12 15l-4.9 2.8L8.2 12 4 8l5.6-.4L12 2z"/></svg>
+            <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
           </span>
           <div>
-            <h3>By Canadians, for Canada.</h3>
-            <p>Built in Montréal with Crown prosecutors, trial lawyers, internal investigators and Canadian police services. The vocabulary, workflows and tone come from the Canadian field — not an imported blueprint.</p>
+            <h3>Diaspor Desktop.</h3>
+            <p>Cross-platform app (macOS · Windows · Linux). <strong>Auto-tag</strong> any video archive. <strong>Transcribe</strong> meetings on-device. <strong>Analyze live streams</strong> (WebRTC, HLS, RTSP). Multi-storage (local · cloud · NAS · S3). <strong>15 CAD/mo prosumer · 50 CAD/seat/mo team · 199 CAD lifetime</strong>. <a href="#waitlist">Join the waitlist →</a></p>
           </div>
         </article>
         <article class="canada-band-card">
           <span class="canada-band-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
           </span>
           <div>
-            <h3>Full data sovereignty.</h3>
-            <p>Storage and inference run in <strong>AWS ca-central-1 (Montréal)</strong>. No queue, no metadata, no log ever crosses the border. Sub-processor list published quarterly.</p>
+            <h3>Diaspor Engine.</h3>
+            <p><strong>Virtual Distributed Filesystem</strong> in Rust 2024. Rust SDK · CLI · REST API · cargo-installable for licensed embedders. Single async API across memory · local · FUSE · WinFsp · S3 · NAS. Runs on laptop, server, cluster, cloud or edge. <strong>Near-zero infrastructure cost</strong> — your hardware does the work. <strong>5K CAD/yr per developer or 25-100K CAD/yr enterprise</strong>. <a href="mailto:hello@diaspor.io?subject=Diaspor%20Engine">Talk to us →</a></p>
           </div>
         </article>
         <article class="canada-band-card">
           <span class="canada-band-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4L21 6"/><path d="M3 18l4 4L21 12"/></svg>
+            <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3a4 4 0 0 0-4 4 4 4 0 0 0-2 7 4 4 0 0 0 3 7 4 4 0 0 0 3 3 4 4 0 0 0 3-3 4 4 0 0 0 3-7 4 4 0 0 0-2-7 4 4 0 0 0-4-4z"/><path d="M12 7v14"/></svg>
           </span>
           <div>
-            <h3>Audit-ready on day one.</h3>
-            <p>Loi 25, PIPEDA, Bill 96 baked into the architecture. Ed25519-signed append-only logs. Bilingual MSA pre-cleared for Quebec BSP, SQI and Crown procurement.</p>
-          </div>
-        </article>
-        <article class="canada-band-card">
-          <span class="canada-band-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </span>
-          <div>
-            <h3>Privilege protected.</h3>
-            <p>Zero retention at the inference layer. No cross-tenant training. The model sees one piece of evidence, processes it, forgets it. Every prompt and embedding is logged and signed.</p>
+            <h3>Diaspor Models.</h3>
+            <p>Proprietary AI capabilities. Auto-tagging, transcription FR/EN, vision, 3D pose, prosody, credibility, <strong>Judge Assistant AI for neutrality scoring</strong>, speech diarization. Plug into Engine + Desktop. <strong>25K+ CAD/seat/yr self-hosted or hosted SaaS</strong>. <a href="mailto:hello@diaspor.io?subject=Diaspor%20Models">Talk to us →</a></p>
           </div>
         </article>
       </div>
-    </div>
-  </section>
 
-  <!-- Use cases — Canadian security & legal first -->
-  <section id="usecases" class="usecases-section">
-    <div class="container">
-      <div class="section-header section-header-asym">
-        <span class="section-tag section-tag-bleed">Canadian security &amp; legal</span>
-        <h2 class="section-title">Built for those who have to prove it.</h2>
-        <p class="section-description">Six grounds where quantifiable measurement replaces subjective opinion. Every signal documented, timestamped, exportable. Human review mandatory. Canadian hosting, no exceptions.</p>
-      </div>
-
-      <ul class="usecases-grid">
-        <li class="usecase-tile usecase-tile-flagship">
-          <span class="usecase-beta" title="Beta feature under active development">
-            <span class="usecase-beta-dot" aria-hidden="true"></span>
-            Beta · under active development
-          </span>
-          <span class="usecase-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-          </span>
-          <h3>Interrogations &amp; depositions</h3>
-          <p>Micro-expressions, vocal prosody, gaze, tremor, response latency. Stress and incongruence indicators timestamped with confidence bands. A decision aid for the investigator — never a verdict, never a forensic finding.</p>
-          <span class="usecase-meta">SQ · SPVM · RCMP · Crown counsel · expert witnesses</span>
-        </li>
-
-        <li class="usecase-tile usecase-tile-flagship">
-          <span class="usecase-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M9 14h6"/><path d="M9 17h4"/></svg>
-          </span>
-          <h3>Litigation &amp; video evidence</h3>
-          <p>Witness authenticity, version-to-version congruence, anomalies on cross-examination. Frame-accurate citations, ready for the file.</p>
-          <span class="usecase-meta">Trial lawyers · notarial offices · criminal &amp; civil discovery</span>
-        </li>
-
-        <li class="usecase-tile">
-          <span class="usecase-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l3 3 6-6"/><path d="M3 18l3 3 6-6"/><path d="M14 12h7"/><path d="M14 18h7"/></svg>
-          </span>
-          <h3>Audits &amp; internal investigations</h3>
-          <p>Structured ethics, compliance and fraud interviews. Stress and incongruence indicators flagged with confidence bands for investigator review.</p>
-          <span class="usecase-meta">Compliance · internal audit · professional orders · whistleblower lines</span>
-        </li>
-
-        <li class="usecase-tile">
-          <span class="usecase-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg>
-          </span>
-          <h3>Claims &amp; expert review</h3>
-          <p>Fraud detection on insurance interviews, medicolegal expertise, workplace injury claims. Version-vs-version analysis between recordings and statements.</p>
-          <span class="usecase-meta">Insurers · CNESST · IVAC · independent experts</span>
-        </li>
-
-        <li class="usecase-tile usecase-tile-flagship">
-          <span class="usecase-beta" title="Beta feature under active development">
-            <span class="usecase-beta-dot" aria-hidden="true"></span>
-            Beta · under active development
-          </span>
-          <span class="usecase-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M3 12h18"/></svg>
-          </span>
-          <h3>Sport judging</h3>
-          <p>3D pose, joint angles, velocity, balance. Technical and execution scores benchmarked against the discipline's reference.</p>
-          <span class="usecase-meta">Sport Canada · national federations · coaches · officials</span>
-        </li>
-
-        <li class="usecase-tile">
-          <span class="usecase-icon" aria-hidden="true">
-            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 12h18M3 17h12"/></svg>
-          </span>
-          <h3>Trial &amp; oral coaching</h3>
-          <p>Litigators, executives, expert witnesses. Posture, pacing, eye contact, micro-expressions. Objective feedback loop before the hearing.</p>
-          <span class="usecase-meta">Trial prep · public inquiries · media training</span>
-        </li>
-      </ul>
-
-      <p class="usecases-disclaimer">
-        <strong>Beta · under active development.</strong> <strong>Credibility signals</strong> and <strong>sport judging</strong> are in private beta and evolve frequently. Calibration is in flight with Canadian legal, security and sport cohorts.<br>
-        <strong>Credibility signals are not lie detection.</strong> Peer-reviewed accuracy ceiling for video-based deception inference is approximately 74%; the human baseline is approximately 54%. Diaspor publishes per-version accuracy scorecards. Forensic verdicts, hiring decisions, insurance claims and law-enforcement adjudications are out of scope and excluded by our terms of service. EU workplace and education contexts are excluded per the EU AI Act (effective August 2026). BIPA opt-in flow required in Illinois.<br>
-        Scores and markers are decision aids based on observable signals. Diaspor never returns a verdict of guilt, deception or unfitness. Human review is required in any legal, employment or disciplinary context.
+      <p class="tech-cta" style="margin-top: 1.5rem;">
+        Built on Rust 2024 · runs on any on-prem infrastructure · closed source · trademark "Diaspor" filed 2026-05-19 · hosted in Canada (<code>ca-central-1</code>) when hosted · Loi 25 + PIPEDA + Bill 96 aligned.
       </p>
     </div>
   </section>
 
-  <!-- Capabilities Section (AI features) — promoted right after use cases for feature-first IA -->
-  <section id="capabilities" class="capabilities-section capabilities-v2">
+  <!-- VDFS — folder-tree mockup + capabilities -->
+  <style>@media(max-width:880px){.vdfs-grid{grid-template-columns:1fr!important;}}</style>
+  <section id="vdfs" class="vdfs-section" style="padding:72px 0;border-top:1px solid #1f2937;">
     <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Capabilities</span>
-        <h2 class="section-title">AI that watches, listens, and scores every conversation</h2>
-        <p class="section-description">One flagship capability. Three companions. All inference in Canadian data centres.</p>
+      <div class="section-header" style="text-align:center;margin-bottom:48px;">
+        <span class="section-tag" style="display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:#22d3ee;font-weight:600;margin-bottom:14px;">Virtual Distributed Filesystem · Rust 2024</span>
+        <h2 class="section-title" style="font-size:clamp(28px,3.4vw,42px);font-weight:700;color:#fff;letter-spacing:-0.025em;margin-bottom:14px;">One folder tree. <span style="background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Every storage you own.</span></h2>
+        <p class="section-description" style="font-size:16px;color:#c9d1d9;max-width:680px;margin:0 auto;line-height:1.6;">Mount local disks, S3 buckets, NAS shares, FUSE volumes, RTSP cameras — all under one async API. Search · transcribe · tag · analyze across sources without copying a byte.</p>
       </div>
 
-      <div class="capabilities-feature-grid">
-        <article class="capability-feature">
-          <span class="capability-feature-eyebrow">Frontier of AI</span>
-          <h3 class="capability-feature-title">Measure what words conceal</h3>
-          <p class="capability-feature-lede">
-            Diaspor fuses micro-expressions, 3D pose, gaze and vocal prosody into quantifiable signals. Credibility, stress, engagement and authenticity scores with confidence bands. Technical scores on athletic gestures. Every signal frame-accurate, ready to annex to the case file as a decision aid.
-          </p>
-          <ul class="capability-feature-grid-list">
-            <li>
-              <strong>Credibility signals · beta</strong>
-              <span>Stress + incongruence indicators with confidence bands.</span>
-            </li>
-            <li>
-              <strong>Vocal stress</strong>
-              <span>Tremor, pace, prosody, pauses.</span>
-            </li>
-            <li>
-              <strong>Pose &amp; gesture</strong>
-              <span>3D skeleton, angle, velocity, balance.</span>
-            </li>
-            <li>
-              <strong>Gaze &amp; attention</strong>
-              <span>Fixation, avoidance, eye contact.</span>
-            </li>
-            <li>
-              <strong>Sport score</strong>
-              <span>Technique, execution, reference benchmark.</span>
-            </li>
-            <li>
-              <strong>Search by moment</strong>
-              <span>"Find when the pulse spiked."</span>
-            </li>
-          </ul>
-        </article>
+      <div class="vdfs-grid" style="display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start;">
 
-        <ul class="capabilities-companion">
-          <li>
-            <h4>Media intelligence</h4>
-            <p>Captioning, EN ↔ FR translation, and auto-chaptering for all your audio and video.</p>
-          </li>
-          <li>
-            <h4>Visual intelligence</h4>
-            <p>Auto-tag every image and frame. French and English OCR. Search by content, not filename.</p>
-          </li>
-          <li>
-            <h4>Ask your storage</h4>
-            <p>Cited semantic search over PDFs, transcripts, email, and OCR'd text.</p>
-          </li>
-        </ul>
+        <!-- Left: folder tree mockup -->
+        <div class="vdfs-tree" style="background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:24px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:1.8;color:#c9d1d9;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid #1f2937;padding-bottom:12px;">
+            <span style="color:#7d8590;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:600;">$ diaspor tree /cases</span>
+            <span style="font-size:11px;color:#22d3ee;">● connected</span>
+          </div>
+          <div>&#128193; <strong style="color:#22d3ee;">cases/</strong></div>
+          <div style="padding-left:14px;">├─ &#128190; <span style="color:#a5b4fc;">local/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">2.1 TB · NVMe SSD</span></div>
+          <div style="padding-left:30px;color:#8b949e;">│  ├─ 2026-cases/</div>
+          <div style="padding-left:30px;color:#8b949e;">│  └─ archives/</div>
+          <div style="padding-left:14px;">├─ &#9729;&#65039; <span style="color:#a5b4fc;">s3-evidence/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">47 TB · AWS ca-central-1</span></div>
+          <div style="padding-left:30px;color:#8b949e;">│  ├─ video/</div>
+          <div style="padding-left:30px;color:#8b949e;">│  └─ audio/</div>
+          <div style="padding-left:14px;">├─ &#128230; <span style="color:#a5b4fc;">nas-archive/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">120 TB · SMB share</span></div>
+          <div style="padding-left:30px;color:#8b949e;">│  └─ 2024-2025/</div>
+          <div style="padding-left:14px;">├─ &#127909; <span style="color:#a5b4fc;">rtsp-cam-01/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">live · auto-indexed</span></div>
+          <div style="padding-left:14px;">└─ &#128274; <span style="color:#a5b4fc;">encrypted-vault/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">FUSE · AES-256</span></div>
+          <div style="margin-top:22px;padding-top:14px;border-top:1px solid #1f2937;color:#7d8590;font-size:12px;">→ <strong style="color:#22d3ee;">169 TB</strong> across 5 backends · one async API · zero copy · zero data leaving your perimeter</div>
+        </div>
+
+        <!-- Right: capability list -->
+        <div class="vdfs-features" style="display:flex;flex-direction:column;gap:18px;">
+          <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+            <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128204; Mount anywhere</h3>
+            <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">Memory · local disk · FUSE (macOS/Linux) · WinFsp (Windows) · S3 · NAS/SMB · RTSP. One async API, one mental model.</p>
+          </article>
+          <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+            <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#9889; Index without copying</h3>
+            <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">The pipeline reads files in-place. Tagging, transcription, embeddings live in a separate metadata store. Originals stay on their backend.</p>
+          </article>
+          <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+            <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128274; No-network by construction</h3>
+            <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">CI runs every test inside <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#22d3ee;font-size:0.9em;">unshare --net</code>. Build fails if any module opens a socket without explicit opt-in. The privacy contract is structural, not aspirational.</p>
+          </article>
+          <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
+            <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128176; Pay for your hardware</h3>
+            <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">No per-token cloud bills. Your CPU, GPU and disk do the work. Diaspor scales linearly with your infrastructure — and nothing else.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Bottom: CLI command samples -->
+      <div style="margin-top:36px;background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:24px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:2;color:#c9d1d9;">
+        <div style="color:#7d8590;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;font-weight:600;margin-bottom:14px;">Three commands · any infrastructure</div>
+        <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor mount</span> --backend s3 --bucket evidence --to /cases/s3-evidence</div>
+        <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor index</span> /cases --pipeline whisper-cpp --tag-with llama3</div>
+        <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor search</span> "interview about Q3 budget" --speaker A --confidence 0.8</div>
       </div>
     </div>
   </section>
 
-  <!-- Self-hosting / Deployment ladder -->
-  <section id="deployment" class="deployment-section">
+  <!-- Desktop downloads — installers for the multi-tier file browser GUI on top of the VDFS -->
+  <style>
+    .download-card{position:relative;display:flex;align-items:center;gap:16px;background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:18px 18px 18px 20px;color:#fff;text-decoration:none;transition:border-color 150ms ease, background 150ms ease, transform 150ms ease;}
+    .download-card:hover{background:rgba(34,211,238,0.04);border-color:rgba(34,211,238,0.4);transform:translateY(-1px);}
+    .download-card:focus-visible{outline:2px solid #22d3ee;outline-offset:2px;}
+    .download-card-icon{flex-shrink:0;color:#a5b4fc;transition:color 150ms ease;}
+    .download-card:hover .download-card-icon{color:#22d3ee;}
+    .download-card-label{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;}
+    .download-card-platform{font-size:14px;font-weight:600;color:#fff;letter-spacing:-0.01em;}
+    .download-card-hint{font-size:11px;color:#7d8590;letter-spacing:0.02em;}
+    .download-card-ext{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;color:#7d8590;background:rgba(255,255,255,0.04);padding:3px 7px;border-radius:4px;letter-spacing:0.02em;}
+    .download-card.is-recommended{border-color:rgba(34,211,238,0.45);background:linear-gradient(135deg,rgba(34,211,238,0.05),rgba(79,70,229,0.05));}
+    .download-card.is-recommended .download-card-icon{color:#22d3ee;}
+    .download-card.is-recommended::after{content:"Recommended";position:absolute;top:-9px;right:14px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:#0a0b14;background:#22d3ee;padding:3px 8px;border-radius:4px;}
+  </style>
+  <section id="download" class="download-section" style="padding:72px 0;border-top:1px solid #1f2937;">
     <div class="container">
-      <div class="section-header section-header-asym">
-        <span class="section-tag section-tag-bleed">Self-hosting</span>
-        <h2 class="section-title">Your data never leaves your perimeter.</h2>
-        <p class="section-description">Four deployment modes, from offline laptop to classified data centre. You pick the isolation radius, we ship the signed binary, the Helm chart and the Terraform modules. Zero runtime dependency on our infrastructure.</p>
+      <div class="section-header" style="text-align:center;margin-bottom:36px;">
+        <span class="section-tag" style="display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:#22d3ee;font-weight:600;margin-bottom:14px;">Diaspor Desktop · <span data-desktop-version>latest</span></span>
+        <h2 class="section-title" style="font-size:clamp(28px,3.4vw,42px);font-weight:700;color:#fff;letter-spacing:-0.025em;margin-bottom:14px;">Install on your machine.</h2>
+        <p class="section-description" style="font-size:16px;color:#c9d1d9;max-width:640px;margin:0 auto;line-height:1.6;">Native installers for the multi-tier file browser. On-device tagging, transcription, and live-stream analysis — everything the CLI does, with a window.</p>
       </div>
-      <ol class="deployment-ladder">
-        <li class="deployment-step">
-          <div class="deployment-step-head">
-            <span class="deployment-step-num">01</span>
-            <span class="deployment-step-iso">Max isolation</span>
-          </div>
-          <h3>Air-gap · Offline</h3>
-          <p>Single binary on a classified workstation or isolated server. Models transferred via signed USB. No network required.</p>
-          <ul>
-            <li>SCIF / classified-room compatible</li>
-            <li>SHA-256 verified model weights</li>
-            <li>Zero active network services</li>
-          </ul>
-          <code class="deployment-cmd">$ diaspor-agent serve --air-gap --models ./models.tar</code>
-        </li>
-        <li class="deployment-step">
-          <div class="deployment-step-head">
-            <span class="deployment-step-num">02</span>
-            <span class="deployment-step-iso">Your infra</span>
-          </div>
-          <h3>On-premise</h3>
-          <p>Your server, your data centre, your Kubernetes cluster. Helm chart ships. Atomic git-tag updates. No outbound bridge required.</p>
-          <ul>
-            <li>k8s ≥ 1.28 · OpenShift compatible</li>
-            <li>NVIDIA · AMD · Apple Silicon GPUs</li>
-            <li>Offline update flow available</li>
-          </ul>
-          <code class="deployment-cmd">$ helm install diaspor diaspor/diaspor --version 0.1</code>
-        </li>
-        <li class="deployment-step deployment-step-featured">
-          <div class="deployment-step-head">
-            <span class="deployment-step-num">03</span>
-            <span class="deployment-step-iso">Recommended</span>
-          </div>
-          <h3>Your Canadian cloud tenancy</h3>
-          <p>Diaspor deployed inside <em>your</em> AWS · Azure · GCP account, Canadian region. You keep the keys (BYOK), the logs, the bill.</p>
-          <ul>
-            <li>Official Terraform modules</li>
-            <li>BYOK · KMS · HSM</li>
-            <li>Co-managed or self-managed</li>
-          </ul>
-          <code class="deployment-cmd">module "diaspor" { source = "stonyp90/diaspor/aws" }</code>
-        </li>
-        <li class="deployment-step">
-          <div class="deployment-step-head">
-            <span class="deployment-step-num">04</span>
-            <span class="deployment-step-iso">Diaspor-managed</span>
-          </div>
-          <h3>Our Canadian cloud</h3>
-          <p>Multi-tenant deployment in AWS ca-central-1. For firms that don't want to operate. Per-tenant encryption, strict logical isolation, audit-log export.</p>
-          <ul>
-            <li>99.9% SLA · QC business hours</li>
-            <li>Managed updates by Diaspor</li>
-            <li>Cost-plus operating model</li>
-          </ul>
-          <code class="deployment-cmd">$ diaspor login --tenant your-firm</code>
-        </li>
-      </ol>
+
+      <div class="download-grid" role="list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:880px;margin:0 auto;">
+        <a class="download-card" data-download-platform="macos" role="listitem" href="https://github.com/stonyp90/diaspor/releases/latest/download/diaspor-vfs.dmg" rel="noopener" aria-label="Download Diaspor Desktop for macOS (.dmg)">
+          <svg class="download-card-icon" aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.572-2.27 1.206-2.98.804-.94 2.142-1.64 3.248-1.68.03.13.05.28.05.43zm4.565 15.71c-.03.07-.463 1.58-1.518 3.12-.945 1.34-1.94 2.71-3.43 2.71-1.517 0-1.9-.88-3.63-.88-1.698 0-2.302.91-3.67.91-1.377 0-2.332-1.26-3.428-2.8-1.287-1.82-2.323-4.63-2.323-7.28 0-4.28 2.797-6.55 5.552-6.55 1.448 0 2.675.95 3.6.95.865 0 2.222-1.01 3.902-1.01.613 0 2.886.06 4.374 2.19-.13.09-2.383 1.37-2.383 4.19 0 3.26 2.854 4.42 2.955 4.45z"/></svg>
+          <span class="download-card-label">
+            <span class="download-card-platform">macOS</span>
+            <span class="download-card-hint">Universal · Apple Silicon &amp; Intel</span>
+          </span>
+          <span class="download-card-ext" aria-hidden="true">.dmg</span>
+        </a>
+        <a class="download-card" data-download-platform="windows" role="listitem" href="https://github.com/stonyp90/diaspor/releases/latest/download/diaspor-vfs.msi" rel="noopener" aria-label="Download Diaspor Desktop for Windows (.msi)">
+          <svg class="download-card-icon" aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.479l7.42-1.01v7.158H3V5.479zm0 13.042l7.42 1.01v-7.062H3v6.052zm8.418 1.169L21 21V12.668h-9.582v6.022zm0-15.06v7.226H21V3L11.418 4.63z"/></svg>
+          <span class="download-card-label">
+            <span class="download-card-platform">Windows</span>
+            <span class="download-card-hint">Windows 10 &amp; 11 · x86_64</span>
+          </span>
+          <span class="download-card-ext" aria-hidden="true">.msi</span>
+        </a>
+        <a class="download-card" data-download-platform="linux" role="listitem" href="https://github.com/stonyp90/diaspor/releases/latest/download/diaspor-vfs.AppImage" rel="noopener" aria-label="Download Diaspor Desktop for Linux (.AppImage)">
+          <svg class="download-card-icon" aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.077 1.092-.3 1.953-1.05 3.02-.886 1.052-2.13 2.75-2.732 4.392-.287.78-.41 1.514-.31 2.19a.602.602 0 0 0-.073.073C4.367 16.69 4.165 17.213 3.99 17.7c-.226.485-.487.94-.74 1.32-.193.288-.434.524-.624.747-.176.21-.318.39-.42.566a.999.999 0 0 0-.131.643.999.999 0 0 0 .457.755c.302.205.722.343 1.142.4.42.058.84.058 1.236.058.397 0 .788 0 1.124-.058.336-.057.66-.182.84-.4.179-.218.218-.484.225-.747.007-.262-.029-.516-.073-.755-.073-.402-.18-.79-.297-1.181-.116-.39-.218-.776-.218-1.087 0-.31.069-.554.218-.776.149-.222.39-.422.776-.629.385-.206.776-.34 1.124-.34.348 0 .67.134 1.123.34.453.207.694.407.843.629.149.222.218.466.218.776 0 .311-.102.697-.218 1.087-.117.391-.224.78-.297 1.181-.044.239-.08.493-.073.755.007.263.046.529.225.747.18.218.504.343.84.4.336.058.727.058 1.124.058.396 0 .816 0 1.236-.058.42-.057.84-.195 1.142-.4a.999.999 0 0 0 .457-.755.999.999 0 0 0-.131-.643c-.102-.176-.244-.356-.42-.566-.19-.223-.43-.46-.625-.747-.252-.38-.513-.835-.74-1.32-.174-.487-.376-1.01-.628-1.687a.602.602 0 0 0-.073-.073c.1-.676-.023-1.41-.31-2.19-.601-1.642-1.845-3.34-2.731-4.392-.75-1.067-.974-1.928-1.05-3.02-.065-1.49 1.055-5.965-3.17-6.298a4.66 4.66 0 0 0-.48-.021Z"/></svg>
+          <span class="download-card-label">
+            <span class="download-card-platform">Linux</span>
+            <span class="download-card-hint">AppImage · glibc 2.31+</span>
+          </span>
+          <span class="download-card-ext" aria-hidden="true">.AppImage</span>
+        </a>
+      </div>
+
+      <p class="download-fineprint" style="text-align:center;margin:28px auto 0;font-size:13px;color:#7d8590;max-width:640px;line-height:1.6;">
+        macOS DMG is unsigned during alpha — right-click the app and choose <em>Open</em> on first launch, or run <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#22d3ee;font-size:0.92em;">xattr -d com.apple.quarantine /Applications/Diaspor.app</code> from Terminal. <a href="https://github.com/stonyp90/diaspor/releases/latest" target="_blank" rel="noopener" style="color:#22d3ee;text-decoration:none;border-bottom:1px solid rgba(34,211,238,0.35);">All releases &amp; checksums →</a>
+      </p>
     </div>
   </section>
 
-  <!-- Compliance matrix -->
-  <section id="compliance" class="compliance-section">
+  <!-- Use cases — illustrative examples of what the tech enables -->
+  <section id="usecases" class="usecases-section">
     <div class="container">
       <div class="section-header section-header-asym">
-        <span class="section-tag section-tag-bleed">Compliance</span>
-        <h2 class="section-title">Every framework, with status. No vague promises.</h2>
-        <p class="section-description">What we can prove today, what we attest this year, what's on the roadmap. Posture reviewed by external counsel, evidence available under NDA from the first conversation.</p>
+        <span class="section-tag section-tag-bleed">Industries · use cases</span>
+        <h2 class="section-title">12 industries. One platform.</h2>
+        <p class="section-description">Find your sector. Diaspor's Engine, Desktop and Models adapt to the workflow without changing the privacy contract. <strong>Same Rust 2024 stack, same near-zero infrastructure cost, same Canadian sovereignty.</strong></p>
       </div>
-      <div class="compliance-grid">
-        <article class="compliance-card compliance-status-ready">
-          <header>
-            <h3>Loi 25 (Québec)</h3>
-            <span class="compliance-pill compliance-pill-ready">Aligned by design</span>
-          </header>
-          <ul>
-            <li>Data residency in ca-central-1</li>
-            <li>PIA / EFVP template provided</li>
-            <li>Built-in incident log</li>
-            <li>Auto PI classification — Q3 2026</li>
-          </ul>
-        </article>
-        <article class="compliance-card compliance-status-ready">
-          <header>
-            <h3>PIPEDA (federal)</h3>
-            <span class="compliance-pill compliance-pill-ready">Aligned by design</span>
-          </header>
-          <ul>
-            <li>10 principles embedded in the architecture</li>
-            <li>Contextual consent · access &amp; erasure rights</li>
-            <li>Fully Canadian hosting and inference</li>
-          </ul>
-        </article>
-        <article class="compliance-card compliance-status-ready">
-          <header>
-            <h3>Bill 96 (Québec)</h3>
-            <span class="compliance-pill compliance-pill-ready">Bilingual MSA ready</span>
-          </header>
-          <ul>
-            <li>Bilingual UI, docs, support, AI</li>
-            <li>MSA pre-cleared for BSP · SQI frameworks</li>
-            <li>OQLF-compliant</li>
-          </ul>
-        </article>
-        <article class="compliance-card compliance-status-progress">
-          <header>
-            <h3>SOC 2 Type II</h3>
-            <span class="compliance-pill compliance-pill-progress">In progress · 2026</span>
-          </header>
-          <ul>
-            <li>Type I complete Q4 2026 (target)</li>
-            <li>Type II 6-month observation window</li>
-            <li>Interim evidence available under NDA</li>
-          </ul>
-        </article>
-        <article class="compliance-card compliance-status-progress">
-          <header>
-            <h3>ISO 27001:2022</h3>
-            <span class="compliance-pill compliance-pill-progress">Preparing · 2027</span>
-          </header>
-          <ul>
-            <li>ISMS being stood up</li>
-            <li>Policies aligned to Annex A 2022</li>
-            <li>External audit targeted Q2 2027</li>
-          </ul>
-        </article>
-        <article class="compliance-card compliance-status-roadmap">
-          <header>
-            <h3>GoC federal framework</h3>
-            <span class="compliance-pill compliance-pill-roadmap">On request</span>
-          </header>
-          <ul>
-            <li>Protected B evaluation prep on request</li>
-            <li>SSC security assessment supported</li>
-            <li>Air-gap mode for Top Secret</li>
-          </ul>
-        </article>
-      </div>
-      <p class="compliance-footnote">Current sub-processor list, DPA template, threat-model and SBOM available under NDA before signature.</p>
+
+      <ul class="usecases-grid">
+
+        <li class="usecase-tile usecase-tile-flagship">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M5 6l-3 6h6z"/><path d="M19 6l3 6h-6z"/><path d="M5 6h14"/><path d="M9 22h6"/></svg>
+          </span>
+          <h3>01 · Legal &amp; justice</h3>
+          <p>Deposition indexing + semantic search · bilingual hearing transcription (FR/EN) · evidence video analysis (CCTV, dashcam, body-cam) · cross-examination prep · credibility signals (decision-aid only).</p>
+          <span class="usecase-meta">Law firms · DPCP · courts · notaries · administrative tribunals</span>
+        </li>
+
+        <li class="usecase-tile usecase-tile-flagship">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg>
+          </span>
+          <h3>02 · Public safety &amp; law enforcement</h3>
+          <p>Body-cam indexing + batch transcription · RTSP CCTV real-time analysis · investigation interviews with non-verbal analysis · auto-indexed disclosure · evidence video triage.</p>
+          <span class="usecase-meta">SPVQ · SQ · RCMP · municipal police · corporate security · private investigation</span>
+        </li>
+
+        <li class="usecase-tile usecase-tile-flagship">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4a2 2 0 0 1-2-2V5h4"/><path d="M18 9h2a2 2 0 0 0 2-2V5h-4"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+          </span>
+          <h3>03 · Sport &amp; federations</h3>
+          <p><strong>Judge Assistant AI for refereeing neutrality</strong> · 3D pose analysis (33 keypoints) · training video review · automatic highlight detection · competition archive indexing.</p>
+          <span class="usecase-meta">Hockey Canada · Judo Canada · gymnastics · diving · elite clubs · Sport-Études</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+          </span>
+          <h3>04 · Media &amp; broadcasters</h3>
+          <p>Video archive auto-tag (MAM catalog) · bilingual auto-subtitling · news bulletin chronological indexing · <strong>live HLS stream transcription</strong> · broadcast compliance monitoring (Loi 96).</p>
+          <span class="usecase-meta">Radio-Canada · TVA · Bell Media · independent productions · streaming platforms</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+          </span>
+          <h3>05 · Creators &amp; podcasters</h3>
+          <p>Auto-transcription of podcasts (Quebec FR + EN) · long-form video auto-chaptering · stream archive search · show notes / summary generation · RAW footage indexing for editing.</p>
+          <span class="usecase-meta">Independent podcasters · YouTube creators · Twitch streamers · content agencies</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </span>
+          <h3>06 · Healthcare &amp; clinics</h3>
+          <p>Automatic medical video anonymization (PHIPA + Loi 25) · consultation transcription · radiology/ultrasound archive indexing · consultation archive search · patient behavior analysis (autism, motor disorders).</p>
+          <span class="usecase-meta">CIUSSS · CISSS · teaching hospitals · private clinics · medical research</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </span>
+          <h3>07 · Education &amp; research</h3>
+          <p>Recorded lecture indexing (searchable transcripts) · automatic FR/EN subtitling for students · research video corpora analysis (kinesiology, social sciences) · lab experiment auto-annotation · video presentation plagiarism detection.</p>
+          <span class="usecase-meta">UdeM · ULaval · McGill · Concordia · UQAM · CEGEPs · MILA · IVADO · CRIM</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4 8 4v14"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
+          </span>
+          <h3>08 · Government &amp; municipal</h3>
+          <p>Municipal council session archive (transcription + search) · bilingual parliamentary indexing · Loi 25-compliant records management · traffic camera event analysis · Loi 96 bilingual content compliance.</p>
+          <span class="usecase-meta">Cities (Stoneham, Québec, Montréal) · Quebec ministries · federal agencies · BAnQ</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </span>
+          <h3>09 · Financial services &amp; compliance</h3>
+          <p>Compliance call recordings (AMF, FINRA) · KYC video analysis (remote client onboarding) · regulated recruitment interview indexing · non-verbal fraud detection · audit-ready archive with signed logs.</p>
+          <span class="usecase-meta">Desjardins · banks · brokerages · fintechs · accounting firms</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.5.5 0 0 1-.96 0L9.68 3.18a.5.5 0 0 0-.96 0l-2.35 8.36A2 2 0 0 1 4.44 13H2"/></svg>
+          </span>
+          <h3>10 · Insurance &amp; claims</h3>
+          <p>Claims video analysis · non-verbal fraud detection · claimant interview indexing · loss inspection batch workflow · SIU investigator support.</p>
+          <span class="usecase-meta">Intact · Desjardins Assurances · Co-operators · SIU investigators · independent adjusters</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </span>
+          <h3>11 · HR &amp; high-volume recruiting</h3>
+          <p>Interview video indexing (search by competency) · auto-transcription for HR notes · DEI/equity compliance recordings · searchable onboarding video library · skill-tag candidate corpus.</p>
+          <span class="usecase-meta">Large enterprises · recruitment firms · temp agencies · HR-tech vendors</span>
+        </li>
+
+        <li class="usecase-tile">
+          <span class="usecase-icon" aria-hidden="true">
+            <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9l6 6m-6 0l6-6m-3-3v12M3 3l6 6m-6 0l6-6"/></svg>
+          </span>
+          <h3>12 · Arbitration · mediation · ADR</h3>
+          <p><strong>Judge Assistant AI for mediator neutrality</strong> · arbitration session indexing (audio + video) · similar-case corpus search · party-balance behavioral analysis.</p>
+          <span class="usecase-meta">Arbitration centres · mediators · CRT · TAQ · independent ADR practitioners</span>
+        </li>
+
+      </ul>
+
+      <p class="usecases-disclaimer">
+        <strong>This list is illustrative, not exhaustive.</strong> Any team running a media archive, recording workflow or live stream on infrastructure they control can run Diaspor. <strong>Don't see your sector?</strong> <a href="mailto:hello@diaspor.io?subject=My%20sector%20isn't%20listed">Tell us about your use case →</a><br><br>
+        <strong>Beta disclaimer.</strong> <strong>Credibility signals</strong>, <strong>Judge Assistant AI</strong> and <strong>sport judging</strong> capabilities are in private beta. Credibility signals are not lie detection (peer-reviewed accuracy ceiling ≈ 74%, human baseline ≈ 54%). Diaspor publishes per-version accuracy scorecards. Forensic verdicts, hiring decisions, insurance adjudications and law-enforcement decisions are out of scope. EU workplace and education contexts excluded per EU AI Act (effective August 2026). BIPA opt-in required in Illinois. Scores are decision aids — human review required in any legal, employment, or disciplinary context.
+      </p>
     </div>
   </section>
-
-  <!-- Cost at scale — economic positioning, not specific pricing -->
-  <section id="cost" class="cost-section">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Economics at scale</span>
-        <h2 class="section-title">Economics that hold at production volume.</h2>
-        <p class="section-description">Our proprietary <code>diaspor-*</code> models on your hardware, or in our Canadian cloud at cost. You keep control of compute, data and the invoice.</p>
-      </div>
-
-      <div class="cost-grid">
-        <article class="cost-card">
-          <h3>Long-form audio transcription</h3>
-          <ul class="cost-list">
-            <li><span class="cost-vendor">Consumer-grade foreign APIs</span><span class="cost-amount">per minute / per request</span></li>
-            <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · your hardware</span><span class="cost-amount"><strong>compute + electricity</strong></span></li>
-            <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · Canadian cloud</span><span class="cost-amount"><strong>at cost</strong></span></li>
-          </ul>
-          <p class="cost-savings">Economics that show up at volume.</p>
-        </article>
-
-        <article class="cost-card">
-          <h3>Image and frame analysis</h3>
-          <ul class="cost-list">
-            <li><span class="cost-vendor">US vision APIs</span><span class="cost-amount">per image / per token</span></li>
-            <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · <code>diaspor-vision-v1</code> on your GPU</span><span class="cost-amount"><strong>compute + electricity</strong></span></li>
-            <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · Canadian cloud</span><span class="cost-amount"><strong>at cost</strong></span></li>
-          </ul>
-          <p class="cost-savings">No surprise on the invoice.</p>
-        </article>
-
-        <article class="cost-card">
-          <h3>Semantic search over your archive</h3>
-          <ul class="cost-list">
-            <li><span class="cost-vendor">Enterprise RAG SaaS</span><span class="cost-amount">per user / per month</span></li>
-            <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · local embeddings</span><span class="cost-amount"><strong>local compute</strong></span></li>
-            <li class="cost-row-diaspor"><span class="cost-vendor"><strong>Diaspor</strong> · Canadian cloud</span><span class="cost-amount"><strong>at cost</strong></span></li>
-          </ul>
-          <p class="cost-savings">Flat cost, predictable growth.</p>
-        </article>
-      </div>
-
-      <p class="cost-footnote">"On your hardware" model: you pay compute and electricity, nothing to us. "Canadian cloud" model: metered at cost, no hidden margin. Detailed quotes on request, scoped to volume and compliance posture.</p>
-    </div>
-  </section>
-
 
   <!-- Under the hood / Tech stack Section -->
   <section id="tech" class="tech-section tech-section-bands">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Under the hood</span>
-        <h2 class="section-title">Our proprietary models, running on your data</h2>
-        <p class="section-description">No black-box APIs. No per-token surprises. The Diaspor model family, calibrated on Canadian legal, security and sport corpora.</p>
+        <h2 class="section-title">One proprietary stack. Built in Rust 2024.</h2>
+        <p class="section-description">A Virtual Distributed Filesystem, CLI and SDK that runs anywhere — laptop, server, on-prem GPU cluster or your cloud tenancy — at near-zero compute cost. One codebase, one trademark, one Canadian vendor.</p>
       </div>
       <div class="tech-bands">
         <div class="tech-band">
           <div class="tech-band-head">
-            <span class="tech-band-tag">Speech</span>
-            <code class="tech-band-code">$ diaspor model pull diaspor-speech-v1</code>
+            <span class="tech-band-tag">Diaspor Engine (proprietary)</span>
+            <code class="tech-band-code">$ diaspor index /cases --pipeline whisper-cpp --tag-with llama3</code>
           </div>
           <div class="tech-band-body">
-            <p class="tech-band-models"><strong>diaspor-speech-v1</strong> · transcription + diarization</p>
-            <p class="tech-band-note">Designed for Québec French and Canadian legal contexts, calibrating with our founding cohorts. Optimized for Apple Silicon and modern GPUs.</p>
-          </div>
-        </div>
-        <div class="tech-band">
-          <div class="tech-band-head">
-            <span class="tech-band-tag">Vision</span>
-            <code class="tech-band-code">$ diaspor model pull diaspor-vision-v1</code>
-          </div>
-          <div class="tech-band-body">
-            <p class="tech-band-models"><strong>diaspor-vision-v1</strong> · scenes · objects · OCR FR/EN</p>
-            <p class="tech-band-note">Frame-level tagging, video-evidence indexing, semantic search across every clip.</p>
+            <p class="tech-band-models"><strong>Virtual Distributed Filesystem · Rust 2024</strong></p>
+            <p class="tech-band-note">
+              Single async API across <strong>memory · local · FUSE · WinFsp · S3 · NAS</strong> backends. CLI for ops · SDK for embedders · REST API for everything else.<br>
+              On-device pipeline: <strong>FFmpeg ingest → whisper.cpp transcription → local LLM tagging → vector index</strong>.<br>
+              Runs on <strong>laptop, server, cluster, cloud or edge</strong>.<br>
+              <strong>Near-zero infrastructure cost</strong> — your hardware does the work, no per-API-call billing.<br>
+              Conformance suite proves every backend behaves identically. Embedded in Diaspor Desktop · also licensed standalone to ISVs.
+            </p>
           </div>
         </div>
         <div class="tech-band tech-band-accent">
           <div class="tech-band-head">
-            <span class="tech-band-tag">Non-verbal · beta</span>
-            <code class="tech-band-code">$ diaspor model pull diaspor-pose-3d,diaspor-prosody</code>
+            <span class="tech-band-tag">Diaspor Models (proprietary · commercial)</span>
+            <code class="tech-band-code">$ diaspor model run diaspor-judge-assistant-v1 --stream rtsp://camera</code>
           </div>
           <div class="tech-band-body">
-            <p class="tech-band-models"><strong>diaspor-pose-3d-v1</strong> · <strong>diaspor-prosody-v1</strong> · <strong>diaspor-face-mesh-v1</strong></p>
-            <p class="tech-band-note">Facial expressions, vocal prosody, gaze and posture. Engagement and sentiment scoring per segment. Canadian calibration in flight.</p>
+            <p class="tech-band-models"><strong>Proprietary AI · 9 capabilities</strong></p>
+            <p class="tech-band-note">
+              <strong>Auto-tagging</strong> · scene + object + face + OCR FR+EN.<br>
+              <strong>Transcription</strong> · diarization · Quebec French + Canadian English.<br>
+              <strong>Live stream analysis</strong> · WebRTC · HLS · RTSP.<br>
+              <strong>3D pose</strong> · 33 keypoints · sport judging, gesture, posture.<br>
+              <strong>Vocal prosody</strong> · stress, tremor, pace, pauses.<br>
+              <strong>Credibility composite</strong> · decision-aid, never a verdict.<br>
+              <strong>Judge Assistant AI</strong> · neutrality scoring for sport, arbitration, refereeing — in active development, Y2 launch.<br>
+              <strong>Speech diarization</strong> · who said what.<br>
+              <strong>Vision</strong> · scene/object/OCR detection FR + EN.
+            </p>
           </div>
         </div>
-        <div class="tech-band">
-          <div class="tech-band-head">
-            <span class="tech-band-tag">Composite scoring · beta</span>
-            <code class="tech-band-code">$ diaspor score --model diaspor-credibility-v1</code>
-          </div>
-          <div class="tech-band-body">
-            <p class="tech-band-models"><strong>diaspor-credibility-v1</strong> · <strong>diaspor-judge-v1</strong> · <strong>diaspor-rag-v1</strong></p>
-            <p class="tech-band-note">Proprietary composite scoring: credibility signals (stress + incongruence indicators, not lie detection), sport judging, evidence-grounded RAG reasoning. Per-version accuracy scorecards published. Calibration on Canadian legal, security and sport cohorts.</p>
-          </div>
+      </div>
+      <p class="tech-cta">All proprietary · runs on your hardware · trade-secret-protected · no per-call billing. <a href="mailto:hello@diaspor.io?subject=Technical%20deep-dive">Request a technical deep-dive.</a></p>
+
+      <!-- Engineering callout: by engineers, for engineers -->
+      <aside style="margin-top:28px;background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:22px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;">
+        <div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Stack</div>
+          <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Rust 2024 · 8-crate workspace · zero unsafe except FFI · <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#a5b4fc;font-size:0.9em;">cargo --release · LTO=thin</code></div>
         </div>
-      </div>
-      <p class="tech-cta">Need a model we don't list yet? <a href="mailto:hello@diaspor.io?subject=Model%20request">Tell us.</a></p>
-    </div>
-  </section>
-
-  <!-- Engineering depth — by engineers, for engineers -->
-  <section id="engineering" class="engineering-section">
-    <div class="container">
-      <div class="section-header section-header-asym">
-        <span class="section-tag section-tag-bleed">By engineers · For engineers</span>
-        <h2 class="section-title">Sensor-grade precision. Engineering-grade depth.</h2>
-        <p class="section-description">For security architects, DPOs, DevSecOps teams and technical counsel. Zero diluted marketing. Version pins, parameters, cryptographic primitives, deployment manifests. Everything you need to decide in five minutes.</p>
-      </div>
-
-      <div class="engineering-grid">
-        <article class="engineering-block">
-          <header class="engineering-head">
-            <span class="engineering-tag">RUNTIME</span>
-            <span class="engineering-version">v0.1.0-alpha · Rust 2024</span>
-          </header>
-<pre class="engineering-pre"><code>workspace : 8 crates · resolver = "3"
-  diaspor-core         types · traits · errors
-  diaspor-backend-*    local · S3 · NAS · memory
-  diaspor-index        vector index · embeddings
-  diaspor-fuse/winfsp  POSIX · NTFS mount layer
-  diaspor-cli          ships `diaspor` (CLI) + `diaspor-agent` (daemon)
-build     : cargo --release · LTO=thin · panic=abort
-toolchain : stable rust &ge; 1.85
-safety    : zero unsafe except FFI shims
-lints     : clippy::pedantic + ::nursery -D warnings
-ci        : fmt · clippy · doc · test
-            + no-network sandbox (unshare --net)</code></pre>
-        </article>
-
-        <article class="engineering-block">
-          <header class="engineering-head">
-            <span class="engineering-tag">PROPRIETARY MODELS</span>
-            <span class="engineering-version">diaspor-* family · SHA-256 signed weights</span>
-          </header>
-<pre class="engineering-pre"><code>speech     : diaspor-speech-v1     transcription + diariz.
-                                   designed for QC-French + court
-vision     : diaspor-vision-v1     scenes · objects · OCR FR/EN
-                                   video-evidence indexing
-non-verbal : diaspor-face-mesh-v1  478 facial landmarks
-   (beta)    diaspor-pose-3d-v1    33 3D keypoints
-             diaspor-prosody-v1    vocal stress signals
-composites : diaspor-credibility-v1 credibility signals  (beta)
-   (beta)                            stress + incongruence
-             diaspor-judge-v1      sport judging score  (beta)
-RAG        : diaspor-rag-v1        evidence-grounded reasoning
-training   : supervised fine-tuning · RLHF · RLAIF
-             contrastive learning · domain adaptation
-             calibration: Canadian founding cohorts
-runtime    : NVIDIA · AMD · Apple Silicon · CPU AVX-512
-license    : proprietary weights · signed runtime binaries
-attestation: SHA-256 + Ed25519 (minisign) + SLSA prov.</code></pre>
-        </article>
-
-        <article class="engineering-block">
-          <header class="engineering-head">
-            <span class="engineering-tag">DEPLOY</span>
-            <span class="engineering-version">helm · terraform · docker · systemd</span>
-          </header>
-<pre class="engineering-pre"><code># 1. Helm — your Kubernetes cluster
-helm install diaspor diaspor/diaspor \
-  --set region=ca-central-1 \
-  --set models.stack=diaspor-speech,diaspor-vision,diaspor-pose-3d \
-  --set persistence.size=2Ti \
-  --set byok.kms_key_arn=arn:aws:kms:...
-
-# 2. Terraform — your AWS tenancy
-module "diaspor" {
-  source  = "stonyp90/diaspor/aws"
-  version = "~&gt; 0.1"
-  region  = "ca-central-1"
-  vpc_id  = aws_vpc.legal.id
-  byok    = true
-}
-
-# 3. Single binary — investigator laptop
-$ diaspor-agent serve --local --gpu=auto --port 7733</code></pre>
-        </article>
-
-        <article class="engineering-block">
-          <header class="engineering-head">
-            <span class="engineering-tag">SECURITY</span>
-            <span class="engineering-version">FIPS 140-3 ciphers · BYOK · SLSA build prov.</span>
-          </header>
-<pre class="engineering-pre"><code>encryption at rest   : AES-256-GCM
-encryption in transit: TLS 1.3 · optional mTLS
-keys                 : BYOK · AWS KMS · HashiCorp Vault
-                       · HSM-compatible (CloudHSM, Luna)
-auth                 : OIDC · SAML · mTLS · API tokens
-RBAC                 : per folder · model · signal
-audit                : append-only WORM · Ed25519-signed
-in-memory secrets    : zeroize · no swap
-supply chain         : SLSA build prov. · in-toto · minisign
-models               : SHA-256 verified proprietary weights
-runtime              : signed builds · audit-grade logs</code></pre>
-        </article>
-      </div>
-
-      <p class="engineering-footnote">
-        OpenAPI schema, detailed threat-model, sub-processor list, SBOM, SLSA build-provenance attestations and pen-test reports: available under NDA before signature.
-      </p>
-      <p class="engineering-footnote">
-        <strong>Compliance scope.</strong> Credibility-signal outputs (<code>diaspor-credibility-v1</code>) are not available for use in EU workplace or education contexts (EU AI Act, effective August 2026). Facial-biometric processing in Illinois requires an explicit BIPA opt-in flow, provided as part of the standard deployment. Forensic, hiring, insurance and law-enforcement adjudication use cases are out of scope and excluded by our terms of service.
-      </p>
-    </div>
-  </section>
-
-  <!-- CLI · On-demand binaries · macOS · Windows · Linux -->
-  <section id="cli" class="cli-section">
-    <div class="container">
-      <div class="section-header section-header-asym">
-        <span class="section-tag section-tag-bleed" data-cli-version>CLI · v0.1.0-alpha.1</span>
-        <h2 class="section-title">Run Diaspor locally. Two signed binaries, every platform.</h2>
-        <p class="section-description">Every release ships <code>diaspor</code> (the operator CLI) and <code>diaspor-agent</code> (the long-running runtime daemon). Signed builds straight from our release pipeline, SHA-256 checksummed, reproducible from source, zero installer telemetry. Drop the binaries on a workstation, run <code>diaspor-agent serve --local</code>, you&rsquo;re up.</p>
-      </div>
-
-      <div class="cli-grid" role="list">
-        <article class="cli-card" data-platform="macos" role="listitem">
-          <header class="cli-card-head">
-            <span class="cli-card-tag">macOS</span>
-            <h3>Apple Silicon &amp; Intel</h3>
-            <p class="cli-card-sub">Darwin · macOS 12+ · minisign-verified</p>
-          </header>
-          <div class="cli-actions">
-            <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="aarch64-apple-darwin" rel="noopener" aria-label="Download Diaspor for Apple Silicon">
-              <span class="cli-btn-arch">Apple Silicon · M1+</span>
-              <span class="cli-btn-meta">.tar.gz</span>
-            </a>
-            <a class="cli-btn" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="x86_64-apple-darwin" rel="noopener" aria-label="Download Diaspor for Intel Mac">
-              <span class="cli-btn-arch">Intel · x86_64</span>
-              <span class="cli-btn-meta">.tar.gz</span>
-            </a>
-          </div>
-          <p class="cli-card-foot"><code>shasum -a 256 -c diaspor-&hellip;.tar.gz.sha256</code></p>
-        </article>
-
-        <article class="cli-card" data-platform="windows" role="listitem">
-          <header class="cli-card-head">
-            <span class="cli-card-tag">Windows</span>
-            <h3>10, 11 &amp; Server 2022</h3>
-            <p class="cli-card-sub">MSVC · x86_64 · minisign-verified</p>
-          </header>
-          <div class="cli-actions">
-            <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="x86_64-pc-windows-msvc" rel="noopener" aria-label="Download Diaspor for Windows x86_64">
-              <span class="cli-btn-arch">x86_64</span>
-              <span class="cli-btn-meta">.zip</span>
-            </a>
-          </div>
-          <p class="cli-card-foot"><code>Get-FileHash diaspor-&hellip;.zip -Algorithm SHA256</code></p>
-        </article>
-
-        <article class="cli-card" data-platform="linux" role="listitem">
-          <header class="cli-card-head">
-            <span class="cli-card-tag">Linux</span>
-            <h3>glibc 2.31+ · x86_64 &amp; aarch64</h3>
-            <p class="cli-card-sub">GNU · minisign-verified</p>
-          </header>
-          <div class="cli-actions">
-            <a class="cli-btn cli-btn-primary" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="x86_64-unknown-linux-gnu" rel="noopener" aria-label="Download Diaspor for Linux x86_64">
-              <span class="cli-btn-arch">x86_64</span>
-              <span class="cli-btn-meta">.tar.gz</span>
-            </a>
-            <a class="cli-btn" href="https://github.com/stonyp90/diaspor/releases/latest" data-target="aarch64-unknown-linux-gnu" rel="noopener" aria-label="Download Diaspor for Linux aarch64">
-              <span class="cli-btn-arch">aarch64</span>
-              <span class="cli-btn-meta">.tar.gz</span>
-            </a>
-          </div>
-          <p class="cli-card-foot"><code>sha256sum -c diaspor-&hellip;.tar.gz.sha256</code></p>
-        </article>
-      </div>
-
-      <div class="cli-source">
-        <h3>Or build from source.</h3>
-<pre class="sdk-api-code"><code>git clone https://github.com/stonyp90/diaspor.git
-cd diaspor
-cargo build --release -p diaspor-cli
-
-# binaries at target/release/{diaspor, diaspor-agent}
-./target/release/diaspor-agent serve --local --gpu=auto --port 7733</code></pre>
-      </div>
-
-      <p class="cli-footnote">
-        <a href="https://github.com/stonyp90/diaspor/releases/latest" target="_blank" rel="noopener">All releases on GitHub →</a>
-        · Signed binaries · proprietary model weights licensed separately.
-      </p>
-    </div>
-  </section>
-
-  <!-- SDK + API — embed and integrate -->
-  <section id="sdk-api" class="sdk-api-section">
-    <div class="container">
-      <div class="section-header section-header-asym">
-        <span class="section-tag section-tag-bleed">SDK &amp; API</span>
-        <h2 class="section-title">Embed Diaspor inside your own systems.</h2>
-        <p class="section-description">Two commercial entry points for ISVs, integrators and product teams building their own legal, security or coaching tools. Same proprietary models, same Canadian hosting, same compliance posture.</p>
-      </div>
-
-      <div class="sdk-api-grid">
-        <article class="sdk-api-card">
-          <header class="sdk-api-head">
-            <span class="sdk-api-tag">SDK</span>
-            <h3>Diaspor SDK</h3>
-            <p class="sdk-api-tagline">Embed the models inside your application.</p>
-          </header>
-          <ul class="sdk-api-points">
-            <li>Bindings for Rust, Python, TypeScript, Swift, Kotlin</li>
-            <li>Local inference or delegated to your tenancy</li>
-            <li>Commercial license — clean to embed in your own products</li>
-            <li>Signed model updates, SLSA build-provenance attestation</li>
-          </ul>
-<pre class="sdk-api-code"><code>use diaspor::client::Diaspor;
-
-let client = Diaspor::local()?;
-let analysis = client
-    .analyze("interview.mp4")
-    .with_models(&["diaspor-speech", "diaspor-credibility"])
-    .run()
-    .await?;
-
-for marker in analysis.credibility_signals() {
-    println!("{} · {:.0}%", marker.timestamp, marker.score * 100.0);
-}</code></pre>
-          <div class="sdk-api-footer">
-            <span class="sdk-api-pricing">Unlimited seats per deployment · annual term</span>
-            <a href="mailto:hello@diaspor.io?subject=Diaspor%20SDK" class="sdk-api-cta">Talk to us →</a>
-          </div>
-        </article>
-
-        <article class="sdk-api-card sdk-api-card-featured">
-          <header class="sdk-api-head">
-            <span class="sdk-api-tag">API</span>
-            <h3>Diaspor Cloud API</h3>
-            <p class="sdk-api-tagline">Call our models from your existing systems — nothing to host.</p>
-          </header>
-          <ul class="sdk-api-points">
-            <li>REST &amp; gRPC · OpenAPI 3.1 · Server-Sent Events streaming</li>
-            <li>ca-central-1 hosting · zero US sub-processors</li>
-            <li>Per-project API key, RBAC by model and by signal</li>
-            <li>Ed25519-signed webhooks · exportable audit logs</li>
-          </ul>
-<pre class="sdk-api-code"><code>curl https://api.diaspor.io/v1/analyze \
-  -H "Authorization: Bearer $DIASPOR_KEY" \
-  -H "X-Region: ca-central-1" \
-  -F file=@interview.mp4 \
-  -F 'models=["diaspor-speech","diaspor-credibility"]'
-
-# → { "credibility_signals": [...],
-#     "transcript": [...],
-#     "audit_id": "evt_01H..." }</code></pre>
-          <div class="sdk-api-footer">
-            <span class="sdk-api-pricing">Scoped to your throughput and SLA</span>
-            <a href="mailto:hello@diaspor.io?subject=Diaspor%20Cloud%20API" class="sdk-api-cta">Request a preview key →</a>
-          </div>
-        </article>
-      </div>
-
-      <p class="sdk-api-footnote">SDK and API share the main product's compliance posture: append-only audit logs, mandatory human review for credibility signals, EU AI Act and BIPA exclusions inherited from the standard deployment. Commercial terms scoped per use case.</p>
-    </div>
-  </section>
-
-  <!-- Custom AI / RL engagements — high-touch sales path -->
-  <section id="custom" class="custom-section">
-    <div class="container">
-      <div class="custom-card">
-        <span class="section-tag">Custom engagements</span>
-        <h2 class="section-title">Bring us your data. We'll bring the model.</h2>
-        <p class="section-description">
-          We take on bespoke ML engagements: fine-tuned vision, speech and non-verbal models, domain-specific classifiers and embeddings, RLHF/RLAIF tailored to your evaluation criteria, sport judges trained on your discipline, credibility-signal models calibrated on your corpus for non-forensic use cases. Training runs in your tenancy or on your hardware. <strong>Weights stay in your environment under your service agreement.</strong>
-        </p>
-        <ul class="custom-pills">
-          <li>Domain-tuned diaspor-* models</li>
-          <li>RLHF / RLAIF on your evaluation criteria</li>
-          <li>Reinforcement-learning judges</li>
-          <li>Bespoke credibility-signal models</li>
-          <li>Domain classifiers &amp; embeddings</li>
-          <li>Sport-specific scoring models</li>
-        </ul>
-        <div class="custom-actions">
-          <a href="mailto:hello@diaspor.io?subject=Custom%20model%20training%20%2F%20RL%20engagement" class="btn-primary">
-            Discuss your project
-            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-          <a href="https://calendly.com/anthonypaquet1508" target="_blank" rel="noopener" class="btn-secondary">
-            Book a scoping call
-          </a>
+        <div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Builds</div>
+          <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Cross-platform signed binaries · SHA-256 + Ed25519 (minisign) + SLSA build provenance · reproducible from source</div>
         </div>
-        <p class="custom-footnote">Founder-led conversations. Typical engagement runs 4–12 weeks, scoped against your data and compliance posture. Quebec public-sector procurement frameworks supported.</p>
-      </div>
+        <div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Source control</div>
+          <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Self-hosted private GitLab · NDA-protected codebase · full source review available under NDA for security teams</div>
+        </div>
+        <div>
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Compliance scope</div>
+          <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;"><code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#a5b4fc;font-size:0.9em;">diaspor-credibility-v1</code> excluded from EU workplace/education (AI Act). BIPA opt-in for Illinois facial-biometric. Forensic/hiring adjudication out of ToS scope.</div>
+        </div>
+      </aside>
     </div>
   </section>
 
@@ -1050,6 +694,8 @@ for marker in analysis.credibility_signals() {
           <p class="contact-card-meta">Founder-led from Montréal · Reply within one business day · EN / FR</p>
         </div>
       </div>
+
+      <p style="margin-top:24px;text-align:center;font-size:14px;color:#c9d1d9;max-width:760px;margin-left:auto;margin-right:auto;line-height:1.55;"><strong style="color:#fff;">Custom engagements available</strong> — we scope per-volume Engine deployments, hosted SaaS quotas, and Models training corpora (domain-tuned diaspor-* models, RLHF/RLAIF on your evaluation criteria, sport-specific scoring, bespoke credibility models). Weights stay in your environment. Ask in your first message.</p>
     </div>
   </section>
 
@@ -1066,116 +712,64 @@ for marker in analysis.credibility_signals() {
 
       <div class="faq-list">
         <details class="faq-item">
-          <summary>Where is our data physically stored?</summary>
+          <summary>What does Diaspor do, exactly?</summary>
           <div class="faq-answer">
             <p>
-              All Diaspor-managed storage and AI inference runs in
-              <strong>AWS ca-central-1 (Montréal)</strong>. Your files never cross the
-              Canadian border. We do not use US-region providers, even for queue or
-              metadata. Sub-processor list is published quarterly and available under NDA
-              before contract signature.
+              Three products on one Rust 2024 platform. <strong>Diaspor Desktop</strong> — a cross-platform app that auto-tags video archives, transcribes meetings on-device, and analyzes live streams. <strong>Diaspor Engine</strong> — a Virtual Distributed Filesystem with CLI, SDK and REST API, mounting local · FUSE · S3 · NAS under one async API. <strong>Diaspor Models</strong> — nine proprietary AI capabilities (auto-tag, transcription, vision, 3D pose, prosody, credibility, Judge Assistant, diarization, live stream) that plug into either.
             </p>
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>What's your SOC 2 / ISO 27001 status?</summary>
+          <summary>Where does my data go?</summary>
           <div class="faq-answer">
             <p>
-              SOC 2 Type II is on the 2026 roadmap. ISO 27001 follows in the next
-              12-month cycle. Loi 25 alignment is architectural from day one: data
-              residency, audit logging, and personal-data classification are part of the
-              design. Personal-data scanner, consent registry, retention engine, and
-              breach-log generation are rolling out through 2026. PIPEDA alignment
-              carries over from the Loi 25 work.
+              Wherever you keep it. The Engine reads files in-place from whichever backend you mount — local disk, S3 bucket, NAS share, FUSE volume — without copying. Tagging, transcripts and embeddings go to a separate metadata store you control. If you opt into our Canadian cloud, everything runs in <strong>AWS ca-central-1 (Montréal)</strong>, zero US sub-processors. CI proves it: every test runs inside <code>unshare --net</code> and the build fails if any module opens a socket without explicit opt-in.
             </p>
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>How is Diaspor licensed?</summary>
+          <summary>What's the pricing model?</summary>
           <div class="faq-answer">
             <p>
-              The <strong>model weights</strong>
-              (<code>diaspor-speech-v1</code>, <code>diaspor-vision-v1</code>,
-              <code>diaspor-pose-3d-v1</code>, <code>diaspor-prosody-v1</code>,
-              <code>diaspor-credibility-v1</code>, <code>diaspor-judge-v1</code>,
-              <code>diaspor-rag-v1</code>) are proprietary — trained in-house on Canadian
-              legal, security and sport corpora — and ship signed (SHA-256 + Ed25519) into
-              your tenancy under our standard MSA. The <strong>runtime binaries</strong>
-              are signed builds with full audit logs; full source review is available under
-              NDA for security teams. Internal use is unrestricted; redistribution to third
-              parties requires a commercial agreement.
+              <strong>Desktop</strong>: 15 CAD/mo prosumer, 50 CAD/seat/mo team, 199 CAD lifetime. <strong>Engine</strong>: 5K CAD/yr per developer or 25–100K CAD/yr enterprise. <strong>Models</strong>: 25K+ CAD/seat/yr self-hosted or hosted SaaS. No per-token cloud bills — you pay for your hardware. Detailed quotes on request, scoped to volume and compliance posture.
             </p>
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>What happens to our data if we stop paying?</summary>
+          <summary>Can I self-host?</summary>
           <div class="faq-answer">
             <p>
-              Your storage is your storage — Diaspor never touches the underlying buckets.
-              You disconnect the integration; your data stays exactly where it was in S3,
-              Azure, GCS, or NAS. We retain anonymized usage metadata for 30 days, then
-              permanently delete. Export of embeddings, transcripts, and AI artifacts is
-              available on demand, in standard formats (JSON, Parquet, SRT, VTT, plain
-              text).
+              Yes — that's the default. Single signed binary on a laptop. Helm chart for your Kubernetes cluster. Official Terraform module for your AWS · Azure · GCP tenancy. Air-gap mode for classified environments (models transferred via signed USB, zero network services). Our Canadian-cloud option exists for firms that don't want to operate, but every primitive is built to run in your perimeter.
             </p>
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>Do you support French — really?</summary>
+          <summary>Is the source code public?</summary>
           <div class="faq-answer">
             <p>
-              French is a first-class language across the product: UI, support,
-              documentation, bilingual MSA, and every AI surface (transcription,
-              translation, OCR, RAG, non-verbal scoring). <code>diaspor-speech-v1</code>
-              is designed for Québec French — courtroom contexts, trades
-              vocabulary and regional accents — and calibrates with our founding-cohort
-              partners through supervised fine-tuning and reinforcement learning,
-              not a generic English-first model with French bolted on. Bill 96
-              alignment for Québec public-sector procurement is part of the
-              contractual posture from launch.
+              No. Diaspor is closed source — proprietary runtime binaries, proprietary <code>diaspor-*</code> model weights, NDA-protected codebase hosted on a self-hosted private GitLab. Full source review is available under NDA for security teams. Internal use is unrestricted under our MSA; redistribution requires a commercial agreement. Builds are SHA-256 + Ed25519 (minisign) signed with SLSA build provenance.
             </p>
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>What's the support model?</summary>
+          <summary>What about Loi 25 / PIPEDA / Bill 96?</summary>
           <div class="faq-answer">
             <p>
-              Support tiers active from public launch:
-              <strong>Pro</strong> — email, 1 business-day response, EN/FR;
-              <strong>Team</strong> — shared Slack, 4-hour business-hours response, EN/FR;
-              <strong>Enterprise</strong> — dedicated point of contact, 1-hour P1 response
-              business-hours, optional 24×7, bilingual phone, quarterly product review.
-              In private beta, every design partner has a direct line to the founder.
+              Aligned by design. Data residency in ca-central-1, PIA/EFVP template provided, built-in incident log, all 10 PIPEDA principles embedded in the architecture, bilingual UI/docs/support/AI for Bill 96 (OQLF-compliant), bilingual MSA pre-cleared for BSP and SQI procurement frameworks. SOC 2 Type II is in progress for 2026; interim evidence available under NDA.
             </p>
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>Can you sign our DPA / contractual agreement?</summary>
+          <summary>How do I get Desktop / CLI / SDK?</summary>
           <div class="faq-answer">
             <p>
-              Yes. We're preparing a bilingual MSA + DPA template aligned with Québec
-              public-sector procurement frameworks (BSP, SQI). Custom redlines are part of
-              the Team / Enterprise engagement. SOC 2 evidence becomes available under NDA
-              once Type II completes in 2026; in the interim we share an internal controls
-              walk-through and our roadmap.
-            </p>
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>Are you VC-backed? Who's behind Diaspor?</summary>
-          <div class="faq-answer">
-            <p>
-              Founder-led and bootstrapped from Montréal. Detailed company information,
-              founder background, and roadmap available under NDA for procurement and
-              partnership conversations. Reach <a href="mailto:hello@diaspor.io">hello@diaspor.io</a>
-              to start a conversation.
+              <strong>Desktop</strong>: <a href="#waitlist">join the founding cohort</a> for early access. <strong>CLI</strong> (the <code>diaspor</code> binary + <code>diaspor-agent</code> daemon): signed builds for macOS (Apple Silicon + Intel), Windows (x86_64), Linux (x86_64 + aarch64) — all minisign-verified, SHA-256 checksummed, reproducible from source, zero installer telemetry. <strong>SDK</strong>: cargo-installable for licensed embedders, with bindings for Rust, Python, TypeScript, Swift and Kotlin. <a href="mailto:hello@diaspor.io">Email us</a> to scope an Engine licence.
             </p>
           </div>
         </details>
@@ -1233,6 +827,23 @@ for marker in analysis.credibility_signals() {
 
   </main>
 
+  <!-- Funding & community — non-dilutive public support -->
+  <section class="trust-strip" aria-label="Funding and community">
+    <div class="container">
+      <p style="text-align:center;margin-bottom:0.75rem;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6;font-weight:600;">Backed by non-dilutive public funding · Québec + Canada</p>
+      <ul class="trust-strip-badges">
+        <li><span class="badge-dot dot-info"></span>Investissement Québec · CDAE</li>
+        <li><span class="badge-dot dot-info"></span>Revenu Québec · RS&amp;DE</li>
+        <li><span class="badge-dot dot-info"></span>ARC · SR&amp;ED</li>
+        <li><span class="badge-dot dot-info"></span>NRC-IRAP</li>
+        <li><span class="badge-dot dot-info"></span>Scale AI Montréal</li>
+        <li><span class="badge-dot dot-info"></span>MITACS</li>
+        <li><span class="badge-dot dot-info"></span>MILA · IVADO</li>
+      </ul>
+      <p style="text-align:center;margin-top:1rem;opacity:0.7;font-size:0.875rem;"><strong>Diaspor is built and maintained in Québec, funded by Canadian public R&amp;D programs (SR&amp;ED · CDAE · NRC-IRAP · Scale AI · MITACS · CRIC). Zero equity dilution by design.</strong></p>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer" role="contentinfo">
     <div class="container">
@@ -1248,7 +859,7 @@ for marker in analysis.credibility_signals() {
             </span>
             <span class="logo-text">diaspor<span class="logo-dot">.</span></span>
           </a>
-          <p>Your data, your AI. In Canada.</p>
+          <p>File intelligence on your hardware. Built in Québec, runs anywhere.</p>
           <div class="footer-locale" role="group" aria-label="Language">
             <button type="button" class="locale-btn locale-active" aria-pressed="true">EN</button>
             <button type="button" class="locale-btn" aria-pressed="false" title="French translation in progress">FR</button>
@@ -1258,17 +869,16 @@ for marker in analysis.credibility_signals() {
         <div class="footer-links">
           <div class="footer-column">
             <h3>Product</h3>
+            <a href="#products">Product line</a>
+            <a href="#vdfs">VDFS</a>
             <a href="#usecases">Use cases</a>
-            <a href="#deployment">Deployment</a>
-            <a href="#capabilities">Capabilities</a>
-            <a href="#sdk-api">SDK &amp; API</a>
+            <a href="#tech">Technology</a>
             <a href="#contact">Contact</a>
           </div>
 
           <div class="footer-column">
             <h3>Compliance</h3>
-            <a href="#canada">Canadian hosting</a>
-            <a href="#compliance">Loi 25 · PIPEDA · Bill 96</a>
+            <a href="#faq">Loi 25 · PIPEDA · Bill 96</a>
             <a href="#faq">SOC 2 status</a>
             <a href="mailto:hello@diaspor.io?subject=Request%3A%20DPA%20template">Request DPA template</a>
             <a href="mailto:security@diaspor.io">Report a vulnerability</a>
@@ -1276,9 +886,8 @@ for marker in analysis.credibility_signals() {
 
           <div class="footer-column">
             <h3>Resources</h3>
-            <a href="#engineering">Engineering depth</a>
-            <a href="#tech">Models</a>
-            <a href="#sdk-api">SDK &amp; API</a>
+            <a href="#tech">Engineering &amp; Models</a>
+            <a href="#vdfs">CLI · SDK · API</a>
             <a href="mailto:hello@diaspor.io?subject=Diaspor%20%E2%80%94%20preview%20build%20request">Request preview build</a>
             <a href="#faq">FAQ</a>
           </div>
@@ -1494,6 +1103,71 @@ for marker in analysis.credibility_signals() {
           });
         });
       });
+    })();
+
+    // Desktop downloads: rewrite href to the actual GitHub asset URL once
+    // the latest release is known, highlight the OS-matched card. Falls back
+    // to /releases/latest/download/<file> which always resolves while the
+    // repo is public.
+    (function initDesktopDownloads() {
+      const REPO = 'stonyp90/diaspor';
+      const ASSETS = {
+        macos:   'diaspor-vfs.dmg',
+        windows: 'diaspor-vfs.msi',
+        linux:   'diaspor-vfs.AppImage',
+      };
+
+      function fallbackUrl(filename) {
+        return 'https://github.com/' + REPO + '/releases/latest/download/' + filename;
+      }
+
+      function detectPlatform() {
+        const ua = (navigator.userAgent || '').toLowerCase();
+        if (ua.indexOf('windows') >= 0) return 'windows';
+        if (ua.indexOf('mac') >= 0) return 'macos';
+        if (ua.indexOf('linux') >= 0 || ua.indexOf('x11') >= 0) return 'linux';
+        return null;
+      }
+
+      function applyAssets(tag, assetMap) {
+        document.querySelectorAll('[data-download-platform]').forEach(el => {
+          const p = el.dataset.downloadPlatform;
+          const filename = ASSETS[p];
+          if (!filename) return;
+          el.href = (assetMap && assetMap[filename]) || fallbackUrl(filename);
+        });
+        document.querySelectorAll('[data-desktop-version]').forEach(el => {
+          el.textContent = tag;
+        });
+      }
+
+      function highlightCurrentPlatform() {
+        const p = detectPlatform();
+        if (!p) return;
+        const card = document.querySelector('[data-download-platform="' + p + '"]');
+        if (card) card.classList.add('is-recommended');
+      }
+
+      async function refreshLatest() {
+        try {
+          const res = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest', {
+            headers: { 'Accept': 'application/vnd.github+json' }
+          });
+          if (!res.ok) return; // private repo or rate-limited — fallback URLs stay
+          const data = await res.json();
+          const assetMap = (data.assets || []).reduce((acc, a) => {
+            acc[a.name] = a.browser_download_url;
+            return acc;
+          }, {});
+          applyAssets(data.tag_name || 'latest', assetMap);
+        } catch (_) {
+          // Network blocked — fallback URLs remain
+        }
+      }
+
+      applyAssets('latest', null);
+      highlightCurrentPlatform();
+      refreshLatest();
     })();
 
     // CLI downloads: detect platform, fetch latest release, populate URLs

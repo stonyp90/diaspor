@@ -32,8 +32,22 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RELEASE_YML = REPO_ROOT / ".github" / "workflows" / "release.yml"
+RELEASE_DESKTOP_YML = REPO_ROOT / ".github" / "workflows" / "release-desktop.yml"
 WEBSITE_HTML_EN = REPO_ROOT / "website" / "index.html"
 WEBSITE_HTML_FR = REPO_ROOT / "website" / "fr" / "index.html"
+
+# The desktop installer filenames the website's initDesktopDownloads IIFE
+# expects to find on the latest GitHub release. release-desktop.yml renames
+# the bundle output to these exact strings before uploading; if the
+# workflow or website drifts on naming, the .dmg/.msi/.AppImage download
+# buttons will 404. Keep this map in sync with both:
+#   - the ASSETS object inside initDesktopDownloads() in website/index.html
+#   - the artifact rename lines in .github/workflows/release-desktop.yml
+DESKTOP_EXPECTED_ASSETS = {
+    "macos": "diaspor-vfs.dmg",
+    "windows": "diaspor-vfs.msi",
+    "linux": "diaspor-vfs.AppImage",
+}
 
 
 def parse_release_matrix() -> dict[str, str]:
@@ -97,10 +111,57 @@ def parse_website_archives(path: Path) -> dict[str, str]:
     return targets
 
 
+# Match the ASSETS object literal inside the initDesktopDownloads IIFE:
+#     const ASSETS = {
+#       macos:   'diaspor-vfs.dmg',
+#       windows: 'diaspor-vfs.msi',
+#       linux:   'diaspor-vfs.AppImage',
+#     };
+DESKTOP_ASSETS_BLOCK_RE = re.compile(
+    r"const\s+ASSETS\s*=\s*\{([^}]*)\}\s*;",
+    re.DOTALL,
+)
+DESKTOP_ASSETS_ENTRY_RE = re.compile(
+    r"(?P<platform>macos|windows|linux)\s*:\s*['\"](?P<filename>[A-Za-z0-9._-]+)['\"]"
+)
+
+
+def parse_website_desktop_assets(path: Path) -> dict[str, str]:
+    """Return the `{platform: filename}` map from the ASSETS const in initDesktopDownloads."""
+    html = path.read_text()
+    block_match = DESKTOP_ASSETS_BLOCK_RE.search(html)
+    if not block_match:
+        return {}
+    block = block_match.group(1)
+    found: dict[str, str] = {}
+    for entry in DESKTOP_ASSETS_ENTRY_RE.finditer(block):
+        platform = entry.group("platform")
+        filename = entry.group("filename")
+        if platform in found:
+            raise SystemExit(f"{path}: duplicate platform in ASSETS: {platform}")
+        found[platform] = filename
+    return found
+
+
+def parse_release_desktop_filenames() -> set[str]:
+    """Return the set of desktop installer filenames release-desktop.yml emits.
+
+    Greps the workflow for `release-artifacts/diaspor-vfs.<ext>` paths in the
+    Prepare/Upload artifact steps. We don't try to be YAML-precise here —
+    the workflow has a mix of bash + pwsh blocks where the filename appears
+    verbatim. A simple regex is sufficient and resilient.
+    """
+    text = RELEASE_DESKTOP_YML.read_text()
+    return set(re.findall(r"release-artifacts/(diaspor-vfs\.[A-Za-z]+)", text))
+
+
 def main() -> int:
     matrix = parse_release_matrix()
     web_en = parse_website_archives(WEBSITE_HTML_EN)
     web_fr = parse_website_archives(WEBSITE_HTML_FR)
+    desktop_web_en = parse_website_desktop_assets(WEBSITE_HTML_EN)
+    desktop_web_fr = parse_website_desktop_assets(WEBSITE_HTML_FR)
+    desktop_workflow_files = parse_release_desktop_filenames()
 
     print("release.yml build-cli matrix:")
     print(json.dumps(matrix, indent=2, sort_keys=True))
@@ -137,13 +198,60 @@ def main() -> int:
                 f"release.yml emits .{matrix[target]} but website expects .{web[target]}"
             )
 
+    # Desktop installer asset cross-check: release-desktop.yml filenames ↔
+    # website initDesktopDownloads ASSETS map ↔ DESKTOP_EXPECTED_ASSETS.
+    print("\nrelease-desktop.yml emitted filenames:")
+    print(json.dumps(sorted(desktop_workflow_files), indent=2))
+    print("\nwebsite/index.html initDesktopDownloads ASSETS:")
+    print(json.dumps(desktop_web_en, indent=2, sort_keys=True))
+    if desktop_web_fr:
+        print("\nwebsite/fr/index.html initDesktopDownloads ASSETS:")
+        print(json.dumps(desktop_web_fr, indent=2, sort_keys=True))
+
+    expected_filenames = set(DESKTOP_EXPECTED_ASSETS.values())
+    missing_in_workflow = expected_filenames - desktop_workflow_files
+    extra_in_workflow = desktop_workflow_files - expected_filenames
+    for fn in sorted(missing_in_workflow):
+        failures.append(
+            f"release-desktop.yml: expected to emit {fn!r} but no such "
+            f"`release-artifacts/{fn}` path was found"
+        )
+    for fn in sorted(extra_in_workflow):
+        failures.append(
+            f"release-desktop.yml: emits {fn!r} but no website button "
+            f"references it (asset will be uploaded but unreachable)"
+        )
+
+    for label, web in [
+        ("website/index.html", desktop_web_en),
+        ("website/fr/index.html", desktop_web_fr),
+    ]:
+        if not web:
+            failures.append(
+                f"{label}: could not find `const ASSETS = {{...}}` block "
+                f"inside initDesktopDownloads (download buttons will not be wired)"
+            )
+            continue
+        for platform, expected_fn in DESKTOP_EXPECTED_ASSETS.items():
+            actual_fn = web.get(platform)
+            if actual_fn is None:
+                failures.append(
+                    f"{label}: ASSETS map is missing platform {platform!r} "
+                    f"(no fallback URL will be computed)"
+                )
+            elif actual_fn != expected_fn:
+                failures.append(
+                    f"{label}: ASSETS[{platform!r}] is {actual_fn!r} but workflow "
+                    f"emits {expected_fn!r} (download button will 404)"
+                )
+
     if failures:
         print("\nDRIFT DETECTED:", file=sys.stderr)
         for fail in failures:
             print(f"  - {fail}", file=sys.stderr)
         return 1
 
-    print("\nOK: release.yml matrix and website/index.html ARCHIVES are in sync.")
+    print("\nOK: release.yml matrix + release-desktop.yml filenames + website maps are in sync.")
     return 0
 
 
