@@ -45,7 +45,7 @@ impl StoragePersistence {
     pub fn new() -> Result<Self> {
         let data_dir = dirs::data_dir()
             .unwrap_or_else(|| PathBuf::from("."))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs");
         
         fs::create_dir_all(&data_dir)
@@ -60,7 +60,7 @@ impl StoragePersistence {
     pub fn default_path() -> PathBuf {
         dirs::data_dir()
             .unwrap_or_else(|| PathBuf::from("."))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs")
             .join("storage_sources.json")
     }
@@ -176,7 +176,7 @@ impl Default for StoragePersistence {
             error!("Failed to create storage persistence: {}", e);
             // Fallback to a temporary path
             Self {
-                storage_file: PathBuf::from("/tmp/ursly_storage_sources.json"),
+                storage_file: PathBuf::from("/tmp/diaspor_storage_sources.json"),
             }
         })
     }

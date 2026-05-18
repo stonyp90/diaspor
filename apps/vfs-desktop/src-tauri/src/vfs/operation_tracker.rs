@@ -336,7 +336,7 @@ impl OperationTracker {
         }
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let _ = writeln!(file, r#"{{"location":"operation_tracker.rs:336","message":"Created operation","data":{{"operation_id":"{}","operation_type":"{:?}","source_id":"{}","source_path":"{}","status":"{:?}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                 operation_id, operation.operation_type, operation.source_id, operation.source_path, operation.status,
@@ -717,7 +717,7 @@ impl OperationTracker {
         let operations: Vec<Operation> = ops.values().cloned().collect();
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let copy_move_rename: Vec<_> = operations.iter()
                 .filter(|op| matches!(op.operation_type, OperationType::Copy | OperationType::Move | OperationType::Rename | OperationType::CreateDir))
@@ -897,7 +897,7 @@ impl OperationTracker {
                 ops.remove(id);
             }
             // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                 use std::io::Write;
                 let _ = writeln!(file, r#"{{"location":"operation_tracker.rs:870","message":"Removed operations during cleanup","data":{{"removed_ids":{:?},"removed_count":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                     removed_ids, to_remove,
@@ -910,7 +910,7 @@ impl OperationTracker {
         };
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let _ = writeln!(file, r#"{{"location":"operation_tracker.rs:878","message":"cleanup_old_operations","data":{{"ops_before":{},"ops_after":{},"completed_count":{},"removed_count":{},"max_history":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                 ops_before, ops.len(), completed.len(), removed_count, self.max_history,

@@ -97,7 +97,7 @@ async fn generate_presigned_url(
         info!("[stream] Preparing video from remote storage");
         
         // Download to cache
-        let temp_dir = std::env::temp_dir().join("ursly-video-cache");
+        let temp_dir = std::env::temp_dir().join("diaspor-video-cache");
         let cache_file = temp_dir
             .join(&source.id)
             .join(normalized_path);

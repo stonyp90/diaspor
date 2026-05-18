@@ -15,7 +15,7 @@ import { Select } from '../../components/Select';
 import './SettingsPage.css';
 
 // Storage keys for settings
-const METRICS_INTERVAL_KEY = 'ursly-metrics-polling-interval';
+const METRICS_INTERVAL_KEY = 'diaspor-metrics-polling-interval';
 const DEFAULT_POLLING_INTERVAL = 2000; // 2 seconds
 
 // Get stored polling interval
@@ -554,7 +554,7 @@ function LoggingSettingsSection() {
                   type="text"
                   value={logPath}
                   onChange={(e) => setLogPath(e.target.value)}
-                  placeholder="Default: ~/.local/share/ursly/logs"
+                  placeholder="Default: ~/.local/share/diaspor/logs"
                 />
                 <button
                   type="button"

@@ -98,7 +98,7 @@ describe('OnboardingTour', () => {
     });
 
     it('should not auto-start if tour was already completed', () => {
-      localStorage.setItem('ursly-onboarding-completed', 'true');
+      localStorage.setItem('diaspor-onboarding-completed', 'true');
       render(<OnboardingTour autoStart={true} />);
       expect(screen.queryByTestId('joyride-wrapper')).not.toBeInTheDocument();
     });
@@ -129,7 +129,7 @@ describe('OnboardingTour', () => {
 
   describe('Local Storage', () => {
     it('should check localStorage for completion status', () => {
-      localStorage.setItem('ursly-onboarding-completed', 'true');
+      localStorage.setItem('diaspor-onboarding-completed', 'true');
       render(<OnboardingTour autoStart={true} />);
       expect(screen.queryByTestId('joyride-wrapper')).not.toBeInTheDocument();
     });

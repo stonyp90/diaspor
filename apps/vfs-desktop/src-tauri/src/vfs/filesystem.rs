@@ -17,8 +17,8 @@ use super::hydration::HydratedOperator;
 const TTL: Duration = Duration::from_secs(1);
 const ROOT_INO: u64 = 1;
 
-/// Ursly FUSE Filesystem Implementation
-pub struct UrslyFS {
+/// Diaspor FUSE Filesystem Implementation
+pub struct DiasporFS {
     /// Hydration operator for transparent caching
     operator: Arc<HydratedOperator>,
     
@@ -38,7 +38,7 @@ pub struct UrslyFS {
     next_fh: Arc<RwLock<u64>>,
 }
 
-impl UrslyFS {
+impl DiasporFS {
     pub fn new(operator: HydratedOperator) -> Self {
         let mut inode_map = HashMap::new();
         let mut path_to_inode = HashMap::new();
@@ -123,7 +123,7 @@ impl UrslyFS {
     }
 }
 
-impl Filesystem for UrslyFS {
+impl Filesystem for DiasporFS {
     fn lookup(&mut self, _req: &Request, parent: u64, name: &OsStr, reply: ReplyEntry) {
         debug!("lookup(parent={}, name={:?})", parent, name);
         

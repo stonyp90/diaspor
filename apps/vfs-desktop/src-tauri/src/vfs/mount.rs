@@ -5,7 +5,7 @@ use std::thread;
 use parking_lot::RwLock;
 use tracing::{info, error};
 
-use super::filesystem::UrslyFS;
+use super::filesystem::DiasporFS;
 use super::hydration::HydratedOperator;
 use super::types::{MountConfig, MountStatus};
 
@@ -62,7 +62,7 @@ pub async fn mount_virtual_drive(
     .await?;
     
     // Create filesystem
-    let fs = UrslyFS::new(operator);
+    let fs = DiasporFS::new(operator);
     
     // Clone data for the mount threads
     let mount_point = config.mount_point.clone();
@@ -160,7 +160,7 @@ pub async fn unmount_virtual_drive(mount_state: Arc<MountState>) -> Result<()> {
 /// Get platform-specific mount options
 fn get_mount_options(mount_point: &Path) -> Vec<fuser::MountOption> {
     let mut options = vec![
-        fuser::MountOption::FSName("urslyfs".to_string()),
+        fuser::MountOption::FSName("diasporfs".to_string()),
         fuser::MountOption::RO, // Read-only for POC
         fuser::MountOption::AutoUnmount,
     ];
@@ -168,7 +168,7 @@ fn get_mount_options(mount_point: &Path) -> Vec<fuser::MountOption> {
     #[cfg(target_os = "macos")]
     {
         options.push(fuser::MountOption::AllowOther);
-        options.push(fuser::MountOption::Subtype("ursly".to_string()));
+        options.push(fuser::MountOption::Subtype("diaspor".to_string()));
     }
     
     #[cfg(target_os = "linux")]

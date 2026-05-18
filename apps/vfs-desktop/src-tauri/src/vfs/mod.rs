@@ -81,7 +81,7 @@ pub mod operation_tracking;
 pub mod providers;
 
 #[cfg(all(feature = "vfs", feature = "mount"))]
-pub use filesystem::UrslyFS;
+pub use filesystem::DiasporFS;
 #[cfg(all(feature = "vfs", feature = "mount"))]
 pub use hydration::HydratedOperator;
 #[cfg(all(feature = "vfs", feature = "mount"))]

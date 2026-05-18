@@ -1,5 +1,5 @@
 /**
- * Theme Context for Ursly Desktop App
+ * Theme Context for Diaspor Desktop App
  * Matches the web app theming system for consistency
  */
 import {
@@ -137,8 +137,8 @@ const darkModeColors = {
 // Storage Keys
 // ============================================================================
 
-const MODE_STORAGE_KEY = 'ursly-desktop-theme-mode';
-const COLOR_STORAGE_KEY = 'ursly-desktop-theme-color';
+const MODE_STORAGE_KEY = 'diaspor-desktop-theme-mode';
+const COLOR_STORAGE_KEY = 'diaspor-desktop-theme-color';
 
 // ============================================================================
 // Theme Context

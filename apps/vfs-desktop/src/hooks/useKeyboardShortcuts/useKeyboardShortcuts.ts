@@ -251,7 +251,7 @@ export const DEFAULT_SHORTCUTS: ShortcutDefinition[] = [
   },
 ];
 
-const STORAGE_KEY = 'ursly-keyboard-shortcuts';
+const STORAGE_KEY = 'diaspor-keyboard-shortcuts';
 
 /**
  * Format shortcut for display

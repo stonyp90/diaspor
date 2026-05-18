@@ -230,7 +230,7 @@ export function SpotlightSearch({
   // Recent searches from localStorage
   const [recentSearches, setRecentSearches] = useState<string[]>(() => {
     try {
-      return JSON.parse(localStorage.getItem('ursly-recent-searches') || '[]');
+      return JSON.parse(localStorage.getItem('diaspor-recent-searches') || '[]');
     } catch {
       return [];
     }
@@ -533,7 +533,7 @@ export function SpotlightSearch({
       if (query.trim() && !recentSearches.includes(query.trim())) {
         const updated = [query.trim(), ...recentSearches].slice(0, 10);
         setRecentSearches(updated);
-        localStorage.setItem('ursly-recent-searches', JSON.stringify(updated));
+        localStorage.setItem('diaspor-recent-searches', JSON.stringify(updated));
       }
 
       onClose();
@@ -547,7 +547,7 @@ export function SpotlightSearch({
       if (!recentSearches.includes(query.trim())) {
         const updated = [query.trim(), ...recentSearches].slice(0, 10);
         setRecentSearches(updated);
-        localStorage.setItem('ursly-recent-searches', JSON.stringify(updated));
+        localStorage.setItem('diaspor-recent-searches', JSON.stringify(updated));
       }
       onSearchSubmit(query.trim());
       onClose();

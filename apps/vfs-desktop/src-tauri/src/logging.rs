@@ -67,9 +67,9 @@ impl FileLogWriter {
 
     fn get_log_file_path(&self, index: usize) -> PathBuf {
         if index == 0 {
-            self.log_dir.join("ursly.log")
+            self.log_dir.join("diaspor.log")
         } else {
-            self.log_dir.join(format!("ursly.{}.log", index))
+            self.log_dir.join(format!("diaspor.{}.log", index))
         }
     }
 
@@ -265,9 +265,9 @@ pub fn read_logs(log_dir: &Path, limit: Option<usize>, level_filter: Option<&str
     // Read from all log files (current + rotated)
     for i in 0..6 {
         let log_file = if i == 0 {
-            log_dir.join("ursly.log")
+            log_dir.join("diaspor.log")
         } else {
-            log_dir.join(format!("ursly.{}.log", i))
+            log_dir.join(format!("diaspor.{}.log", i))
         };
         
         if !log_file.exists() {
@@ -303,9 +303,9 @@ pub fn read_logs(log_dir: &Path, limit: Option<usize>, level_filter: Option<&str
 pub fn clear_logs(log_dir: &Path) -> Result<()> {
     for i in 0..6 {
         let log_file = if i == 0 {
-            log_dir.join("ursly.log")
+            log_dir.join("diaspor.log")
         } else {
-            log_dir.join(format!("ursly.{}.log", i))
+            log_dir.join(format!("diaspor.{}.log", i))
         };
         
         if log_file.exists() {

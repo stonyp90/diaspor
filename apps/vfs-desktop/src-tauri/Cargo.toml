@@ -6,15 +6,15 @@
 [workspace]
 
 [package]
-name = "ursly-vfs"
+name = "diaspor-vfs"
 version = "2.0.6"
-description = "Ursly VFS - Virtual Cloud File System"
-authors = ["Ursly.io"]
+description = "Diaspor VFS - Virtual Cloud File System"
+authors = ["Diaspor inc."]
 edition = "2021"
 rust-version = "1.70"
 
 [lib]
-name = "ursly_vfs_lib"
+name = "diaspor_vfs_lib"
 crate-type = ["lib", "cdylib", "staticlib"]
 
 [build-dependencies]

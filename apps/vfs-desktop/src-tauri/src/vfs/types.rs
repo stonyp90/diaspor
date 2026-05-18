@@ -7,7 +7,7 @@ use parking_lot::RwLock;
 /// Configuration for mounting a virtual drive
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MountConfig {
-    /// Mount point (e.g., "/Volumes/Ursly" on macOS, "U:\" on Windows)
+    /// Mount point (e.g., "/Volumes/Diaspor" on macOS, "U:\" on Windows)
     pub mount_point: PathBuf,
     
     /// Remote storage configuration (S3)

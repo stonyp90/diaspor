@@ -82,7 +82,7 @@ export const ErrorDialogProvider: React.FC<{ children: ReactNode }> = ({
       });
     };
 
-    const eventName = 'ursly:dialog' as keyof WindowEventMap;
+    const eventName = 'diaspor:dialog' as keyof WindowEventMap;
     window.addEventListener(eventName, handleDialogEvent as EventListener);
     return () =>
       window.removeEventListener(eventName, handleDialogEvent as EventListener);
@@ -99,7 +99,7 @@ export const ErrorDialogProvider: React.FC<{ children: ReactNode }> = ({
 
       // Dispatch response event for DialogService
       window.dispatchEvent(
-        new CustomEvent('ursly:dialog-response', {
+        new CustomEvent('diaspor:dialog-response', {
           detail: { confirmed },
         }),
       );

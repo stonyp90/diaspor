@@ -8,10 +8,10 @@ import './styles/finder.css';
 
 // Keys to preserve across app restarts
 const PRESERVED_KEYS = [
-  'ursly-onboarding-completed',
-  'ursly-theme',
-  'ursly-sidebar-width',
-  'ursly-column-widths',
+  'diaspor-onboarding-completed',
+  'diaspor-theme',
+  'diaspor-sidebar-width',
+  'diaspor-column-widths',
 ];
 
 // Clear storage for a clean start, preserving important user preferences

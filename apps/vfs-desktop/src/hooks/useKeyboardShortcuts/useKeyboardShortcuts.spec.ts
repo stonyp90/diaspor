@@ -189,11 +189,11 @@ describe('Keyboard Shortcuts System', () => {
         copy: { key: 'd', modifiers: ['meta'] as ModifierKey[] },
       };
       localStorage.setItem(
-        'ursly-keyboard-shortcuts',
+        'diaspor-keyboard-shortcuts',
         JSON.stringify(customized),
       );
 
-      const saved = localStorage.getItem('ursly-keyboard-shortcuts');
+      const saved = localStorage.getItem('diaspor-keyboard-shortcuts');
       expect(saved).not.toBeNull();
       if (!saved) return;
 
@@ -206,11 +206,11 @@ describe('Keyboard Shortcuts System', () => {
         copy: { key: 'd', modifiers: ['meta'] as ModifierKey[] },
       };
       localStorage.setItem(
-        'ursly-keyboard-shortcuts',
+        'diaspor-keyboard-shortcuts',
         JSON.stringify(customized),
       );
 
-      const saved = localStorage.getItem('ursly-keyboard-shortcuts');
+      const saved = localStorage.getItem('diaspor-keyboard-shortcuts');
       if (!saved) return;
       const parsed = JSON.parse(saved);
 
@@ -226,7 +226,7 @@ describe('Keyboard Shortcuts System', () => {
     });
 
     it('should fall back to defaults if no stored value', () => {
-      const saved = localStorage.getItem('ursly-keyboard-shortcuts');
+      const saved = localStorage.getItem('diaspor-keyboard-shortcuts');
       expect(saved).toBeNull();
 
       const copyShortcut = DEFAULT_SHORTCUTS.find((s) => s.id === 'copy');

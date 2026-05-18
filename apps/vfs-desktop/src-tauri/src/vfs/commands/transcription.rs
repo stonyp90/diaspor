@@ -32,8 +32,8 @@ async fn get_or_cache_file_for_transcription(
     // For remote storage, download to local cache
     info!("[transcription] Preparing file from remote storage");
     
-    // Create cache directory structure: temp_dir/ursly-transcription-cache/<source-id>/<file-path>
-    let temp_dir = std::env::temp_dir().join("ursly-transcription-cache");
+    // Create cache directory structure: temp_dir/diaspor-transcription-cache/<source-id>/<file-path>
+    let temp_dir = std::env::temp_dir().join("diaspor-transcription-cache");
     let cache_file = temp_dir
         .join(&source.id)
         .join(normalized_path);

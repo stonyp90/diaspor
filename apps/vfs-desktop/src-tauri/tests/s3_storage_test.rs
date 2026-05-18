@@ -13,8 +13,8 @@ mod tests {
     use testcontainers::Container;
     use testcontainers::core::WaitFor;
     use testcontainers::images::generic::GenericImage;
-    use ursly_vfs_lib::vfs::adapters::S3StorageAdapter;
-    use ursly_vfs_lib::vfs::ports::StorageAdapter;
+    use diaspor_vfs_lib::vfs::adapters::S3StorageAdapter;
+    use diaspor_vfs_lib::vfs::ports::StorageAdapter;
     
 
     fn generate_test_bucket_name(prefix: &str) -> String {
@@ -104,7 +104,7 @@ mod tests {
     }
 
     async fn test_storage_type(adapter: &S3StorageAdapter) {
-        use ursly_vfs_lib::vfs::domain::StorageSourceType;
+        use diaspor_vfs_lib::vfs::domain::StorageSourceType;
         assert_eq!(adapter.storage_type(), StorageSourceType::S3);
     }
 

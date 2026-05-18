@@ -13,7 +13,7 @@ interface OnboardingTourProps {
   onSkip?: () => void;
 }
 
-const STORAGE_KEY = 'ursly-onboarding-completed';
+const STORAGE_KEY = 'diaspor-onboarding-completed';
 
 // Tour steps - simple and declarative
 const TOUR_STEPS: Step[] = [

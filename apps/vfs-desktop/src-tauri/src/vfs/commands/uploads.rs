@@ -27,7 +27,7 @@ pub async fn vfs_list_uploads() -> Result<Vec<serde_json::Value>, String> {
     use serde_json::json;
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let _ = writeln!(file, r#"{{"location":"uploads.rs:25","message":"vfs_list_uploads entry","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
             std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
@@ -43,7 +43,7 @@ pub async fn vfs_list_uploads() -> Result<Vec<serde_json::Value>, String> {
     let uploads = upload_manager.list_uploads().await;
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let upload_ids: Vec<String> = uploads.iter().map(|u| u.upload_id.clone()).collect();
         let _ = writeln!(file, r#"{{"location":"uploads.rs:35","message":"vfs_list_uploads got uploads from manager","data":{{"uploadCount":{},"uploadIds":{:?},"statuses":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
@@ -79,7 +79,7 @@ pub async fn vfs_list_uploads() -> Result<Vec<serde_json::Value>, String> {
     }).collect();
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let _ = writeln!(file, r#"{{"location":"uploads.rs:58","message":"vfs_list_uploads returning","data":{{"jsonUploadCount":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H"}}"#,
             json_uploads.len(),
@@ -258,7 +258,7 @@ pub async fn vfs_list_operations() -> Result<Vec<serde_json::Value>, String> {
     let operations = tracker.get_all_operations();
 
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let ops_summary: Vec<_> = operations.iter().map(|op| {
             format!("{{\"id\":\"{}\",\"type\":\"{:?}\",\"status\":\"{:?}\"}}", op.operation_id, op.operation_type, op.status)
@@ -450,7 +450,7 @@ pub async fn vfs_batch_upload(
     );
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let _ = writeln!(file, r#"{{"location":"uploads.rs:213","message":"vfs_batch_upload entry","data":{{"sourceId":"{}","itemCount":{},"s3BasePath":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
             source_id, items.len(), s3_base_path,
@@ -467,7 +467,7 @@ pub async fn vfs_batch_upload(
         .ok_or_else(|| format!("Storage source not found: {}", source_id))?;
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let _ = writeln!(file, r#"{{"location":"uploads.rs:225","message":"source retrieved","data":{{"sourceId":"{}","sourceType":"{:?}","bucket":"{}","region":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
             source_id, source.source_type, source.config.path_or_bucket, source.config.region.as_ref().unwrap_or(&"N/A".to_string()),
@@ -502,7 +502,7 @@ pub async fn vfs_batch_upload(
     }
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let has_access_key = access_key.is_some();
         let has_secret_key = secret_key.is_some();
@@ -525,7 +525,7 @@ pub async fn vfs_batch_upload(
         name,
     ).await.map_err(|e| {
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let _ = writeln!(file, r#"{{"location":"uploads.rs:255","message":"S3 adapter creation failed","data":{{"error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                 e,
@@ -538,7 +538,7 @@ pub async fn vfs_batch_upload(
     let operator = s3_adapter.operator().clone();
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let _ = writeln!(file, r#"{{"location":"uploads.rs:265","message":"S3 adapter created","data":{{"bucket":"{}","region":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
             bucket, region,
@@ -635,7 +635,7 @@ pub async fn vfs_batch_upload(
     info!("[vfs_batch_upload] Collected {} files to upload", files_to_upload.len());
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let file_names: Vec<String> = files_to_upload.iter().take(5).map(|(_, r)| r.clone()).collect();
         let _ = writeln!(file, r#"{{"location":"uploads.rs:336","message":"files collected","data":{{"fileCount":{},"firstFiles":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
@@ -658,7 +658,7 @@ pub async fn vfs_batch_upload(
         let local_path_clone = local_path.clone();
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let _ = writeln!(file, r#"{{"location":"uploads.rs:355","message":"starting upload","data":{{"localPath":"{}","s3Key":"{}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                 local_path, s3_key, operation_id_clone,
@@ -678,7 +678,7 @@ pub async fn vfs_batch_upload(
                 info!("[vfs_batch_upload] Started upload: {} -> {} (upload_id: {})", local_path, s3_key, upload_id);
                 
                 // #region agent log
-                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                     use std::io::Write;
                     let _ = writeln!(file, r#"{{"location":"uploads.rs:368","message":"upload started","data":{{"uploadId":"{}","localPath":"{}","s3Key":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                         upload_id, local_path, s3_key,
@@ -692,7 +692,7 @@ pub async fn vfs_batch_upload(
                 let local_path_error = local_path_clone.clone();
                 tokio::spawn(async move {
                     // #region agent log
-                    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+                    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                         use std::io::Write;
                         let _ = writeln!(file, r#"{{"location":"uploads.rs:378","message":"upload_chunks starting","data":{{"uploadId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                             upload_id_clone,
@@ -705,7 +705,7 @@ pub async fn vfs_batch_upload(
                         error!("[vfs_batch_upload] Upload failed for {}: {}", upload_id_clone, e);
                         
                         // #region agent log
-                        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+                        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                             use std::io::Write;
                             let _ = writeln!(file, r#"{{"location":"uploads.rs:388","message":"upload_chunks failed","data":{{"uploadId":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                                 upload_id_clone, e,
@@ -751,7 +751,7 @@ pub async fn vfs_batch_upload(
                         }
                     } else {
                         // #region agent log
-                        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+                        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                             use std::io::Write;
                             let _ = writeln!(file, r#"{{"location":"uploads.rs:402","message":"upload_chunks completed","data":{{"uploadId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                                 upload_id_clone,
@@ -765,7 +765,7 @@ pub async fn vfs_batch_upload(
                 error!("[vfs_batch_upload] Failed to start upload for {}: {}", local_path, e);
                 
                 // #region agent log
-                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                     use std::io::Write;
                     let _ = writeln!(file, r#"{{"location":"uploads.rs:415","message":"start_upload failed","data":{{"localPath":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                         local_path, e,
@@ -786,7 +786,7 @@ pub async fn vfs_batch_upload(
     }
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let _ = writeln!(file, r#"{{"location":"uploads.rs:432","message":"vfs_batch_upload completed","data":{{"operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
             operation_id,

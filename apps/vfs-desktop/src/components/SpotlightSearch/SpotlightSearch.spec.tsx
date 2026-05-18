@@ -326,7 +326,7 @@ describe('SpotlightSearch', () => {
 
       // Check localStorage
       const recentSearches = JSON.parse(
-        localStorage.getItem('ursly-recent-searches') || '[]',
+        localStorage.getItem('diaspor-recent-searches') || '[]',
       );
       expect(recentSearches).toContain('test query');
     });

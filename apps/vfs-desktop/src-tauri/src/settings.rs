@@ -214,7 +214,7 @@ impl SettingsManager {
     pub fn default_settings_dir() -> PathBuf {
         dirs::data_dir()
             .unwrap_or_else(|| std::path::PathBuf::from("."))
-            .join("ursly")
+            .join("diaspor")
             .join("settings")
     }
 
@@ -332,7 +332,7 @@ impl SettingsManager {
                 dirs::data_local_dir()
                     .or_else(|| dirs::data_dir())
                     .unwrap_or_else(|| std::path::PathBuf::from("."))
-                    .join("ursly")
+                    .join("diaspor")
                     .join("logs")
             }
             #[cfg(not(windows))]
@@ -340,7 +340,7 @@ impl SettingsManager {
                 // On Unix-like systems, use standard data directory
                 dirs::data_dir()
                     .unwrap_or_else(|| std::path::PathBuf::from("."))
-                    .join("ursly")
+                    .join("diaspor")
                     .join("logs")
             }
         }
@@ -376,7 +376,7 @@ static SETTINGS_MANAGER: once_cell::sync::Lazy<Arc<SettingsManager>> =
             Err(e) => {
                 warn!("Failed to initialize settings manager: {}, using in-memory defaults", e);
                 // Try fallback to current directory
-                let fallback_dir = std::path::PathBuf::from(".").join(".ursly-settings");
+                let fallback_dir = std::path::PathBuf::from(".").join(".diaspor-settings");
                 match SettingsManager::new(&fallback_dir) {
                     Ok(manager) => Arc::new(manager),
                     Err(e2) => {
@@ -384,7 +384,7 @@ static SETTINGS_MANAGER: once_cell::sync::Lazy<Arc<SettingsManager>> =
                         // Create a minimal in-memory settings manager
                         Arc::new(SettingsManager {
                             settings: Arc::new(RwLock::new(AppSettings::default())),
-                            settings_file: PathBuf::from("/tmp/ursly-settings-fallback.json"),
+                            settings_file: PathBuf::from("/tmp/diaspor-settings-fallback.json"),
                         })
                     }
                 }

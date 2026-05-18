@@ -30,7 +30,7 @@ pub async fn vfs_setup_s3_testing(
         .unwrap_or_else(|_| "us-east-2".to_string());
     let bucket = std::env::var("AWS_BUCKET")
         .or_else(|_| std::env::var("aws_bucket"))
-        .unwrap_or_else(|_| "ursly-vfs-test-1766795299".to_string());
+        .unwrap_or_else(|_| "diaspor-vfs-test".to_string());
     
     if access_key.is_none() || secret_key.is_none() {
         return Err("AWS credentials not found in environment variables. Please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.".to_string());

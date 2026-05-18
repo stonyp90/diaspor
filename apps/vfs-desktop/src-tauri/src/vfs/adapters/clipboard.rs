@@ -535,7 +535,7 @@ impl ClipboardAdapter {
         };
         
         // Create temp directory for exported files
-        let temp_dir = std::env::temp_dir().join("ursly-clipboard");
+        let temp_dir = std::env::temp_dir().join("diaspor-clipboard");
         tokio::fs::create_dir_all(&temp_dir).await?;
         
         let mut exported_paths = Vec::new();
@@ -750,7 +750,7 @@ impl IClipboardService for ClipboardAdapter {
         // #region agent log
         use std::fs::OpenOptions;
         use std::io::Write;
-        let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log").map(|mut f| {
+        let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
             let _ = writeln!(f, r#"{{"location":"clipboard.rs:469","message":"get_clipboard ENTRY","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
             
         });
@@ -760,7 +760,7 @@ impl IClipboardService for ClipboardAdapter {
         if let Some(ref content) = *internal {
             debug!("get_clipboard: Found internal clipboard content: source={:?}, paths={:?}", content.source, content.paths);
             // #region agent log
-            let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log").map(|mut f| {
+            let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
                 let _ = writeln!(f, r#"{{"location":"clipboard.rs:473","message":"get_clipboard INTERNAL FOUND","data":{{"paths_count":{},"source":"{:?}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, content.paths.len(), content.source, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
                 
             });
@@ -771,7 +771,7 @@ impl IClipboardService for ClipboardAdapter {
         // Fall back to OS clipboard
         debug!("get_clipboard: Internal clipboard empty, checking native clipboard");
         // #region agent log
-        let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log").map(|mut f| {
+        let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
             let _ = writeln!(f, r#"{{"location":"clipboard.rs:479","message":"get_clipboard INTERNAL EMPTY","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
             
         });
@@ -787,7 +787,7 @@ impl IClipboardService for ClipboardAdapter {
                 if !existing_paths.is_empty() {
                     debug!("get_clipboard: Returning {} existing paths from native clipboard", existing_paths.len());
                     // #region agent log
-                    let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log").map(|mut f| {
+                    let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
                         let _ = writeln!(f, r#"{{"location":"clipboard.rs:488","message":"get_clipboard NATIVE FOUND","data":{{"paths_count":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, existing_paths.len(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
                         
                     });
@@ -803,7 +803,7 @@ impl IClipboardService for ClipboardAdapter {
                 } else {
                     debug!("get_clipboard: All native clipboard paths no longer exist");
                     // #region agent log
-                    let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log").map(|mut f| {
+                    let _ = OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log").map(|mut f| {
                         let _ = writeln!(f, r#"{{"location":"clipboard.rs:499","message":"get_clipboard NATIVE PATHS MISSING","data":{{}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"H1"}}"#, std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis());
                         
                     });

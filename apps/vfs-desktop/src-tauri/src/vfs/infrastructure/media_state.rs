@@ -47,7 +47,7 @@ impl MediaStateWrapper {
         // Initialize with default output directory
         let output_dir = dirs::data_dir()
             .unwrap_or_else(|| std::path::PathBuf::from("."))
-            .join("ursly")
+            .join("diaspor")
             .join("transcodes");
         
         self.init(output_dir).await?;

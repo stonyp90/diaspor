@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    ursly_vfs_lib::run()
+    diaspor_vfs_lib::run()
 }

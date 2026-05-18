@@ -38,8 +38,8 @@ async fn get_or_cache_file(
     // For remote storage, download to local cache
     info!("[ai-cache] Preparing file from remote storage");
     
-    // Create cache directory structure: temp_dir/ursly-ai-cache/<source-id>/<file-path>
-    let temp_dir = std::env::temp_dir().join("ursly-ai-cache");
+    // Create cache directory structure: temp_dir/diaspor-ai-cache/<source-id>/<file-path>
+    let temp_dir = std::env::temp_dir().join("diaspor-ai-cache");
     let cache_file = temp_dir
         .join(&source.id)
         .join(normalized_path);

@@ -979,6 +979,56 @@ dependencies = [
 ]
 
 [[package]]
+name = "diaspor-vfs"
+version = "2.0.6"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "axum",
+ "base64 0.22.1",
+ "bytes",
+ "chrono",
+ "data-encoding",
+ "dirs 5.0.1",
+ "filetime",
+ "fuser",
+ "futures",
+ "libc",
+ "md5",
+ "metal 0.28.0",
+ "nix 0.27.1",
+ "objc",
+ "once_cell",
+ "opendal",
+ "parking_lot",
+ "regex",
+ "reqwest 0.11.27",
+ "serde",
+ "serde_json",
+ "sysinfo",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-shell",
+ "tauri-plugin-updater",
+ "tempfile",
+ "testcontainers",
+ "tokio",
+ "tokio-test",
+ "tower 0.4.13",
+ "tower-http 0.5.2",
+ "tracing",
+ "tracing-subscriber",
+ "urlencoding",
+ "uuid",
+ "vosk",
+ "walkdir",
+ "wgpu",
+ "windows 0.52.0",
+ "winreg 0.52.0",
+]
+
+[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6488,56 +6538,6 @@ dependencies = [
  "serde",
  "unic-ucd-ident",
  "url",
-]
-
-[[package]]
-name = "ursly-vfs"
-version = "2.0.6"
-dependencies = [
- "anyhow",
- "async-trait",
- "axum",
- "base64 0.22.1",
- "bytes",
- "chrono",
- "data-encoding",
- "dirs 5.0.1",
- "filetime",
- "fuser",
- "futures",
- "libc",
- "md5",
- "metal 0.28.0",
- "nix 0.27.1",
- "objc",
- "once_cell",
- "opendal",
- "parking_lot",
- "regex",
- "reqwest 0.11.27",
- "serde",
- "serde_json",
- "sysinfo",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-shell",
- "tauri-plugin-updater",
- "tempfile",
- "testcontainers",
- "tokio",
- "tokio-test",
- "tower 0.4.13",
- "tower-http 0.5.2",
- "tracing",
- "tracing-subscriber",
- "urlencoding",
- "uuid",
- "vosk",
- "walkdir",
- "wgpu",
- "windows 0.52.0",
- "winreg 0.52.0",
 ]
 
 [[package]]

@@ -273,7 +273,7 @@ pub fn get_provider_registry() -> &'static ProviderRegistry {
     static REGISTRY: Lazy<ProviderRegistry> = Lazy::new(|| {
         let config_dir = dirs::config_dir()
             .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
-            .join("ursly");
+            .join("diaspor");
         let config_path = config_dir.join("tier_sync_providers.json");
         
         let registry = ProviderRegistry::new(config_path);

@@ -22,7 +22,7 @@ impl Default for HlsServerConfig {
     fn default() -> Self {
         Self {
             port: 0, // Auto-assign port
-            content_dir: std::env::temp_dir().join("ursly_hls"),
+            content_dir: std::env::temp_dir().join("diaspor_hls"),
         }
     }
 }

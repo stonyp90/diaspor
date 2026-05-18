@@ -30,7 +30,7 @@ impl FileSettingsStore {
     pub fn new() -> Result<Self> {
         let data_dir = dirs::data_dir()
             .unwrap_or_else(|| PathBuf::from("."))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs");
         
         // Create directory synchronously (blocking)
@@ -55,7 +55,7 @@ impl FileSettingsStore {
     pub fn with_encryption(master_key: Vec<u8>) -> Result<Self> {
         let data_dir = dirs::data_dir()
             .unwrap_or_else(|| PathBuf::from("."))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs");
         
         // Create directory synchronously (blocking)
@@ -366,7 +366,7 @@ impl Default for FileSettingsStore {
             error!("Failed to create settings store: {}", e);
             // Fallback to a temporary path
             Self {
-                settings_file: PathBuf::from("/tmp/ursly_settings.json"),
+                settings_file: PathBuf::from("/tmp/diaspor_settings.json"),
                 encryption_enabled: false,
                 master_key: None,
             }

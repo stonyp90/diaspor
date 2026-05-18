@@ -129,7 +129,7 @@ pub async fn vfs_open_file(
         .and_then(|n| n.to_str())
         .unwrap_or("file");
     
-    let temp_path = temp_dir.join(format!("ursly_open_{}_{}", 
+    let temp_path = temp_dir.join(format!("diaspor_open_{}_{}", 
         std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)
             .unwrap_or_default().as_secs(),
         file_name));

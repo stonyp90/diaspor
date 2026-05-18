@@ -6,8 +6,8 @@
 mod tests {
     use std::path::Path;
     use tempfile::TempDir;
-    use ursly_vfs_lib::vfs::adapters::LocalStorageAdapter;
-    use ursly_vfs_lib::vfs::ports::StorageAdapter;
+    use diaspor_vfs_lib::vfs::adapters::LocalStorageAdapter;
+    use diaspor_vfs_lib::vfs::ports::StorageAdapter;
 
     fn create_local_adapter() -> (LocalStorageAdapter, TempDir) {
         let temp_dir = tempfile::tempdir().expect("Failed to create temp dir");
@@ -34,7 +34,7 @@ mod tests {
     }
 
     async fn test_storage_type(adapter: &LocalStorageAdapter) {
-        use ursly_vfs_lib::vfs::domain::StorageSourceType;
+        use diaspor_vfs_lib::vfs::domain::StorageSourceType;
         assert_eq!(adapter.storage_type(), StorageSourceType::Local);
     }
 

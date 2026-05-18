@@ -22,7 +22,7 @@ const winstonLogger = winston.createLogger({
     winston.format.errors({ stack: true }),
     winston.format.json(),
   ),
-  defaultMeta: { service: 'ursly-vfs-desktop' },
+  defaultMeta: { service: 'diaspor-vfs-desktop' },
   transports: [
     // Write all logs to console in development
     new winston.transports.Console({

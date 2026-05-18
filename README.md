@@ -135,8 +135,8 @@ Full design notes in [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ```toml
 [dependencies]
-diaspor-core = "0.1.0-alpha.4"
-diaspor-backend-memory = "0.1.0-alpha.4"
+diaspor-core = "0.1.0-alpha.5"
+diaspor-backend-memory = "0.1.0-alpha.5"
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 ```
 

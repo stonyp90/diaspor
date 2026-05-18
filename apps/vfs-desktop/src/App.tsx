@@ -213,7 +213,7 @@ function App() {
             <AutoUpdater />
 
             <OnboardingTour
-              autoStart={!localStorage.getItem('ursly-onboarding-completed')}
+              autoStart={!localStorage.getItem('diaspor-onboarding-completed')}
               onComplete={() => {
                 // Navigate to files tab (main FS page) when tour completes
                 setActiveTab('files');

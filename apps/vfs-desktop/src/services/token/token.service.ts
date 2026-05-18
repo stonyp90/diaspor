@@ -55,7 +55,7 @@ export interface TokenPlanUI {
 
 export class TokenService {
   private static readonly FREE_TOKENS_PER_MONTH = 1000;
-  private static readonly STORAGE_KEY = 'ursly_token_balance';
+  private static readonly STORAGE_KEY = 'diaspor_token_balance';
 
   /**
    * Get current token balance
@@ -169,7 +169,7 @@ export class TokenService {
           usageHistory.shift();
         }
 
-        localStorage.setItem('ursly_token_usage', JSON.stringify(usageHistory));
+        localStorage.setItem('diaspor_token_usage', JSON.stringify(usageHistory));
 
         return true;
       }
@@ -195,7 +195,7 @@ export class TokenService {
    */
   static getUsageHistory(): TokenUsage[] {
     try {
-      const stored = localStorage.getItem('ursly_token_usage');
+      const stored = localStorage.getItem('diaspor_token_usage');
       if (stored) {
         const parsed = JSON.parse(stored) as Array<{
           operation: string;

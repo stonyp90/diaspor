@@ -1318,7 +1318,7 @@ export interface NvmeCacheConfig {
  * Default NVMe cache configuration for Windows Server 2025
  */
 export const DEFAULT_NVME_CACHE_CONFIG: NvmeCacheConfig = {
-  cachePath: 'D:\\UrslyCache', // Typical NVMe drive on Windows
+  cachePath: 'D:\\DiasporCache', // Typical NVMe drive on Windows
   maxSizeBytes: 500 * 1024 * 1024 * 1024, // 500 GB
   evictionPolicy: 'lru',
   minFreeSpaceBytes: 50 * 1024 * 1024 * 1024, // 50 GB min free

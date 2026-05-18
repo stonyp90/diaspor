@@ -216,7 +216,7 @@ export function FinderPage({
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     // Load saved sidebar width from localStorage, default to 240px (increased from 200px)
     try {
-      const saved = localStorage.getItem('ursly-sidebar-width');
+      const saved = localStorage.getItem('diaspor-sidebar-width');
       if (saved) {
         const width = parseInt(saved, 10);
         if (width >= 180 && width <= 800) {
@@ -233,7 +233,7 @@ export function FinderPage({
   // Track if we have saved column widths from localStorage
   const [, setHasSavedColumnWidths] = useState(() => {
     try {
-      const saved = localStorage.getItem('ursly-column-widths');
+      const saved = localStorage.getItem('diaspor-column-widths');
       if (saved) {
         const widths = JSON.parse(saved);
         // Validate widths
@@ -262,7 +262,7 @@ export function FinderPage({
   // Use null initially to trigger calculation based on available space
   const [columnWidths, setColumnWidths] = useState<ColumnWidths | null>(() => {
     try {
-      const saved = localStorage.getItem('ursly-column-widths');
+      const saved = localStorage.getItem('diaspor-column-widths');
       if (saved) {
         const widths = JSON.parse(saved);
         // Validate widths
@@ -322,7 +322,7 @@ export function FinderPage({
       setIsResizing(false);
       // Save to localStorage
       try {
-        localStorage.setItem('ursly-sidebar-width', sidebarWidth.toString());
+        localStorage.setItem('diaspor-sidebar-width', sidebarWidth.toString());
       } catch {
         // Ignore localStorage errors
       }
@@ -408,7 +408,7 @@ export function FinderPage({
     if (!resizingColumn && columnWidths) {
       try {
         localStorage.setItem(
-          'ursly-column-widths',
+          'diaspor-column-widths',
           JSON.stringify(columnWidths),
         );
         setHasSavedColumnWidths(true);
@@ -547,7 +547,7 @@ export function FinderPage({
   //       // Persist to localStorage
   //       try {
   //         localStorage.setItem(
-  //           'ursly-sidebar-section-order',
+  //           'diaspor-sidebar-section-order',
   //           JSON.stringify(newOrder),
   //         );
   //       } catch {
@@ -562,7 +562,7 @@ export function FinderPage({
   // Load sidebar section order from localStorage on mount
   // useEffect(() => {
   //   try {
-  //     const saved = localStorage.getItem('ursly-sidebar-section-order');
+  //     const saved = localStorage.getItem('diaspor-sidebar-section-order');
   //     if (saved) {
   //       const parsed = JSON.parse(saved);
   //       if (Array.isArray(parsed) && parsed.length > 0) {
@@ -2374,7 +2374,7 @@ export function FinderPage({
   // Load storage sources from localStorage on mount
   const loadPersistedSources = () => {
     try {
-      const stored = localStorage.getItem('ursly-storage-sources');
+      const stored = localStorage.getItem('diaspor-storage-sources');
       if (stored) {
         const parsed = JSON.parse(stored) as StorageSource[];
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -2428,7 +2428,7 @@ export function FinderPage({
           };
         });
 
-      localStorage.setItem('ursly-storage-sources', JSON.stringify(toPersist));
+      localStorage.setItem('diaspor-storage-sources', JSON.stringify(toPersist));
     } catch (err) {
       console.error('Failed to save persisted sources:', err);
     }
@@ -3692,7 +3692,7 @@ export function FinderPage({
   // Load global favorites from localStorage
   const loadGlobalFavorites = () => {
     try {
-      const stored = localStorage.getItem('ursly-global-favorites');
+      const stored = localStorage.getItem('diaspor-global-favorites');
       if (stored) {
         const parsed = JSON.parse(stored) as GlobalFavorite[];
         setFavorites(parsed);
@@ -3706,7 +3706,7 @@ export function FinderPage({
   // Save global favorites to localStorage
   const saveGlobalFavorites = (favs: GlobalFavorite[]) => {
     try {
-      localStorage.setItem('ursly-global-favorites', JSON.stringify(favs));
+      localStorage.setItem('diaspor-global-favorites', JSON.stringify(favs));
     } catch (err) {
       console.error('Failed to save global favorites:', err);
     }

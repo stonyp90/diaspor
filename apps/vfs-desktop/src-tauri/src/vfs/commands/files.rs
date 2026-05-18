@@ -209,7 +209,7 @@ pub async fn vfs_mkdir(
     info!("[vfs_mkdir] Creating directory - source_id: {}, path: {:?}", source_id, path_buf);
     
     // #region agent log
-    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+    if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
         use std::io::Write;
         let _ = writeln!(file, r#"{{"location":"files.rs:150","message":"vfs_mkdir entry","data":{{"sourceId":"{}","path":"{:?}","pathString":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
             source_id, path_buf, path_buf.to_string_lossy(),
@@ -229,7 +229,7 @@ pub async fn vfs_mkdir(
         Ok(()) => {
             info!("[vfs_mkdir] Successfully created directory: {:?}", path_buf);
             // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                 use std::io::Write;
                 let _ = writeln!(file, r#"{{"location":"files.rs:162","message":"vfs_mkdir success","data":{{"sourceId":"{}","path":"{:?}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
                     source_id, path_buf, operation_id,
@@ -244,7 +244,7 @@ pub async fn vfs_mkdir(
             let error_msg = format!("{}", e);
             error!("[vfs_mkdir] Failed to create directory {:?}: {}", path_buf, error_msg);
             // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                 use std::io::Write;
                 let _ = writeln!(file, r#"{{"location":"files.rs:172","message":"vfs_mkdir error","data":{{"sourceId":"{}","path":"{:?}","error":"{}","operationId":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"D"}}"#, 
                     source_id, path_buf, error_msg, operation_id,

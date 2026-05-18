@@ -55,7 +55,7 @@ impl S3StorageAdapter {
         if bucket_trimmed.contains(' ') {
             return Err(anyhow::anyhow!(
                 "Bucket name '{}' contains spaces. S3 bucket names cannot contain spaces. \
-                Please use the actual bucket name (e.g., 'ursly-vfs-test-1766795299'), not a display name.",
+                Please use the actual bucket name (e.g., 'diaspor-vfs-test'), not a display name.",
                 bucket_trimmed
             ));
         }
@@ -373,7 +373,7 @@ impl StorageAdapter for S3StorageAdapter {
                              std::env::var("aws_secret_access_key").is_ok();
         let has_session_token = std::env::var("AWS_SESSION_TOKEN").is_ok() || 
                                 std::env::var("aws_session_token").is_ok();
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let _ = writeln!(file, r#"{{"location":"s3_storage.rs:294","message":"list_files entry","data":{{"bucket":"{}","region":"{}","path":"{:?}","key":"{}","prefix":"{}","hasAccessKey":{},"hasSecretKey":{},"hasSessionToken":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                 self.bucket, self.region, path, key, prefix, has_access_key, has_secret_key, has_session_token, 
@@ -466,7 +466,7 @@ impl StorageAdapter for S3StorageAdapter {
         info!("[S3] Received {} entries from OpenDAL for prefix '{}'", entries.len(), prefix);
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let entry_names: Vec<String> = entries.iter().take(5).map(|e| e.name().to_string()).collect();
             let _ = writeln!(file, r#"{{"location":"s3_storage.rs:379","message":"list_files entries received","data":{{"bucket":"{}","prefix":"{}","entryCount":{},"firstEntries":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
@@ -483,7 +483,7 @@ impl StorageAdapter for S3StorageAdapter {
                                  std::env::var("aws_secret_access_key").is_ok();
             
             // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                 use std::io::Write;
                 let _ = writeln!(file, r#"{{"location":"s3_storage.rs:393","message":"list_files empty result","data":{{"bucket":"{}","prefix":"{}","hasAccessKey":{},"hasSecretKey":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                     self.bucket, prefix, has_access_key, has_secret_key,
@@ -576,7 +576,7 @@ impl StorageAdapter for S3StorageAdapter {
                 child_name, file_path, is_dir, size);
             
             // #region agent log
-            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+            if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                 use std::io::Write;
                 let _ = writeln!(file, r#"{{"location":"s3_storage.rs:446","message":"processing entry","data":{{"entryName":"{}","childName":"{}","isDir":{},"size":{}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
                     entry_name, child_name, is_dir, size,
@@ -620,7 +620,7 @@ impl StorageAdapter for S3StorageAdapter {
         }
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let file_names: Vec<String> = files.iter().take(10).map(|f| f.name.clone()).collect();
             let _ = writeln!(file, r#"{{"location":"s3_storage.rs:481","message":"list_files returning files","data":{{"bucket":"{}","prefix":"{}","totalEntries":{},"filesReturned":{},"fileNames":{:?}}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"C"}}"#, 
@@ -942,7 +942,7 @@ impl IFileOperations for S3StorageAdapter {
         }
         
         // #region agent log
-        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+        if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
             use std::io::Write;
             let _ = writeln!(file, r#"{{"location":"s3_storage.rs:793","message":"mkdir entry","data":{{"bucket":"{}","path":"{:?}","baseKey":"{}","finalKey":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                 self.bucket, path, base_key, key,
@@ -954,7 +954,7 @@ impl IFileOperations for S3StorageAdapter {
             Ok(_) => {
                 info!("[S3] Successfully created directory marker: {}", key);
                 // #region agent log
-                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                     use std::io::Write;
                     let _ = writeln!(file, r#"{{"location":"s3_storage.rs:810","message":"mkdir success","data":{{"bucket":"{}","key":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}}"#, 
                         self.bucket, key,
@@ -994,7 +994,7 @@ impl IFileOperations for S3StorageAdapter {
                 
                 error!("[S3] Failed to create directory marker '{}': {}", key, error_msg);
                 // #region agent log
-                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/ursly/.cursor/debug.log") {
+                if let Ok(mut file) = std::fs::OpenOptions::new().create(true).append(true).open("/Users/tony/diaspor/.cursor/debug.log") {
                     use std::io::Write;
                     let _ = writeln!(file, r#"{{"location":"s3_storage.rs:820","message":"mkdir error","data":{{"bucket":"{}","key":"{}","error":"{}"}},"timestamp":{},"sessionId":"debug-session","runId":"run1","hypothesisId":"B"}}"#, 
                         self.bucket, key, error_msg,

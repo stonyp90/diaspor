@@ -5,19 +5,19 @@
   "platforms": {
     "darwin-aarch64": {
       "signature": "",
-      "url": "https://github.com/stonyp90/Ursly/releases/download/v1.1.28/Ursly-VFS_1.1.28_aarch64.app.tar.gz"
+      "url": "https://github.com/stonyp90/diaspor/releases/download/v1.1.28/Diaspor-VFS_1.1.28_aarch64.app.tar.gz"
     },
     "darwin-x86_64": {
       "signature": "",
-      "url": "https://github.com/stonyp90/Ursly/releases/download/v1.1.28/Ursly-VFS_1.1.28_x64.app.tar.gz"
+      "url": "https://github.com/stonyp90/diaspor/releases/download/v1.1.28/Diaspor-VFS_1.1.28_x64.app.tar.gz"
     },
     "windows-x86_64": {
       "signature": "",
-      "url": "https://github.com/stonyp90/Ursly/releases/download/v1.1.28/Ursly-VFS_1.1.28_x64-setup.msi"
+      "url": "https://github.com/stonyp90/diaspor/releases/download/v1.1.28/Diaspor-VFS_1.1.28_x64-setup.msi"
     },
     "linux-x86_64": {
       "signature": "",
-      "url": "https://github.com/stonyp90/Ursly/releases/download/v1.1.28/Ursly-VFS_1.1.28_amd64.AppImage"
+      "url": "https://github.com/stonyp90/diaspor/releases/download/v1.1.28/Diaspor-VFS_1.1.28_amd64.AppImage"
     }
   }
 }

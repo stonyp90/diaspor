@@ -51,7 +51,7 @@ pub async fn get_transcription_service() -> Result<Arc<TranscriptionService>, St
     // Initialize transcription service
     let temp_dir = dirs::cache_dir()
         .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
-        .join("ursly")
+        .join("diaspor")
         .join("transcription");
     
     let service = Arc::new(
@@ -76,7 +76,7 @@ pub async fn refresh_transcription_models() -> Result<(), String> {
     // Reinitialize the service to pick up new models
     let temp_dir = dirs::cache_dir()
         .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
-        .join("ursly")
+        .join("diaspor")
         .join("transcription");
     
     let new_service = Arc::new(
@@ -94,7 +94,7 @@ pub fn get_upload_manager() -> &'static MultipartUploadManager {
     MULTIPART_UPLOAD_MANAGER.get_or_init(|| {
         let state_dir = dirs::cache_dir()
             .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
-            .join("ursly")
+            .join("diaspor")
             .join("multipart_uploads");
         MultipartUploadManager::new(&state_dir)
             .expect("Failed to initialize multipart upload manager")
@@ -105,7 +105,7 @@ pub fn get_download_manager() -> &'static DownloadManager {
     DOWNLOAD_MANAGER.get_or_init(|| {
         let state_dir = dirs::cache_dir()
             .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
-            .join("ursly")
+            .join("diaspor")
             .join("downloads");
         DownloadManager::new(&state_dir)
             .expect("Failed to initialize download manager")
@@ -116,7 +116,7 @@ pub fn get_operation_tracker() -> &'static OperationTracker {
     OPERATION_TRACKER.get_or_init(|| {
         let state_dir = dirs::data_dir()
             .unwrap_or_else(|| dirs::cache_dir().unwrap_or_else(|| std::path::PathBuf::from("/tmp")))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs")
             .join("operations");
         OperationTracker::new(&state_dir, 1000) // Keep last 1000 operations in memory, all in audit log
@@ -128,7 +128,7 @@ pub fn get_audit_log() -> &'static AuditLog {
     AUDIT_LOG.get_or_init(|| {
         let audit_dir = dirs::data_dir()
             .unwrap_or_else(|| dirs::cache_dir().unwrap_or_else(|| std::path::PathBuf::from("/tmp")))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs")
             .join("audit");
         AuditLog::new(&audit_dir, 0) // 0 = unlimited entries for audit log
@@ -170,7 +170,7 @@ pub async fn get_thumbnail_queue() -> Result<Arc<thumbnail_queue::ThumbnailQueue
     // Initialize thumbnail queue
     let cache_dir = dirs::cache_dir()
         .unwrap_or_else(|| std::path::PathBuf::from("/tmp"))
-        .join("ursly")
+        .join("diaspor")
         .join("thumbnails");
     
     let queue = Arc::new(

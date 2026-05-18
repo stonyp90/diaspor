@@ -22,7 +22,7 @@ fn get_audit_log() -> &'static AuditLog {
     AUDIT_LOG.get_or_init(|| {
         let audit_dir = dirs::data_dir()
             .unwrap_or_else(|| dirs::cache_dir().unwrap_or_else(|| PathBuf::from("/tmp")))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs")
             .join("audit");
         AuditLog::new(&audit_dir, 0)

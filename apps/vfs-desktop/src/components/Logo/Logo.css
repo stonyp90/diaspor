@@ -1,9 +1,9 @@
 /**
- * Ursly Logo Styles - Startup-Grade Branding
+ * Diaspor Logo Styles - Startup-Grade Branding
  */
 
 /* Main logo */
-.ursly-logo {
+.diaspor-logo {
   display: inline-block;
   flex-shrink: 0;
   transition:
@@ -11,17 +11,17 @@
     filter 0.2s ease;
 }
 
-.ursly-logo:hover {
+.diaspor-logo:hover {
   transform: scale(1.05);
   filter: brightness(1.05);
 }
 
 /* Animated variant */
-.ursly-logo-animated {
+.diaspor-logo-animated {
   animation: logoBreath 3s ease-in-out infinite;
 }
 
-.ursly-logo-animated .logo-bear-animated {
+.diaspor-logo-animated .logo-bear-animated {
   animation: bearBounce 2s ease-in-out infinite;
   transform-origin: center;
 }
@@ -47,7 +47,7 @@
 }
 
 /* Monochrome icon */
-.ursly-logo-icon {
+.diaspor-logo-icon {
   display: inline-block;
   flex-shrink: 0;
   color: var(--color-primary, var(--primary, var(--vfs-primary, #6366f1)));
@@ -56,7 +56,7 @@
     transform var(--transition-fast, 0.2s ease);
 }
 
-.ursly-logo-icon:hover {
+.diaspor-logo-icon:hover {
   color: var(
     --color-primary-hover,
     var(--primary-hover, var(--vfs-primary, #6366f1))
@@ -65,14 +65,14 @@
 }
 
 /* Glyph variant */
-.ursly-logo-glyph {
+.diaspor-logo-glyph {
   display: inline-block;
   flex-shrink: 0;
   color: var(--color-primary, var(--primary, var(--vfs-primary, #6366f1)));
 }
 
 /* App icon */
-.ursly-logo-app {
+.diaspor-logo-app {
   display: inline-block;
   flex-shrink: 0;
   filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.3));
@@ -109,12 +109,12 @@
 }
 
 /* Variant: dark background */
-.ursly-logo--dark .logo-wordmark {
+.diaspor-logo--dark .logo-wordmark {
   color: var(--color-text-primary, white);
 }
 
 /* Variant: light background */
-.ursly-logo--light .logo-wordmark {
+.diaspor-logo--light .logo-wordmark {
   color: var(--color-text-primary, #1a1a2e);
 }
 
@@ -146,7 +146,7 @@
 }
 
 /* Focus states for accessibility */
-.ursly-logo:focus-visible,
+.diaspor-logo:focus-visible,
 .logo-with-text:focus-visible {
   outline: 2px solid
     var(--color-primary, var(--primary, var(--vfs-primary, #6366f1)));
@@ -169,6 +169,6 @@
   }
 }
 
-.ursly-logo.loading {
+.diaspor-logo.loading {
   animation: logoGlow 1.5s ease-in-out infinite;
 }

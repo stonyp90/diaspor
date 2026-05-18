@@ -83,7 +83,7 @@ const DEFAULT_THRESHOLDS: ThresholdConfig = {
 
 const loadThresholds = (): ThresholdConfig => {
   try {
-    const saved = localStorage.getItem('ursly-metric-thresholds');
+    const saved = localStorage.getItem('diaspor-metric-thresholds');
     if (saved) return { ...DEFAULT_THRESHOLDS, ...JSON.parse(saved) };
   } catch {
     /* ignore */
@@ -93,7 +93,7 @@ const loadThresholds = (): ThresholdConfig => {
 
 const saveThresholds = (t: ThresholdConfig) => {
   try {
-    localStorage.setItem('ursly-metric-thresholds', JSON.stringify(t));
+    localStorage.setItem('diaspor-metric-thresholds', JSON.stringify(t));
   } catch {
     /* ignore */
   }
@@ -525,7 +525,7 @@ export function MetricsPage() {
     setSettingsOpen(false);
 
     // Show alert thresholds dialog on first login (but not during onboarding)
-    const hasSeenThresholds = localStorage.getItem('ursly-thresholds-seen');
+    const hasSeenThresholds = localStorage.getItem('diaspor-thresholds-seen');
     if (!hasSeenThresholds) {
       // Check if onboarding tour is running by looking for joyride overlay
       // Use a longer delay to ensure onboarding has completed if it was running
@@ -534,7 +534,7 @@ export function MetricsPage() {
           document.querySelector('.react-joyride__overlay') !== null;
         if (!isOnboardingActive) {
           setSettingsOpen(true);
-          localStorage.setItem('ursly-thresholds-seen', 'true');
+          localStorage.setItem('diaspor-thresholds-seen', 'true');
         }
       };
 

@@ -1589,7 +1589,7 @@ async fn get_account_id() -> Result<String, String> {
     // Try to load from disk
     let data_dir = dirs::data_dir()
         .unwrap_or_else(|| PathBuf::from("."))
-        .join("ursly")
+        .join("diaspor")
         .join("vfs");
     
     fs::create_dir_all(&data_dir).await
@@ -1632,7 +1632,7 @@ async fn get_account_id() -> Result<String, String> {
 fn get_token_storage_path() -> Result<PathBuf, String> {
     let data_dir = dirs::data_dir()
         .unwrap_or_else(|| PathBuf::from("."))
-        .join("ursly")
+        .join("diaspor")
         .join("vfs");
     
     Ok(data_dir.join("tokens.json"))
@@ -1969,7 +1969,7 @@ pub async fn clear_logs() -> Result<String, String> {
 pub async fn get_log_file_path() -> Result<String, String> {
     let settings = crate::settings::get_settings();
     let log_dir = settings.get_log_directory();
-    let log_file = log_dir.join("ursly.log");
+    let log_file = log_dir.join("diaspor.log");
     Ok(log_file.to_string_lossy().to_string())
 }
 

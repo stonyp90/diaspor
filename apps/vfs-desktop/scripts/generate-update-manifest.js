@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const VERSION = process.env.VERSION || process.argv[2] || '1.1.33';
-const REPOSITORY = process.env.GITHUB_REPOSITORY || 'stonyp90/Ursly';
+const REPOSITORY = process.env.GITHUB_REPOSITORY || 'stonyp90/diaspor';
 const BASE_URL = `https://github.com/${REPOSITORY}/releases/download/${VERSION}`;
 
 // Clean version (remove 'v' prefix if present)
@@ -30,17 +30,17 @@ const manifest = {
 };
 
 // Check for macOS artifact
-const macosDmg = path.join(artifactsDir, 'macos', 'ursly-vfs.dmg');
+const macosDmg = path.join(artifactsDir, 'macos', 'diaspor-vfs.dmg');
 if (fs.existsSync(macosDmg)) {
   const stats = fs.statSync(macosDmg);
   manifest.platforms['darwin-x86_64'] = {
     signature: '', // Will be filled by Tauri build process if signing is enabled
-    url: `${BASE_URL}/ursly-vfs.dmg`,
+    url: `${BASE_URL}/diaspor-vfs.dmg`,
     size: stats.size,
   };
   manifest.platforms['darwin-aarch64'] = {
     signature: '',
-    url: `${BASE_URL}/ursly-vfs.dmg`,
+    url: `${BASE_URL}/diaspor-vfs.dmg`,
     size: stats.size,
   };
   console.log(`✅ Found macOS artifact: ${stats.size} bytes`);
@@ -49,12 +49,12 @@ if (fs.existsSync(macosDmg)) {
 }
 
 // Check for Windows artifact
-const windowsMsi = path.join(artifactsDir, 'windows', 'ursly-vfs.msi');
+const windowsMsi = path.join(artifactsDir, 'windows', 'diaspor-vfs.msi');
 if (fs.existsSync(windowsMsi)) {
   const stats = fs.statSync(windowsMsi);
   manifest.platforms['windows-x86_64'] = {
     signature: '', // Will be filled by Tauri build process if signing is enabled
-    url: `${BASE_URL}/ursly-vfs.msi`,
+    url: `${BASE_URL}/diaspor-vfs.msi`,
     size: stats.size,
   };
   console.log(`✅ Found Windows artifact: ${stats.size} bytes`);
@@ -63,12 +63,12 @@ if (fs.existsSync(windowsMsi)) {
 }
 
 // Check for Linux artifact
-const linuxAppImage = path.join(artifactsDir, 'linux', 'ursly-vfs.AppImage');
+const linuxAppImage = path.join(artifactsDir, 'linux', 'diaspor-vfs.AppImage');
 if (fs.existsSync(linuxAppImage)) {
   const stats = fs.statSync(linuxAppImage);
   manifest.platforms['linux-x86_64'] = {
     signature: '', // Will be filled by Tauri build process if signing is enabled
-    url: `${BASE_URL}/ursly-vfs.AppImage`,
+    url: `${BASE_URL}/diaspor-vfs.AppImage`,
     size: stats.size,
   };
   console.log(`✅ Found Linux artifact: ${stats.size} bytes`);

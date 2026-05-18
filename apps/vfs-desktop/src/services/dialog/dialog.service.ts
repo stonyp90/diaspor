@@ -43,7 +43,7 @@ export async function showMessage(options: DialogOptions): Promise<void> {
 
   // Fallback: dispatch event for custom dialog
   window.dispatchEvent(
-    new CustomEvent('ursly:dialog', {
+    new CustomEvent('diaspor:dialog', {
       detail: { ...options, mode: 'message' },
     }),
   );
@@ -110,13 +110,13 @@ export async function showConfirm(options: ConfirmOptions): Promise<boolean> {
   return new Promise((resolve) => {
     const handler = (e: Event) => {
       const customEvent = e as CustomEvent<{ confirmed: boolean }>;
-      window.removeEventListener('ursly:dialog-response', handler);
+      window.removeEventListener('diaspor:dialog-response', handler);
       resolve(customEvent.detail.confirmed);
     };
-    window.addEventListener('ursly:dialog-response', handler);
+    window.addEventListener('diaspor:dialog-response', handler);
 
     window.dispatchEvent(
-      new CustomEvent('ursly:dialog', {
+      new CustomEvent('diaspor:dialog', {
         detail: { ...options, mode: 'confirm' },
       }),
     );

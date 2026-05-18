@@ -1,4 +1,4 @@
-//! Ursly VFS - Virtual Cloud File System
+//! Diaspor VFS - Virtual Cloud File System
 //!
 //! A multi-tier cloud storage file browser with DAM/MAM features.
 

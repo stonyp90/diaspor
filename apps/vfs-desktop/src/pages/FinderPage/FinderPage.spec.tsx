@@ -232,7 +232,7 @@ describe('FinderPage - Open With Menu', () => {
   });
 
   describe('File Navigation', () => {
-    it('should navigate within Ursly when double-clicking a folder (not open native Finder)', async () => {
+    it('should navigate within Diaspor when double-clicking a folder (not open native Finder)', async () => {
       const invoke = jest.spyOn(tauriCore, 'invoke');
 
       // Mock sources and files

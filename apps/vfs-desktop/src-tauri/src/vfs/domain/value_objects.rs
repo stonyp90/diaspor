@@ -197,20 +197,20 @@ impl MountPoint {
     /// Get default mount point for the current OS
     pub fn default_for_os() -> Self {
         #[cfg(target_os = "macos")]
-        let path = PathBuf::from("/Volumes/Ursly");
-        
+        let path = PathBuf::from("/Volumes/Diaspor");
+
         #[cfg(target_os = "linux")]
         let path = dirs::home_dir()
             .unwrap_or_else(|| PathBuf::from("/tmp"))
-            .join("ursly-vfs");
-        
+            .join("diaspor-vfs");
+
         #[cfg(target_os = "windows")]
-        let path = PathBuf::from("U:\\");
-        
+        let path = PathBuf::from("D:\\");
+
         #[cfg(not(any(target_os = "macos", target_os = "linux", target_os = "windows")))]
-        let path = PathBuf::from("/tmp/ursly-vfs");
-        
-        Self::new(path, "Cairn".to_string())
+        let path = PathBuf::from("/tmp/diaspor-vfs");
+
+        Self::new(path, "Diaspor".to_string())
     }
 }
 
@@ -234,7 +234,7 @@ impl Default for CacheConfig {
     fn default() -> Self {
         let cache_path = dirs::cache_dir()
             .unwrap_or_else(|| PathBuf::from("/tmp"))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs-cache");
         
         Self {

@@ -50,7 +50,7 @@ impl JsonMetadataStore {
     pub async fn default_store() -> Result<Self> {
         let data_dir = dirs::data_dir()
             .unwrap_or_else(|| PathBuf::from("."))
-            .join("ursly")
+            .join("diaspor")
             .join("vfs");
         
         fs::create_dir_all(&data_dir).await?;
