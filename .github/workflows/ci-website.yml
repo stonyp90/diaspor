@@ -55,8 +55,3 @@ jobs:
         run: npx html-validate website/index.html
       - name: Validate website/fr/index.html
         run: npx html-validate website/fr/index.html
-        # The site sets `script` blocks inside template literals; html-validate
-        # is strict about a few inline-style patterns that are harmless. Treat
-        # this as a soft gate for now; the asset-pattern check is the
-        # load-bearing one.
-        continue-on-error: true
