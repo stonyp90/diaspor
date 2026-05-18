@@ -87,7 +87,7 @@
 }
 
 .error-dialog-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--finder-text-primary, var(--color-text-primary, #f5f5f7));
   margin: 0;
@@ -102,7 +102,7 @@
 }
 
 .error-dialog-message {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
   color: var(--finder-text-secondary, var(--color-text-secondary, #a1a1a6));
   margin: 0;
@@ -126,51 +126,83 @@
 
 /* Buttons */
 .error-dialog-btn {
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: var(--radius-sm, 6px);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
-  border: none;
-  min-width: 80px;
+  border: 1px solid transparent;
+  background: transparent;
+  min-width: 76px;
 }
 
 .error-dialog-btn-cancel {
-  background: var(--finder-surface, var(--color-surface, #2c2c2e));
-  border: 1px solid
-    var(--finder-border, var(--color-border, rgba(255, 255, 255, 0.1)));
-  color: var(--finder-text-primary, var(--color-text-primary, #f5f5f7));
+  background: transparent;
+  border-color: var(--finder-border, var(--color-border, rgba(255, 255, 255, 0.15)));
+  color: var(--finder-text-secondary, var(--color-text-secondary, #a1a1a6));
 }
 
 .error-dialog-btn-cancel:hover {
   background: var(--finder-hover, rgba(255, 255, 255, 0.08));
+  color: var(--finder-text-primary, var(--color-text-primary, #f5f5f7));
 }
 
 .error-dialog-btn-ok {
-  background: var(--finder-accent, var(--color-primary, #0a84ff));
-  color: white;
+  background: transparent;
+  border-color: var(--finder-accent, var(--color-primary, #0a84ff));
+  color: var(--finder-accent, var(--color-primary, #0a84ff));
 }
 
 .error-dialog-btn-ok:hover {
-  filter: brightness(1.1);
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.14);
 }
 
 .error-dialog-btn-ok:active {
-  filter: brightness(0.95);
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.22);
 }
 
-/* Type-specific OK button colors */
+/* Type-specific OK button colors (outline variants) */
 .error-dialog-btn-error {
-  background: var(--color-error, #ff453a);
+  background: transparent;
+  border-color: var(--color-error, #ff453a);
+  color: var(--color-error, #ff453a);
+}
+
+.error-dialog-btn-error:hover {
+  background: rgba(var(--color-error-rgb, 255, 69, 58), 0.14);
+}
+
+.error-dialog-btn-error:active {
+  background: rgba(var(--color-error-rgb, 255, 69, 58), 0.22);
 }
 
 .error-dialog-btn-warning {
-  background: var(--color-warning, #ff9f0a);
+  background: transparent;
+  border-color: var(--color-warning, #ff9f0a);
+  color: var(--color-warning, #ff9f0a);
+}
+
+.error-dialog-btn-warning:hover {
+  background: rgba(var(--color-warning-rgb, 255, 159, 10), 0.14);
+}
+
+.error-dialog-btn-warning:active {
+  background: rgba(var(--color-warning-rgb, 255, 159, 10), 0.22);
 }
 
 .error-dialog-btn-info {
-  background: var(--finder-accent, var(--color-primary, #0a84ff));
+  background: transparent;
+  border-color: var(--finder-accent, var(--color-primary, #0a84ff));
+  color: var(--finder-accent, var(--color-primary, #0a84ff));
+}
+
+.error-dialog-btn-info:hover {
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.14);
+}
+
+.error-dialog-btn-info:active {
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.22);
 }
 
 /* Focus states for accessibility */

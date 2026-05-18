@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-primary, #f5f5f7);
 }
@@ -42,19 +42,27 @@
 
 .pending-badge {
   padding: 0.375rem 0.75rem;
-  background: var(--primary, #0a84ff);
-  color: white;
-  font-size: 0.75rem;
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.08);
+  color: var(--primary, #0a84ff);
+  font-size: 0.6875rem;
   font-weight: 500;
-  border: none;
+  border: 1px solid var(--primary, #0a84ff);
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .pending-badge:hover {
-  background: rgba(var(--primary-rgb, 10, 132, 255), 0.9);
-  transform: translateY(-1px);
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.16);
+}
+
+.pending-badge:active {
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.22);
+}
+
+.pending-badge:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 10, 132, 255), 0.5);
 }
 
 /* Warning */
@@ -67,7 +75,7 @@
   border: 1px solid rgba(255, 159, 10, 0.3);
   border-radius: 10px;
   color: var(--warning, #ff9f0a);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   line-height: 1.5;
 }
 
@@ -98,14 +106,14 @@
 }
 
 .setting-label label {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-primary, #f5f5f7);
   cursor: pointer;
 }
 
 .setting-description {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--text-muted, #8e8e93);
   line-height: 1.4;
 }
@@ -161,6 +169,10 @@
   transform: translateX(20px);
 }
 
+.toggle-switch input:focus-visible + .toggle-slider {
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 10, 132, 255), 0.35);
+}
+
 .toggle-switch input:disabled + .toggle-slider {
   opacity: 0.5;
   cursor: not-allowed;
@@ -173,7 +185,7 @@
   border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
   border-radius: 8px;
   color: var(--text-primary, #f5f5f7);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   cursor: pointer;
   outline: none;
   transition: all 0.2s ease;
@@ -197,7 +209,7 @@
   background: var(--surface-elevated, rgba(255, 255, 255, 0.03));
   border-radius: 10px;
   border: 1px solid var(--border, rgba(255, 255, 255, 0.06));
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--text-secondary, #a1a1a6);
   line-height: 1.6;
 }
@@ -242,7 +254,7 @@
 
 .dependencies-title {
   margin: 0 0 0.5rem 0;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-primary, #f5f5f7);
   text-transform: uppercase;
@@ -283,7 +295,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-primary, #f5f5f7);
 }
@@ -324,7 +336,7 @@
 
 .dependency-badge {
   padding: 0.25rem 0.625rem;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 500;
   border-radius: 12px;
   text-transform: uppercase;
@@ -354,7 +366,7 @@
 
 .dependency-instructions h5 {
   margin: 0 0 0.75rem 0;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-primary, #f5f5f7);
 }
@@ -363,7 +375,7 @@
   margin: 0 0 0.75rem 1.25rem;
   padding: 0;
   color: var(--text-secondary, #a1a1a6);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   line-height: 1.8;
 }
 
@@ -386,7 +398,7 @@
 }
 
 .command-label {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--text-muted, #8e8e93);
   margin-bottom: 0.5rem;
   text-transform: uppercase;
@@ -395,7 +407,7 @@
 
 .command-code {
   display: block;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--text-primary, #f5f5f7);
   background: transparent;
   padding: 0;
@@ -440,9 +452,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.625rem 1rem;
+  padding: 0.5rem 0.875rem;
   margin: 0.5rem 0.5rem 0.5rem 0;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
@@ -451,24 +463,31 @@
 }
 
 .dependency-download-btn {
-  background: var(--primary, #0a84ff);
-  color: white;
-  border-color: transparent;
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.08);
+  color: var(--primary, #0a84ff);
+  border-color: var(--primary, #0a84ff);
 }
 
 .dependency-download-btn:hover {
-  background: rgba(var(--primary-rgb, 10, 132, 255), 0.9);
-  transform: translateY(-1px);
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.16);
+}
+
+.dependency-download-btn:active {
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.22);
 }
 
 .dependency-start-btn {
-  background: var(--warning, #ff9f0a);
-  color: white;
-  border-color: transparent;
+  background: rgba(255, 159, 10, 0.08);
+  color: var(--warning, #ff9f0a);
+  border-color: var(--warning, #ff9f0a);
 }
 
 .dependency-start-btn:hover {
-  background: rgba(255, 159, 10, 0.9);
+  background: rgba(255, 159, 10, 0.16);
+}
+
+.dependency-start-btn:active {
+  background: rgba(255, 159, 10, 0.22);
 }
 
 .dependency-refresh-btn {
@@ -479,6 +498,13 @@
 .dependency-refresh-btn:hover {
   background: var(--surface-elevated, rgba(255, 255, 255, 0.06));
   color: var(--text-primary, #f5f5f7);
+}
+
+.dependency-download-btn:focus-visible,
+.dependency-start-btn:focus-visible,
+.dependency-refresh-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 10, 132, 255), 0.5);
 }
 
 .dependency-download-btn svg,

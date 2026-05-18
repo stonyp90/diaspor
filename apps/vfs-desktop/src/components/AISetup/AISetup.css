@@ -89,7 +89,7 @@
 
 .hero-content h2 {
   margin: 0 0 var(--space-1, 4px) 0;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--vfs-text-primary);
   letter-spacing: -0.01em;
@@ -97,7 +97,7 @@
 
 .hero-content p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.8125rem;
   color: var(--vfs-text-secondary);
   line-height: 1.4;
 }
@@ -153,13 +153,13 @@
 }
 
 .error-title {
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--vfs-error);
 }
 
 .error-message {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--vfs-text-secondary);
   line-height: 1.4;
 }
@@ -280,14 +280,14 @@
 
 .feature-details h3 {
   margin: 0 0 var(--space-1, 4px) 0;
-  font-size: 1.1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--vfs-text-primary);
 }
 
 .feature-details p {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--vfs-text-secondary);
   line-height: 1.4;
 }
@@ -342,8 +342,8 @@
   border-color: var(--vfs-border-hover);
 }
 
-.feature-toggle input:focus + .toggle-track {
-  box-shadow: 0 0 0 3px rgba(var(--vfs-primary-rgb), 0.2);
+.feature-toggle input:focus-visible + .toggle-track {
+  box-shadow: 0 0 0 3px rgba(var(--vfs-primary-rgb), 0.35);
 }
 
 /* Feature Card Content */
@@ -378,7 +378,7 @@
   border: 1px solid rgba(var(--vfs-success-rgb), 0.25);
   border-radius: var(--radius-md, 8px);
   color: var(--vfs-success);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 500;
 }
 
@@ -396,7 +396,7 @@
   border: 1px solid rgba(var(--vfs-primary-rgb), 0.25);
   border-radius: var(--radius-md, 8px);
   color: var(--vfs-primary);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 500;
 }
 
@@ -431,7 +431,7 @@
 }
 
 .option-label {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--vfs-text-primary);
 }
 
@@ -501,11 +501,16 @@
   width: 100%;
   padding: var(--space-3, 12px);
   border-radius: var(--radius-md, 8px);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--vfs-transition-fast);
   margin-top: var(--space-3, 12px);
+}
+
+.control-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--vfs-primary-rgb), 0.5);
 }
 
 .control-btn svg {
@@ -538,15 +543,20 @@
   align-items: center;
   gap: var(--space-3, 12px);
   width: 100%;
-  padding: var(--space-4, 16px);
+  padding: var(--space-3, 12px) var(--space-4, 16px);
   background: var(--vfs-bg-secondary);
   border: 1px solid var(--vfs-border);
   border-radius: var(--radius-lg, 12px);
   color: var(--vfs-text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--vfs-transition-fast);
+}
+
+.advanced-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--vfs-primary-rgb), 0.5);
 }
 
 .advanced-toggle:hover {
@@ -639,14 +649,14 @@
 
 .setup-content h3 {
   margin: 0 0 var(--space-2, 8px) 0;
-  font-size: 1.25rem;
+  font-size: 1.0625rem;
   font-weight: 600;
   color: var(--vfs-text-primary);
 }
 
 .setup-content p {
   margin: 0 0 var(--space-5, 20px) 0;
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   color: var(--vfs-text-secondary);
   line-height: 1.5;
   max-width: 400px;
@@ -666,7 +676,7 @@
   background: rgba(var(--vfs-primary-rgb), 0.08);
   border: 1px solid rgba(var(--vfs-primary-rgb), 0.15);
   border-radius: var(--radius-full, 9999px);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--vfs-text-primary);
 }
 
@@ -698,33 +708,35 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2, 8px);
-  padding: var(--space-4, 16px);
+  padding: var(--space-3, 12px) var(--space-4, 16px);
   border-radius: var(--radius-md, 8px);
-  font-size: 0.95rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--vfs-transition-fast);
 }
 
 .install-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 .install-btn.primary {
-  background: linear-gradient(135deg, var(--vfs-primary), var(--vfs-secondary));
-  border: none;
-  color: white;
-  box-shadow: 0 4px 16px rgba(var(--vfs-primary-rgb), 0.35);
+  background: rgba(var(--vfs-primary-rgb), 0.08);
+  border: 1px solid var(--vfs-primary, #0a84ff);
+  color: var(--vfs-primary, #0a84ff);
 }
 
 .install-btn.primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(var(--vfs-primary-rgb), 0.45);
+  background: rgba(var(--vfs-primary-rgb), 0.16);
+}
+
+.install-btn.primary:active:not(:disabled) {
+  background: rgba(var(--vfs-primary-rgb), 0.22);
 }
 
 .install-btn.secondary {
-  background: var(--vfs-bg-tertiary);
+  background: transparent;
   border: 1px solid var(--vfs-border);
   color: var(--vfs-text-primary);
 }
@@ -732,6 +744,11 @@
 .install-btn.secondary:hover:not(:disabled) {
   background: var(--vfs-bg-elevated);
   border-color: var(--vfs-border-hover);
+}
+
+.install-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--vfs-primary-rgb), 0.5);
 }
 
 .install-btn:disabled {
@@ -758,13 +775,13 @@
 }
 
 .progress-step {
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--vfs-text-primary);
 }
 
 .progress-percent {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--vfs-primary);
   font-family: var(--vfs-font-mono);
@@ -823,7 +840,7 @@
 
 .status-section h4 {
   margin: 0 0 var(--space-3, 12px) 0;
-  font-size: 0.8rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -903,18 +920,18 @@
 }
 
 .status-name {
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--vfs-text-primary);
 }
 
 .status-desc {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--vfs-text-muted);
 }
 
 .status-badge {
-  font-size: 0.7rem;
+  font-size: 0.625rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -1006,7 +1023,7 @@
 }
 
 [data-theme='dark'] .install-btn.primary {
-  color: white;
+  color: var(--vfs-primary, #0a84ff);
 }
 
 /* ============================================================================
@@ -1026,15 +1043,20 @@
   align-items: center;
   gap: var(--space-2, 8px);
   width: 100%;
-  padding: var(--space-4, 16px);
+  padding: var(--space-3, 12px) var(--space-4, 16px);
   background: transparent;
   border: none;
   color: var(--vfs-text-secondary);
-  font-size: 0.9rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   transition: all var(--vfs-transition-fast);
   text-align: left;
+}
+
+.manual-install-toggle:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(var(--vfs-primary-rgb), 0.5);
 }
 
 .manual-install-toggle:hover {
@@ -1066,7 +1088,7 @@
 .manual-install-alternative,
 .manual-install-url,
 .manual-install-note {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--vfs-text-secondary);
   line-height: 1.5;
 }
@@ -1089,7 +1111,7 @@
 .manual-install-command strong {
   color: var(--vfs-text-primary);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .command-box {
@@ -1106,7 +1128,7 @@
 .command-box code {
   flex: 1;
   color: var(--vfs-text-primary);
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   word-break: break-all;
 }
 
@@ -1154,7 +1176,7 @@
   background: rgba(var(--vfs-primary-rgb), 0.08);
   border: 1px solid rgba(var(--vfs-primary-rgb), 0.15);
   border-radius: var(--radius-md, 8px);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 /* ============================================================================

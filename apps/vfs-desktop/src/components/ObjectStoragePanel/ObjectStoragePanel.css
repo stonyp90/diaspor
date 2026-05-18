@@ -16,41 +16,51 @@
 
 .object-storage-header h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--vfs-text-primary, #ffffff);
 }
 
 .object-storage-upload-btn {
-  padding: 0.5rem 1rem;
-  background: var(--vfs-primary, #6366f1);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
+  padding: 0.4rem 0.9rem;
+  background: transparent;
+  color: var(--vfs-primary, #6366f1);
+  border: 1px solid var(--vfs-primary, #6366f1);
+  border-radius: var(--vfs-radius-sm, 6px);
+  font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
   white-space: nowrap;
 }
 
 .object-storage-upload-btn:hover:not(:disabled) {
-  background: var(--vfs-primary-hover, #4f46e5);
+  background: rgba(99, 102, 241, 0.12);
+  border-color: var(--vfs-primary-hover, #4f46e5);
+}
+
+.object-storage-upload-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
 }
 
 .object-storage-upload-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .object-storage-upload-btn-secondary {
-  background: var(--vfs-bg-tertiary, #252525);
-  color: var(--vfs-text-primary, #ffffff);
+  background: transparent;
+  color: var(--vfs-text-secondary, #a0a0a0);
   border: 1px solid var(--vfs-border, #333);
 }
 
 .object-storage-upload-btn-secondary:hover:not(:disabled) {
-  background: var(--vfs-bg-hover, #2a2a2a);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--vfs-text-primary, #ffffff);
   border-color: var(--vfs-primary, #6366f1);
 }
 
@@ -70,7 +80,7 @@
 
 .object-storage-section h4 {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--vfs-text-secondary, #a0a0a0);
 }
@@ -81,14 +91,18 @@
   color: var(--vfs-primary, #6366f1);
   border: 1px solid var(--vfs-primary, #6366f1);
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
 }
 
 .object-storage-toggle-history:hover {
-  background: var(--vfs-primary, #6366f1);
-  color: white;
+  background: rgba(99, 102, 241, 0.12);
+}
+
+.object-storage-toggle-history:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
 }
 
 .upload-list {
@@ -124,7 +138,7 @@
 }
 
 .upload-item-name {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--vfs-text-primary, #ffffff);
   overflow: hidden;
@@ -134,14 +148,14 @@
 }
 
 .upload-item-percentage {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--vfs-primary, #6366f1);
   margin-left: 0.5rem;
 }
 
 .upload-item-size {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--vfs-text-secondary, #a0a0a0);
   margin-left: 0.5rem;
 }
@@ -164,7 +178,7 @@
 .upload-item-details {
   display: flex;
   gap: 0.5rem;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--vfs-text-secondary, #a0a0a0);
 }
 
@@ -190,7 +204,7 @@
   padding: 0.5rem;
   background: rgba(255, 69, 58, 0.1);
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--vfs-error, #ff453a);
 }
 
@@ -202,19 +216,24 @@
 
 .upload-action-btn {
   padding: 0.25rem 0.5rem;
-  background: var(--vfs-bg-secondary, #1a1a1a);
+  background: transparent;
   color: var(--vfs-text-secondary, #a0a0a0);
   border: 1px solid var(--vfs-border, #333);
   border-radius: 4px;
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s ease;
 }
 
 .upload-action-btn:hover {
-  background: var(--vfs-bg-tertiary, #252525);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--vfs-text-primary, #ffffff);
   border-color: var(--vfs-primary, #6366f1);
+}
+
+.upload-action-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
 }
 
 .object-storage-empty {
@@ -229,5 +248,5 @@
 
 .object-storage-empty p {
   margin: 0 0 1rem 0;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }

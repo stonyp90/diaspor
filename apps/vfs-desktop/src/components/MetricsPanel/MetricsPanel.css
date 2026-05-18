@@ -90,7 +90,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
   text-transform: uppercase;
@@ -127,6 +127,11 @@
   color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
 }
 
+.metrics-control-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.4);
+}
+
 .metrics-control-btn.close:hover {
   background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.2);
   color: var(--vfs-error, var(--error, #ff453a));
@@ -139,10 +144,10 @@
 
 /* Error State */
 .metrics-error {
-  padding: 12px 16px;
+  padding: 10px 16px;
   background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.1);
   color: var(--vfs-error, var(--error, #ff453a));
-  font-size: 12px;
+  font-size: 11px;
   border-bottom: 1px solid rgba(var(--vfs-error-rgb, 255, 69, 58), 0.2);
 }
 
@@ -240,7 +245,7 @@
 }
 
 .metric-section-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
   flex: 1;
@@ -255,7 +260,7 @@
 }
 
 .metric-label {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
   text-transform: uppercase;
   letter-spacing: 0.3px;
@@ -315,6 +320,7 @@
   font-size: 10px;
   color: var(--vfs-text-disabled, var(--text-dim, #636366));
   text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .detail-value {
@@ -348,6 +354,7 @@
   font-size: 10px;
   color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
   text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .io-value {
@@ -430,9 +437,10 @@
 
 .summary-label {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
   text-transform: uppercase;
+  letter-spacing: 0.3px;
   margin-bottom: 8px;
 }
 

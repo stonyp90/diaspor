@@ -76,6 +76,15 @@
   font-size: 11px;
   font-weight: 600;
   color: var(--finder-text-primary, #f5f5f7);
+  letter-spacing: 0.01em;
+}
+
+.ops__clear:focus-visible,
+.ops__all:focus-visible,
+.ops__tog:focus-visible,
+.op__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.4);
 }
 
 .ops__pct {
@@ -379,7 +388,8 @@
    ========================================= */
 .op__det {
   padding: 4px 6px 6px 28px;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-top: 1px solid
+    var(--vfs-separator, var(--finder-separator, rgba(255, 255, 255, 0.04)));
   background: rgba(0, 0, 0, 0.15);
 }
 

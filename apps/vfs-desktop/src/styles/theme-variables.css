@@ -156,7 +156,7 @@
 
 .vfs-title-1 {
   font-family: var(--vfs-font-sans);
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.15;
@@ -164,7 +164,7 @@
 
 .vfs-title-2 {
   font-family: var(--vfs-font-sans);
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 700;
   letter-spacing: -0.015em;
   line-height: 1.2;
@@ -172,7 +172,7 @@
 
 .vfs-title-3 {
   font-family: var(--vfs-font-sans);
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.25;
@@ -180,28 +180,28 @@
 
 .vfs-headline {
   font-family: var(--vfs-font-sans);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.3;
 }
 
 .vfs-body {
   font-family: var(--vfs-font-sans);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.5;
 }
 
 .vfs-caption {
   font-family: var(--vfs-font-sans);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
   line-height: 1.4;
 }
 
 .vfs-mono {
   font-family: var(--vfs-font-mono);
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: -0.01em;
 }
 
@@ -214,15 +214,15 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 18px;
+  padding: 9px 16px;
   font-family: var(--vfs-font-sans);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   line-height: 1;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all var(--vfs-transition-fast);
+  transition: all 150ms var(--vfs-ease-out-quart);
   outline: none;
   user-select: none;
 }
@@ -235,26 +235,37 @@
   transform: scale(0.97);
 }
 
+/* Primary — outline variant (no filled gradient) */
 .vfs-btn-primary {
-  background: linear-gradient(135deg, var(--vfs-primary), var(--vfs-secondary));
-  color: white;
-  box-shadow: 0 2px 8px rgba(var(--vfs-primary-rgb), 0.3);
+  background: rgba(var(--vfs-primary-rgb), 0.08);
+  color: var(--vfs-primary);
+  border-color: var(--vfs-primary);
 }
 
 .vfs-btn-primary:hover {
-  box-shadow: 0 4px 16px rgba(var(--vfs-primary-rgb), 0.4);
-  transform: translateY(-1px);
+  background: rgba(var(--vfs-primary-rgb), 0.16);
+  box-shadow: 0 0 16px rgba(var(--vfs-primary-rgb), 0.25);
+}
+
+.vfs-btn-primary:active {
+  background: rgba(var(--vfs-primary-rgb), 0.22);
+  transform: scale(0.97);
 }
 
 .vfs-btn-secondary {
-  background: var(--vfs-bg-tertiary);
+  background: transparent;
   color: var(--vfs-text-primary);
   border-color: var(--vfs-border);
 }
 
 .vfs-btn-secondary:hover {
-  background: var(--vfs-bg-elevated);
-  border-color: var(--vfs-primary);
+  background: rgba(var(--vfs-primary-rgb), 0.06);
+  border-color: var(--vfs-border-hover);
+  color: var(--vfs-primary);
+}
+
+.vfs-btn-secondary:active {
+  background: rgba(var(--vfs-primary-rgb), 0.12);
 }
 
 .vfs-btn-ghost {
@@ -267,21 +278,37 @@
   color: var(--vfs-primary);
 }
 
+.vfs-btn-ghost:active {
+  background: rgba(var(--vfs-primary-rgb), 0.14);
+}
+
+/* Destructive — keeps subtle tinted fill so destructive actions remain visually prominent */
 .vfs-btn-destructive {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(var(--vfs-error-rgb), 0.15);
   color: var(--vfs-error);
-  border-color: rgba(239, 68, 68, 0.3);
+  border-color: rgba(var(--vfs-error-rgb), 0.3);
 }
 
 .vfs-btn-destructive:hover {
-  background: rgba(239, 68, 68, 0.25);
-  box-shadow: 0 0 16px rgba(239, 68, 68, 0.2);
+  background: rgba(var(--vfs-error-rgb), 0.25);
+  border-color: rgba(var(--vfs-error-rgb), 0.5);
+  box-shadow: 0 0 16px rgba(var(--vfs-error-rgb), 0.2);
+}
+
+.vfs-btn-destructive:active {
+  background: rgba(var(--vfs-error-rgb), 0.3);
+  transform: scale(0.97);
+}
+
+.vfs-btn-destructive:focus-visible {
+  box-shadow: 0 0 0 3px rgba(var(--vfs-error-rgb), 0.3);
 }
 
 .vfs-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 /* ============================================================

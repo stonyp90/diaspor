@@ -58,7 +58,7 @@
 
 .auto-updater-header h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--vfs-text-primary, var(--text-primary));
 }
@@ -80,8 +80,8 @@
 
 .auto-updater-message {
   color: var(--vfs-text-secondary, var(--text-secondary));
-  font-size: 14px;
-  margin-bottom: 20px;
+  font-size: 13px;
+  margin-bottom: 18px;
 }
 
 .auto-updater-progress {
@@ -110,13 +110,13 @@
 }
 
 .progress-text {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--vfs-text-muted, var(--text-muted));
   text-align: center;
 }
 
 .progress-percent {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--vfs-primary, var(--primary));
   text-align: center;
@@ -132,7 +132,7 @@
 .auto-updater-info p {
   margin: 8px 0;
   color: var(--vfs-text-secondary, var(--text-secondary));
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .auto-updater-info strong {
@@ -146,27 +146,38 @@
 }
 
 .auto-updater-actions button {
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
-  border: none;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.auto-updater-actions button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--vfs-primary-rgb, 10, 132, 255), 0.3);
 }
 
 .auto-updater-actions .btn-primary {
-  background: var(--vfs-primary, var(--primary));
-  color: white;
+  background: transparent;
+  border-color: var(--vfs-primary, var(--primary));
+  color: var(--vfs-primary, var(--primary));
 }
 
 .auto-updater-actions .btn-primary:hover:not(:disabled) {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  background: rgba(var(--vfs-primary-rgb, 10, 132, 255), 0.14);
+}
+
+.auto-updater-actions .btn-primary:active:not(:disabled) {
+  background: rgba(var(--vfs-primary-rgb, 10, 132, 255), 0.22);
 }
 
 .auto-updater-actions .btn-secondary {
   background: var(--vfs-bg-tertiary, var(--surface-elevated));
+  border-color: var(--vfs-border, var(--border));
   color: var(--vfs-text-primary, var(--text-primary));
 }
 
@@ -190,21 +201,32 @@
 
 .auto-updater-error p {
   margin: 0 0 12px 0;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .auto-updater-error button {
-  padding: 8px 16px;
-  background: var(--vfs-error, #ff453a);
-  color: white;
-  border: none;
+  padding: 6px 14px;
+  background: transparent;
+  color: var(--vfs-error, #ff453a);
+  border: 1px solid var(--vfs-error, #ff453a);
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
 }
 
 .auto-updater-error button:hover {
-  opacity: 0.9;
+  background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.14);
+}
+
+.auto-updater-error button:active {
+  background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.22);
+}
+
+.auto-updater-error button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--vfs-error-rgb, 255, 69, 58), 0.3);
 }
 
 /* Light theme adjustments */

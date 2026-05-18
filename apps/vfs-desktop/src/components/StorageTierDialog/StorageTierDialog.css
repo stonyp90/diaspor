@@ -33,20 +33,21 @@
 
 .storage-tier-dialog-header h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--vfs-text-primary);
+  letter-spacing: -0.01em;
 }
 
 .storage-tier-dialog-close {
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: var(--vfs-text-secondary);
   cursor: pointer;
   padding: 0;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,6 +58,11 @@
 .storage-tier-dialog-close:hover {
   background: var(--vfs-bg-secondary);
   color: var(--vfs-text-primary);
+}
+
+.storage-tier-dialog-close:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--vfs-primary-rgb), 0.3);
 }
 
 .storage-tier-dialog-content {
@@ -72,14 +78,14 @@
 .storage-tier-dialog-info p {
   margin: 0 0 12px 0;
   color: var(--vfs-text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .storage-tier-file-list {
   margin: 12px 0 0 0;
   padding-left: 20px;
   color: var(--vfs-text-muted);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .storage-tier-file-list li {
@@ -91,7 +97,7 @@
   margin-bottom: 12px;
   font-weight: 600;
   color: var(--vfs-text-primary);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .storage-tier-grid {
@@ -107,7 +113,7 @@
   padding: 24px;
   text-align: center;
   color: var(--vfs-text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   margin-bottom: 24px;
 }
 
@@ -169,7 +175,7 @@
 .storage-tier-option-name {
   font-weight: 600;
   color: var(--vfs-text-primary);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .storage-tier-badge {
@@ -289,7 +295,7 @@
 }
 
 .storage-tier-provider-tag {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--vfs-primary);
   font-weight: 600;
   text-transform: uppercase;
@@ -298,7 +304,7 @@
 }
 
 .storage-tier-class-tag {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--vfs-text-muted);
   font-weight: 600;
   font-family: var(--vfs-font-mono, 'JetBrains Mono', 'Courier New', monospace);
@@ -311,7 +317,7 @@
 }
 
 .storage-tier-provider-name {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--vfs-primary);
   font-weight: 500;
   margin-bottom: 4px;
@@ -320,23 +326,19 @@
 .storage-tier-option-description {
   margin: 0;
   color: var(--vfs-text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   line-height: 1.5;
 }
 
 .storage-tier-btn-add-provider {
   width: 100%;
   margin-top: 0;
-  padding: 14px 20px;
-  background: linear-gradient(
-    135deg,
-    var(--vfs-primary) 0%,
-    var(--vfs-primary-dark) 100%
-  );
-  border: none;
+  padding: 10px 18px;
+  background: transparent;
+  border: 1px solid var(--vfs-primary);
   border-radius: var(--radius-md);
-  color: var(--vfs-bg-primary);
-  font-size: 1rem;
+  color: var(--vfs-primary);
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--vfs-transition-fast);
@@ -344,16 +346,19 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(var(--vfs-primary-rgb), 0.3);
 }
 
 .storage-tier-btn-add-provider:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(var(--vfs-primary-rgb), 0.4);
+  background: rgba(var(--vfs-primary-rgb), 0.14);
 }
 
 .storage-tier-btn-add-provider:active {
-  transform: translateY(0);
+  background: rgba(var(--vfs-primary-rgb), 0.22);
+}
+
+.storage-tier-btn-add-provider:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--vfs-primary-rgb), 0.3);
 }
 
 .storage-tier-source-selection {
@@ -362,12 +367,12 @@
 
 .storage-tier-source-select {
   width: 100%;
-  padding: 12px 16px;
+  padding: 8px 12px;
   background: var(--vfs-bg-secondary);
   border: 1px solid var(--vfs-border);
   border-radius: var(--radius-md);
   color: var(--vfs-text-primary);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-family: var(--vfs-font-sans);
   cursor: pointer;
   transition: all var(--vfs-transition-fast);
@@ -393,19 +398,25 @@
 }
 
 .storage-tier-btn {
-  padding: 12px 24px;
+  padding: 8px 18px;
   border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   cursor: pointer;
   transition: all var(--vfs-transition-fast);
-  border: none;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.storage-tier-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--vfs-primary-rgb), 0.3);
 }
 
 .storage-tier-btn-cancel {
-  background: var(--vfs-bg-secondary);
+  background: transparent;
   color: var(--vfs-text-secondary);
-  border: 1px solid var(--vfs-border);
+  border-color: var(--vfs-border);
 }
 
 .storage-tier-btn-cancel:hover {
@@ -414,18 +425,17 @@
 }
 
 .storage-tier-btn-confirm {
-  background: linear-gradient(
-    135deg,
-    var(--vfs-primary) 0%,
-    var(--vfs-primary-dark) 100%
-  );
-  color: var(--vfs-bg-primary);
-  box-shadow: 0 4px 12px rgba(var(--vfs-primary-rgb), 0.3);
+  background: transparent;
+  border-color: var(--vfs-primary);
+  color: var(--vfs-primary);
 }
 
 .storage-tier-btn-confirm:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(var(--vfs-primary-rgb), 0.4);
+  background: rgba(var(--vfs-primary-rgb), 0.14);
+}
+
+.storage-tier-btn-confirm:active:not(:disabled) {
+  background: rgba(var(--vfs-primary-rgb), 0.22);
 }
 
 .storage-tier-btn-confirm:disabled {

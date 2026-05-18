@@ -12,15 +12,15 @@
 
 .tour-step-content h3 {
   margin: 0 0 4px 0;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-primary, var(--vfs-text-primary, #f5f5f7));
   letter-spacing: -0.01em;
 }
 
 .tour-step-content .tour-subtitle {
-  margin: 0 0 16px 0;
-  font-size: 12px;
+  margin: 0 0 14px 0;
+  font-size: 11px;
   font-weight: 600;
   color: var(--primary, var(--vfs-primary, #0a84ff));
   text-transform: uppercase;
@@ -28,8 +28,8 @@
 }
 
 .tour-step-content p {
-  margin: 0 0 12px 0;
-  font-size: 14px;
+  margin: 0 0 10px 0;
+  font-size: 13px;
   line-height: 1.6;
   color: var(--text-secondary, var(--vfs-text-secondary, #a1a1a6));
 }
@@ -44,33 +44,33 @@
 }
 
 .tour-step-content ul {
-  margin: 12px 0;
-  padding-left: 20px;
-  font-size: 14px;
-  line-height: 1.9;
+  margin: 10px 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.8;
   color: var(--text-secondary, var(--vfs-text-secondary, #a1a1a6));
   list-style-type: none;
 }
 
 .tour-step-content li {
   position: relative;
-  margin: 6px 0;
+  margin: 5px 0;
   padding-left: 8px;
 }
 
 .tour-step-content li::before {
   content: '›';
   position: absolute;
-  left: -16px;
+  left: -14px;
   color: var(--primary, var(--vfs-primary, #0a84ff));
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .tour-step-content kbd {
   display: inline-block;
   padding: 2px 6px;
-  font-size: 11px;
+  font-size: 10px;
   font-family: var(--vfs-font-mono, 'SF Mono', Monaco, monospace);
   background: var(--surface-elevated, var(--vfs-bg-elevated, rgba(255, 255, 255, 0.08)));
   border: 1px solid var(--border, var(--vfs-border, rgba(255, 255, 255, 0.15)));
@@ -80,12 +80,12 @@
 }
 
 .tour-step-tip {
-  margin-top: 16px;
-  padding: 12px 14px;
+  margin-top: 14px;
+  padding: 10px 12px;
   background: color-mix(in srgb, var(--primary, #0a84ff) 10%, transparent);
   border-left: 3px solid var(--primary, var(--vfs-primary, #0a84ff));
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.5;
   color: var(--text-secondary, var(--vfs-text-secondary, #a1a1a6));
 }
@@ -115,26 +115,27 @@
    Button Styles with Theme Variables
    ============================================ */
 
-/* Primary Button (Next/Continue) */
+/* Primary Button (Next/Continue) — outline variant */
 .react-joyride__tooltip button[data-action="primary"] {
-  background: linear-gradient(
-    135deg,
-    var(--primary, var(--vfs-primary, #0a84ff)) 0%,
-    color-mix(in srgb, var(--primary, #0a84ff) 85%, #000) 100%
-  ) !important;
-  color: #ffffff !important;
-  border: none !important;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--primary, #0a84ff) 40%, transparent) !important;
-  transition: all 0.2s var(--vfs-ease-out-quart, ease) !important;
+  background: transparent !important;
+  color: var(--primary, var(--vfs-primary, #0a84ff)) !important;
+  border: 1px solid var(--primary, var(--vfs-primary, #0a84ff)) !important;
+  box-shadow: none !important;
+  transition: all 0.15s var(--vfs-ease-out-quart, ease) !important;
 }
 
 .react-joyride__tooltip button[data-action="primary"]:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px color-mix(in srgb, var(--primary, #0a84ff) 50%, transparent) !important;
+  background: color-mix(in srgb, var(--primary, #0a84ff) 14%, transparent) !important;
+  border-color: var(--primary, var(--vfs-primary, #0a84ff)) !important;
 }
 
 .react-joyride__tooltip button[data-action="primary"]:active {
-  transform: translateY(0);
+  background: color-mix(in srgb, var(--primary, #0a84ff) 22%, transparent) !important;
+}
+
+.react-joyride__tooltip button[data-action="primary"]:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary, #0a84ff) 25%, transparent) !important;
 }
 
 /* Back Button */
@@ -149,6 +150,13 @@
   background: var(--surface-elevated, rgba(255, 255, 255, 0.1)) !important;
   border-color: var(--border-hover, var(--vfs-border-hover, rgba(255, 255, 255, 0.2))) !important;
   color: var(--text-primary, var(--vfs-text-primary, #f5f5f7)) !important;
+}
+
+.react-joyride__tooltip button[data-action="back"]:focus-visible,
+.react-joyride__tooltip button[data-action="skip"]:focus-visible,
+.react-joyride__tooltip button[data-action="close"]:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary, #0a84ff) 25%, transparent) !important;
 }
 
 /* Skip Button */

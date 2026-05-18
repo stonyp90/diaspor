@@ -69,7 +69,7 @@
 
 .comment-modal-title-row h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-primary, #fff);
 }
@@ -99,7 +99,7 @@
   display: block;
   font-weight: 500;
   color: var(--text-primary, #fff);
-  font-size: 14px;
+  font-size: 13px;
   margin-bottom: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -108,7 +108,7 @@
 
 .comment-modal-file-path {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary, #8e8e93);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -129,16 +129,16 @@
 
 .comment-textarea {
   width: 100%;
-  min-height: 120px;
-  padding: 12px;
+  min-height: 110px;
+  padding: 10px 12px;
   background: var(--input-bg, rgba(255, 255, 255, 0.05));
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
   border-radius: 8px;
   color: var(--text-primary, #fff);
-  font-size: 14px;
+  font-size: 13px;
   font-family: inherit;
   resize: vertical;
-  transition: border-color 0.15s ease;
+  transition: all 0.15s ease;
 }
 
 .comment-textarea::placeholder {
@@ -158,17 +158,24 @@
 }
 
 .comment-btn {
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s ease;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.comment-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 0, 122, 255), 0.3);
 }
 
 .comment-btn.cancel {
   background: transparent;
-  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
+  border-color: var(--border-color, rgba(255, 255, 255, 0.2));
   color: var(--text-secondary, #8e8e93);
 }
 
@@ -178,13 +185,17 @@
 }
 
 .comment-btn.save {
-  background: var(--primary, #007aff);
-  border: none;
-  color: #fff;
+  background: transparent;
+  border-color: var(--primary, #007aff);
+  color: var(--primary, #007aff);
 }
 
-.comment-btn.save:hover {
-  background: var(--primary-hover, #0066d6);
+.comment-btn.save:hover:not(:disabled) {
+  background: rgba(var(--primary-rgb, 0, 122, 255), 0.14);
+}
+
+.comment-btn.save:active:not(:disabled) {
+  background: rgba(var(--primary-rgb, 0, 122, 255), 0.22);
 }
 
 .comment-btn.save:disabled,
@@ -194,23 +205,27 @@
 }
 
 .comment-btn.edit {
-  background: var(--surface-secondary, rgba(255, 255, 255, 0.1));
-  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.2));
+  background: var(--surface-secondary, rgba(255, 255, 255, 0.06));
+  border-color: var(--border-color, rgba(255, 255, 255, 0.2));
   color: var(--text-primary, #fff);
 }
 
 .comment-btn.edit:hover {
-  background: var(--hover-bg, rgba(255, 255, 255, 0.15));
+  background: var(--hover-bg, rgba(255, 255, 255, 0.12));
 }
 
 .comment-btn.delete {
   background: transparent;
-  border: 1px solid var(--error, #ff3b30);
+  border-color: var(--error, #ff3b30);
   color: var(--error, #ff3b30);
 }
 
 .comment-btn.delete:hover {
-  background: rgba(255, 59, 48, 0.1);
+  background: rgba(255, 59, 48, 0.14);
+}
+
+.comment-btn.delete:focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.3);
 }
 
 .comment-btn.delete:disabled {
@@ -225,11 +240,11 @@
 }
 
 .comment-text {
-  padding: 16px;
+  padding: 14px;
   background: var(--surface-secondary, rgba(255, 255, 255, 0.03));
   border-radius: 8px;
   color: var(--text-primary, #fff);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
