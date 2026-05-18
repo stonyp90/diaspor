@@ -3820,13 +3820,14 @@ body.theme-light .mobile-menu-theme-toggle .theme-icon-dark {
     gap: 20px;
   }
 
-  /* Single column on mobile - force all grids to single column */
+  /* Single column on mobile - force all grids to single column.
+     .download-grid intentionally excluded: it uses repeat(auto-fit, minmax(240px, 1fr))
+     so the browser stacks naturally below ~480px, but fits 2-3 cards at tablet width. */
   .hero,
   .what-is-content,
   .try-app-container,
   .quick-start,
   .product-features-grid,
-  .download-grid,
   .integration-featured,
   .integration-features,
   .features-grid,
@@ -4006,13 +4007,13 @@ body.theme-light .mobile-menu-theme-toggle .theme-icon-dark {
     --element-gap: 12px;
   }
 
-  /* Force single column on all grids for mobile */
+  /* Force single column on all grids for mobile.
+     .download-grid intentionally excluded: auto-fit handles the stacking. */
   .hero,
   .what-is-content,
   .try-app-container,
   .quick-start,
   .product-features-grid,
-  .download-grid,
   .integration-featured,
   .integration-features,
   .features-grid,
@@ -6033,9 +6034,7 @@ body.theme-light .theme-toggle-btn .theme-icon-dark {
     grid-template-columns: 1fr !important;
   }
 
-  .download-grid {
-    grid-template-columns: 1fr !important;
-  }
+  /* .download-grid intentionally excluded: auto-fit stacks naturally below ~480px. */
 
   .integration-featured {
     grid-template-columns: 1fr !important;
@@ -10197,10 +10196,13 @@ section[id]:not(.hero):not(#main-content) {
 
 @media (max-width: 640px) {
   .tech-section-bands .tech-band-head {
+    flex-direction: column;
+    align-items: flex-start;
     padding: 10px 14px;
     gap: 10px;
   }
   .tech-section-bands .tech-band-code {
+    width: 100%;
     font-size: 12px;
   }
   .tech-section-bands .tech-band-body {
