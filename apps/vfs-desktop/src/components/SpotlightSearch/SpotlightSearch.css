@@ -1,0 +1,651 @@
+/**
+ * SpotlightSearch - Spotlight-style overlay styles
+ * Uses VFS theme variables for consistent theming
+ */
+
+.spotlight-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: color-mix(
+    in srgb,
+    var(--color-background, var(--background, #1c1c1e)) 40%,
+    transparent
+  );
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 15vh;
+  z-index: 10000;
+  animation: spotlightFadeIn var(--transition-fast, 0.15s ease);
+}
+
+[data-theme='light'] .spotlight-overlay {
+  background: color-mix(
+    in srgb,
+    var(--color-background, var(--background, #ffffff)) 60%,
+    transparent
+  );
+}
+
+@keyframes spotlightFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.spotlight-container {
+  width: 100%;
+  max-width: 640px;
+  background: var(--color-surface-elevated, var(--surface, #3a3a3c));
+  border: 1px solid
+    var(--color-border, var(--border, rgba(255, 255, 255, 0.12)));
+  border-radius: var(--radius-lg, 12px);
+  box-shadow:
+    0 20px 60px
+      color-mix(
+        in srgb,
+        var(--color-background, var(--background, #1c1c1e)) 80%,
+        transparent
+      ),
+    0 0 0 1px
+      var(
+        --color-border-subtle,
+        var(--border-subtle, rgba(255, 255, 255, 0.06))
+      )
+      inset;
+  overflow: hidden;
+  animation: spotlightSlideIn var(--transition-normal, 0.2s ease);
+  font-family: var(
+    --font-sans,
+    -apple-system,
+    BlinkMacSystemFont,
+    'SF Pro Text',
+    sans-serif
+  );
+}
+
+@keyframes spotlightSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Input Section */
+.spotlight-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid
+    var(--color-border, var(--border, rgba(255, 255, 255, 0.12)));
+  background: var(--color-surface-elevated, var(--surface-elevated, #48484a));
+}
+
+.spotlight-search-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-primary, var(--primary, #6366f1));
+  flex-shrink: 0;
+}
+
+.spotlight-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-text-primary, var(--text-primary, #f5f5f7));
+  font-family: inherit;
+}
+
+.spotlight-input::placeholder {
+  color: var(--color-text-muted, var(--text-muted, #8e8e93));
+  opacity: 0.7;
+}
+
+.spotlight-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.5;
+}
+
+.spotlight-shortcut kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: var(--color-surface-elevated, var(--surface-elevated, #48484a));
+  border: 1px solid
+    var(--color-border, var(--border, rgba(255, 255, 255, 0.12)));
+  border-radius: var(--radius-sm, 4px);
+  font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary, var(--text-secondary, #a1a1a6));
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Active tag filters */
+.spotlight-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 20px;
+  border-bottom: 1px solid
+    var(--color-border, var(--border, rgba(255, 255, 255, 0.12)));
+  background: var(--color-surface-elevated, var(--surface-elevated, #48484a));
+}
+
+.spotlight-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(var(--color-primary-rgb, 99, 102, 241), 0.15);
+  border: 1px solid rgba(var(--color-primary-rgb, 99, 102, 241), 0.3);
+  border-radius: var(--radius-md, 6px);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-primary, var(--primary, #6366f1));
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.spotlight-filter-pill:hover {
+  background: rgba(var(--color-primary-rgb, 99, 102, 241), 0.25);
+  border-color: rgba(var(--color-primary-rgb, 99, 102, 241), 0.5);
+  transform: translateY(-1px);
+}
+
+.filter-pill-tag {
+  color: var(--color-text-primary, var(--text-primary, #f5f5f7));
+}
+
+.filter-pill-remove {
+  color: var(--color-text-secondary, var(--text-secondary, #a1a1a6));
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.spotlight-filter-pill:hover .filter-pill-remove {
+  color: var(--color-text-primary, var(--text-primary, #f5f5f7));
+}
+
+[data-theme='light'] .spotlight-active-filters {
+  background: var(
+    --color-surface-elevated,
+    var(--surface-elevated, rgba(255, 255, 255, 1))
+  );
+  border-bottom-color: var(--color-border, var(--border, rgba(0, 0, 0, 0.1)));
+}
+
+[data-theme='light'] .spotlight-filter-pill {
+  background: rgba(var(--color-primary-rgb, 99, 102, 241), 0.1);
+  border-color: rgba(var(--color-primary-rgb, 99, 102, 241), 0.2);
+  color: var(--color-primary, var(--primary, #6366f1));
+}
+
+[data-theme='light'] .spotlight-filter-pill:hover {
+  background: rgba(var(--color-primary-rgb, 99, 102, 241), 0.15);
+  border-color: rgba(var(--color-primary-rgb, 99, 102, 241), 0.3);
+}
+
+[data-theme='light'] .filter-pill-tag {
+  color: var(--color-text-primary, var(--text-primary, #1a1a2e));
+}
+
+[data-theme='light'] .filter-pill-remove {
+  color: var(--color-text-secondary, var(--text-secondary, #666));
+}
+
+[data-theme='light'] .spotlight-filter-pill:hover .filter-pill-remove {
+  color: var(--color-text-primary, var(--text-primary, #1a1a2e));
+}
+
+/* Results Section */
+.spotlight-results {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.spotlight-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.spotlight-result:hover {
+  background: var(--color-surface-elevated, var(--surface-elevated, #48484a));
+}
+
+.spotlight-result.selected {
+  background: rgba(var(--color-primary-rgb, 99, 102, 241), 0.1);
+  border-left: 3px solid var(--color-primary, var(--primary, #6366f1));
+}
+
+.result-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  color: var(--color-text-secondary, var(--text-secondary, #a1a1a6));
+}
+
+/* Ensure operator icons override default color */
+.result-icon[class*='op-'] {
+  color: var(--color-primary, var(--primary, #6366f1)) !important;
+}
+
+.spotlight-result.file .result-icon,
+.spotlight-result.folder .result-icon {
+  background: var(--color-surface-elevated, var(--surface-elevated, #48484a));
+  border-radius: var(--radius-sm, 4px);
+  padding: 6px;
+}
+
+.spotlight-result.folder .result-icon {
+  color: var(--color-warning, var(--accent, #ff9f0a));
+}
+
+.result-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.result-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, var(--text-primary, #f5f5f7));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spotlight-result.operator .result-title {
+  color: var(--color-primary, var(--primary, #6366f1));
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-weight: 600;
+}
+
+.spotlight-result.tag .result-title {
+  color: var(--color-warning, var(--secondary, #ff9f0a));
+}
+
+.spotlight-result.action .result-title {
+  color: var(--color-success, var(--success, #30d158));
+}
+
+/* SVG Icon styling */
+.result-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Operator icon colors - using theme variables only */
+/* All operators use the primary accent color for consistency */
+.result-icon.op-tag,
+.result-icon.op-type,
+.result-icon.op-ext,
+.result-icon.op-size,
+.result-icon.op-tier,
+.result-icon.op-is {
+  color: var(--primary) !important;
+}
+
+/* Icon colors use theme variables and inherit properly */
+.result-icon svg {
+  color: inherit;
+  fill: currentColor;
+}
+
+/* Ensure icons inherit color from parent - override any hardcoded fills */
+.result-icon svg path,
+.result-icon svg circle,
+.result-icon svg rect,
+.result-icon svg polygon {
+  fill: currentColor !important;
+  stroke: currentColor;
+}
+
+/* Ensure operator icons specifically use primary color */
+.result-icon[class*='op-'] svg,
+.result-icon[class*='op-'] svg path,
+.result-icon[class*='op-'] svg circle,
+.result-icon[class*='op-'] svg rect {
+  color: var(--color-primary, var(--primary, #6366f1)) !important;
+  fill: var(--color-primary, var(--primary, #6366f1)) !important;
+}
+
+.spotlight-result.recent .result-title {
+  color: var(--color-text-secondary, var(--text-secondary, #a1a1a6));
+  font-style: italic;
+}
+
+.result-subtitle {
+  font-size: 12px;
+  color: var(--color-text-muted, var(--text-muted, #8e8e93));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.result-hint {
+  font-size: 11px;
+  color: var(--color-text-secondary, var(--text-secondary, #a1a1a6));
+  padding: 3px 8px;
+  background: var(--color-surface-elevated, var(--surface-elevated, #48484a));
+  border: 1px solid
+    var(--color-border, var(--border, rgba(255, 255, 255, 0.12)));
+  border-radius: var(--radius-sm, 4px);
+  opacity: 0;
+  transition: opacity var(--transition-fast, 0.15s ease);
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.spotlight-result.selected .result-hint {
+  opacity: 1;
+}
+
+/* Footer */
+.spotlight-footer {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  padding: 12px 16px;
+  background: var(--color-surface-elevated, var(--surface-elevated, #48484a));
+  border-top: 1px solid
+    var(--color-border, var(--border, rgba(255, 255, 255, 0.12)));
+  font-size: 11px;
+  color: var(--color-text-muted, var(--text-muted, #8e8e93));
+  flex-wrap: wrap;
+  font-family: var(
+    --font-sans,
+    -apple-system,
+    BlinkMacSystemFont,
+    'SF Pro Text',
+    sans-serif
+  );
+}
+
+.spotlight-footer span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.spotlight-footer kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: var(--color-surface, var(--surface, #3a3a3c));
+  border: 1px solid
+    var(--color-border, var(--border, rgba(255, 255, 255, 0.12)));
+  border-radius: var(--radius-sm, 4px);
+  font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-secondary, var(--text-secondary, #a1a1a6));
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Scrollbar */
+.spotlight-results::-webkit-scrollbar {
+  width: 6px;
+}
+
+.spotlight-results::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.spotlight-results::-webkit-scrollbar-thumb {
+  background: var(--color-border, var(--border, rgba(255, 255, 255, 0.12)));
+  border-radius: var(--radius-sm, 4px);
+}
+
+.spotlight-results::-webkit-scrollbar-thumb:hover {
+  background: var(
+    --color-border-hover,
+    var(--border-hover, rgba(255, 255, 255, 0.18))
+  );
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .spotlight-overlay {
+    padding-top: 10vh;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .spotlight-container {
+    max-width: none;
+  }
+
+  .spotlight-input {
+    font-size: 16px;
+  }
+
+  .spotlight-shortcut {
+    display: none;
+  }
+
+  .spotlight-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+/* Category Headers */
+.spotlight-category-header {
+  padding: 8px 12px 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.spotlight-results > .spotlight-category-header:first-child {
+  margin-top: 0;
+}
+
+/* Improved result styling */
+.spotlight-result {
+  position: relative;
+}
+
+.spotlight-result::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: var(--primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: height var(--transition-fast);
+}
+
+.spotlight-result.selected::before {
+  height: 60%;
+  background: var(--color-primary, var(--primary, #6366f1));
+}
+
+/* Better icon backgrounds */
+.result-icon {
+  position: relative;
+}
+
+.result-icon svg {
+  position: relative;
+  z-index: 1;
+}
+
+/* Smooth transitions */
+.spotlight-result,
+.result-icon,
+.result-content {
+  transition: all var(--transition-fast);
+}
+
+/* Improved hover states */
+.spotlight-result:hover .result-icon {
+  transform: scale(1.05);
+}
+
+.spotlight-result.selected .result-icon {
+  transform: scale(1.08);
+}
+
+/* Better spacing for categories */
+.spotlight-results {
+  display: flex;
+  flex-direction: column;
+}
+
+.spotlight-category {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   Light Theme Overrides
+   ============================================ */
+
+[data-theme='light'] .spotlight-container {
+  background: var(
+    --color-surface-elevated,
+    var(--surface, rgba(255, 255, 255, 0.98))
+  );
+  box-shadow:
+    0 20px 60px
+      color-mix(
+        in srgb,
+        var(--color-background, var(--background, #ffffff)) 20%,
+        transparent
+      ),
+    0 0 0 1px
+      var(--color-border-subtle, var(--border-subtle, rgba(0, 0, 0, 0.06)))
+      inset;
+  border-color: var(--color-border, var(--border, rgba(0, 0, 0, 0.1)));
+}
+
+[data-theme='light'] .spotlight-input-wrapper {
+  background: var(
+    --color-surface-elevated,
+    var(--surface-elevated, rgba(255, 255, 255, 1))
+  );
+  border-bottom-color: var(--color-border, var(--border, rgba(0, 0, 0, 0.1)));
+}
+
+[data-theme='light'] .spotlight-input {
+  color: var(--color-text-primary, var(--text-primary, #1a1a2e));
+}
+
+[data-theme='light'] .spotlight-input::placeholder {
+  color: var(--color-text-muted, var(--text-muted, #8e8e93));
+}
+
+[data-theme='light'] .spotlight-result:hover {
+  background: var(
+    --color-surface-elevated,
+    var(--surface-elevated, rgba(0, 0, 0, 0.04))
+  );
+}
+
+[data-theme='light'] .spotlight-result.selected {
+  background: rgba(var(--color-primary-rgb, 99, 102, 241), 0.08);
+  border-left-color: var(--color-primary, var(--primary, #6366f1));
+}
+
+[data-theme='light'] .spotlight-result.file .result-icon,
+[data-theme='light'] .spotlight-result.folder .result-icon {
+  background: var(
+    --color-surface-elevated,
+    var(--surface-elevated, rgba(0, 0, 0, 0.04))
+  );
+}
+
+[data-theme='light'] .spotlight-footer {
+  background: var(
+    --color-surface-elevated,
+    var(--surface-elevated, rgba(0, 0, 0, 0.02))
+  );
+  border-top-color: var(--color-border, var(--border, rgba(0, 0, 0, 0.1)));
+  color: var(--color-text-muted, var(--text-muted, #8e8e93));
+}
+
+[data-theme='light'] .spotlight-shortcut kbd,
+[data-theme='light'] .spotlight-footer kbd {
+  background: var(--color-surface, var(--surface, rgba(255, 255, 255, 1)));
+  border-color: var(--color-border, var(--border, rgba(0, 0, 0, 0.1)));
+  color: var(--color-text-secondary, var(--text-secondary, #666));
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, 0.05));
+}
+
+[data-theme='light'] .result-hint {
+  background: var(
+    --color-surface-elevated,
+    var(--surface-elevated, rgba(0, 0, 0, 0.04))
+  );
+  border-color: var(--color-border, var(--border, rgba(0, 0, 0, 0.1)));
+  color: var(--color-text-secondary, var(--text-secondary, #666));
+}
+
+[data-theme='light'] .spotlight-category-header {
+  color: var(--color-text-muted, var(--text-muted, #8e8e93));
+}
+
+[data-theme='light'] .result-subtitle {
+  color: var(--color-text-muted, var(--text-muted, #8e8e93));
+}
+
+[data-theme='light'] .result-icon {
+  color: var(--color-text-secondary, var(--text-secondary, #666));
+}
+
+[data-theme='light'] .spotlight-result.recent .result-title {
+  color: var(--color-text-secondary, var(--text-secondary, #666));
+}

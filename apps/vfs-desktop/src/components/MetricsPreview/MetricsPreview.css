@@ -1,0 +1,285 @@
+/**
+ * MetricsPreview - Compact sidebar metrics widget
+ * Follows global VFS design patterns from finder.css
+ */
+
+.metrics-preview {
+  border-top: 1px solid var(--vfs-border);
+  background: transparent;
+  /* Prevent layout shift when sidebar content changes */
+  flex-shrink: 0;
+  /* Ensure MetricsPreview stays at bottom and doesn't move */
+  position: relative;
+  /* Prevent layout recalculation during state changes */
+  contain: layout style;
+  /* Use transform to create a new stacking context and prevent shifts */
+  transform: translateZ(0);
+  will-change: transform;
+  /* Ensure it stays at the bottom of the flex container */
+  margin-top: auto;
+}
+
+.metrics-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--vfs-text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: background 0.15s;
+}
+
+.metrics-preview-header:hover {
+  background: rgba(var(--vfs-primary-rgb), 0.05);
+  color: var(--vfs-text-primary);
+}
+
+.metrics-preview-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.metrics-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--vfs-primary);
+}
+
+.metrics-chevron {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s;
+  transform: rotate(90deg);
+}
+
+.metrics-chevron.expanded {
+  transform: rotate(-90deg);
+}
+
+.metrics-chevron svg {
+  width: 100%;
+  height: 100%;
+}
+
+.metrics-preview-content {
+  padding: 8px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 2x3 Grid Layout (6 tiles) */
+.metrics-grid-6 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 6px;
+}
+
+/* Metric Tile - Uses global VFS surface colors */
+.metric-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  background: var(--vfs-bg-secondary);
+  border: 1px solid var(--vfs-border);
+  border-radius: 6px;
+  min-height: 52px;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.metric-tile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--vfs-text-tertiary);
+  opacity: 0.3;
+}
+
+.metric-tile.good::before {
+  background: var(--vfs-success);
+  opacity: 1;
+}
+
+.metric-tile.warning::before {
+  background: var(--vfs-warning);
+  opacity: 1;
+}
+
+.metric-tile.critical::before {
+  background: var(--vfs-error);
+  opacity: 1;
+  animation: pulse-critical 1s ease-in-out infinite;
+}
+
+.metric-tile.inactive::before {
+  background: var(--vfs-text-tertiary);
+  opacity: 0.3;
+}
+
+.metric-tile.network::before {
+  background: var(--vfs-primary);
+  opacity: 1;
+}
+
+@keyframes pulse-critical {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.tile-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--vfs-text-tertiary);
+  margin-bottom: 2px;
+}
+
+.tile-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.metric-tile.good .tile-icon {
+  color: var(--vfs-success);
+}
+
+.metric-tile.warning .tile-icon {
+  color: var(--vfs-warning);
+}
+
+.metric-tile.critical .tile-icon {
+  color: var(--vfs-error);
+}
+
+.metric-tile.network .tile-icon {
+  color: var(--vfs-primary);
+}
+
+.metric-tile.inactive .tile-icon {
+  color: var(--vfs-text-tertiary);
+  opacity: 0.5;
+}
+
+.tile-value {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--vfs-font-mono, 'JetBrains Mono', monospace);
+  color: var(--vfs-text-primary);
+  line-height: 1;
+}
+
+.tile-label {
+  font-size: 9px;
+  color: var(--vfs-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* Network tile special label */
+/* Disk tile */
+.metric-tile.disk::before {
+  background: var(--tier-nearline);
+  opacity: 1;
+}
+
+.metric-tile.disk .tile-icon {
+  color: var(--tier-nearline);
+}
+
+/* Upload tile */
+.metric-tile.upload::before {
+  background: var(--vfs-success);
+  opacity: 1;
+}
+
+.metric-tile.upload .tile-icon {
+  color: var(--vfs-success);
+}
+
+/* Download tile */
+.metric-tile.download::before {
+  background: var(--vfs-primary);
+  opacity: 1;
+}
+
+.metric-tile.download .tile-icon {
+  color: var(--vfs-primary);
+}
+
+/* Open Metrics Button */
+.open-metrics-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 8px;
+  background: rgba(var(--vfs-primary-rgb), 0.1);
+  border: 1px solid rgba(var(--vfs-primary-rgb), 0.2);
+  border-radius: 6px;
+  color: var(--vfs-primary);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.open-metrics-btn:hover {
+  background: rgba(var(--vfs-primary-rgb), 0.15);
+  border-color: var(--vfs-primary);
+}
+
+.open-metrics-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Light Theme - Uses CSS variables which auto-switch with theme */
+[data-theme='light'] .metrics-preview {
+  background: transparent;
+  border-top-color: var(--vfs-border);
+}
+
+[data-theme='light'] .metrics-preview-header:hover {
+  background: rgba(var(--vfs-primary-rgb), 0.06);
+}
+
+[data-theme='light'] .metric-tile {
+  background: var(--vfs-bg-tertiary);
+  border-color: var(--vfs-border);
+  box-shadow: var(--vfs-shadow-sm);
+}
+
+[data-theme='light'] .metric-tile::before {
+  box-shadow: none;
+}
+
+[data-theme='light'] .open-metrics-btn {
+  background: rgba(var(--vfs-primary-rgb), 0.08);
+  border-color: rgba(var(--vfs-primary-rgb), 0.2);
+}
+
+[data-theme='light'] .open-metrics-btn:hover {
+  background: rgba(var(--vfs-primary-rgb), 0.12);
+}

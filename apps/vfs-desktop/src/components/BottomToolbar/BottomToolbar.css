@@ -1,0 +1,185 @@
+/* Bottom Toolbar - Clean Floating Action Bar */
+/* Uses global CSS variables from ThemeContext */
+
+.bottom-toolbar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 8px 12px;
+  background: color-mix(in srgb, var(--background, #1c1c1e) 88%, transparent);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.4),
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 60px color-mix(in srgb, var(--primary, #0a84ff) 8%, transparent);
+  z-index: 100;
+  animation: toolbar-appear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+@keyframes toolbar-appear {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(24px) scale(0.92);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Action pill buttons */
+.action-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 10px 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--text-primary, #f5f5f7);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.action-pill:hover {
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.08));
+  border-color: var(--border, rgba(255, 255, 255, 0.1));
+  transform: translateY(-1px);
+}
+
+.action-pill:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Glow effect */
+.pill-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.action-pill:hover .pill-glow {
+  opacity: 1;
+}
+
+/* Shortcuts button - Primary color glow */
+.action-pill.shortcuts .pill-glow {
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--primary, #0a84ff) 25%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+.action-pill.shortcuts:hover {
+  border-color: color-mix(in srgb, var(--primary, #0a84ff) 40%, transparent);
+}
+
+.action-pill.shortcuts .pill-icon {
+  color: var(--primary, #0a84ff);
+}
+
+/* Search button - Accent color glow */
+.action-pill.search .pill-glow {
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--accent, #ff9f0a) 25%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+.action-pill.search:hover {
+  border-color: color-mix(in srgb, var(--accent, #ff9f0a) 40%, transparent);
+}
+
+.action-pill.search .pill-icon {
+  color: var(--accent, #ff9f0a);
+}
+
+/* Enhanced hover states for cleaner 2-button design */
+.action-pill {
+  padding: 10px 20px 10px 16px;
+  min-width: 130px;
+  justify-content: center;
+}
+
+.action-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.action-pill:active {
+  transform: translateY(0) scale(0.97);
+  transition: all 0.1s ease;
+}
+
+/* Icon styling */
+.pill-icon {
+  flex-shrink: 0;
+  transition:
+    transform 0.2s,
+    color 0.2s;
+}
+
+.action-pill:hover .pill-icon {
+  transform: scale(1.1);
+}
+
+/* Label styling */
+.pill-label {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  opacity: 0.9;
+}
+
+.action-pill:hover .pill-label {
+  opacity: 1;
+}
+
+/* Divider - Enhanced for 2-button layout */
+.action-divider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--border, rgba(255, 255, 255, 0.12)) 20%,
+    var(--border, rgba(255, 255, 255, 0.18)) 50%,
+    var(--border, rgba(255, 255, 255, 0.12)) 80%,
+    transparent 100%
+  );
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* Responsive - hide labels on small screens */
+@media (max-width: 400px) {
+  .pill-label {
+    display: none;
+  }
+
+  .action-pill {
+    padding: 10px;
+  }
+}

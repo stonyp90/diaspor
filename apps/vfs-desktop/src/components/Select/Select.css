@@ -1,0 +1,202 @@
+/**
+ * Select Component Styles
+ * Uses global CSS variables from theme for consistent styling
+ * Modern, polished dropdown with smooth animations and theme integration
+ */
+
+.vfs-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2, 8px);
+  position: relative;
+}
+
+.vfs-select-wrapper.full-width {
+  width: 100%;
+}
+
+.vfs-select-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+  font-family: var(--vfs-font-sans, inherit);
+  margin-bottom: 0;
+  user-select: none;
+  letter-spacing: -0.01em;
+}
+
+.vfs-select-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.vfs-select-container::after {
+  content: '';
+  position: absolute;
+  right: var(--space-3, 12px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  pointer-events: none;
+  transition: all var(--vfs-transition-fast, 150ms);
+  margin-top: 1px;
+  z-index: 1;
+}
+
+.vfs-select-wrapper:hover .vfs-select-container::after {
+  border-top-color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+}
+
+.vfs-select-wrapper:focus-within .vfs-select-container::after {
+  border-top-color: var(--vfs-primary, var(--primary, #0a84ff));
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.vfs-select {
+  width: 100%;
+  padding: var(--space-3, 12px) 40px var(--space-3, 12px) var(--space-4, 16px);
+  font-size: 0.875rem;
+  font-family: var(--vfs-font-sans, inherit);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+  background: var(--vfs-bg-primary, var(--background, #1c1c1e));
+  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.12)));
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  transition: all var(--vfs-transition-fast, 150ms);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  min-width: 120px;
+  box-shadow: var(--vfs-shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.vfs-select:hover:not(:disabled) {
+  background: var(--vfs-bg-elevated, var(--surface-elevated, #3a3a3c));
+  border-color: var(
+    --vfs-border-hover,
+    var(--border-hover, rgba(255, 255, 255, 0.18))
+  );
+  box-shadow: var(--vfs-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+.vfs-select:focus {
+  border-color: var(--vfs-primary, var(--primary, #0a84ff));
+  box-shadow:
+    0 0 0 3px
+      rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.15),
+    var(
+      --vfs-shadow-glow,
+      0 0 12px
+        rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.2)
+    );
+  background: var(--vfs-bg-elevated, var(--surface-elevated, #3a3a3c));
+}
+
+.vfs-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--vfs-bg-tertiary, var(--surface, #3a3a3c));
+  border-color: var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+}
+
+.vfs-select option {
+  background: var(--vfs-bg-elevated, var(--surface-elevated, #3a3a3c));
+  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  font-family: var(--vfs-font-sans, inherit);
+}
+
+.vfs-select option:hover,
+.vfs-select option:checked {
+  background: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.1
+  );
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+}
+
+.vfs-select option:disabled {
+  opacity: 0.5;
+  font-style: italic;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+}
+
+/* Compact variant for inline use (e.g., in table headers) */
+.vfs-select-wrapper.compact {
+  gap: var(--space-1, 4px);
+}
+
+.vfs-select-wrapper.compact .vfs-select-label {
+  font-size: 0.75rem;
+  margin-bottom: 0;
+}
+
+.vfs-select-wrapper.compact .vfs-select {
+  padding: var(--space-2, 8px) 32px var(--space-2, 8px) var(--space-2, 8px);
+  font-size: 0.8125rem;
+  min-width: 80px;
+  border-radius: var(--radius-sm, 6px);
+  box-shadow: none;
+}
+
+.vfs-select-wrapper.compact .vfs-select-container::after {
+  right: var(--space-2, 8px);
+  border-left-width: 4px;
+  border-right-width: 4px;
+  border-top-width: 5px;
+}
+
+.vfs-select-wrapper.compact .vfs-select:hover:not(:disabled) {
+  box-shadow: var(--vfs-shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Small variant */
+.vfs-select-wrapper.small {
+  gap: var(--space-1, 4px);
+}
+
+.vfs-select-wrapper.small .vfs-select-label {
+  font-size: 0.8125rem;
+}
+
+.vfs-select-wrapper.small .vfs-select {
+  padding: var(--space-2, 8px) 32px var(--space-2, 8px) var(--space-3, 12px);
+  font-size: 0.8125rem;
+  min-width: 100px;
+}
+
+.vfs-select-wrapper.small .vfs-select-container::after {
+  right: var(--space-2, 8px);
+  border-left-width: 4px;
+  border-right-width: 4px;
+  border-top-width: 5px;
+}
+
+/* Light theme adjustments */
+[data-theme='light'] .vfs-select {
+  background: var(--vfs-bg-primary, var(--background, #ffffff));
+  border-color: var(--vfs-border, var(--border, rgba(0, 0, 0, 0.1)));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .vfs-select:hover:not(:disabled) {
+  background: var(--vfs-bg-elevated, var(--surface-elevated, #f5f5f7));
+  border-color: var(
+    --vfs-border-hover,
+    var(--border-hover, rgba(0, 0, 0, 0.15))
+  );
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='light'] .vfs-select option {
+  background: var(--vfs-bg-elevated, var(--surface-elevated, #f5f5f7));
+  color: var(--vfs-text-primary, var(--text-primary, #1c1c1e));
+}

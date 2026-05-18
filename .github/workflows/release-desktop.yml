@@ -1,0 +1,275 @@
+name: Release Desktop App
+
+# Tag-triggered Tauri release for the VFS desktop app under apps/vfs-desktop.
+# Fires on the same `v*` tags as .github/workflows/release.yml, so a single
+# `git push --tags` produces both the Rust CLI archives AND the desktop
+# .dmg / .msi / .AppImage artifacts attached to the GitHub release.
+#
+# `release.yml` and this file share `tag_name`; action-gh-release upserts the
+# release (the CLI workflow creates it first, this one uploads desktop assets
+# onto the same release).
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Tag name to release (e.g., v0.1.0-alpha.3)'
+        required: true
+        default: 'v0.1.0-alpha.3'
+
+concurrency:
+  group: release-desktop-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+env:
+  CARGO_TERM_COLOR: always
+  NODE_VERSION: '20'
+  RUST_VERSION: 'stable'
+
+jobs:
+  build-desktop:
+    name: Build Desktop (${{ matrix.platform }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macOS
+            os: macos-latest
+            rust_target: aarch64-apple-darwin,x86_64-apple-darwin
+          - platform: Windows
+            os: windows-latest
+            rust_target: x86_64-pc-windows-msvc
+          - platform: Linux
+            os: ubuntu-22.04
+            rust_target: x86_64-unknown-linux-gnu
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: apps/vfs-desktop/package-lock.json
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust_target }}
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Install Linux dependencies
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            libwebkit2gtk-4.1-dev \
+            libjavascriptcoregtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            libsoup-3.0-dev \
+            ca-certificates
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: apps/vfs-desktop/src-tauri -> target
+          key: vfs-desktop-${{ matrix.os }}-${{ github.sha }}
+
+      - name: Install desktop dependencies
+        working-directory: apps/vfs-desktop
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Build Desktop (macOS/Linux)
+        if: matrix.os != 'windows-latest'
+        working-directory: apps/vfs-desktop
+        shell: bash
+        run: |
+          echo "Building for ${{ matrix.platform }}..."
+          if [ "${{ matrix.os }}" == "macos-latest" ]; then
+            npm run tauri:build -- --target universal-apple-darwin
+          else
+            npm run tauri:build
+          fi
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          RUST_BACKTRACE: full
+
+      - name: Build Desktop (Windows)
+        if: matrix.os == 'windows-latest'
+        working-directory: apps/vfs-desktop
+        shell: pwsh
+        run: npm run tauri:build
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          RUST_BACKTRACE: full
+
+      - name: Prepare macOS artifacts
+        if: matrix.os == 'macos-latest'
+        run: |
+          mkdir -p release-artifacts
+          if [ -d "apps/vfs-desktop/src-tauri/target/universal-apple-darwin/release/bundle/dmg" ]; then
+            cp apps/vfs-desktop/src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg release-artifacts/diaspor-vfs.dmg 2>/dev/null || true
+          fi
+          if [ ! -f "release-artifacts/diaspor-vfs.dmg" ]; then
+            cp apps/vfs-desktop/src-tauri/target/release/bundle/dmg/*.dmg release-artifacts/diaspor-vfs.dmg 2>/dev/null || {
+              echo "::error::macOS DMG not found"
+              exit 1
+            }
+          fi
+          ls -lh release-artifacts/
+          shasum -a 256 release-artifacts/diaspor-vfs.dmg
+
+      - name: Upload macOS artifact
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vfs-macos-${{ github.sha }}
+          path: release-artifacts/diaspor-vfs.dmg
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Prepare Windows artifacts
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release-artifacts | Out-Null
+          $msiPaths = @(
+            "apps/vfs-desktop/src-tauri/target/release/bundle/msi/*.msi",
+            "apps/vfs-desktop/src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi"
+          )
+          $msi = $null
+          foreach ($path in $msiPaths) {
+            $found = Get-ChildItem -Path $path -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($found) { $msi = $found; break }
+          }
+          if ($msi) {
+            Copy-Item $msi.FullName -Destination "release-artifacts/diaspor-vfs.msi"
+            Get-ChildItem release-artifacts
+            Get-FileHash -Path "release-artifacts/diaspor-vfs.msi" -Algorithm SHA256
+          } else {
+            Write-Host "::error::Windows MSI not found"
+            exit 1
+          }
+
+      - name: Upload Windows artifact
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vfs-windows-${{ github.sha }}
+          path: release-artifacts/diaspor-vfs.msi
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Prepare Linux artifacts
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          mkdir -p release-artifacts
+          cp apps/vfs-desktop/src-tauri/target/release/bundle/appimage/*.AppImage release-artifacts/diaspor-vfs.AppImage 2>/dev/null || {
+            echo "::error::Linux AppImage not found"
+            exit 1
+          }
+          chmod +x release-artifacts/diaspor-vfs.AppImage
+          ls -lh release-artifacts/
+          sha256sum release-artifacts/diaspor-vfs.AppImage
+
+      - name: Upload Linux artifact
+        if: matrix.os == 'ubuntu-22.04'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vfs-linux-${{ github.sha }}
+          path: release-artifacts/diaspor-vfs.AppImage
+          retention-days: 90
+          if-no-files-found: error
+
+  attach-to-release:
+    name: Attach desktop artifacts to release
+    needs: [build-desktop]
+    # Allow this job to run even if one platform's post-cache cleanup
+    # flaked. The artifact-count guard below still gates on real artifacts
+    # being produced.
+    if: |
+      always() &&
+      (needs.build-desktop.result == 'success' || needs.build-desktop.result == 'failure')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vfs-macos-${{ github.sha }}
+          path: artifacts/macos
+        continue-on-error: true
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vfs-windows-${{ github.sha }}
+          path: artifacts/windows
+        continue-on-error: true
+
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vfs-linux-${{ github.sha }}
+          path: artifacts/linux
+        continue-on-error: true
+
+      - name: Verify artifacts
+        run: |
+          echo "=== Artifact Verification ==="
+          find artifacts -type f -exec ls -lh {} \;
+          ARTIFACT_COUNT=$(find artifacts -type f | wc -l)
+          echo "Total artifacts: $ARTIFACT_COUNT"
+          if [ "$ARTIFACT_COUNT" -eq 0 ]; then
+            echo "::error::No artifacts found"
+            exit 1
+          fi
+
+      - name: Attach to existing release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ github.event.inputs.version || github.ref_name }}"
+          # The CLI workflow (.github/workflows/release.yml) creates the
+          # release first via softprops/action-gh-release. If it hasn't run
+          # yet (or this fires standalone via workflow_dispatch), create the
+          # release here.
+          if ! gh release view "$VERSION" --repo ${{ github.repository }} &>/dev/null; then
+            echo "Release $VERSION does not exist yet; creating."
+            gh release create "$VERSION" \
+              --title "Diaspor $VERSION" \
+              --generate-notes \
+              --target ${{ github.sha }} \
+              --repo ${{ github.repository }}
+          fi
+          echo "Uploading desktop artifacts to $VERSION..."
+          for artifact in artifacts/macos/diaspor-vfs.dmg artifacts/windows/diaspor-vfs.msi artifacts/linux/diaspor-vfs.AppImage; do
+            if [ -f "$artifact" ]; then
+              echo "  Uploading $artifact"
+              gh release upload "$VERSION" "$artifact" --clobber --repo ${{ github.repository }}
+            else
+              echo "  Skipping $artifact (not built)"
+            fi
+          done
+          echo "Done. Release URL: https://github.com/${{ github.repository }}/releases/tag/$VERSION"

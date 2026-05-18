@@ -1,0 +1,93 @@
+/**
+ * FileListRow Styles
+ * 
+ * Styles for list view rows are inherited from FinderPage.css
+ */
+
+/* Storage class icon in tier column */
+.list-storage-class-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.list-row:hover .list-storage-class-icon {
+  opacity: 1;
+}
+
+.col-tier {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 8px;
+}
+
+.col-storage-class {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  min-width: 100px;
+  /* Ensure no default text content - hide any text nodes including asterisks */
+  font-size: 0 !important;
+  line-height: 0 !important;
+  /* Remove any pseudo-element content */
+}
+
+.col-storage-class::before,
+.col-storage-class::after {
+  content: none !important;
+  display: none !important;
+}
+
+.col-storage-class .storage-tier-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  max-width: 16px;
+  min-height: 16px;
+  max-height: 16px;
+  border-radius: 4px;
+  font-size: 9px; /* Restore font size for badge */
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  cursor: help;
+  line-height: 1; /* Ensure badge text is visible */
+}
+
+.col-storage-class .storage-tier-badge.local {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.col-storage-class .storage-tier-badge.nearline {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--tier-nearline, #8b5cf6);
+}
+
+.col-storage-class .storage-tier-badge.cold {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--tier-cold, #3b82f6);
+}
+
+.col-storage-class .storage-tier-badge.hot {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--tier-hot, #10b981);
+}
+
+.list-row:hover .col-storage-class .storage-tier-badge {
+  opacity: 1;
+  transform: scale(1.1);
+}

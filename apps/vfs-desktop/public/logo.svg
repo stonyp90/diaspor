@@ -1,0 +1,7 @@
+<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diaspor">
+  <title>Diaspor</title>
+  <rect width="512" height="512" rx="112" fill="#0a0b14"/>
+  <circle cx="176" cy="176" r="104" fill="#4338CA"/>
+  <circle cx="320" cy="176" r="104" fill="#6366F1"/>
+  <circle cx="192" cy="320" r="104" fill="#22D3EE"/>
+</svg>

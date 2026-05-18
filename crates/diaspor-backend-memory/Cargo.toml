@@ -30,4 +30,4 @@ tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
 # Version pinned (not wildcard) so cargo-deny's bans-wildcard-dep check
 # stays clean; the workspace shares one version via the root Cargo.toml so
 # the explicit constraint never drifts out of sync.
-diaspor-conformance = { version = "0.1.0-alpha.2", path = "../diaspor-conformance" }
+diaspor-conformance = { version = "0.1.0-alpha.3", path = "../diaspor-conformance" }

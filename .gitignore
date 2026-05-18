@@ -1,8 +1,17 @@
 # Rust
 /target
+**/target
 **/*.rs.bk
 Cargo.lock.bak
 *.swp
+
+# Node / Vite / Tauri (apps/*)
+node_modules/
+dist/
+release-artifacts/
+# Local env setup files that may carry real credentials
+setup-aws-env.local.sh
+**/setup-aws-env.local.sh
 
 # IDE
 /.idea

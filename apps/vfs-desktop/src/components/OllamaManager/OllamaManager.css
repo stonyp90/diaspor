@@ -1,0 +1,984 @@
+/**
+ * OllamaManager Styles
+ * Modern, clean UI for managing Ollama models
+ */
+
+.ollama-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Header */
+.ollama-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.04));
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.ollama-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #f5f5f7);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted, #8e8e93);
+}
+
+.status-dot.online {
+  background: var(--vfs-success, #30d158);
+  box-shadow: 0 0 8px rgba(var(--vfs-success-rgb, 48, 209, 88), 0.4);
+}
+
+.ollama-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  color: var(--text-secondary, #a1a1a6);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.ollama-refresh-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.ollama-refresh-btn:hover {
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.1));
+  color: var(--text-primary, #f5f5f7);
+}
+
+.ollama-refresh-btn.small {
+  padding: 0.375rem;
+  width: 32px;
+  height: 32px;
+}
+
+.ollama-refresh-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Not installed / Not running states */
+.ollama-not-installed,
+.ollama-not-running {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.03));
+  border-radius: 16px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  text-align: center;
+  gap: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ollama-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.05));
+  border-radius: 16px;
+  color: var(--text-muted, #8e8e93);
+}
+
+.ollama-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.ollama-icon.warning {
+  background: rgba(var(--vfs-warning-rgb, 255, 159, 10), 0.15);
+  color: var(--vfs-warning, #ff9f0a);
+}
+
+.ollama-not-installed h3,
+.ollama-not-running h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary, #f5f5f7);
+}
+
+.ollama-not-installed p,
+.ollama-not-running p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #a1a1a6);
+  max-width: 100%;
+}
+
+.install-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #a1a1a6);
+  max-width: 100%;
+  line-height: 1.6;
+}
+
+/* Installation instructions */
+.install-instructions {
+  width: 100%;
+  text-align: left;
+  background: var(--surface, rgba(255, 255, 255, 0.02));
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.06));
+}
+
+.install-instructions h4 {
+  margin: 0 0 1rem 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary, #f5f5f7);
+}
+
+.install-steps {
+  margin: 0 0 1rem 0;
+  padding-left: 1.25rem;
+  color: var(--text-secondary, #a1a1a6);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+
+.install-steps li {
+  margin-bottom: 0.5rem;
+}
+
+.install-steps li:last-child {
+  margin-bottom: 0;
+}
+
+/* Command block */
+.install-command {
+  position: relative;
+  background: var(--background, #1c1c1e);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  margin: 1rem 0;
+  font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+}
+
+.command-label {
+  font-size: 0.75rem;
+  color: var(--text-muted, #8e8e93);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.command-code {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--text-primary, #f5f5f7);
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: inherit;
+}
+
+.command-copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  color: var(--text-secondary, #a1a1a6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.command-copy-btn:hover {
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.1));
+  color: var(--text-primary, #f5f5f7);
+  border-color: var(--vfs-primary, #0a84ff);
+}
+
+.command-copy-btn:active,
+.command-copy-btn.copied {
+  background: rgba(48, 209, 88, 0.15);
+  border-color: var(--vfs-success, #30d158);
+  color: var(--vfs-success, #30d158);
+}
+
+.command-copy-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.install-note {
+  margin-top: 1rem;
+  padding: 0.875rem;
+  background: rgba(255, 159, 10, 0.1);
+  border: 1px solid rgba(255, 159, 10, 0.2);
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #a1a1a6);
+  line-height: 1.6;
+}
+
+.install-note strong {
+  color: var(--vfs-warning, #ff9f0a);
+}
+
+.install-note code {
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+/* Install actions */
+.install-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.ollama-install-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--vfs-primary, #0a84ff);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.ollama-install-link:hover {
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+}
+
+.ollama-install-link svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.ollama-start-btn {
+  padding: 0.625rem 1.5rem;
+  background: var(--vfs-primary, #0a84ff);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ollama-start-btn:hover:not(:disabled) {
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.9);
+  transform: translateY(-1px);
+}
+
+.ollama-start-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error display */
+.ollama-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 69, 58, 0.15);
+  border: 1px solid rgba(255, 69, 58, 0.3);
+  border-radius: 10px;
+  color: var(--vfs-error, #ff453a);
+  font-size: 0.8125rem;
+}
+
+.ollama-error button {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.ollama-error button:hover {
+  opacity: 1;
+}
+
+/* Sections */
+.ollama-section {
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.03));
+  border-radius: 12px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  padding: 1rem;
+}
+
+/* Install All Required Section */
+.install-all-section {
+  background: linear-gradient(
+    135deg,
+    rgba(10, 132, 255, 0.1) 0%,
+    rgba(10, 132, 255, 0.05) 100%
+  );
+  border-color: rgba(10, 132, 255, 0.2);
+}
+
+.install-all-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.install-all-header h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary, #f5f5f7);
+}
+
+.install-all-description {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #a1a1a6);
+  line-height: 1.5;
+}
+
+.ollama-install-all-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--vfs-primary, #0a84ff);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3);
+}
+
+.ollama-install-all-btn:hover:not(:disabled) {
+  background: rgba(10, 132, 255, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.4);
+}
+
+.ollama-install-all-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.ollama-install-all-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.install-all-progress {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--surface, rgba(255, 255, 255, 0.02));
+  border-radius: 8px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.progress-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.8125rem;
+}
+
+.progress-current {
+  color: var(--text-primary, #f5f5f7);
+  font-weight: 500;
+}
+
+.progress-current strong {
+  color: var(--vfs-primary, #0a84ff);
+}
+
+.progress-completed {
+  color: var(--vfs-success, #30d158);
+}
+
+.progress-remaining {
+  color: var(--text-secondary, #a1a1a6);
+}
+
+.required-models-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.required-model-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--surface, rgba(255, 255, 255, 0.02));
+  border-radius: 8px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  transition: all 0.2s ease;
+}
+
+.required-model-item.installed {
+  border-color: rgba(48, 209, 88, 0.3);
+  background: rgba(48, 209, 88, 0.05);
+}
+
+.required-model-item.missing {
+  border-color: rgba(255, 159, 10, 0.3);
+  background: rgba(255, 159, 10, 0.05);
+}
+
+.model-status-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vfs-success, #30d158);
+  flex-shrink: 0;
+}
+
+.required-model-item.missing .model-status-icon {
+  color: var(--vfs-warning, #ff9f0a);
+}
+
+.model-name {
+  font-weight: 600;
+  color: var(--text-primary, #f5f5f7);
+  min-width: 100px;
+}
+
+.model-description {
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #a1a1a6);
+  flex: 1;
+}
+
+.ollama-section h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary, #a1a1a6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.model-count {
+  font-weight: 400;
+  color: var(--text-muted, #8e8e93);
+}
+
+/* Pull form */
+.ollama-pull-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.ollama-pull-form input {
+  flex: 1;
+  padding: 0.625rem 0.875rem;
+  background: var(--surface, #1c1c1e);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  color: var(--text-primary, #f5f5f7);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.ollama-pull-form input:focus {
+  border-color: var(--vfs-primary, #0a84ff);
+  box-shadow: 0 0 0 3px rgba(var(--vfs-primary-rgb, 10, 132, 255), 0.15);
+}
+
+.ollama-pull-form input::placeholder {
+  color: var(--text-muted, #8e8e93);
+}
+
+.ollama-pull-form button {
+  padding: 0.625rem 1.25rem;
+  background: var(--vfs-primary, #0a84ff);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ollama-pull-form button:hover:not(:disabled) {
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.9);
+}
+
+.ollama-pull-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Pull progress */
+.ollama-pull-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--surface, rgba(255, 255, 255, 0.02));
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.progress-status {
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #a1a1a6);
+}
+
+.progress-bar {
+  height: 4px;
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.1));
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--vfs-primary, #0a84ff);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Popular models */
+.ollama-popular {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.popular-label {
+  font-size: 0.75rem;
+  color: var(--text-muted, #8e8e93);
+}
+
+.popular-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.popular-model {
+  padding: 0.25rem 0.625rem;
+  background: var(--surface, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: 6px;
+  color: var(--text-secondary, #a1a1a6);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.popular-model:hover:not(:disabled) {
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.08));
+  color: var(--text-primary, #f5f5f7);
+  border-color: var(--vfs-primary, #0a84ff);
+}
+
+.popular-model:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Model list */
+.ollama-model-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ollama-model-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--surface, rgba(255, 255, 255, 0.02));
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.06));
+  transition: all 0.2s ease;
+}
+
+.ollama-model-item:hover {
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.05));
+}
+
+.ollama-model-item.running {
+  border-color: rgba(48, 209, 88, 0.3);
+  background: rgba(48, 209, 88, 0.05);
+}
+
+.model-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.model-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #f5f5f7);
+}
+
+.model-size {
+  font-size: 0.75rem;
+  color: var(--text-muted, #8e8e93);
+}
+
+.model-status {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--vfs-success, #30d158);
+}
+
+.model-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.model-action-btn {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.model-action-btn.serve {
+  background: var(--vfs-primary, #0a84ff);
+  color: white;
+  border-color: transparent;
+}
+
+.model-action-btn.serve:hover:not(:disabled) {
+  background: rgba(var(--primary-rgb, 10, 132, 255), 0.85);
+}
+
+.model-action-btn.stop {
+  background: var(--vfs-warning, #ff9f0a);
+  color: white;
+  border-color: transparent;
+}
+
+.model-action-btn.stop:hover:not(:disabled) {
+  background: rgba(255, 159, 10, 0.85);
+}
+
+.model-action-btn.delete {
+  background: transparent;
+  color: var(--text-muted, #8e8e93);
+}
+
+.model-action-btn.delete:hover:not(:disabled) {
+  background: rgba(255, 69, 58, 0.15);
+  color: var(--vfs-error, #ff453a);
+  border-color: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.3);
+}
+
+.model-action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Empty state */
+.ollama-empty {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.ollama-empty p {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #a1a1a6);
+}
+
+.ollama-empty .hint {
+  font-size: 0.75rem;
+  color: var(--text-muted, #8e8e93);
+}
+
+/* Light theme overrides */
+[data-theme='light'] .ollama-manager {
+  --surface: #ffffff;
+  --surface-elevated: rgba(0, 0, 0, 0.03);
+  --border: rgba(0, 0, 0, 0.08);
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-muted: #8e8e93;
+}
+
+[data-theme='light'] .ollama-pull-form input {
+  background: #f5f5f7;
+}
+
+[data-theme='light'] .ollama-model-item {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='light'] .ollama-model-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* Resource Settings */
+.ollama-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.ollama-section-header h4 {
+  margin: 0;
+}
+
+.ollama-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  padding: 0.375rem;
+  cursor: pointer;
+  color: var(--text-secondary, #a1a1a6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.ollama-toggle-btn:hover {
+  background: var(--surface, rgba(255, 255, 255, 0.05));
+  border-color: var(--border-hover, rgba(255, 255, 255, 0.15));
+  color: var(--text-primary, #f5f5f7);
+}
+
+.ollama-toggle-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.section-description {
+  font-size: 0.8125rem;
+  color: var(--text-muted, #8e8e93);
+  margin: 0.5rem 0 1rem 0;
+  line-height: 1.5;
+}
+
+.ollama-resource-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+}
+
+.resource-setting {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.resource-setting label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+.setting-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #f5f5f7);
+}
+
+.setting-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted, #8e8e93);
+  line-height: 1.4;
+}
+
+.setting-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.setting-input-group input[type='number'] {
+  flex: 1;
+  padding: 0.625rem 0.75rem;
+  background: var(--surface, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  color: var(--text-primary, #f5f5f7);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.setting-input-group input[type='number']:focus {
+  border-color: var(--vfs-primary, #0a84ff);
+  box-shadow: 0 0 0 3px rgba(var(--vfs-primary-rgb, 10, 132, 255), 0.15);
+}
+
+.setting-input-group input[type='number']::-webkit-inner-spin-button,
+.setting-input-group input[type='number']::-webkit-outer-spin-button {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.input-unit {
+  font-size: 0.8125rem;
+  color: var(--text-secondary, #a1a1a6);
+  min-width: 3rem;
+  text-align: left;
+}
+
+.slider-container {
+  margin-top: 0.5rem;
+}
+
+.resource-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.1));
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.resource-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--vfs-primary, #0a84ff);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.resource-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.2);
+}
+
+.resource-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--vfs-primary, #0a84ff);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.resource-slider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.2);
+}
+
+.resource-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--surface, rgba(255, 255, 255, 0.02));
+  border-radius: 8px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.06));
+  margin-top: 0.5rem;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.summary-label {
+  font-size: 0.75rem;
+  color: var(--text-muted, #8e8e93);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #f5f5f7);
+}

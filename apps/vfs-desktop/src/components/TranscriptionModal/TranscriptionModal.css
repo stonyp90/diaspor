@@ -1,0 +1,209 @@
+.transcription-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+.transcription-modal {
+  background: var(--vfs-bg-primary, #1a1a1a);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.1));
+}
+
+.transcription-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.1));
+}
+
+.transcription-modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--vfs-text-primary, #ffffff);
+}
+
+.transcription-modal-close {
+  background: none;
+  border: none;
+  color: var(--vfs-text-secondary, #999);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.transcription-modal-close:hover {
+  background: var(--vfs-bg-secondary, rgba(255, 255, 255, 0.1));
+  color: var(--vfs-text-primary, #ffffff);
+}
+
+.transcription-modal-content {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.transcription-modal-error {
+  background: rgba(255, 59, 48, 0.2);
+  border: 1px solid rgba(255, 59, 48, 0.5);
+  color: #ff3b30;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.transcription-modal-field {
+  margin-bottom: 24px;
+}
+
+.transcription-modal-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--vfs-text-primary, #ffffff);
+}
+
+.transcription-modal-field select,
+.transcription-modal-field input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--vfs-bg-secondary, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  color: var(--vfs-text-primary, #ffffff);
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.transcription-modal-field select:focus,
+.transcription-modal-field input:focus {
+  outline: none;
+  border-color: var(--vfs-primary, #007aff);
+}
+
+.transcription-modal-field select:disabled,
+.transcription-modal-field input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.output-path-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.output-path-input-group input {
+  flex: 1;
+}
+
+.output-path-input-group button {
+  padding: 10px 16px;
+  background: var(--vfs-bg-secondary, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.1));
+  border-radius: 6px;
+  color: var(--vfs-text-primary, #ffffff);
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 16px;
+}
+
+.output-path-input-group button:hover:not(:disabled) {
+  background: var(--vfs-bg-tertiary, rgba(255, 255, 255, 0.1));
+}
+
+.output-path-input-group button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.field-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--vfs-text-secondary, #999);
+}
+
+.transcription-modal-info {
+  background: var(--vfs-bg-secondary, rgba(255, 255, 255, 0.05));
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.transcription-modal-info p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--vfs-text-secondary, #999);
+  line-height: 1.5;
+}
+
+.transcription-modal-info strong {
+  color: var(--vfs-text-primary, #ffffff);
+}
+
+.transcription-modal-actions {
+  display: flex;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.1));
+  justify-content: flex-end;
+}
+
+.transcription-modal-actions button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s, background 0.2s;
+  border: none;
+}
+
+.transcription-modal-cancel {
+  background: var(--vfs-bg-secondary, rgba(255, 255, 255, 0.05));
+  color: var(--vfs-text-primary, #ffffff);
+}
+
+.transcription-modal-cancel:hover:not(:disabled) {
+  background: var(--vfs-bg-tertiary, rgba(255, 255, 255, 0.1));
+}
+
+.transcription-modal-start {
+  background: var(--vfs-primary, #007aff);
+  color: white;
+}
+
+.transcription-modal-start:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.transcription-modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

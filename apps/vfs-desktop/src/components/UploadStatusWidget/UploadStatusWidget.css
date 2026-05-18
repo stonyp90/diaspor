@@ -1,0 +1,491 @@
+/**
+ * UploadStatusWidget Styles
+ */
+
+.upload-status-widget {
+  margin-top: var(--space-3, 12px);
+  border-top: 1px solid var(--vfs-separator, rgba(255, 255, 255, 0.08));
+  background: var(--vfs-bg-secondary, rgba(255, 255, 255, 0.02));
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.upload-status-header {
+  width: 100%;
+  padding: var(--space-2, 8px) var(--space-3, 12px);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.2s ease;
+  color: var(--vfs-text-primary, #f5f5f7);
+}
+
+.upload-status-header:hover {
+  background: var(--vfs-bg-hover, rgba(255, 255, 255, 0.05));
+}
+
+.upload-status-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  flex: 1;
+}
+
+.upload-status-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--vfs-primary, #6366f1);
+  flex-shrink: 0;
+}
+
+.upload-status-title {
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--vfs-font-sans, 'Inter', sans-serif);
+  color: var(--vfs-text-primary, #f5f5f7);
+}
+
+.upload-status-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  background: var(--vfs-primary, #6366f1);
+  color: white;
+  border-radius: var(--radius-sm, 4px);
+  min-width: 18px;
+  text-align: center;
+}
+
+.upload-status-widget:has(.upload-status-item-failed) .upload-status-badge {
+  background: var(--vfs-error, #ff453a);
+  animation: pulseError 2s infinite;
+}
+
+@keyframes pulseError {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Smooth progress bar transitions */
+.upload-status-progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-status-progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: progressGlow 2s infinite;
+  pointer-events: none;
+}
+
+@keyframes progressGlow {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.upload-status-chevron {
+  width: 12px;
+  height: 12px;
+  color: var(--vfs-text-muted, #8e8e93);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.upload-status-chevron.expanded {
+  transform: rotate(180deg);
+}
+
+.upload-status-content {
+  padding: var(--space-2, 8px);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.upload-status-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.upload-status-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.upload-status-content::-webkit-scrollbar-thumb {
+  background: var(--vfs-border, rgba(255, 255, 255, 0.15));
+  border-radius: var(--radius-sm, 4px);
+}
+
+.upload-status-section {
+  margin-bottom: var(--space-3, 12px);
+}
+
+.upload-status-section:last-child {
+  margin-bottom: 0;
+}
+
+.upload-status-section-header {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--vfs-text-muted, #8e8e93);
+  margin-bottom: var(--space-2, 8px);
+  padding: 0 var(--space-1, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.upload-status-view-all-btn,
+.upload-status-view-less-btn {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--vfs-primary, #6366f1);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm, 4px);
+  transition: all 0.2s ease;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.upload-status-view-all-btn:hover,
+.upload-status-view-less-btn:hover {
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.1);
+}
+
+.upload-status-item-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  flex-shrink: 0;
+}
+
+.upload-status-timestamp {
+  font-size: 9px;
+  color: var(--vfs-text-muted, #8e8e93);
+  font-weight: 400;
+}
+
+.upload-status-item {
+  padding: var(--space-2, 8px);
+  background: var(--vfs-bg-primary, rgba(255, 255, 255, 0.03));
+  border-radius: var(--radius-sm, 4px);
+  margin-bottom: var(--space-2, 8px);
+  transition: background-color 0.2s ease;
+}
+
+.upload-status-item:last-child {
+  margin-bottom: 0;
+}
+
+.upload-status-item:hover {
+  background: var(--vfs-bg-hover, rgba(255, 255, 255, 0.05));
+}
+
+.upload-status-item-completed {
+  opacity: 0.7;
+  animation: fadeInSuccess 0.3s ease-out;
+}
+
+@keyframes fadeInSuccess {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  100% {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+}
+
+/* Success checkmark animation */
+.upload-status-success-icon {
+  animation: checkmarkPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes checkmarkPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.upload-status-item-failed {
+  border-left: 3px solid var(--vfs-error, #ff453a);
+  animation: shakeError 0.5s ease-out;
+}
+
+@keyframes shakeError {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.upload-status-error-message {
+  font-size: 10px;
+  color: var(--vfs-error, #ff453a);
+  margin-bottom: var(--space-1, 4px);
+  padding: var(--space-1, 4px);
+  background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.1);
+  border-radius: var(--radius-sm, 4px);
+  word-break: break-word;
+}
+
+.upload-status-retry-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--vfs-primary, #6366f1);
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.1);
+  border: 1px solid rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.2);
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-status-retry-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.2);
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.3s,
+    height 0.3s;
+}
+
+.upload-status-retry-btn:hover {
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.2);
+  border-color: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.2);
+}
+
+.upload-status-retry-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.upload-status-retry-btn:active::before {
+  width: 200px;
+  height: 200px;
+}
+
+.upload-status-retry-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.upload-status-progress-failed {
+  background: var(--vfs-error, #ff453a) !important;
+}
+
+.upload-status-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-1, 4px);
+}
+
+.upload-status-filename {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--vfs-text-primary, #f5f5f7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.upload-status-percentage {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--vfs-primary, #6366f1);
+  margin-left: var(--space-2, 8px);
+  flex-shrink: 0;
+}
+
+.upload-status-success-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--vfs-success, #30d158);
+  flex-shrink: 0;
+  margin-left: var(--space-2, 8px);
+}
+
+.upload-status-dismiss-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  margin-left: var(--space-1, 4px);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm, 4px);
+  transition: all 0.2s ease;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.upload-status-dismiss-btn:hover {
+  opacity: 1;
+  background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.1);
+}
+
+.upload-status-dismiss-btn:active {
+  transform: scale(0.95);
+}
+
+.upload-status-dismiss-icon {
+  width: 12px;
+  height: 12px;
+  color: var(--vfs-text-muted, #8e8e93);
+  transition: color 0.2s ease;
+}
+
+.upload-status-dismiss-btn:hover .upload-status-dismiss-icon {
+  color: var(--vfs-error, #ff453a);
+}
+
+.upload-status-progress-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--vfs-bg-primary, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-sm, 4px);
+  overflow: hidden;
+  margin-bottom: var(--space-1, 4px);
+}
+
+.upload-status-progress-fill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--vfs-primary, #6366f1),
+    var(--vfs-primary-light, #818cf8)
+  );
+  border-radius: var(--radius-sm, 4px);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated shimmer effect for active uploads */
+.upload-status-item:not(.upload-status-item-completed):not(
+    .upload-status-item-failed
+  )
+  .upload-status-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.upload-status-item-details {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1, 4px);
+  font-size: 10px;
+  color: var(--vfs-text-muted, #8e8e93);
+}
+
+.upload-status-separator {
+  color: var(--vfs-text-muted, #8e8e93);
+  opacity: 0.5;
+}
+
+/* Light theme */
+[data-theme='light'] .upload-status-widget {
+  background: var(--vfs-bg-secondary, rgba(0, 0, 0, 0.02));
+  border-top-color: var(--vfs-separator, rgba(0, 0, 0, 0.1));
+}
+
+[data-theme='light'] .upload-status-header:hover {
+  background: var(--vfs-bg-hover, rgba(0, 0, 0, 0.05));
+}
+
+[data-theme='light'] .upload-status-item {
+  background: var(--vfs-bg-primary, rgba(0, 0, 0, 0.03));
+}
+
+[data-theme='light'] .upload-status-item:hover {
+  background: var(--vfs-bg-hover, rgba(0, 0, 0, 0.05));
+}
+
+[data-theme='light'] .upload-status-progress-bar {
+  background: var(--vfs-bg-primary, rgba(0, 0, 0, 0.1));
+}

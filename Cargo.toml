@@ -21,7 +21,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.1.0-alpha.2"
+version = "0.1.0-alpha.3"
 edition = "2024"
 rust-version = "1.85"
 authors = ["Anthony Paquet <anthony@diaspor.io>"]
@@ -35,18 +35,18 @@ categories = ["multimedia::video", "filesystem", "command-line-utilities", "asyn
 
 [workspace.dependencies]
 # Internal crates
-diaspor-core = { version = "0.1.0-alpha.2", path = "crates/diaspor-core" }
-diaspor-backend-memory = { version = "0.1.0-alpha.2", path = "crates/diaspor-backend-memory" }
-diaspor-backend-local = { version = "0.1.0-alpha.2", path = "crates/diaspor-backend-local" }
-diaspor-index = { version = "0.1.0-alpha.2", path = "crates/diaspor-index" }
+diaspor-core = { version = "0.1.0-alpha.3", path = "crates/diaspor-core" }
+diaspor-backend-memory = { version = "0.1.0-alpha.3", path = "crates/diaspor-backend-memory" }
+diaspor-backend-local = { version = "0.1.0-alpha.3", path = "crates/diaspor-backend-local" }
+diaspor-index = { version = "0.1.0-alpha.3", path = "crates/diaspor-index" }
 # M7+ non-verbal AI pipeline (trait surface only at v0.1.0-alpha)
-diaspor-frame-pipeline = { version = "0.1.0-alpha.2", path = "crates/diaspor-frame-pipeline" }
-diaspor-vision = { version = "0.1.0-alpha.2", path = "crates/diaspor-vision" }
-diaspor-infer = { version = "0.1.0-alpha.2", path = "crates/diaspor-infer" }
-diaspor-stream-ingest = { version = "0.1.0-alpha.2", path = "crates/diaspor-stream-ingest" }
-diaspor-events = { version = "0.1.0-alpha.2", path = "crates/diaspor-events" }
-diaspor-train = { version = "0.1.0-alpha.2", path = "crates/diaspor-train" }
-diaspor-api-server = { version = "0.1.0-alpha.2", path = "crates/diaspor-api-server" }
+diaspor-frame-pipeline = { version = "0.1.0-alpha.3", path = "crates/diaspor-frame-pipeline" }
+diaspor-vision = { version = "0.1.0-alpha.3", path = "crates/diaspor-vision" }
+diaspor-infer = { version = "0.1.0-alpha.3", path = "crates/diaspor-infer" }
+diaspor-stream-ingest = { version = "0.1.0-alpha.3", path = "crates/diaspor-stream-ingest" }
+diaspor-events = { version = "0.1.0-alpha.3", path = "crates/diaspor-events" }
+diaspor-train = { version = "0.1.0-alpha.3", path = "crates/diaspor-train" }
+diaspor-api-server = { version = "0.1.0-alpha.3", path = "crates/diaspor-api-server" }
 
 # HTTP / web framework (M10 — api.diaspor.io)
 axum = "0.7"

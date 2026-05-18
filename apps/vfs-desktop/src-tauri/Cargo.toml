@@ -1,0 +1,145 @@
+# Standalone workspace marker — keeps this Tauri crate out of the
+# top-level diaspor Cargo workspace at ../../../Cargo.toml. The desktop
+# app has its own Rust edition (2021 vs workspace's 2024) and a totally
+# different dep set, so sharing a target dir or workspace.dependencies
+# would be more noise than signal.
+[workspace]
+
+[package]
+name = "ursly-vfs"
+version = "2.0.6"
+description = "Ursly VFS - Virtual Cloud File System"
+authors = ["Ursly.io"]
+edition = "2021"
+rust-version = "1.70"
+
+[lib]
+name = "ursly_vfs_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-shell = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-updater = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+
+# VFS & Storage
+opendal = { version = "0.45", features = ["services-s3", "services-fs", "services-gcs", "services-azblob"] }
+anyhow = "1"
+libc = "0.2"
+bytes = "1"
+
+# AWS SDK for DataSync (optional, only needed if using DataSync provider)
+# aws-sdk-datasync = { version = "1", optional = true }
+# aws-config = { version = "1", optional = true }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Sync primitives
+parking_lot = "0.12"
+once_cell = "1.19"
+
+# System metrics
+sysinfo = "0.31"
+
+# GPU detection (cross-platform)
+wgpu = "0.19"
+
+# Async runtime
+futures = "0.3"
+
+# Directory traversal
+walkdir = "2"
+
+# Date/time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Base64 encoding
+data-encoding = "2"
+base64 = "0.22"
+
+# HTTP client for Ollama API
+reqwest = { version = "0.11", features = ["json", "stream"] }
+
+# VFS Clean Architecture dependencies
+async-trait = "0.1"
+uuid = { version = "1", features = ["v4", "serde"] }
+md5 = "0.7"
+dirs = "5.0"
+tempfile = "3"
+
+# POSIX file operations support
+filetime = "0.2"
+
+# Clipboard URL encoding for Linux
+urlencoding = "2.1"
+
+# HLS streaming server (optional)
+axum = { version = "0.7", optional = true }
+tower = { version = "0.4", optional = true }
+tower-http = { version = "0.5", features = ["cors", "fs"], optional = true }
+
+# Speech-to-text for transcription
+vosk = { version = "0.3", optional = true }
+# Regex for parsing FFmpeg output
+regex = "1"
+
+[target.'cfg(unix)'.dependencies]
+nix = { version = "0.27", features = ["fs"] }
+# FUSE filesystem support (optional, only when mount feature is enabled)
+fuser = { version = "0.14", optional = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# macOS GPU metrics via Metal
+metal = "0.28"
+objc = "0.2"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+windows = { version = "0.52", features = [
+    "Win32_Storage_FileSystem",
+    "Win32_Security",
+    "Win32_Foundation",
+    "Win32_Graphics_Direct3D",
+    "Win32_Graphics_Direct3D11",
+    "Win32_Graphics_Dxgi"
+] }
+winreg = "0.52"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+media = ["axum", "tower", "tower-http"]
+# VFS feature flags (for conditional compilation)
+vfs = []
+# FUSE mounting support (requires FUSE libraries)
+mount = ["fuser"]
+# NVIDIA GPU support (optional, requires nvml_wrapper)
+nvidia = []
+# Integration tests (requires Docker)
+# Note: This feature flag is for conditional compilation in test code
+integration-tests = []
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true
+
+[dev-dependencies]
+# Testcontainers for integration testing
+# Note: Only used when running integration tests with Docker
+testcontainers = "0.16"
+# Additional test utilities
+tokio-test = "0.4"
+# reqwest is already in dependencies, no need to add here
+
+

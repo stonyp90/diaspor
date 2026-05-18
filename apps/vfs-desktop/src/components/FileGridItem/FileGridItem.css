@@ -1,0 +1,366 @@
+/**
+ * FileGridItem Styles
+ * 
+ * Styles for grid view items are inherited from FinderPage.css
+ */
+
+/* Visual indicators for tags and comments */
+.grid-item-badges {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.grid-tag-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  background: rgba(var(--finder-accent-rgb, 10, 132, 255), 0.25);
+  border: 1px solid rgba(var(--finder-accent-rgb, 10, 132, 255), 0.5);
+  border-radius: 9px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0.9;
+  transition: all 0.15s ease;
+}
+
+.file-item:hover .grid-tag-indicator {
+  opacity: 1;
+  background: rgba(var(--finder-accent-rgb, 10, 132, 255), 0.35);
+  border-color: rgba(var(--finder-accent-rgb, 10, 132, 255), 0.6);
+}
+
+.grid-badge-count {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--finder-accent, #0a84ff);
+  line-height: 1;
+}
+
+.grid-comment-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: rgba(255, 193, 7, 0.25);
+  border: 1px solid rgba(255, 193, 7, 0.5);
+  border-radius: 9px;
+  color: #ffc107;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.15s ease;
+  opacity: 0.9;
+}
+
+.file-item:hover .grid-comment-indicator {
+  opacity: 1;
+  background: rgba(255, 193, 7, 0.35);
+  border-color: rgba(255, 193, 7, 0.6);
+}
+
+.grid-comment-indicator:hover {
+  background: rgba(255, 193, 7, 0.45);
+  transform: scale(1.1);
+}
+
+.file-item:hover .grid-item-badges {
+  opacity: 1;
+}
+
+/* Comprehensive hover info card */
+.grid-item-info-card {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  width: 260px;
+  max-width: calc(100vw - 40px);
+  padding: 8px;
+  background: var(--finder-surface, rgba(30, 30, 30, 1));
+  border: 1px solid var(--finder-border, rgba(255, 255, 255, 0.2));
+  border-radius: 8px;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 10001;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition:
+    opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top center;
+}
+
+.file-item:hover .grid-item-info-card {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* Adjust position for items near edges */
+.file-item:nth-last-child(-n+3) .grid-item-info-card {
+  top: auto;
+  bottom: calc(100% + 6px);
+  transform-origin: bottom center;
+}
+
+.file-item:nth-last-child(-n+3):hover .grid-item-info-card {
+  transform: translateX(-50%) translateY(0);
+}
+
+.info-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--finder-border, rgba(255, 255, 255, 0.1));
+}
+
+.info-card-name {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--finder-text-primary, #f5f5f7);
+  line-height: 1.2;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.info-card-storage-class {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.info-card-storage-class .storage-tier-badge {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.info-card-storage-class .storage-tier-badge.local {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.info-card-storage-class .storage-tier-badge.hot {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--tier-hot, #10b981);
+}
+
+.info-card-storage-class .storage-tier-badge.nearline {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--tier-nearline, #8b5cf6);
+}
+
+.info-card-storage-class .storage-tier-badge.cold {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--tier-cold, #3b82f6);
+}
+
+.info-card-storage-label {
+  font-size: 9px;
+  color: var(--finder-text-secondary, #a1a1a6);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.info-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--finder-border, rgba(255, 255, 255, 0.1));
+}
+
+.info-card-meta-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+}
+
+.meta-label {
+  color: var(--finder-text-secondary, #a1a1a6);
+  font-weight: 500;
+}
+
+.meta-value {
+  color: var(--finder-text-primary, #f5f5f7);
+  font-weight: 400;
+}
+
+.info-card-section {
+  margin-bottom: 6px;
+}
+
+.info-card-section:last-child {
+  margin-bottom: 0;
+}
+
+.info-card-section-title {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--finder-text-secondary, #a1a1a6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.info-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.info-card-tag {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  border: 1px solid;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.info-card-tag:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.info-card-comment {
+  font-size: 10px;
+  color: var(--finder-text-primary, #f5f5f7);
+  line-height: 1.4;
+  word-wrap: break-word;
+  padding: 6px;
+  background: rgba(var(--finder-accent-rgb, 10, 132, 255), 0.05);
+  border: 1px solid rgba(var(--finder-accent-rgb, 10, 132, 255), 0.1);
+  border-radius: 4px;
+}
+
+/* Light theme adjustments */
+[data-theme='light'] .grid-item-info-card {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+}
+
+[data-theme='light'] .info-card-name {
+  color: var(--finder-text-primary, #1d1d1f);
+}
+
+[data-theme='light'] .info-card-comment {
+  background: rgba(10, 132, 255, 0.05);
+  border-color: rgba(10, 132, 255, 0.15);
+  color: var(--finder-text-primary, #1d1d1f);
+}
+
+/* Storage class badge overlay for grid view */
+.file-storage-class-badge {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.file-storage-class-badge .storage-tier-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  max-width: 18px;
+  min-height: 18px;
+  max-height: 18px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+  opacity: 0.9;
+}
+
+.file-storage-class-badge .storage-tier-badge.local {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.file-storage-class-badge .storage-tier-badge.hot {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--tier-hot, #10b981);
+}
+
+.file-storage-class-badge .storage-tier-badge.nearline {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--tier-nearline, #8b5cf6);
+}
+
+.file-storage-class-badge .storage-tier-badge.cold {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--tier-cold, #3b82f6);
+}
+
+.file-item:hover .file-storage-class-badge .storage-tier-badge {
+  opacity: 1;
+}
+
+.file-item {
+  position: relative; /* Ensure absolute positioning works for badges and info card */
+}
+
+.file-item .file-icon {
+  position: relative;
+}
+
+/* Thumbnail image styling */
+.file-item .file-icon .file-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.file-item .file-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}

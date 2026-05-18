@@ -1,0 +1,265 @@
+/* Header Styles - Modern macOS-inspired design */
+/* Uses global CSS variables from ThemeContext */
+
+/* =========================================
+   HEADER CONTAINER
+   ========================================= */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--surface, #2c2c2e);
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  -webkit-app-region: drag;
+  height: 52px;
+  gap: 16px;
+  position: relative;
+  z-index: 10000; /* Always on top, including above AuditPage */
+}
+
+/* =========================================
+   BRAND SECTION
+   ========================================= */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  padding: 4px 8px 4px 4px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  justify-content: flex-start;
+  min-width: 0;
+  max-width: fit-content;
+}
+
+.header-brand:hover {
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.06));
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary, #f5f5f7);
+  letter-spacing: -0.01em;
+}
+
+/* =========================================
+   NAVIGATION TABS
+   ========================================= */
+.header-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--background, #1c1c1e);
+  border-radius: 10px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  flex-shrink: 0;
+  -webkit-app-region: no-drag;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  min-width: fit-content;
+  white-space: nowrap;
+}
+
+.header-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-secondary, #a1a1a6);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+}
+
+.header-tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.header-tab:hover {
+  color: var(--text-primary, #f5f5f7);
+}
+
+.header-tab:hover::before {
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.06));
+  opacity: 1;
+}
+
+/* Active tab with gradient and glow */
+.header-tab.active {
+  background: linear-gradient(
+    135deg,
+    var(--primary, #6366f1) 0%,
+    var(--secondary, #a855f7) 100%
+  );
+  color: white;
+  font-weight: 600;
+  box-shadow:
+    0 2px 8px rgba(99, 102, 241, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.header-tab.active:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.header-tab.active:hover::before {
+  opacity: 0;
+}
+
+/* Icon styling */
+.header-tab svg {
+  position: relative;
+  z-index: 1;
+  opacity: 0.7;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+
+.header-tab:hover svg {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.header-tab.active svg {
+  opacity: 1;
+}
+
+/* Text styling */
+.header-tab span {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================
+   STATUS SECTION
+   ========================================= */
+.header-status-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  -webkit-app-region: no-drag;
+  flex: 1;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.header-system-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 10px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.system-info-item {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.system-info-cpu {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.system-info-divider {
+  color: var(--text-muted);
+  opacity: 0.5;
+  font-weight: 300;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(52, 199, 89, 0.1);
+  border: 1px solid rgba(52, 199, 89, 0.2);
+  border-radius: 100px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: #34c759;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 8px rgba(52, 199, 89, 0.6);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+}
+
+.status-text {
+  font-size: 10px;
+  font-weight: 600;
+  color: #34c759;
+  letter-spacing: 0.02em;
+}
+
+/* =========================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================= */
+@media (max-width: 600px) {
+  .header {
+    padding: 6px 12px;
+    gap: 8px;
+  }
+
+  .brand-name {
+    display: none;
+  }
+
+  .status-text {
+    display: none;
+  }
+
+  .header-system-info {
+    display: none;
+  }
+
+  .header-tab span {
+    display: none;
+  }
+
+  .header-tab {
+    padding: 8px 12px;
+  }
+}
