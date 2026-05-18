@@ -205,6 +205,15 @@ pub fn resolve_brew_path() -> Option<String> {
     None
 }
 
+/// Non-macOS stub. Homebrew is a macOS-only package manager, so on Linux
+/// and Windows there is no `brew` binary to resolve. Returning `None`
+/// keeps the cross-platform callsites compiling without each having to
+/// gate on `#[cfg(target_os = "macos")]`.
+#[cfg(not(target_os = "macos"))]
+pub fn resolve_brew_path() -> Option<String> {
+    None
+}
+
 // =============================================================================
 // Async Command Builder for tokio::process::Command
 // =============================================================================
