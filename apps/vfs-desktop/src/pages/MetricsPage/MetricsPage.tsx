@@ -117,10 +117,18 @@ const formatUptime = (s: number) => {
   return `${m}m`;
 };
 
-const getColor = (v: number, t = 90) => {
-  if (v < t * 0.6) return 'var(--vfs-success, #30d158)';
-  if (v < t * 0.85) return 'var(--vfs-warning, #ff9f0a)';
-  return 'var(--vfs-error, #ff453a)';
+// Brand-aligned per-metric colors. Default base is primary (indigo);
+// callers pass cyan/violet for CPU/GPU. We only swap to a warning hue
+// when the value approaches the threshold — the inline alert indicator
+// + header badge handle the loud "this is broken" signal, so the chart
+// itself stays calm and brand-on.
+const BRAND_CYAN = 'var(--vfs-accent, #22d3ee)';
+const BRAND_INDIGO = 'var(--vfs-primary, #4338ca)';
+const BRAND_VIOLET = 'var(--vfs-secondary, #6366f1)';
+
+const getColor = (v: number, t = 90, base: string = BRAND_INDIGO) => {
+  if (v >= t * 0.9) return 'var(--vfs-warning, #f59e0b)';
+  return base;
 };
 
 // Circular Progress Ring (unused - kept for future use)
@@ -741,18 +749,29 @@ export function MetricsPage() {
 
   const sys = metrics.system;
   const gpu = metrics.gpus[0];
-  const cpuColor = getColor(sys.cpu_usage, thresholds.cpu);
-  const memColor = getColor(sys.memory_usage_percent, thresholds.memory);
+  // Per-metric brand assignment: CPU=cyan, Memory=indigo, GPU=violet,
+  // Load=indigo. getColor swaps any of these to amber only when value
+  // approaches the threshold.
+  const cpuColor = getColor(sys.cpu_usage, thresholds.cpu, BRAND_CYAN);
+  const memColor = getColor(
+    sys.memory_usage_percent,
+    thresholds.memory,
+    BRAND_INDIGO,
+  );
   const gpuColor = gpu
-    ? getColor(gpu.current.gpu_utilization, thresholds.gpu)
-    : 'var(--vfs-success, #30d158)';
+    ? getColor(gpu.current.gpu_utilization, thresholds.gpu, BRAND_VIOLET)
+    : BRAND_VIOLET;
   // Load average: use CPU cores as baseline (load > cores = overloaded)
   // Load average is a ratio, not a percentage. For display purposes, we show it as
   // a percentage relative to core count, but cap the visual bar at 200% (2x cores)
   const coreCount = sys.per_core_usage?.length || 4;
   const loadRatio = sys.load_average[0] / coreCount; // e.g., 37.55 / 14 = 2.68 (268% of cores)
   const loadPercent = Math.min(loadRatio * 100, 200); // Cap visual at 200% for progress bar
-  const loadColor = getColor(Math.min(loadRatio * 100, 100), 100); // Color based on 100% threshold
+  const loadColor = getColor(
+    Math.min(loadRatio * 100, 100),
+    100,
+    BRAND_INDIGO,
+  );
 
   return (
     <div className="metrics-page">
@@ -982,25 +1001,25 @@ export function MetricsPage() {
               label="Read"
               value={formatThroughput(sys.disk_read_bytes_sec)}
               icon={<UpIcon />}
-              color="var(--vfs-success, #30d158)"
+              color={BRAND_CYAN}
             />
             <IOStat
               label="Write"
               value={formatThroughput(sys.disk_write_bytes_sec)}
               icon={<DownIcon />}
-              color="var(--vfs-warning, #ff9f0a)"
+              color={BRAND_INDIGO}
             />
           </div>
           <div className="io-charts">
             <LiveChart
               data={history.diskR}
-              color="var(--vfs-success, #30d158)"
+              color={BRAND_CYAN}
               height={50}
               showGrid={false}
             />
             <LiveChart
               data={history.diskW}
-              color="var(--vfs-warning, #ff9f0a)"
+              color={BRAND_INDIGO}
               height={50}
               showGrid={false}
             />
@@ -1025,25 +1044,25 @@ export function MetricsPage() {
               label="Download"
               value={formatThroughput(sys.network_rx_bytes_sec)}
               icon={<DownIcon />}
-              color="var(--vfs-primary, #0a84ff)"
+              color={BRAND_CYAN}
             />
             <IOStat
               label="Upload"
               value={formatThroughput(sys.network_tx_bytes_sec)}
               icon={<UpIcon />}
-              color="var(--vfs-secondary, #5e5ce6)"
+              color={BRAND_VIOLET}
             />
           </div>
           <div className="io-charts">
             <LiveChart
               data={history.netRx}
-              color="var(--vfs-primary, #0a84ff)"
+              color={BRAND_CYAN}
               height={50}
               showGrid={false}
             />
             <LiveChart
               data={history.netTx}
-              color="var(--vfs-secondary, #5e5ce6)"
+              color={BRAND_VIOLET}
               height={50}
               showGrid={false}
             />
