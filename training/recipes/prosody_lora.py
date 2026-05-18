@@ -27,7 +27,7 @@ from pathlib import Path
 import numpy as np
 import torch
 from peft import LoraConfig as PeftLoraConfig
-from peft import TaskType, get_peft_model, get_peft_model_state_dict
+from peft import get_peft_model, get_peft_model_state_dict
 from torch.utils.data import DataLoader, Dataset
 from transformers import (
     AutoFeatureExtractor,
@@ -104,12 +104,25 @@ def train(
 ) -> Path:
     feature_extractor = AutoFeatureExtractor.from_pretrained(BASE_MODEL)
     model = Wav2Vec2ForSequenceClassification.from_pretrained(BASE_MODEL, num_labels=2)
+    # Wav2Vec2 doesn't implement `get_input_embeddings()` — it has no token table.
+    # peft's default gradient-checkpointing prep calls into that path and crashes;
+    # since our synthetic dataset is tiny we don't need checkpointing anyway.
+    if hasattr(model, "gradient_checkpointing_disable"):
+        model.gradient_checkpointing_disable()
 
     peft_config = PeftLoraConfig(
-        task_type=TaskType.FEATURE_EXTRACTION,
+        # Deliberately no `task_type=` — peft's SEQ_CLS path injects an `input_ids`
+        # kwarg into the wrapped forward(), but Wav2Vec2's forward() takes
+        # `input_values` (audio is not tokenised). Leaving task_type unset keeps
+        # peft as a pure LoRA injector that passes through whatever kwargs the
+        # caller supplies.
         r=lora.rank,
         lora_alpha=lora.alpha,
         target_modules=WAV2VEC2_TARGET_MODULES,
+        # Train the classifier head alongside the LoRA adapters so the artifact is
+        # actually serviceable; without this, only LoRA deltas land in the file and
+        # the head stays at HF's random init.
+        modules_to_save=["classifier"],
         lora_dropout=0.05,
         bias="none",
     )

@@ -8,23 +8,21 @@ Cargo.lock.bak
 /.idea
 /.vscode
 .DS_Store
-
 # Coverage
 *.profraw
 *.profdata
 /coverage
-
 # Local env
 .env
 .env.local
-
 # Site deploy helper that holds AWS creds (template-only in tree)
 **/deploy-with-credentials.sh
-
 # Local notes
 /NOTES.local.md
-
 # Internal review notes (kept outside repo)
 _*.md
 _RED_TEAM_REVIEW.md
 _STRATEGIC_DECISION.md
+# Python bytecode caches
+training/**/__pycache__/
+training/.venv/
