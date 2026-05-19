@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://diaspor.io/</loc>
-    <lastmod>2026-01-04</lastmod>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diaspor.io/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://diaspor.io/fr/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://diaspor.io/" />
   </url>
   <url>
-    <loc>https://diaspor.io/#features</loc>
-    <lastmod>2026-01-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://diaspor.io/#product</loc>
-    <lastmod>2026-01-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://diaspor.io/#pricing</loc>
-    <lastmod>2026-01-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://diaspor.io/#download</loc>
-    <lastmod>2026-01-04</lastmod>
+    <loc>https://diaspor.io/fr/</loc>
+    <lastmod>2026-05-18</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diaspor.io/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://diaspor.io/fr/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://diaspor.io/" />
   </url>
 </urlset>
