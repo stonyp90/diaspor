@@ -161,21 +161,29 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({
     return `${mins}m ${secs}s`;
   };
 
-  const getStatusColor = (): string => {
+  const getStatusToken = ():
+    | 'running'
+    | 'complete'
+    | 'failed'
+    | 'paused'
+    | 'pending' => {
+    if (isPaused) return 'paused';
     switch (progress.status) {
       case 'Completed':
-        return 'var(--vfs-success, #30d158)';
+        return 'complete';
       case 'Failed':
-        return 'var(--vfs-error, #ff453a)';
+        return 'failed';
       case 'Paused':
-        return 'var(--vfs-warning, #ff9f0a)';
+        return 'paused';
+      case 'InProgress':
+        return 'running';
       default:
-        return 'var(--vfs-primary, #6366f1)';
+        return 'pending';
     }
   };
 
   return (
-    <div className="upload-progress">
+    <div className="upload-progress" data-status={getStatusToken()}>
       <div className="upload-progress-header">
         <div className="upload-progress-info">
           <div className="upload-progress-filename" title={fileName}>
@@ -297,7 +305,6 @@ export const UploadProgress: React.FC<UploadProgressProps> = ({
                   : calculatedPercentage;
               return Math.max(0, Math.min(100, displayPercentage));
             })()}%`,
-            backgroundColor: getStatusColor(),
           }}
         />
       </div>

@@ -1,56 +1,76 @@
 /**
- * UploadProgress Component Styles
- * 
- * Clean, modern UI for upload progress display
+ * UploadProgress / DownloadProgress shared styles — alpha.11 polish
+ *
+ * Compact toast-style progress widget. Used by both UploadProgress and
+ * DownloadProgress (DownloadProgress.tsx imports this file directly).
+ *
+ * Status visuals are driven by data-status="running|complete|failed|paused|canceled"
+ * on the root .upload-progress element — the TSX no longer applies inline color fills.
  */
 
 .upload-progress {
   background: var(--vfs-bg-elevated, var(--surface-elevated, #3a3a3c));
-  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.12)));
-  border-radius: var(--radius-md, 8px);
-  padding: var(--space-3, 12px) var(--space-4, 16px);
+  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.10)));
+  border-radius: var(--radius-md, 6px);
+  padding: 8px 12px;
   margin-bottom: var(--space-2, 8px);
-  transition: all
-    var(
-      --vfs-transition-fast,
-      150ms var(--vfs-ease-out-quart, cubic-bezier(0.25, 1, 0.5, 1))
-    );
+  font-size: 11px;
+  font-family: var(--vfs-font-sans, 'Inter', sans-serif);
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 
 .upload-progress:hover {
-  border-color: var(
-    --vfs-border-hover,
-    var(--border-hover, rgba(255, 255, 255, 0.18))
-  );
-  box-shadow: var(--vfs-shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.2));
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Per-status accents — left rail only, no fills */
+.upload-progress[data-status='running'] {
+  border-left: 2px solid var(--vfs-primary, #6366f1);
+}
+
+.upload-progress[data-status='paused'] {
+  border-left: 2px solid var(--vfs-secondary, #5e5ce6);
+}
+
+.upload-progress[data-status='complete'] {
+  border-left: 2px solid var(--vfs-accent, #06b6d4);
+}
+
+.upload-progress[data-status='failed'],
+.upload-progress[data-status='canceled'] {
+  border-left: 2px solid var(--vfs-warning, #ff9f0a);
 }
 
 .upload-progress-loading {
   color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
-  font-size: 13px;
+  font-size: 11px;
   text-align: center;
-  padding: var(--space-2, 8px) 0;
+  padding: 6px 0;
 }
 
+/* =========================================
+   HEADER
+   ========================================= */
 .upload-progress-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: var(--space-3, 12px);
-  margin-bottom: var(--space-2, 8px);
+  gap: 10px;
+  min-height: 24px;
 }
 
 .upload-progress-info {
   flex: 1;
-  min-width: 0; /* Allow text truncation */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .upload-progress-filename {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  font-family: var(--vfs-font-sans, 'Inter', sans-serif);
   color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
-  margin-bottom: var(--space-1, 4px);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -59,9 +79,9 @@
 .upload-progress-stats {
   display: flex;
   align-items: center;
-  gap: var(--space-2, 8px);
-  font-size: 11px;
-  font-family: var(--vfs-font-sans, 'Inter', sans-serif);
+  gap: 6px;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
   color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
   flex-wrap: wrap;
 }
@@ -71,159 +91,181 @@
   opacity: 0.5;
 }
 
+/* =========================================
+   ACTIONS — outline-only icon buttons
+   ========================================= */
 .upload-progress-actions {
   display: flex;
   align-items: center;
-  gap: var(--space-1, 4px);
+  gap: 4px;
   flex-shrink: 0;
 }
 
 .upload-progress-btn {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   padding: 0;
   background: transparent;
-  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.12)));
-  border-radius: var(--radius-sm, 4px);
+  border: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.10));
+  border-radius: 3px;
   color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all
-    var(
-      --vfs-transition-fast,
-      150ms var(--vfs-ease-out-quart, cubic-bezier(0.25, 1, 0.5, 1))
-    );
+  transition: all 0.12s ease;
 }
 
 .upload-progress-btn:hover {
-  background: var(--vfs-bg-primary, var(--background, #1c1c1e));
-  border-color: var(
-    --vfs-border-hover,
-    var(--border-hover, rgba(255, 255, 255, 0.18))
-  );
-  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+  color: var(--vfs-primary, #6366f1);
+  border-color: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.4);
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.08);
+}
+
+.upload-progress-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.45);
 }
 
 .upload-progress-btn:active {
-  transform: scale(0.95);
+  transform: scale(0.96);
 }
 
 .upload-progress-btn svg {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
 }
 
 .upload-progress-btn.pause:hover {
-  color: var(--vfs-warning, #ff9f0a);
-  border-color: rgba(var(--vfs-warning-rgb, 255, 159, 10), 0.3);
+  color: var(--vfs-secondary, #5e5ce6);
+  border-color: rgba(var(--vfs-secondary-rgb, 94, 92, 230), 0.4);
+  background: rgba(var(--vfs-secondary-rgb, 94, 92, 230), 0.08);
 }
 
 .upload-progress-btn.resume:hover {
-  color: var(--vfs-success, #30d158);
-  border-color: rgba(var(--vfs-success-rgb, 48, 209, 88), 0.3);
+  color: var(--vfs-accent, #06b6d4);
+  border-color: rgba(var(--vfs-accent-rgb, 6, 182, 212), 0.4);
+  background: rgba(var(--vfs-accent-rgb, 6, 182, 212), 0.08);
 }
 
 .upload-progress-btn.cancel:hover {
-  color: var(--vfs-error, #ff453a);
-  border-color: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.3);
+  color: var(--vfs-warning, #ff9f0a);
+  border-color: rgba(255, 159, 10, 0.36);
+  background: rgba(255, 159, 10, 0.10);
 }
 
 .upload-progress-btn.close:hover {
   color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
-  border-color: var(
-    --vfs-border-hover,
-    var(--border-hover, rgba(255, 255, 255, 0.18))
-  );
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
 }
 
+/* =========================================
+   PROGRESS BAR — 4px, primary→accent gradient
+   ========================================= */
 .upload-progress-bar-container {
   width: 100%;
   height: 4px;
-  background: var(--vfs-bg-primary, var(--background, #1c1c1e));
-  border-radius: var(--radius-sm, 4px);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
   overflow: hidden;
-  margin-top: var(--space-2, 8px);
+  margin-top: 6px;
 }
 
 .upload-progress-bar {
   height: 100%;
-  background: var(--vfs-primary, var(--primary, #6366f1));
-  border-radius: var(--radius-sm, 4px);
-  transition:
-    width 0.3s var(--vfs-ease-out-quart, cubic-bezier(0.25, 1, 0.5, 1)),
-    background-color 0.3s
-      var(--vfs-ease-out-quart, cubic-bezier(0.25, 1, 0.5, 1));
+  width: 0%;
+  background: linear-gradient(
+    90deg,
+    var(--vfs-primary, #6366f1),
+    var(--vfs-accent, #06b6d4)
+  );
+  border-radius: 2px;
+  transition: width 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-.upload-progress-bar::after {
+/* Per-status bar fill — keeps gradient semantics off the success/error path */
+.upload-progress[data-status='complete'] .upload-progress-bar {
+  background: var(--vfs-accent, #06b6d4);
+}
+
+.upload-progress[data-status='failed'] .upload-progress-bar,
+.upload-progress[data-status='canceled'] .upload-progress-bar {
+  background: var(--vfs-warning, #ff9f0a);
+}
+
+.upload-progress[data-status='paused'] .upload-progress-bar {
+  background: var(--vfs-secondary, #5e5ce6);
+}
+
+/* Shimmer only during active running — slow, low amplitude */
+.upload-progress[data-status='running'] .upload-progress-bar::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  inset: 0;
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.08),
     transparent
   );
-  animation: shimmer 2s infinite;
+  animation: up-shimmer 2.6s ease-in-out infinite;
 }
 
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+@keyframes up-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
+/* =========================================
+   STATUS NOTES
+   ========================================= */
 .upload-progress-error {
-  margin-top: var(--space-2, 8px);
-  padding: var(--space-2, 8px) var(--space-3, 12px);
-  background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.1);
-  border: 1px solid rgba(var(--vfs-error-rgb, 255, 69, 58), 0.2);
-  border-radius: var(--radius-sm, 4px);
+  margin-top: 6px;
+  padding: 6px 10px;
+  background: rgba(255, 159, 10, 0.08);
+  border: 1px solid rgba(255, 159, 10, 0.32);
+  border-radius: 3px;
   font-size: 11px;
-  font-family: var(--vfs-font-sans, 'Inter', sans-serif);
-  color: var(--vfs-error, var(--error, #ff453a));
+  color: var(--vfs-warning, #ff9f0a);
 }
 
 .upload-progress-success {
-  margin-top: var(--space-2, 8px);
-  padding: var(--space-2, 8px) var(--space-3, 12px);
-  background: rgba(var(--vfs-success-rgb, 48, 209, 88), 0.1);
-  border: 1px solid rgba(var(--vfs-success-rgb, 48, 209, 88), 0.2);
-  border-radius: var(--radius-sm, 4px);
+  margin-top: 6px;
+  padding: 6px 10px;
+  background: rgba(var(--vfs-accent-rgb, 6, 182, 212), 0.08);
+  border: 1px solid rgba(var(--vfs-accent-rgb, 6, 182, 212), 0.32);
+  border-radius: 3px;
   font-size: 11px;
-  font-family: var(--vfs-font-sans, 'Inter', sans-serif);
-  color: var(--vfs-success, var(--success, #30d158));
+  color: var(--vfs-accent, #06b6d4);
   display: flex;
   align-items: center;
-  gap: var(--space-2, 8px);
+  gap: 6px;
 }
 
 .upload-progress-success::before {
-  content: '✓';
-  font-weight: bold;
+  content: '\2713';
+  font-weight: 600;
 }
 
-/* Light theme adjustments */
+/* =========================================
+   LIGHT THEME ADJUSTMENTS
+   ========================================= */
 [data-theme='light'] .upload-progress {
   background: var(--vfs-bg-elevated, var(--surface-elevated, #f5f5f7));
-  border-color: var(--vfs-border, var(--border, rgba(0, 0, 0, 0.1)));
+  border-color: var(--vfs-border, var(--border, rgba(0, 0, 0, 0.08)));
 }
 
 [data-theme='light'] .upload-progress-bar-container {
-  background: var(--vfs-bg-primary, var(--background, #ffffff));
+  background: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='light'] .upload-progress-btn {
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme='light'] .upload-progress-btn:hover {
-  background: var(--vfs-bg-primary, var(--background, #ffffff));
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.08);
 }

@@ -1,6 +1,7 @@
 /**
- * TransferPanel - Modern timeline-based design
- * Ultra-compact, lean, sorted by timestamp
+ * TransferPanel — alpha.11 polish
+ * Outline-only buttons, 28-32px rows, cyan/indigo/violet palette,
+ * subtle 1px borders, status pills as outline, focus-visible rings.
  */
 
 /* =========================================
@@ -21,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.08));
   flex-shrink: 0;
 }
@@ -38,60 +39,74 @@
   gap: 6px;
 }
 
+/* Eyebrow — 10px uppercase 0.08em muted */
 .xfer__title {
   margin: 0;
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 600;
-  color: var(--vfs-text-primary, #f5f5f7);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vfs-text-muted, #8e8e93);
 }
 
 .xfer__badge {
-  background: transparent;
-  color: var(--vfs-primary, #0a84ff);
-  border: 1px solid var(--vfs-primary, #0a84ff);
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.08);
+  color: var(--vfs-primary, #6366f1);
+  border: 1px solid rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.32);
   font-size: 10px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   padding: 1px 6px;
   border-radius: 10px;
-  min-width: 16px;
+  min-width: 18px;
   text-align: center;
 }
 
 .xfer__btn {
   background: transparent;
-  border: 1px solid
-    var(--vfs-separator, var(--vfs-border, rgba(255, 255, 255, 0.08)));
+  border: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.08));
   border-radius: 4px;
   color: var(--vfs-text-secondary, #a1a1a6);
   font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   padding: 3px 9px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.12s ease;
 }
 
 .xfer__btn:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--vfs-text-primary, #f5f5f7);
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.08);
+  border-color: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.32);
+  color: var(--vfs-primary, #6366f1);
 }
 
-.xfer__btn:focus-visible {
+/* Focus rings — every interactive element */
+.xfer__btn:focus-visible,
+.xfer__tab:focus-visible,
+.xop__row:focus-visible,
+.xop__x:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.4);
+  box-shadow: 0 0 0 2px rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.45);
+  border-radius: 3px;
 }
 
 .xfer__btn--clear:hover {
-  color: var(--vfs-error, #ff453a);
-  border-color: rgba(255, 69, 58, 0.3);
+  color: var(--vfs-warning, #ff9f0a);
+  border-color: rgba(255, 159, 10, 0.36);
+  background: rgba(255, 159, 10, 0.08);
 }
 
 .xfer__btn--close {
   width: 24px;
   height: 24px;
   padding: 0;
-  font-size: 16px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
+  letter-spacing: 0;
 }
 
 /* =========================================
@@ -105,20 +120,15 @@
 
 .xfer__tab {
   flex: 1;
-  padding: 9px 12px;
-  background: none;
+  padding: 8px 12px;
+  background: transparent;
   border: none;
   border-bottom: 2px solid transparent;
   color: var(--vfs-text-secondary, #a1a1a6);
   font-size: 11px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.xfer__tab:focus-visible {
-  outline: none;
-  background: rgba(10, 132, 255, 0.06);
+  transition: all 0.12s ease;
 }
 
 .xfer__tab:hover {
@@ -127,8 +137,8 @@
 }
 
 .xfer__tab--on {
-  color: var(--vfs-primary, #0a84ff);
-  border-bottom-color: var(--vfs-primary, #0a84ff);
+  color: var(--vfs-primary, #6366f1);
+  border-bottom-color: var(--vfs-primary, #6366f1);
 }
 
 /* =========================================
@@ -137,7 +147,7 @@
 .xfer__body {
   flex: 1;
   overflow-y: auto;
-  padding: 8px;
+  padding: 6px;
 }
 
 .xfer__body::-webkit-scrollbar {
@@ -155,18 +165,20 @@
   justify-content: center;
   height: 100px;
   color: var(--vfs-text-muted, #636366);
-  font-size: 12px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
 }
 
 /* =========================================
-   OPERATION ITEM
+   OPERATION ITEM — 28-32px rows
    ========================================= */
 .xop {
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 6px;
-  margin-bottom: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  margin-bottom: 2px;
   overflow: hidden;
-  transition: all 0.15s;
+  transition: background 0.12s ease, border-color 0.12s ease;
 }
 
 .xop:last-child {
@@ -174,21 +186,21 @@
 }
 
 .xop:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .xop--active {
-  background: rgba(10, 132, 255, 0.06);
-  border-left: 2px solid var(--vfs-primary, #0a84ff);
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.06);
+  border-left: 2px solid var(--vfs-primary, #6366f1);
 }
 
 .xop--fail {
-  background: rgba(255, 69, 58, 0.06);
-  border-left: 2px solid var(--vfs-error, #ff453a);
+  background: rgba(255, 159, 10, 0.06);
+  border-left: 2px solid var(--vfs-warning, #ff9f0a);
 }
 
 .xop--exp {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.025);
 }
 
 /* Row */
@@ -196,12 +208,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 10px;
+  padding: 6px 10px;
   cursor: pointer;
-  min-height: 36px;
+  min-height: 32px;
 }
 
-/* Icon */
+/* Icon — 22px square, outline tint */
 .xop__icon {
   width: 22px;
   height: 22px;
@@ -212,22 +224,26 @@
   border-radius: 4px;
   flex-shrink: 0;
   color: var(--vfs-text-tertiary, #8e8e93);
-  background: rgba(255, 255, 255, 0.04);
+  background: transparent;
+  border: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.08));
 }
 
 .xop__icon--active {
-  color: var(--vfs-primary, #0a84ff);
-  background: rgba(10, 132, 255, 0.15);
+  color: var(--vfs-primary, #6366f1);
+  background: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.10);
+  border-color: rgba(var(--vfs-primary-rgb, 99, 102, 241), 0.32);
 }
 
 .xop__icon--done {
-  color: var(--vfs-success, #30d158);
-  background: rgba(48, 209, 88, 0.12);
+  color: var(--vfs-accent, #06b6d4);
+  background: rgba(var(--vfs-accent-rgb, 6, 182, 212), 0.10);
+  border-color: rgba(var(--vfs-accent-rgb, 6, 182, 212), 0.32);
 }
 
 .xop__icon--fail {
-  color: var(--vfs-error, #ff453a);
-  background: rgba(255, 69, 58, 0.12);
+  color: var(--vfs-warning, #ff9f0a);
+  background: rgba(255, 159, 10, 0.10);
+  border-color: rgba(255, 159, 10, 0.36);
 }
 
 /* Main content */
@@ -236,11 +252,11 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .xop__name {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--vfs-text-primary, #f5f5f7);
   white-space: nowrap;
@@ -252,10 +268,10 @@
   font-size: 10px;
   color: var(--vfs-text-muted, #636366);
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.08em;
 }
 
-/* Meta */
+/* Meta — status pill column */
 .xop__meta {
   display: flex;
   align-items: center;
@@ -266,114 +282,135 @@
 .xop__pct {
   font-size: 10px;
   font-weight: 600;
-  color: var(--vfs-primary, #0a84ff);
+  font-variant-numeric: tabular-nums;
+  color: var(--vfs-primary, #6366f1);
 }
 
+/* Status pills — outline */
 .xop__stat {
-  width: 16px;
+  min-width: 18px;
   height: 16px;
-  display: flex;
+  padding: 0 5px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 10px;
-  font-weight: 700;
-  border-radius: 50%;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
 }
 
 .xop__stat--done {
-  color: var(--vfs-success, #30d158);
-  background: rgba(48, 209, 88, 0.15);
+  color: var(--vfs-accent, #06b6d4);
+  border-color: rgba(var(--vfs-accent-rgb, 6, 182, 212), 0.32);
+  background: rgba(var(--vfs-accent-rgb, 6, 182, 212), 0.08);
 }
 
 .xop__stat--fail {
-  color: var(--vfs-error, #ff453a);
-  background: rgba(255, 69, 58, 0.15);
+  color: var(--vfs-warning, #ff9f0a);
+  border-color: rgba(255, 159, 10, 0.36);
+  background: rgba(255, 159, 10, 0.10);
 }
 
 .xop__time {
   font-size: 10px;
+  font-variant-numeric: tabular-nums;
   color: var(--vfs-text-quaternary, #48484a);
 }
 
-/* Dismiss button */
+/* Dismiss button — 20px square outline */
 .xop__x {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: none;
-  border: none;
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 3px;
   color: var(--vfs-text-quaternary, #48484a);
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   opacity: 0;
-  transition: all 0.1s;
+  transition: all 0.12s ease;
 }
 
-.xop:hover .xop__x {
+.xop:hover .xop__x,
+.xop:focus-within .xop__x {
   opacity: 1;
 }
 
 .xop__x:hover {
-  background: rgba(255, 69, 58, 0.1);
-  color: var(--vfs-error, #ff453a);
+  color: var(--vfs-warning, #ff9f0a);
+  border-color: rgba(255, 159, 10, 0.36);
+  background: rgba(255, 159, 10, 0.10);
 }
 
 /* Chevron */
 .xop__chev {
   color: var(--vfs-text-quaternary, #48484a);
   flex-shrink: 0;
-  transition: transform 0.15s;
+  transition: transform 0.15s ease;
 }
 
 .xop__chev--open {
   transform: rotate(90deg);
 }
 
-/* Progress bar */
+/* Progress bar — 3px tall, primary→accent gradient */
 .xop__bar {
-  height: 2px;
+  height: 3px;
   background: rgba(255, 255, 255, 0.04);
   margin: 0 10px 6px;
-  border-radius: 1px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
 .xop__bar-fill {
   height: 100%;
-  background: var(--vfs-primary, #0a84ff);
-  transition: width 0.2s;
+  background: linear-gradient(
+    90deg,
+    var(--vfs-primary, #6366f1),
+    var(--vfs-accent, #06b6d4)
+  );
+  transition: width 0.2s ease;
 }
 
 /* =========================================
    DETAILS
    ========================================= */
 .xop__det {
-  padding: 8px 10px 10px 40px;
+  padding: 6px 10px 8px 42px;
   border-top: 1px solid
     var(--vfs-separator, rgba(255, 255, 255, 0.04));
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.12);
 }
 
 .xop__det-row {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  padding: 3px 0;
-  font-size: 10px;
+  padding: 2px 0;
+  font-size: 11px;
 }
 
 .xop__det-l {
   color: var(--vfs-text-quaternary, #48484a);
-  min-width: 50px;
+  min-width: 52px;
   flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+  padding-top: 1px;
 }
 
 .xop__det-v {
   color: var(--vfs-text-secondary, #a1a1a6);
   word-break: break-word;
+  font-variant-numeric: tabular-nums;
 }
 
 .xop__det-v--path {
@@ -383,19 +420,19 @@
 }
 
 .xop__det-v--err {
-  color: var(--vfs-error, #ff453a);
+  color: var(--vfs-warning, #ff9f0a);
 }
 
 .xop__det-v--completed {
-  color: var(--vfs-success, #30d158);
+  color: var(--vfs-accent, #06b6d4);
 }
 
 .xop__det-v--failed {
-  color: var(--vfs-error, #ff453a);
+  color: var(--vfs-warning, #ff9f0a);
 }
 
 .xop__det-v--inprogress {
-  color: var(--vfs-primary, #0a84ff);
+  color: var(--vfs-primary, #6366f1);
 }
 
 /* Files list */
@@ -409,8 +446,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 3px 0;
-  font-size: 10px;
+  padding: 2px 0;
+  font-size: 11px;
 }
 
 .xop__file-name {
@@ -425,14 +462,18 @@
   color: var(--vfs-text-muted, #636366);
   margin-left: 8px;
   flex-shrink: 0;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .xop__file-stat--done {
-  color: var(--vfs-success, #30d158);
+  color: var(--vfs-accent, #06b6d4);
 }
 
 .xop__file-stat--fail {
-  color: var(--vfs-error, #ff453a);
+  color: var(--vfs-warning, #ff9f0a);
 }
 
 /* =========================================
