@@ -10308,6 +10308,39 @@ section[id]:not(.hero):not(#main-content) {
   }
 }
 
+/* Hero screenshot cross-fader.
+   Replaces the old CSS-animated interview mockup with two real-app
+   screenshots that auto-cycle every 6 seconds. */
+.hero-mockup-screenshots {
+  aspect-ratio: 2798 / 1810;
+  padding: 0;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+.hero-mockup-screenshots .hero-screenshot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  border-radius: inherit;
+  display: block;
+}
+
+.hero-mockup-screenshots .hero-screenshot.is-active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mockup-screenshots .hero-screenshot {
+    transition: none;
+  }
+}
+
 .hero-mockup-chrome {
   display: flex;
   align-items: center;
