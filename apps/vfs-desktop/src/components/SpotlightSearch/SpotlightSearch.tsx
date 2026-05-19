@@ -595,9 +595,11 @@ export function SpotlightSearch({
             return (
               <div className="spotlight-active-filters">
                 {activeTags.map((tag, index) => (
-                  <span
+                  <button
                     key={`${tag}-${index}`}
+                    type="button"
                     className="spotlight-filter-pill"
+                    aria-label={`Remove tag filter ${tag}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       // Remove this tag from query
@@ -612,9 +614,11 @@ export function SpotlightSearch({
                       setQuery(newQuery);
                     }}
                   >
-                    <span className="filter-pill-tag">{tag}</span>
-                    <span className="filter-pill-remove">×</span>
-                  </span>
+                    <span className="filter-pill-tag">tag:{tag}</span>
+                    <span className="filter-pill-remove" aria-hidden="true">
+                      ×
+                    </span>
+                  </button>
                 ))}
               </div>
             );
@@ -622,50 +626,69 @@ export function SpotlightSearch({
           return null;
         })()}
 
-        {results.length > 0 && (
-          <div ref={resultsRef} className="spotlight-results">
-            {results.map((result, i) => (
-              <button
-                key={result.id}
-                className={`spotlight-result ${i === selectedIndex ? 'selected' : ''} ${result.type} ${result.iconType || ''}`}
-                onClick={() => handleSelect(result)}
-                onMouseEnter={() => setSelectedIndex(i)}
-              >
-                <span className={`result-icon ${result.iconType || ''}`}>
-                  {SpotlightIcons[result.icon] || result.icon}
-                </span>
-                <div className="result-content">
-                  <span className="result-title">{result.title}</span>
-                  {result.subtitle && (
-                    <span className="result-subtitle">{result.subtitle}</span>
+        {results.length > 0 ? (
+          <>
+            <div className="spotlight-results-header">
+              <span>
+                {query.trim() ? 'Results' : 'Suggestions'}
+              </span>
+              <span className="results-count">
+                {results.length} {results.length === 1 ? 'match' : 'matches'}
+              </span>
+            </div>
+            <div ref={resultsRef} className="spotlight-results">
+              {results.map((result, i) => (
+                <button
+                  key={result.id}
+                  type="button"
+                  className={`spotlight-result ${i === selectedIndex ? 'selected' : ''} ${result.type} ${result.iconType || ''}`}
+                  onClick={() => handleSelect(result)}
+                  onMouseEnter={() => setSelectedIndex(i)}
+                >
+                  <span className={`result-icon ${result.iconType || ''}`}>
+                    {SpotlightIcons[result.icon] || result.icon}
+                  </span>
+                  <div className="result-content">
+                    <span className="result-title">{result.title}</span>
+                    {result.subtitle && (
+                      <span className="result-subtitle">{result.subtitle}</span>
+                    )}
+                  </div>
+                  {result.type === 'operator' && (
+                    <span className="result-hint">Tab</span>
                   )}
-                </div>
-                {result.type === 'operator' && (
-                  <span className="result-hint">Tab to insert</span>
-                )}
-                {(result.type === 'file' || result.type === 'folder') && (
-                  <span className="result-hint">↵ Open</span>
-                )}
-                {result.type === 'action' && (
-                  <span className="result-hint">↵ Run</span>
-                )}
-              </button>
-            ))}
+                  {(result.type === 'file' || result.type === 'folder') && (
+                    <span className="result-hint">Open</span>
+                  )}
+                  {result.type === 'action' && (
+                    <span className="result-hint">Run</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : query.trim() ? (
+          <div className="spotlight-empty">
+            <span className="spotlight-empty-title">No results</span>
+            <span className="spotlight-empty-hint">
+              Try different keywords, or check active filters
+            </span>
           </div>
-        )}
+        ) : null}
 
         <div className="spotlight-footer">
           <span>
-            <kbd>↑</kbd> <kbd>↓</kbd> Navigate
+            <kbd>↵</kbd> Open
           </span>
           <span>
-            <kbd>↵</kbd> Select
+            <kbd>↑</kbd>
+            <kbd>↓</kbd> Navigate
           </span>
           <span>
             <kbd>Tab</kbd> Complete
           </span>
           <span>
-            <kbd>Esc</kbd> Close
+            <kbd>esc</kbd> Close
           </span>
         </div>
       </div>

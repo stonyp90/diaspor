@@ -187,8 +187,8 @@ export function FinderPage({
     y: 0,
     targetFile: undefined,
   });
-  // Clipboard state (setters used but values not currently read)
-  const [, setClipboardHasFiles] = useState(false);
+  // Clipboard state - tracks whether paste is available
+  const [clipboardHasFiles, setClipboardHasFiles] = useState(false);
   const [, setNativeClipboardCount] = useState(0);
   const [cutFiles, setCutFiles] = useState<Set<string>>(new Set()); // Track cut files for visual feedback
   // AI model availability
@@ -1914,8 +1914,9 @@ export function FinderPage({
             activeElement.getAttribute('contenteditable') === 'true' ||
             (activeElement as HTMLElement).isContentEditable);
 
-        // Only handle file paste if NOT in a text input field
-        if (!isTextInput) {
+        // Only handle file paste if NOT in a text input field AND clipboard has files.
+        // Silent no-op when clipboard is empty — matches the grayed-out menu item.
+        if (!isTextInput && clipboardHasFiles) {
           e.preventDefault();
           e.stopPropagation();
           console.log('[Keyboard] Paste shortcut triggered');
@@ -1928,6 +1929,12 @@ export function FinderPage({
               ? contextMenu.targetFile.path
               : undefined;
           await handlePaste(targetPath);
+        } else if (!isTextInput && !clipboardHasFiles) {
+          // Swallow the keystroke so the OS doesn't try to paste raw text
+          // into the file area, but don't toast — silent gate per UX spec.
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('[Keyboard] Paste shortcut ignored: clipboard empty');
         }
         // If in text input, let the default paste behavior proceed (don't preventDefault)
       } else if (
@@ -2050,6 +2057,7 @@ export function FinderPage({
     shortcuts,
     contextMenu,
     toast,
+    clipboardHasFiles,
   ]);
 
   // Listen for Tauri file-drop events to capture native file paths
@@ -8461,6 +8469,7 @@ export function FinderPage({
             targetFile={contextMenu.targetFile}
             selectedSource={selectedSource}
             selectedFiles={selectedFiles}
+            clipboardHasItems={clipboardHasFiles}
             showOpenWith={showOpenWith}
             appsLoading={appsLoading}
             availableApps={availableApps}

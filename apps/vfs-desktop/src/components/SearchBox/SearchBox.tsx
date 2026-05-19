@@ -626,7 +626,7 @@ export function SearchBox({
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          style={{ color: 'var(--vfs-text-tertiary)' }}
+          aria-hidden="true"
         >
           <circle cx="11" cy="11" r="8" />
           <path d="m21 21-4.35-4.35" />
@@ -640,7 +640,9 @@ export function SearchBox({
                 <span className="pill-operator">{f.operator}:</span>
                 <span className="pill-value">{f.value}</span>
                 <button
+                  type="button"
                   className="pill-remove"
+                  aria-label={`Remove ${f.operator} filter ${f.value}`}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -689,6 +691,7 @@ export function SearchBox({
 
         {value && (
           <button
+            type="button"
             className="clear-btn"
             onClick={(e) => {
               e.preventDefault();
@@ -701,12 +704,9 @@ export function SearchBox({
               e.preventDefault();
             }}
             title="Clear search"
+            aria-label="Clear search"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              style={{ color: 'var(--vfs-text-tertiary)' }}
-            >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
             </svg>
           </button>
@@ -719,6 +719,7 @@ export function SearchBox({
           {suggestions.map((s, i) => (
             <button
               key={i}
+              type="button"
               className={`suggestion-item ${i === selectedIndex ? 'selected' : ''} ${s.type}`}
               onClick={(e) => {
                 e.preventDefault();

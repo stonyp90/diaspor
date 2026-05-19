@@ -1,4 +1,73 @@
 /**
  * FinderContextMenu Styles
- * Context menu styles are inherited from FinderPage.css
+ *
+ * Base context menu styles live in `FinderPage.css` (`.context-menu`,
+ * `.context-item`, `.context-divider`, `.context-submenu`, etc.).
+ *
+ * This file scopes a small override for the *disabled* state so that
+ * unavailable actions (paste with empty clipboard, copy with no selection,
+ * etc.) gray out cleanly while still surfacing their native `title`
+ * tooltip on hover, instead of swallowing pointer events entirely.
+ *
+ * The component sets `disabled` AND `aria-disabled="true"` AND
+ * `tabIndex={-1}` on the underlying <button>, so the native HTML disabled
+ * state already blocks `click` events. We therefore re-enable
+ * `pointer-events` here only so that:
+ *   - The browser shows the `title` attribute as a tooltip on hover,
+ *   - The `:hover` state fires (no background highlight per the rules
+ *     below), and
+ *   - The `not-allowed` cursor renders on macOS / Linux (Chromium
+ *     normally skips it when `pointer-events: none` is set).
+ *
+ * We override the project-level `.context-item.disabled` rule which sets
+ * `pointer-events: none` and `font-style: italic`. Both are intentionally
+ * undone here: italics make labels harder to read and we want the title
+ * tooltip to surface.
  */
+
+/* Disabled state — opacity-only gray out, label stays readable */
+.context-menu .context-item.disabled,
+.context-menu .context-item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: auto;
+  font-style: normal;
+  /* Preserve the original text color so the label remains readable;
+     opacity alone provides the disabled affordance. */
+  color: var(--finder-text-primary);
+}
+
+/* Hover MUST NOT apply a background highlight on disabled items. */
+.context-menu .context-item.disabled:hover,
+.context-menu .context-item:disabled:hover {
+  background: transparent !important;
+  cursor: not-allowed;
+}
+
+/* Active/pressed must also not apply on disabled items. */
+.context-menu .context-item.disabled:active,
+.context-menu .context-item:disabled:active {
+  background: transparent !important;
+}
+
+/* Keep the danger color readable when disabled (Move to Trash / Delete). */
+.context-menu .context-item.danger.disabled,
+.context-menu .context-item.danger:disabled {
+  color: var(--finder-danger);
+}
+
+/* Inline shortcut badges and submenu chevrons inside a disabled row
+   should match the row's opacity so nothing pops back to full brightness. */
+.context-menu .context-item.disabled .context-shortcut,
+.context-menu .context-item:disabled .context-shortcut,
+.context-menu .context-item.disabled .context-arrow,
+.context-menu .context-item:disabled .context-arrow,
+.context-menu .context-item.disabled .context-icon,
+.context-menu .context-item:disabled .context-icon {
+  opacity: 0.4;
+}
+
+/* The shared tooltip rule in FinderPage.css is gated on
+   `:not(:disabled)` — meaning disabled buttons fall back to the native
+   browser `title` tooltip. That's fine: the native tooltip is what the
+   spec asked for on grayed-out actions ("Paste — clipboard empty", etc.). */

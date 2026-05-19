@@ -140,15 +140,47 @@ export function KeyboardShortcutHelper({
         </div>
 
         <div className="shortcut-search">
-          <input
-            type="text"
-            className="shortcut-search-input"
-            placeholder="Filter shortcuts..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            autoFocus
-            aria-label="Filter shortcuts"
-          />
+          <div className="shortcut-search-box">
+            <svg
+              className="shortcut-search-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              type="text"
+              className="shortcut-search-input"
+              placeholder="Filter shortcuts..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              autoFocus
+              aria-label="Filter shortcuts"
+            />
+            {query && (
+              <button
+                type="button"
+                className="shortcut-search-clear"
+                onClick={() => setQuery('')}
+                aria-label="Clear filter"
+                title="Clear filter"
+              >
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="shortcut-content">

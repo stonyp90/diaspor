@@ -23,6 +23,12 @@ export interface FinderContextMenuProps {
   targetFile?: FileMetadata;
   selectedSource: StorageSource | null;
   selectedFiles: Set<string>;
+  /**
+   * Whether the file clipboard (VFS clipboard or native OS clipboard) has any
+   * items available to paste. Drives the disabled state of every Paste menu
+   * item and silently no-ops the paste keyboard shortcut when false.
+   */
+  clipboardHasItems?: boolean;
   showOpenWith: boolean;
   appsLoading: boolean;
   availableApps: Array<{ name: string; path: string }>;
@@ -66,6 +72,7 @@ export function FinderContextMenu({
   targetFile,
   selectedSource,
   selectedFiles,
+  clipboardHasItems = false,
   showOpenWith,
   appsLoading,
   availableApps,
@@ -103,6 +110,54 @@ export function FinderContextMenu({
   if (!visible) return null;
 
   const isObjStorage = isObjectStorage(selectedSource);
+
+  // -----------------------------------------------------------------------
+  // Availability predicates — keep all gating logic in one place so the
+  // disabled states stay consistent across the duplicated menu trees
+  // (object-storage path vs. mount-storage path).
+  // -----------------------------------------------------------------------
+  // A "selection" exists if either explicit multi-select has items OR the
+  // user right-clicked a specific file/folder (the targetFile).
+  const hasSelection = selectedFiles.size > 0 || Boolean(targetFile);
+  // Paste is only possible when the file clipboard isn't empty.
+  const canPaste = clipboardHasItems;
+  // Rename only works on a single concrete target.
+  const canRename =
+    Boolean(targetFile) && selectedFiles.size <= 1;
+  // Asset Details / Get Info needs a target file.
+  const canShowDetails = Boolean(targetFile);
+  // Download requires a non-directory target.
+  const canDownloadFile =
+    Boolean(targetFile) && !targetFile?.isDirectory;
+  // Delete / Move-to-Trash needs something selected.
+  const canDelete = hasSelection;
+
+  /**
+   * Gate an onClick: when disabled, swallow the event and never invoke the
+   * underlying handler — even if the button somehow receives a programmatic
+   * click (e.g. via a keyboard shortcut that wired itself to the DOM node).
+   */
+  const gate = <E extends React.SyntheticEvent>(
+    disabled: boolean,
+    handler: (e: E) => void | Promise<void>,
+  ) => {
+    return (e: E) => {
+      if (disabled) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      return handler(e);
+    };
+  };
+
+  /**
+   * Build the className for a context-item, appending `.disabled` when needed
+   * so the existing CSS rule (opacity, cursor: not-allowed, no hover bg)
+   * applies automatically.
+   */
+  const itemClass = (base: string, disabled: boolean) =>
+    disabled ? `${base} disabled` : base;
 
   return (
     <div
@@ -183,13 +238,16 @@ export function FinderContextMenu({
           {/* Download - for files */}
           {!targetFile.isDirectory && (
             <button
-              className="context-item"
-              onClick={() => {
+              className={itemClass('context-item', !canDownloadFile)}
+              disabled={!canDownloadFile}
+              aria-disabled={!canDownloadFile || undefined}
+              tabIndex={!canDownloadFile ? -1 : undefined}
+              onClick={gate(!canDownloadFile, () => {
                 if (targetFile) {
                   onHandleDownloadFile(targetFile);
                 }
                 onClose();
-              }}
+              })}
             >
               <svg
                 className="context-icon"
@@ -205,13 +263,17 @@ export function FinderContextMenu({
 
           {/* Asset Details */}
           <button
-            className="context-item"
-            onClick={() => {
+            className={itemClass('context-item', !canShowDetails)}
+            disabled={!canShowDetails}
+            aria-disabled={!canShowDetails || undefined}
+            tabIndex={!canShowDetails ? -1 : undefined}
+            title={!canShowDetails ? 'Asset Details — no file selected' : undefined}
+            onClick={gate(!canShowDetails, () => {
               if (targetFile) {
                 onSetInfoModal({ visible: true, file: targetFile });
               }
               onClose();
-            }}
+            })}
           >
             <svg
               className="context-icon"
@@ -232,13 +294,17 @@ export function FinderContextMenu({
             <>
               {/* Copy */}
               <button
-                className="context-item"
-                onClick={async (e) => {
+                className={itemClass('context-item', !hasSelection)}
+                disabled={!hasSelection}
+                aria-disabled={!hasSelection || undefined}
+                tabIndex={!hasSelection ? -1 : undefined}
+                title={!hasSelection ? 'Copy — nothing selected' : undefined}
+                onClick={gate(!hasSelection, async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   await onHandleCopy();
                   onClose();
-                }}
+                })}
               >
                 <svg
                   className="context-icon"
@@ -254,13 +320,17 @@ export function FinderContextMenu({
 
               {/* Cut */}
               <button
-                className="context-item"
-                onClick={async (e) => {
+                className={itemClass('context-item', !hasSelection)}
+                disabled={!hasSelection}
+                aria-disabled={!hasSelection || undefined}
+                tabIndex={!hasSelection ? -1 : undefined}
+                title={!hasSelection ? 'Cut — nothing selected' : undefined}
+                onClick={gate(!hasSelection, async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   await onHandleCut();
                   onClose();
-                }}
+                })}
               >
                 <svg
                   className="context-icon"
@@ -276,8 +346,12 @@ export function FinderContextMenu({
 
               {/* Paste */}
               <button
-                className="context-item"
-                onClick={async (e) => {
+                className={itemClass('context-item', !canPaste)}
+                disabled={!canPaste}
+                aria-disabled={!canPaste || undefined}
+                tabIndex={!canPaste ? -1 : undefined}
+                title={!canPaste ? 'Paste — clipboard is empty' : undefined}
+                onClick={gate(!canPaste, async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   const targetPath =
@@ -287,7 +361,7 @@ export function FinderContextMenu({
                       : undefined;
                   await onHandlePaste(targetPath);
                   onClose();
-                }}
+                })}
               >
                 <svg
                   className="context-icon"
@@ -304,11 +378,14 @@ export function FinderContextMenu({
               {/* Rename - only for single files (folders can't be renamed on object storage) */}
               {!targetFile.isDirectory && selectedFiles.size <= 1 && (
                 <button
-                  className="context-item"
-                  onClick={() => {
+                  className={itemClass('context-item', !canRename)}
+                  disabled={!canRename}
+                  aria-disabled={!canRename || undefined}
+                  tabIndex={!canRename ? -1 : undefined}
+                  onClick={gate(!canRename, () => {
                     if (targetFile) onHandleRename(targetFile);
                     onClose();
-                  }}
+                  })}
                 >
                   <svg
                     className="context-icon"
@@ -357,11 +434,15 @@ export function FinderContextMenu({
 
           {/* Delete */}
           <button
-            className="context-item danger"
-            onClick={() => {
+            className={itemClass('context-item danger', !canDelete)}
+            disabled={!canDelete}
+            aria-disabled={!canDelete || undefined}
+            tabIndex={!canDelete ? -1 : undefined}
+            title={!canDelete ? 'Delete — nothing selected' : undefined}
+            onClick={gate(!canDelete, () => {
               onHandleDelete();
               onClose();
-            }}
+            })}
           >
             <svg
               className="context-icon"
@@ -556,8 +637,11 @@ export function FinderContextMenu({
                 <>
                   <div className="context-divider" />
                   <button
-                    className="context-item"
-                    onClick={() => {
+                    className={itemClass('context-item', !canShowDetails)}
+                    disabled={!canShowDetails}
+                    aria-disabled={!canShowDetails || undefined}
+                    tabIndex={!canShowDetails ? -1 : undefined}
+                    onClick={gate(!canShowDetails, () => {
                       if (targetFile) {
                         onSetInfoModal({
                           visible: true,
@@ -565,7 +649,7 @@ export function FinderContextMenu({
                         });
                       }
                       onClose();
-                    }}
+                    })}
                   >
                     <svg
                       className="context-icon"
@@ -680,13 +764,17 @@ export function FinderContextMenu({
             <>
               {/* Copy - works from any storage type */}
               <button
-                className="context-item"
-                onClick={async (e) => {
+                className={itemClass('context-item', !hasSelection)}
+                disabled={!hasSelection}
+                aria-disabled={!hasSelection || undefined}
+                tabIndex={!hasSelection ? -1 : undefined}
+                title={!hasSelection ? 'Copy — nothing selected' : undefined}
+                onClick={gate(!hasSelection, async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   await onHandleCopy();
                   onClose();
-                }}
+                })}
               >
                 <svg
                   className="context-icon"
@@ -701,13 +789,17 @@ export function FinderContextMenu({
               </button>
               {/* Cut - available for all storage types */}
               <button
-                className="context-item"
-                onClick={async (e) => {
+                className={itemClass('context-item', !hasSelection)}
+                disabled={!hasSelection}
+                aria-disabled={!hasSelection || undefined}
+                tabIndex={!hasSelection ? -1 : undefined}
+                title={!hasSelection ? 'Cut — nothing selected' : undefined}
+                onClick={gate(!hasSelection, async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   await onHandleCut();
                   onClose();
-                }}
+                })}
               >
                 <svg
                   className="context-icon"
@@ -722,8 +814,12 @@ export function FinderContextMenu({
               </button>
               {/* Paste - works to any storage type */}
               <button
-                className="context-item"
-                onClick={async (e) => {
+                className={itemClass('context-item', !canPaste)}
+                disabled={!canPaste}
+                aria-disabled={!canPaste || undefined}
+                tabIndex={!canPaste ? -1 : undefined}
+                title={!canPaste ? 'Paste — clipboard is empty' : undefined}
+                onClick={gate(!canPaste, async (e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   const targetPath =
@@ -733,7 +829,7 @@ export function FinderContextMenu({
                       : undefined;
                   await onHandlePaste(targetPath);
                   onClose();
-                }}
+                })}
               >
                 <svg
                   className="context-icon"
@@ -749,11 +845,17 @@ export function FinderContextMenu({
               {/* Rename - only for single file/folder (bulk rename not supported) */}
               {selectedFiles.size <= 1 && (
                 <button
-                  className="context-item"
-                  onClick={() => {
+                  className={itemClass('context-item', !canRename)}
+                  disabled={!canRename}
+                  aria-disabled={!canRename || undefined}
+                  tabIndex={!canRename ? -1 : undefined}
+                  title={
+                    !canRename ? 'Rename — select a single item' : undefined
+                  }
+                  onClick={gate(!canRename, () => {
                     if (targetFile) onHandleRename(targetFile);
                     onClose();
-                  }}
+                  })}
                 >
                   <svg
                     className="context-icon"
@@ -911,11 +1013,19 @@ export function FinderContextMenu({
           <>
             <div className="context-divider" />
             <button
-              className="context-item danger"
-              onClick={() => {
+              className={itemClass('context-item danger', !canDelete)}
+              disabled={!canDelete}
+              aria-disabled={!canDelete || undefined}
+              tabIndex={!canDelete ? -1 : undefined}
+              title={
+                !canDelete
+                  ? `${supportsFilesystemOperations(selectedSource) ? 'Move to Trash' : 'Delete'} — nothing selected`
+                  : undefined
+              }
+              onClick={gate(!canDelete, () => {
                 onHandleDelete();
                 onClose();
-              }}
+              })}
             >
               <svg
                 className="context-icon"
@@ -942,13 +1052,17 @@ export function FinderContextMenu({
         <>
           {/* Paste - if clipboard has content */}
           <button
-            className="context-item"
-            onClick={async (e) => {
+            className={itemClass('context-item', !canPaste)}
+            disabled={!canPaste}
+            aria-disabled={!canPaste || undefined}
+            tabIndex={!canPaste ? -1 : undefined}
+            title={!canPaste ? 'Paste — clipboard is empty' : undefined}
+            onClick={gate(!canPaste, async (e) => {
               e.preventDefault();
               e.stopPropagation();
               await onHandlePaste();
               onClose();
-            }}
+            })}
           >
             <svg
               className="context-icon"
@@ -1046,8 +1160,11 @@ export function FinderContextMenu({
         <>
           <div className="context-divider" />
           <button
-            className="context-item"
-            onClick={async () => {
+            className={itemClass('context-item', !canDownloadFile)}
+            disabled={!canDownloadFile}
+            aria-disabled={!canDownloadFile || undefined}
+            tabIndex={!canDownloadFile ? -1 : undefined}
+            onClick={gate(!canDownloadFile, async () => {
               if (!selectedSource || !targetFile) {
                 onClose();
                 return;
@@ -1088,7 +1205,7 @@ export function FinderContextMenu({
                 );
               }
               onClose();
-            }}
+            })}
           >
             <svg
               className="context-icon"
