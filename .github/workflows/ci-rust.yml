@@ -132,6 +132,11 @@ jobs:
         run: |
           sudo --preserve-env=PATH,HOME,CARGO_HOME,RUSTUP_HOME,DIASPOR_OFFLINE unshare --net -- bash -c '
             set -e
+            # Bring loopback up inside the new netns so tests that bind
+            # 127.0.0.1:0 (e.g. crates/diaspor-events/tests/webhook_sink_hmac.rs)
+            # can still run. External network is still blocked by the netns,
+            # which is what the privacy contract structurally enforces.
+            ip link set lo up
             cargo build --workspace --all-features --offline
             cargo test --workspace --all-features --offline
           '

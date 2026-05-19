@@ -95,16 +95,42 @@ jobs:
         working-directory: apps/vfs-desktop
         run: npm ci --prefer-offline --no-audit --no-fund
 
-      - name: Note macOS signing posture
+      - name: Validate macOS signing cert (preflight, fail-soft)
         if: matrix.os == 'macos-latest'
         env:
-          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         run: |
-          if [ -n "$APPLE_SIGNING_IDENTITY" ]; then
-            echo "::notice title=macOS code signing ENABLED::Building signed + notarized .dmg with identity \"$APPLE_SIGNING_IDENTITY\"."
-          else
-            echo "::warning title=macOS code signing DISABLED::APPLE_SIGNING_IDENTITY secret is not configured. The .dmg will be unsigned; users will see a Gatekeeper warning. See SECURITY.md for setup."
+          # 8 consecutive releases (alpha.6..alpha.13) failed because Tauri's
+          # bundler invoked `security import` on a base64'd APPLE_CERTIFICATE
+          # secret that wasn't a valid p12, causing SecKeychainItemImport to
+          # bail mid-build. Pre-validate against a throwaway keychain here
+          # so signing only proceeds when the cert is actually importable;
+          # otherwise we ship an unsigned .dmg with a workflow warning.
+          if [ -z "$APPLE_CERTIFICATE" ]; then
+            echo "APPLE_SIGNING_ENABLED=false" >> "$GITHUB_ENV"
+            echo "::warning title=macOS code signing DISABLED::APPLE_CERTIFICATE secret not configured. .dmg ships unsigned; Gatekeeper will warn users on first launch."
+            exit 0
           fi
+          KCHAIN="$RUNNER_TEMP/preflight.keychain-db"
+          CERT_FILE="$RUNNER_TEMP/preflight-cert.p12"
+          if ! security create-keychain -p preflight "$KCHAIN"; then
+            echo "APPLE_SIGNING_ENABLED=false" >> "$GITHUB_ENV"
+            echo "::warning title=macOS code signing DISABLED::Preflight keychain create failed."
+            exit 0
+          fi
+          security set-keychain-settings -lut 21600 "$KCHAIN" || true
+          security unlock-keychain -p preflight "$KCHAIN" || true
+          echo "$APPLE_CERTIFICATE" | base64 --decode > "$CERT_FILE" || true
+          if security import "$CERT_FILE" -k "$KCHAIN" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign >/dev/null 2>&1; then
+            echo "APPLE_SIGNING_ENABLED=true" >> "$GITHUB_ENV"
+            echo "::notice title=macOS code signing ENABLED::APPLE_CERTIFICATE imported OK; signing + notarization will proceed."
+          else
+            echo "APPLE_SIGNING_ENABLED=false" >> "$GITHUB_ENV"
+            echo "::warning title=macOS code signing DISABLED::APPLE_CERTIFICATE failed to import (SecKeychainItemImport). Falling back to unsigned build. Check the base64-encoded p12 + APPLE_CERTIFICATE_PASSWORD secret."
+          fi
+          security delete-keychain "$KCHAIN" >/dev/null 2>&1 || true
+          rm -f "$CERT_FILE"
 
       - name: Build Desktop (macOS/Linux)
         if: matrix.os != 'windows-latest'
@@ -112,6 +138,12 @@ jobs:
         shell: bash
         run: |
           echo "Building for ${{ matrix.platform }}..."
+          # Honor the preflight verdict — when the cert preflight failed,
+          # unset Apple secrets so Tauri's bundler builds unsigned instead
+          # of attempting (and failing) a security import.
+          if [ "${{ matrix.os }}" == "macos-latest" ] && [ "$APPLE_SIGNING_ENABLED" != "true" ]; then
+            unset APPLE_CERTIFICATE APPLE_CERTIFICATE_PASSWORD APPLE_SIGNING_IDENTITY APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID
+          fi
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             npm run tauri:build -- --target universal-apple-darwin
           else
