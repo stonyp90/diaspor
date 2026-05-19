@@ -4,7 +4,7 @@
 
 use crate::gpu::{self, GpuInfo, GpuMetrics, GPU_METRICS};
 use crate::system::{self, SystemInfo, SystemMetrics, ProcessInfo};
-use crate::vfs::platform::CommandBuilder;
+use crate::vfs::platform::{AsyncCommandBuilder, CommandBuilder};
 use serde::{Deserialize, Serialize};
 use std::process::Child;
 use std::sync::Mutex;
@@ -240,13 +240,22 @@ pub fn detect_platform() -> Result<String, String> {
     return Ok("unknown".to_string());
 }
 
-/// Check if Docker is installed
+/// Check if Docker is installed.
+///
+/// Uses the async command builder so this runs on tokio's blocking pool
+/// rather than blocking a worker thread — important because the AISetup
+/// React component calls several check_* commands in sequence and a
+/// hung binary (e.g. `docker --version` waiting on a slow socket probe
+/// during Docker Desktop startup) used to lock the entire UI at
+/// 'Checking…'. The React side now also wraps these calls in a 4s
+/// withTimeout; the two together make stuck-checking unrecoverable.
 #[tauri::command]
 pub async fn check_docker_installed() -> Result<bool, String> {
-    let result = CommandBuilder::new("docker")
+    let result = AsyncCommandBuilder::new("docker")
         .arg("--version")
-        .output();
-    
+        .output()
+        .await;
+
     match result {
         Ok(output) => Ok(output.status.success()),
         Err(_) => Ok(false),
@@ -256,10 +265,11 @@ pub async fn check_docker_installed() -> Result<bool, String> {
 /// Check if Docker is running
 #[tauri::command]
 pub async fn check_docker_running() -> Result<bool, String> {
-    let result = CommandBuilder::new("docker")
+    let result = AsyncCommandBuilder::new("docker")
         .arg("info")
-        .output();
-    
+        .output()
+        .await;
+
     match result {
         Ok(output) => Ok(output.status.success()),
         Err(_) => Ok(false),
@@ -269,10 +279,11 @@ pub async fn check_docker_running() -> Result<bool, String> {
 /// Check if Ollama is installed
 #[tauri::command]
 pub async fn check_ollama_installed() -> Result<bool, String> {
-    let result = CommandBuilder::new("ollama")
+    let result = AsyncCommandBuilder::new("ollama")
         .arg("--version")
-        .output();
-    
+        .output()
+        .await;
+
     match result {
         Ok(output) => Ok(output.status.success()),
         Err(_) => Ok(false),
@@ -726,19 +737,20 @@ pub async fn check_ffmpeg_installed() -> Result<bool, String> {
     
     // Check each candidate location
     for candidate in candidates {
-        let result = CommandBuilder::new(candidate)
+        let result = AsyncCommandBuilder::new(candidate)
             .arg("-version")
             .stdout_null()
             .stderr_null()
-            .status();
-        
+            .status()
+            .await;
+
         if let Ok(status) = result {
             if status.success() {
                 return Ok(true);
             }
         }
     }
-    
+
     Ok(false)
 }
 
@@ -1427,7 +1439,11 @@ pub async fn check_whisper_cpp_installed() -> Result<bool, String> {
     }
 
     for name in &["whisper-cli", "whisper-cpp"] {
-        if let Ok(output) = CommandBuilder::new(*name).arg("--help").output() {
+        if let Ok(output) = AsyncCommandBuilder::new(*name)
+            .arg("--help")
+            .output()
+            .await
+        {
             if output.status.success() || !output.stderr.is_empty() {
                 return Ok(true);
             }
