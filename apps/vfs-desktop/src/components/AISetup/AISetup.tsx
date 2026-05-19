@@ -72,6 +72,39 @@ const LANGUAGE_OPTIONS: SelectOption[] = [
 ];
 
 // ============================================================================
+// Helpers
+// ============================================================================
+
+/**
+ * Wrap any promise with a timeout. If `p` hasn't resolved or rejected by
+ * `ms` milliseconds, reject with a labelled error.
+ *
+ * Used by `checkStatus()` so a single hung backend command (Docker, FFmpeg,
+ * Ollama, etc.) can't lock the entire AI-status panel at 'Checking…'
+ * forever. The catch blocks below treat the timeout as 'not-installed',
+ * which keeps the UI recoverable via the Install button.
+ */
+async function withTimeout<T>(
+  p: Promise<T>,
+  ms: number,
+  label: string,
+): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<T>((_, reject) => {
+    timer = setTimeout(() => {
+      reject(new Error(`${label} timed out after ${ms}ms`));
+    }, ms);
+  });
+  try {
+    return await Promise.race([p, timeout]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+const CHECK_TIMEOUT_MS = 4000;
+
+// ============================================================================
 // Icon Components
 // ============================================================================
 
@@ -298,13 +331,22 @@ export const AISetup: React.FC = () => {
     localStorage.setItem('ai_feature_config', JSON.stringify(newConfig));
   }, []);
 
-  // Check all dependencies
+  // Check all dependencies. Every backend invoke and the Ollama fetch are
+  // wrapped with a hard timeout — a hung command can't leave the panel
+  // stuck at 'Checking…' forever, the catch blocks fall through to
+  // 'not-installed' and the Install button stays usable.
   const checkStatus = useCallback(async () => {
     try {
       // Check Docker
       try {
-        const dockerInstalled = await invoke<boolean>('check_docker_installed');
-        const dockerRunning = await invoke<boolean>(
+        const dockerInstalled = await withTimeout(
+          invoke<boolean>('check_docker_installed'),
+          CHECK_TIMEOUT_MS,
+          'check_docker_installed',
+        );
+        const dockerRunning = await withTimeout(
+          invoke<boolean>('check_docker_running'),
+          CHECK_TIMEOUT_MS,
           'check_docker_running',
         ).catch(() => false);
         setStatus((prev) => ({
@@ -312,19 +354,28 @@ export const AISetup: React.FC = () => {
           docker:
             dockerInstalled && dockerRunning ? 'installed' : 'not-installed',
         }));
-      } catch {
+      } catch (err) {
+        console.warn('[AISetup] Docker check failed:', err);
         setStatus((prev) => ({ ...prev, docker: 'not-installed' }));
       }
 
       // Check FFmpeg for transcription
       try {
-        const ffmpegInstalled = await invoke<boolean>('check_ffmpeg_installed');
-        const transcriptionAvailable = await invoke<boolean>(
+        const ffmpegInstalled = await withTimeout(
+          invoke<boolean>('check_ffmpeg_installed'),
+          CHECK_TIMEOUT_MS,
+          'check_ffmpeg_installed',
+        );
+        const transcriptionAvailable = await withTimeout(
+          invoke<boolean>('vfs_is_transcription_available'),
+          CHECK_TIMEOUT_MS,
           'vfs_is_transcription_available',
         ).catch(() => ffmpegInstalled);
 
         // Check whisper-cpp for high-quality transcription
-        const whisperCppInstalled = await invoke<boolean>(
+        const whisperCppInstalled = await withTimeout(
+          invoke<boolean>('check_whisper_cpp_installed'),
+          CHECK_TIMEOUT_MS,
           'check_whisper_cpp_installed',
         ).catch(() => false);
 
@@ -342,7 +393,8 @@ export const AISetup: React.FC = () => {
           transcriptionModelRunning:
             ffmpegInstalled && transcriptionAvailable && wasStarted,
         }));
-      } catch {
+      } catch (err) {
+        console.warn('[AISetup] FFmpeg/Whisper check failed:', err);
         setStatus((prev) => ({
           ...prev,
           whisperCpp: 'not-installed',
@@ -351,9 +403,24 @@ export const AISetup: React.FC = () => {
         }));
       }
 
-      // Check Ollama via HTTP API for tagging
+      // Check Ollama via HTTP API for tagging.
+      // AbortController forces fetch to bail after CHECK_TIMEOUT_MS, in case
+      // something is bound to :11434 but not responding (Ollama mid-startup,
+      // captive portal, etc.) — bare fetch has no built-in timeout.
       try {
-        const response = await fetch('http://localhost:11434/api/tags');
+        const controller = new AbortController();
+        const timer = setTimeout(
+          () => controller.abort(),
+          CHECK_TIMEOUT_MS,
+        );
+        let response: Response;
+        try {
+          response = await fetch('http://localhost:11434/api/tags', {
+            signal: controller.signal,
+          });
+        } finally {
+          clearTimeout(timer);
+        }
         if (response.ok) {
           const data = (await response.json()) as {
             models?: Array<{ name: string }>;
@@ -377,9 +444,13 @@ export const AISetup: React.FC = () => {
 
           // Check running tagging models
           try {
-            const runningResponse = await invoke<{
-              models?: Array<{ name: string; model?: string }>;
-            }>('ollama_ps');
+            const runningResponse = await withTimeout(
+              invoke<{
+                models?: Array<{ name: string; model?: string }>;
+              }>('ollama_ps'),
+              CHECK_TIMEOUT_MS,
+              'ollama_ps',
+            );
             const runningModels = runningResponse.models || [];
             const runningModelNames = runningModels.map((m) => {
               const modelName = (m.model || m.name || '').toLowerCase();
@@ -397,7 +468,8 @@ export const AISetup: React.FC = () => {
               ...prev,
               taggingModelRunning: taggingRunning,
             }));
-          } catch {
+          } catch (err) {
+            console.warn('[AISetup] ollama_ps check failed:', err);
             setStatus((prev) => ({
               ...prev,
               taggingModelRunning: false,
@@ -406,7 +478,8 @@ export const AISetup: React.FC = () => {
         } else {
           setStatus((prev) => ({ ...prev, ollama: 'not-installed' }));
         }
-      } catch {
+      } catch (err) {
+        console.warn('[AISetup] Ollama check failed:', err);
         setStatus((prev) => ({ ...prev, ollama: 'not-installed' }));
       }
     } catch (err) {
