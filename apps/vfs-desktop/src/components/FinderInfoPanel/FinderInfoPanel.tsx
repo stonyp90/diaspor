@@ -228,11 +228,11 @@ export function FinderInfoPanel({
                   <span
                     key={i}
                     className="meta-tag"
-                    style={{
-                      backgroundColor: tagObj.color || '#6b7280',
-                      color: '#fff',
-                      textShadow: '0 0 2px rgba(0, 0, 0, 0.3)',
-                    }}
+                    style={
+                      {
+                        '--tag-color': tagObj.color || '#6b7280',
+                      } as React.CSSProperties
+                    }
                   >
                     {tagObj.name}
                   </span>

@@ -1,10 +1,331 @@
 /**
- * FinderSidebar Styles
- * 
- * Styles for the sidebar component extracted from FinderPage.
- * Most styles are inherited from FinderPage.css, but component-specific
- * styles can be added here if needed.
+ * FinderSidebar Styles — alpha.7-10 polish overrides
+ *
+ * Density + restraint pass on top of FinderPage.css:
+ *   - Section eyebrows: 10px uppercase, muted, 0.08em tracking.
+ *   - Outline buttons (Add Storage). No filled primaries.
+ *   - Brand-palette accents only (primary/secondary/accent).
+ *   - 1px subtle borders, no glow.
+ *   - :focus-visible rings on every interactive element.
+ *   - Storage type chips: 10px, primary-tinted bg with desaturated per-category tints.
+ *
+ * Selectors are namespaced under .finder-sidebar so we don't bleed into the
+ * Finder grid/list which lives outside this aside.
  */
 
-/* Sidebar-specific styles can be added here */
-/* Most styles are already in FinderPage.css */
+/* ─── Section eyebrows ──────────────────────────────────────────── */
+.finder-sidebar .sidebar-section {
+  margin-bottom: 10px;
+}
+
+.finder-sidebar .sidebar-section + .sidebar-section {
+  margin-top: 2px;
+}
+
+.finder-sidebar .section-header {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  padding: 6px 12px 4px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.finder-sidebar .section-header svg,
+.finder-sidebar .section-header .cyber-icon {
+  width: 11px;
+  height: 11px;
+  opacity: 0.75;
+  filter: none;
+}
+
+.finder-sidebar .section-count {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+/* ─── Sidebar items: body 12-13px, tight rows ──────────────────── */
+.finder-sidebar .sidebar-item {
+  font-size: 12px;
+  line-height: 1.35;
+  padding: 4px 12px;
+  border-radius: 5px;
+  gap: 8px;
+}
+
+.finder-sidebar .sidebar-item .item-name {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.finder-sidebar .sidebar-item .item-subtitle {
+  font-size: 10px;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  margin-left: 4px;
+  opacity: 0.85;
+}
+
+.finder-sidebar .sidebar-item .item-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* :focus-visible ring — inset, no outline, primary-tinted */
+.finder-sidebar .sidebar-item:focus-visible,
+.finder-sidebar .storage-group-header:focus-visible,
+.finder-sidebar .add-storage-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.5);
+}
+
+/* ─── Disclosure chevrons (▸) ───────────────────────────────────── */
+.finder-sidebar .group-chevron {
+  width: 10px;
+  height: 10px;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  transition:
+    transform 150ms ease,
+    color 120ms ease;
+}
+
+.finder-sidebar .group-chevron svg {
+  width: 10px;
+  height: 10px;
+}
+
+.finder-sidebar .storage-group-header:hover .group-chevron,
+.finder-sidebar .storage-group-header:focus-visible .group-chevron {
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+}
+
+/* ─── Storage group headers — tighter, eyebrow-styled ──────────── */
+.finder-sidebar .storage-group-header {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+  gap: 6px;
+}
+
+.finder-sidebar .storage-group-header.subgroup {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  padding: 3px 12px 3px 22px;
+}
+
+.finder-sidebar .group-label {
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+.finder-sidebar .group-count {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  background: transparent;
+  padding: 0 4px;
+  opacity: 0.7;
+  margin-left: auto;
+}
+
+.finder-sidebar .group-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.8;
+}
+
+.finder-sidebar .group-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Per-category icon tints — desaturated brand palette only */
+.finder-sidebar .group-icon.local,
+.finder-sidebar .group-icon.locations,
+.finder-sidebar .group-icon.volumes {
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+}
+
+.finder-sidebar .group-icon.cloud,
+.finder-sidebar .group-icon.aws,
+.finder-sidebar .group-icon.azure,
+.finder-sidebar .group-icon.gcp {
+  color: rgba(var(--vfs-accent-rgb, 100, 210, 255), 0.85);
+}
+
+.finder-sidebar .group-icon.network {
+  color: rgba(var(--vfs-secondary-rgb, 94, 92, 230), 0.85);
+}
+
+.finder-sidebar .group-icon.block {
+  color: rgba(var(--vfs-primary-rgb, 10, 132, 255), 0.85);
+}
+
+/* ─── Storage type chips (LOCAL, CLOUD, BLOCK, NETWORK, HYBRID) ─ */
+.finder-sidebar .storage-tier-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  background: rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.08);
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  line-height: 1.4;
+  /* desaturate per-category default a touch */
+  filter: saturate(0.8);
+}
+
+.finder-sidebar .storage-tier-badge.local {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+}
+
+.finder-sidebar .storage-tier-badge.hot,
+.finder-sidebar .storage-tier-badge.warm {
+  background: rgba(var(--vfs-primary-rgb, 10, 132, 255), 0.10);
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+}
+
+.finder-sidebar .storage-tier-badge.nearline {
+  background: rgba(var(--vfs-accent-rgb, 100, 210, 255), 0.10);
+  color: rgba(var(--vfs-accent-rgb, 100, 210, 255), 0.95);
+}
+
+.finder-sidebar .storage-tier-badge.cold,
+.finder-sidebar .storage-tier-badge.archive {
+  background: rgba(var(--vfs-secondary-rgb, 94, 92, 230), 0.10);
+  color: rgba(var(--vfs-secondary-rgb, 94, 92, 230), 0.95);
+}
+
+/* ─── Add Storage button — outline pattern ─────────────────────── */
+.finder-sidebar .add-storage-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  border: 1px solid
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.45);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.finder-sidebar .add-storage-btn:hover {
+  background: rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.08);
+  border-style: dashed;
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.7
+  );
+}
+
+.finder-sidebar .add-storage-btn .add-icon {
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+/* Empty-state add-storage variant (inside .sidebar-empty) */
+.finder-sidebar .sidebar-empty .add-storage-btn {
+  width: auto;
+  padding: 5px 10px;
+  margin-top: 6px;
+}
+
+/* ─── Empty-state captions ─────────────────────────────────────── */
+.finder-sidebar .sidebar-empty {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.finder-sidebar .sidebar-empty .empty-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+}
+
+.finder-sidebar .sidebar-empty .empty-hint {
+  font-size: 11px;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  opacity: 0.85;
+}
+
+/* ─── Favorites drop-target affordance (subtle, no glow) ───────── */
+.finder-sidebar .sidebar-section.drop-target {
+  background: rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.06);
+  outline: 1px dashed
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.45);
+  outline-offset: -2px;
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+/* ─── Tag dots ─────────────────────────────────────────────────── */
+.finder-sidebar .tag-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.finder-sidebar .clear-filter {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  opacity: 0.75;
+}
+
+.finder-sidebar .sidebar-item.filter-active .clear-filter:hover {
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  opacity: 1;
+}
+
+/* ─── Offline dot — preserved real safety signal ───────────────── */
+.finder-sidebar .offline-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vfs-warning, #ff9f0a);
+  margin-left: auto;
+  flex-shrink: 0;
+  box-shadow: none;
+}
+
+/* ─── "show more" row ──────────────────────────────────────────── */
+.finder-sidebar .sidebar-item.show-more {
+  font-size: 11px;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  font-style: italic;
+  cursor: default;
+}
+
+.finder-sidebar .sidebar-item.show-more:hover {
+  background: transparent;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+}

@@ -1,9 +1,326 @@
 /**
- * FinderToolbar Styles
- * 
- * Styles for the toolbar component extracted from FinderPage.
- * Most styles are inherited from FinderPage.css.
+ * FinderToolbar Styles — alpha.7-10 polish overrides
+ *
+ * Polish pass on top of FinderPage.css:
+ *   - Tight toolbar height, 12px body type.
+ *   - View-mode toggle = unified segmented pill (Settings Theme Mode pattern).
+ *   - Outline-pattern buttons; no filled primaries.
+ *   - Breadcrumb / search 12px; muted by default, primary on hover.
+ *   - 1px subtle borders, no glow.
+ *   - :focus-visible rings on every interactive control.
  */
 
-/* Toolbar-specific styles can be added here */
-/* Most styles are already in FinderPage.css */
+/* ─── Toolbar shell — tighter ─────────────────────────────────── */
+.finder-toolbar {
+  min-height: 36px;
+  padding: 4px 10px;
+  gap: 8px;
+  border-bottom: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+  box-shadow: none;
+}
+
+.finder-toolbar .toolbar-nav,
+.finder-toolbar .toolbar-right {
+  gap: 4px;
+}
+
+/* ─── Generic toolbar icon buttons ────────────────────────────── */
+.finder-toolbar .toolbar-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+  font-size: 12px;
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+.finder-toolbar .toolbar-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.finder-toolbar .toolbar-btn:hover:not(:disabled) {
+  background: rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.08);
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  border-color: transparent;
+}
+
+.finder-toolbar .toolbar-btn.active {
+  background: rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.10);
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.35
+  );
+  box-shadow: none;
+}
+
+.finder-toolbar .toolbar-btn.active:hover {
+  background: rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.16);
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.5
+  );
+}
+
+.finder-toolbar .toolbar-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.finder-toolbar .toolbar-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.5);
+}
+
+/* ─── Upload button — outline pattern ─────────────────────────── */
+.finder-toolbar .toolbar-btn.upload-btn {
+  width: auto;
+  padding: 0 10px;
+  gap: 6px;
+  background: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.08
+  );
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  border: 1px solid
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.45);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.finder-toolbar .toolbar-btn.upload-btn:hover {
+  background: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.16
+  );
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.65
+  );
+}
+
+.finder-toolbar .toolbar-btn.upload-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.finder-toolbar .toolbar-btn.upload-btn .upload-btn-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* ─── View-mode segmented control (alpha.8 pattern) ───────────── */
+.finder-toolbar .view-switcher {
+  display: inline-flex;
+  gap: 0;
+  height: 28px;
+  padding: 0;
+  background: var(--vfs-bg-elevated, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.finder-toolbar .view-switcher .view-btn {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.finder-toolbar .view-switcher .view-btn + .view-btn {
+  border-left: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+}
+
+.finder-toolbar .view-switcher .view-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.finder-toolbar .view-switcher .view-btn:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+}
+
+.finder-toolbar .view-switcher .view-btn.active {
+  background: rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.12);
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  box-shadow: none;
+}
+
+.finder-toolbar .view-switcher .view-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.5);
+}
+
+/* ─── Breadcrumbs / address bar ───────────────────────────────── */
+.finder-toolbar .toolbar-center {
+  font-size: 12px;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+}
+
+.finder-toolbar .toolbar-center .breadcrumbs {
+  font-size: 12px;
+}
+
+.finder-toolbar .toolbar-center .breadcrumbs a,
+.finder-toolbar .toolbar-center .breadcrumbs button {
+  font-size: 12px;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+  transition: color 120ms ease;
+}
+
+.finder-toolbar .toolbar-center .breadcrumbs a:hover,
+.finder-toolbar .toolbar-center .breadcrumbs button:hover {
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+}
+
+.finder-toolbar .toolbar-center .breadcrumbs a:focus-visible,
+.finder-toolbar .toolbar-center .breadcrumbs button:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.5);
+  border-radius: 4px;
+}
+
+/* ─── Search input — 6/10 padding, 12px, 6px radius ───────────── */
+.finder-toolbar .search-box,
+.finder-toolbar .search-input {
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.finder-toolbar .search-box input,
+.finder-toolbar input.search-input,
+.finder-toolbar .toolbar-right input[type='search'],
+.finder-toolbar .toolbar-right input[type='text'] {
+  height: 28px;
+  padding: 0 10px 0 28px;
+  font-size: 12px;
+  border-radius: 6px;
+  background: var(--vfs-bg-elevated, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+  transition:
+    border-color 120ms ease,
+    background 120ms ease;
+}
+
+.finder-toolbar .search-box input:focus,
+.finder-toolbar input.search-input:focus,
+.finder-toolbar .toolbar-right input[type='search']:focus,
+.finder-toolbar .toolbar-right input[type='text']:focus {
+  outline: none;
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.55
+  );
+  background: var(--vfs-bg-tertiary, rgba(255, 255, 255, 0.06));
+  box-shadow: 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.18);
+}
+
+/* ─── Sort dropdown trigger (if rendered inside toolbar) ──────── */
+.finder-toolbar .sort-trigger,
+.finder-toolbar select.sort-select {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    background 120ms ease,
+    color 120ms ease;
+}
+
+.finder-toolbar .sort-trigger:hover,
+.finder-toolbar select.sort-select:hover {
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.45
+  );
+  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+}
+
+.finder-toolbar .sort-trigger .chevron,
+.finder-toolbar .sort-trigger svg {
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+}
+
+.finder-toolbar .sort-trigger:focus-visible,
+.finder-toolbar select.sort-select:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.5);
+}
+
+/* ─── Filter pills — outline by default, tinted when active ──── */
+.finder-toolbar .filter-pill {
+  height: 24px;
+  padding: 0 10px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    border-color 120ms ease;
+}
+
+.finder-toolbar .filter-pill:hover {
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.45
+  );
+  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+}
+
+.finder-toolbar .filter-pill.active {
+  background: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.10
+  );
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.45
+  );
+}
+
+.finder-toolbar .filter-pill:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.5);
+}

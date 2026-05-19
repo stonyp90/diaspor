@@ -131,11 +131,9 @@ export function Header({ activeTab, onTabChange }: HeaderProps) {
             <span className="system-info-item">
               {formatOSName(systemInfo.os_name, systemInfo.os_version)}
             </span>
-            <span className="system-info-divider">·</span>
             <span className="system-info-item">
               {systemInfo.cpu_cores} Core{systemInfo.cpu_cores !== 1 ? 's' : ''}
             </span>
-            <span className="system-info-divider">·</span>
             <span
               className="system-info-item system-info-cpu"
               title={systemInfo.cpu_brand}

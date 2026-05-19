@@ -1,7 +1,259 @@
 /**
- * FinderInfoPanel Styles
- * 
- * Styles for the info panel are inherited from FinderPage.css
+ * FinderInfoPanel Styles — alpha.7-10 polish overrides
+ *
+ * Polish pass on top of FinderPage.css:
+ *   - Section eyebrows: 10px uppercase, muted, 0.08em tracking.
+ *   - Property rows: 12px label (muted) / 12px value.
+ *   - Tag chips: 10-11px outline pills, tag color drives only the border/dot.
+ *   - Action buttons: outline pattern (no filled primaries).
+ *   - 1px subtle borders, no glow.
+ *   - :focus-visible rings on every interactive control.
  */
 
-/* Component-specific styles can be added here if needed */
+/* ─── Panel shell ─────────────────────────────────────────────── */
+.finder-info {
+  font-size: 12px;
+}
+
+/* ─── Preview / name ──────────────────────────────────────────── */
+.finder-info .info-preview {
+  border-radius: 6px;
+  border: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+  box-shadow: none;
+}
+
+.finder-info .info-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin: 8px 0 12px;
+  word-break: break-word;
+  text-shadow: none;
+}
+
+/* ─── Meta sections + eyebrow titles ──────────────────────────── */
+.finder-info .info-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.finder-info .meta-section {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+}
+
+.finder-info .meta-section-title {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  margin: 0 0 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+/* ─── Property rows ───────────────────────────────────────────── */
+.finder-info .meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 12px;
+  border: none;
+}
+
+.finder-info .meta-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.finder-info .meta-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--vfs-text-primary, var(--text-primary, #f5f5f7));
+  text-align: right;
+  word-break: break-word;
+}
+
+/* highlight tweak: brand-tinted, no glow */
+.finder-info .meta-value.highlight {
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  text-shadow: none;
+}
+
+/* ─── Tag chips — outline pills, 10-11px ──────────────────────── */
+.finder-info .meta-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.finder-info .meta-tag {
+  --tag-color: var(--vfs-primary, var(--primary, #0a84ff));
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 18px;
+  padding: 0 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--tag-color) 10%, transparent);
+  color: var(--tag-color);
+  border: 1px solid color-mix(in srgb, var(--tag-color) 45%, transparent);
+  text-shadow: none;
+  /* leading dot — matches the tag color cleanly */
+  background-image: radial-gradient(
+    circle at 6px center,
+    var(--tag-color) 0 2.5px,
+    transparent 3px
+  );
+  background-repeat: no-repeat;
+  padding-left: 14px;
+}
+
+/* Fallback for browsers without color-mix() — already covered by --tag-color
+   default; modern Tauri webviews (Chromium ≥ 111) support it. */
+
+/* ─── Empty state ─────────────────────────────────────────────── */
+.finder-info .info-empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+}
+
+.finder-info .info-empty p {
+  font-size: 12px;
+  margin: 4px 0 0;
+  color: var(--vfs-text-secondary, var(--text-secondary, #a1a1a6));
+}
+
+.finder-info .info-empty .info-hint {
+  font-size: 11px;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+  margin-top: 2px;
+}
+
+.finder-info .info-empty-icon {
+  opacity: 0.4;
+  color: var(--vfs-text-muted, var(--text-muted, #8e8e93));
+}
+
+.finder-info .info-empty-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+/* ─── Action buttons — outline pattern, no filled primaries ──── */
+.finder-info .info-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--vfs-border, var(--border, rgba(255, 255, 255, 0.08)));
+}
+
+.finder-info .info-actions .action-btn,
+.finder-info .action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.08
+  );
+  color: var(--vfs-primary, var(--primary, #0a84ff));
+  border: 1px solid
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.45);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+  box-shadow: none;
+}
+
+.finder-info .info-actions .action-btn:hover,
+.finder-info .action-btn:hover {
+  background: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.16
+  );
+  border-color: rgba(
+    var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)),
+    0.65
+  );
+}
+
+.finder-info .action-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px
+    rgba(var(--vfs-primary-rgb, var(--primary-rgb, 10, 132, 255)), 0.5);
+}
+
+/* Warm/transcode = secondary brand tint (violet, not orange) */
+.finder-info .action-btn.warm,
+.finder-info .action-btn.secondary {
+  background: rgba(
+    var(--vfs-secondary-rgb, var(--secondary-rgb, 94, 92, 230)),
+    0.08
+  );
+  color: var(--vfs-secondary, var(--secondary, #5e5ce6));
+  border-color: rgba(
+    var(--vfs-secondary-rgb, var(--secondary-rgb, 94, 92, 230)),
+    0.45
+  );
+}
+
+.finder-info .action-btn.warm:hover,
+.finder-info .action-btn.secondary:hover {
+  background: rgba(
+    var(--vfs-secondary-rgb, var(--secondary-rgb, 94, 92, 230)),
+    0.16
+  );
+  border-color: rgba(
+    var(--vfs-secondary-rgb, var(--secondary-rgb, 94, 92, 230)),
+    0.65
+  );
+}
+
+/* Danger preserved — real safety signal */
+.finder-info .action-btn.danger {
+  background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.08);
+  color: var(--vfs-error, #ff453a);
+  border-color: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.45);
+}
+
+.finder-info .action-btn.danger:hover {
+  background: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.16);
+  border-color: rgba(var(--vfs-error-rgb, 255, 69, 58), 0.65);
+}
+
+.finder-info .action-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.finder-info .action-btn svg {
+  width: 13px;
+  height: 13px;
+}

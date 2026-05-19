@@ -1,7 +1,8 @@
 /**
  * FileBrowser Styles
- * 
- * Styles for the file browser are inherited from FinderPage.css
+ *
+ * Visual styles for the file browser are inherited from FinderPage.css.
+ * This stub exists so the import path stays valid; please add new selectors
+ * scoped to FileBrowser-only DOM here (the polish pass otherwise lives in
+ * FinderPage.css, FileGridItem.css, and FileListRow.css).
  */
-
-/* Component-specific styles can be added here if needed */

@@ -617,18 +617,9 @@ const FinderSidebarMemo = React.memo(
               <button
                 className="add-storage-btn"
                 onClick={() => onSetShowAddStorage(true)}
-                style={{
-                  marginTop: '8px',
-                  padding: '6px 12px',
-                  fontSize: '12px',
-                  background: 'var(--primary, #0a84ff)',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                }}
               >
-                + Add Storage
+                <span className="add-icon">+</span>
+                <span>Add Storage</span>
               </button>
             </div>
           )}

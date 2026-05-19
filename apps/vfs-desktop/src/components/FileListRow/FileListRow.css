@@ -1,7 +1,8 @@
 /**
  * FileListRow Styles
- * 
- * Styles for list view rows are inherited from FinderPage.css
+ *
+ * Most styles for list view rows are inherited from FinderPage.css.
+ * Polish ethos: dense rows, small badges, no scale transforms on hover.
  */
 
 /* Storage class icon in tier column */
@@ -9,10 +10,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
+  width: 16px;
+  height: 16px;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
 }
 
 .list-row:hover .list-storage-class-icon {
@@ -23,14 +24,14 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 0 8px;
+  padding: 0 6px;
 }
 
 .col-storage-class {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
+  padding: 0 10px;
   min-width: 100px;
   /* Ensure no default text content - hide any text nodes including asterisks */
   font-size: 0 !important;
@@ -48,13 +49,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
-  min-width: 16px;
-  max-width: 16px;
-  min-height: 16px;
-  max-height: 16px;
-  border-radius: 4px;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  max-width: 14px;
+  min-height: 14px;
+  max-height: 14px;
+  border-radius: 3px;
   font-size: 9px; /* Restore font size for badge */
   font-weight: 700;
   text-transform: uppercase;
@@ -62,9 +63,10 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  transition: all 0.15s ease;
+  transition: opacity 0.15s ease;
   cursor: help;
   line-height: 1; /* Ensure badge text is visible */
+  letter-spacing: 0.02em;
 }
 
 .col-storage-class .storage-tier-badge.local {
@@ -89,5 +91,4 @@
 
 .list-row:hover .col-storage-class .storage-tier-badge {
   opacity: 1;
-  transform: scale(1.1);
 }

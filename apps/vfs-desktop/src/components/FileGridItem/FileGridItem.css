@@ -1,17 +1,18 @@
 /**
  * FileGridItem Styles
- * 
- * Styles for grid view items are inherited from FinderPage.css
+ *
+ * Most styles for grid view items are inherited from FinderPage.css.
+ * Polish ethos: small, brand-tinted, no glow.
  */
 
 /* Visual indicators for tags and comments */
 .grid-item-badges {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 4px;
+  right: 4px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   z-index: 4;
   pointer-events: none;
 }
@@ -20,87 +21,88 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 6px;
-  background: rgba(var(--finder-accent-rgb, 10, 132, 255), 0.25);
-  border: 1px solid rgba(var(--finder-accent-rgb, 10, 132, 255), 0.5);
-  border-radius: 9px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  min-width: 14px;
+  height: 14px;
+  padding: 0 4px;
+  background: rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.08);
+  border: 1px solid rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.4);
+  border-radius: 7px;
   opacity: 0.9;
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .file-item:hover .grid-tag-indicator {
   opacity: 1;
-  background: rgba(var(--finder-accent-rgb, 10, 132, 255), 0.35);
-  border-color: rgba(var(--finder-accent-rgb, 10, 132, 255), 0.6);
+  background: rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.16);
+  border-color: rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.55);
 }
 
 .grid-badge-count {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  color: var(--finder-accent, #0a84ff);
+  color: var(--vfs-primary, var(--finder-accent, #4338ca));
   line-height: 1;
+  letter-spacing: 0.02em;
 }
 
 .grid-comment-indicator {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
-  background: rgba(255, 193, 7, 0.25);
-  border: 1px solid rgba(255, 193, 7, 0.5);
-  border-radius: 9px;
-  color: #ffc107;
+  width: 14px;
+  height: 14px;
+  background: rgba(var(--vfs-secondary-rgb, 99, 102, 241), 0.08);
+  border: 1px solid rgba(var(--vfs-secondary-rgb, 99, 102, 241), 0.4);
+  border-radius: 7px;
+  color: var(--vfs-secondary, #6366f1);
   cursor: pointer;
   pointer-events: auto;
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
   opacity: 0.9;
 }
 
 .file-item:hover .grid-comment-indicator {
   opacity: 1;
-  background: rgba(255, 193, 7, 0.35);
-  border-color: rgba(255, 193, 7, 0.6);
+  background: rgba(var(--vfs-secondary-rgb, 99, 102, 241), 0.16);
+  border-color: rgba(var(--vfs-secondary-rgb, 99, 102, 241), 0.55);
 }
 
 .grid-comment-indicator:hover {
-  background: rgba(255, 193, 7, 0.45);
-  transform: scale(1.1);
+  background: rgba(var(--vfs-secondary-rgb, 99, 102, 241), 0.22);
+}
+
+.grid-comment-indicator:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.35);
 }
 
 .file-item:hover .grid-item-badges {
   opacity: 1;
 }
 
-/* Comprehensive hover info card */
+/* Comprehensive hover info card - flat, subtle border, no inset glow */
 .grid-item-info-card {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 4px);
   left: 50%;
-  transform: translateX(-50%) translateY(-6px);
-  width: 260px;
+  transform: translateX(-50%) translateY(-4px);
+  width: 240px;
   max-width: calc(100vw - 40px);
   padding: 8px;
   background: var(--finder-surface, rgba(30, 30, 30, 1));
-  border: 1px solid var(--finder-border, rgba(255, 255, 255, 0.2));
-  border-radius: 8px;
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  border: 1px solid var(--vfs-border, var(--finder-border, rgba(255, 255, 255, 0.12)));
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   z-index: 10001;
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition:
-    opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    visibility 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity 0.15s ease,
+    visibility 0.15s ease,
+    transform 0.15s ease;
   transform-origin: top center;
 }
 
@@ -129,14 +131,14 @@
   gap: 6px;
   margin-bottom: 6px;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--finder-border, rgba(255, 255, 255, 0.1));
+  border-bottom: 1px solid var(--vfs-border, var(--finder-border, rgba(255, 255, 255, 0.1)));
 }
 
 .info-card-name {
   flex: 1;
   font-size: 12px;
   font-weight: 600;
-  color: var(--finder-text-primary, #f5f5f7);
+  color: var(--vfs-text-primary, var(--finder-text-primary, #f5f5f7));
   line-height: 1.2;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -193,10 +195,10 @@
 .info-card-meta {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   margin-bottom: 6px;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--finder-border, rgba(255, 255, 255, 0.1));
+  border-bottom: 1px solid var(--vfs-border, var(--finder-border, rgba(255, 255, 255, 0.1)));
 }
 
 .info-card-meta-item {
@@ -204,15 +206,16 @@
   align-items: center;
   justify-content: space-between;
   font-size: 10px;
+  letter-spacing: 0.01em;
 }
 
 .meta-label {
-  color: var(--finder-text-secondary, #a1a1a6);
+  color: var(--vfs-text-secondary, var(--finder-text-secondary, #a1a1a6));
   font-weight: 500;
 }
 
 .meta-value {
-  color: var(--finder-text-primary, #f5f5f7);
+  color: var(--vfs-text-primary, var(--finder-text-primary, #f5f5f7));
   font-weight: 400;
 }
 
@@ -227,41 +230,41 @@
 .info-card-section-title {
   font-size: 9px;
   font-weight: 600;
-  color: var(--finder-text-secondary, #a1a1a6);
+  color: var(--vfs-text-muted, var(--finder-text-secondary, #8e8e93));
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 4px;
+  letter-spacing: 0.08em;
+  margin-bottom: 3px;
 }
 
 .info-card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 3px;
 }
 
 .info-card-tag {
   font-size: 9px;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 1px 5px;
+  border-radius: 3px;
   font-weight: 500;
   border: 1px solid;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: background-color 0.15s ease;
+  letter-spacing: 0.02em;
 }
 
 .info-card-tag:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* No transform / shadow — flat */
 }
 
 .info-card-comment {
   font-size: 10px;
-  color: var(--finder-text-primary, #f5f5f7);
+  color: var(--vfs-text-primary, var(--finder-text-primary, #f5f5f7));
   line-height: 1.4;
   word-wrap: break-word;
   padding: 6px;
-  background: rgba(var(--finder-accent-rgb, 10, 132, 255), 0.05);
-  border: 1px solid rgba(var(--finder-accent-rgb, 10, 132, 255), 0.1);
+  background: rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.05);
+  border: 1px solid rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.18);
   border-radius: 4px;
 }
 
@@ -269,26 +272,24 @@
 [data-theme='light'] .grid-item-info-card {
   background: rgba(255, 255, 255, 0.98);
   border-color: rgba(0, 0, 0, 0.1);
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
 }
 
 [data-theme='light'] .info-card-name {
-  color: var(--finder-text-primary, #1d1d1f);
+  color: var(--vfs-text-primary, var(--finder-text-primary, #1d1d1f));
 }
 
 [data-theme='light'] .info-card-comment {
-  background: rgba(10, 132, 255, 0.05);
-  border-color: rgba(10, 132, 255, 0.15);
-  color: var(--finder-text-primary, #1d1d1f);
+  background: rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.05);
+  border-color: rgba(var(--vfs-primary-rgb, 67, 56, 202), 0.18);
+  color: var(--vfs-text-primary, var(--finder-text-primary, #1d1d1f));
 }
 
 /* Storage class badge overlay for grid view */
 .file-storage-class-badge {
   position: absolute;
-  bottom: 4px;
-  left: 4px;
+  bottom: 3px;
+  left: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -300,22 +301,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
-  min-width: 18px;
-  max-width: 18px;
-  min-height: 18px;
-  max-height: 18px;
-  border-radius: 4px;
-  font-size: 10px;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  max-width: 14px;
+  min-height: 14px;
+  max-height: 14px;
+  border-radius: 3px;
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
   flex-shrink: 0;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  transition: all 0.15s ease;
-  opacity: 0.9;
+  transition: opacity 0.15s ease;
+  opacity: 0.85;
+  letter-spacing: 0.02em;
 }
 
 .file-storage-class-badge .storage-tier-badge.local {

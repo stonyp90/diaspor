@@ -89,6 +89,13 @@ export function KeyboardShortcutHelper({
   isOpen,
   onClose,
 }: KeyboardShortcutHelperProps) {
+  const [query, setQuery] = useState('');
+
+  // Reset filter when re-opened
+  useEffect(() => {
+    if (isOpen) setQuery('');
+  }, [isOpen]);
+
   // Close on Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -103,43 +110,76 @@ export function KeyboardShortcutHelper({
 
   if (!isOpen) return null;
 
+  const q = query.trim().toLowerCase();
+  const filteredCategories = q
+    ? SHORTCUT_CATEGORIES.map((category) => ({
+        ...category,
+        shortcuts: category.shortcuts.filter(
+          (s) =>
+            s.description.toLowerCase().includes(q) ||
+            s.keys.some((k) => k.toLowerCase().includes(q)),
+        ),
+      })).filter((category) => category.shortcuts.length > 0)
+    : SHORTCUT_CATEGORIES;
+
   return (
     <div className="shortcut-overlay" onClick={onClose}>
       <div className="shortcut-panel" onClick={(e) => e.stopPropagation()}>
         <div className="shortcut-header">
           <h2>Keyboard Shortcuts</h2>
-          <button className="shortcut-close" onClick={onClose}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <button
+            className="shortcut-close"
+            onClick={onClose}
+            type="button"
+            aria-label="Close keyboard shortcuts"
+          >
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
             </svg>
           </button>
         </div>
 
+        <div className="shortcut-search">
+          <input
+            type="text"
+            className="shortcut-search-input"
+            placeholder="Filter shortcuts..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            autoFocus
+            aria-label="Filter shortcuts"
+          />
+        </div>
+
         <div className="shortcut-content">
-          {SHORTCUT_CATEGORIES.map((category) => (
-            <div key={category.name} className="shortcut-category">
-              <h3 className="category-title">{category.name}</h3>
-              <div className="shortcut-list">
-                {category.shortcuts.map((shortcut, index) => (
-                  <div key={index} className="shortcut-item">
-                    <span className="shortcut-description">
-                      {shortcut.description}
-                    </span>
-                    <span className="shortcut-keys">
-                      {shortcut.keys.map((key, keyIndex) => (
-                        <span key={keyIndex}>
-                          <kbd className="key">{key}</kbd>
-                          {keyIndex < shortcut.keys.length - 1 && (
-                            <span className="key-separator">+</span>
-                          )}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
-                ))}
+          {filteredCategories.length === 0 ? (
+            <div className="shortcut-empty">No shortcuts match "{query}"</div>
+          ) : (
+            filteredCategories.map((category) => (
+              <div key={category.name} className="shortcut-category">
+                <h3 className="category-title">{category.name}</h3>
+                <div className="shortcut-list">
+                  {category.shortcuts.map((shortcut, index) => (
+                    <div key={index} className="shortcut-item">
+                      <span className="shortcut-description">
+                        {shortcut.description}
+                      </span>
+                      <span className="shortcut-keys">
+                        {shortcut.keys.map((key, keyIndex) => (
+                          <span key={keyIndex}>
+                            <kbd className="key">{key}</kbd>
+                            {keyIndex < shortcut.keys.length - 1 && (
+                              <span className="key-separator">+</span>
+                            )}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="shortcut-footer">
