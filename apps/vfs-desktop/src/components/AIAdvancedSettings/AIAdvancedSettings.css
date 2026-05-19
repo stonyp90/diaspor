@@ -14,65 +14,55 @@
    Header Section
    ============================================================================ */
 
+/* Outline card — no gradient bg, no rainbow stripe, no glow icon.
+   Matches the alpha.14 AISetup hero treatment. */
 .ai-settings-header {
   display: flex;
   align-items: center;
-  padding: var(--space-5, 20px);
-  background: linear-gradient(
-    135deg,
-    rgba(var(--vfs-primary-rgb), 0.08) 0%,
-    rgba(var(--vfs-secondary-rgb), 0.05) 100%
-  );
-  border: 1px solid rgba(var(--vfs-primary-rgb), 0.15);
-  border-radius: var(--radius-lg, 12px);
-  position: relative;
-  overflow: hidden;
-}
-
-.ai-settings-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--vfs-primary), var(--vfs-secondary));
+  padding: 12px 14px;
+  background: var(--vfs-bg-secondary, rgba(255, 255, 255, 0.02));
+  border: 1px solid var(--vfs-border, rgba(255, 255, 255, 0.08));
+  border-radius: 10px;
 }
 
 .header-content {
   display: flex;
   align-items: center;
-  gap: var(--space-4, 16px);
+  gap: 12px;
 }
 
 .header-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, var(--vfs-primary), var(--vfs-secondary));
-  border-radius: var(--radius-md, 8px);
-  box-shadow: 0 4px 12px rgba(var(--vfs-primary-rgb), 0.3);
+  width: 26px;
+  height: 26px;
+  background: rgba(var(--vfs-primary-rgb), 0.1);
+  border: 1px solid rgba(var(--vfs-primary-rgb), 0.35);
+  border-radius: 6px;
+  color: var(--vfs-primary);
 }
 
 .header-icon svg {
-  width: 24px;
-  height: 24px;
-  color: white;
+  width: 14px;
+  height: 14px;
+  color: var(--vfs-primary);
 }
 
 .header-text h3 {
-  margin: 0 0 var(--space-1, 4px) 0;
-  font-size: 1.0625rem;
+  margin: 0 0 2px 0;
+  font-size: 11px;
   font-weight: 600;
-  color: var(--vfs-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--vfs-text-muted, var(--vfs-text-secondary));
 }
 
 .header-text p {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 12px;
   color: var(--vfs-text-secondary);
+  line-height: 1.4;
 }
 
 /* ============================================================================
@@ -376,29 +366,31 @@
   padding: var(--space-5, 20px);
 }
 
+/* Tiny outline chip matching the .header-icon pattern in this file +
+   the alpha.14 AISetup hero — no gradient fill, no glow. */
 .feature-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md, 8px);
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
   flex-shrink: 0;
 }
 
 .feature-icon-wrapper.primary {
-  background: linear-gradient(135deg, rgba(var(--vfs-primary-rgb), 0.15), rgba(var(--vfs-secondary-rgb), 0.1));
-  border: 1px solid rgba(var(--vfs-primary-rgb), 0.2);
+  background: rgba(var(--vfs-primary-rgb), 0.1);
+  border: 1px solid rgba(var(--vfs-primary-rgb), 0.35);
 }
 
 .feature-icon-wrapper.accent {
-  background: linear-gradient(135deg, rgba(var(--vfs-accent-rgb), 0.15), rgba(var(--vfs-warning-rgb), 0.1));
-  border: 1px solid rgba(var(--vfs-accent-rgb), 0.2);
+  background: rgba(var(--vfs-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--vfs-accent-rgb), 0.35);
 }
 
 .feature-icon-wrapper svg {
-  width: 22px;
-  height: 22px;
+  width: 12px;
+  height: 12px;
 }
 
 .feature-icon-wrapper.primary svg {
@@ -505,8 +497,8 @@
 }
 
 .modern-toggle input:checked + .toggle-track {
-  background: linear-gradient(135deg, var(--vfs-primary), var(--vfs-secondary));
-  border-color: transparent;
+  background: var(--vfs-primary);
+  border-color: var(--vfs-primary);
 }
 
 .modern-toggle input:checked + .toggle-track .toggle-thumb {
@@ -839,28 +831,27 @@
 
 .styled-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--vfs-primary), var(--vfs-secondary));
+  background: var(--vfs-primary);
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(var(--vfs-primary-rgb), 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   transition: all var(--vfs-transition-fast);
 }
 
 .styled-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(var(--vfs-primary-rgb), 0.4);
+  transform: scale(1.08);
 }
 
 .styled-slider::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   border: none;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--vfs-primary), var(--vfs-secondary));
+  background: var(--vfs-primary);
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(var(--vfs-primary-rgb), 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 /* ============================================================================
@@ -1001,21 +992,21 @@
   }
 
   .ai-settings-header {
-    padding: var(--space-4, 16px);
+    padding: 10px 12px;
   }
 
   .header-icon {
-    width: 40px;
-    height: 40px;
+    width: 24px;
+    height: 24px;
   }
 
   .header-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
   }
 
   .header-text h3 {
-    font-size: 1.1rem;
+    font-size: 11px;
   }
 
   .status-badges {
