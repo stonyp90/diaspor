@@ -36,6 +36,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 
+  <!-- Hero screenshot preload: the eager-loaded one is the LCP candidate.
+       Preload pulls it in parallel with CSS so the cross-fader has its
+       first frame ready by the time layout completes. -->
+  <link rel="preload" as="image" href="/screenshots/diaspor-files.png" fetchpriority="high">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -99,8 +104,8 @@
         <div class="hero-product-shot hero-product-shot-bare">
           <div class="hero-product-glow" aria-hidden="true"></div>
           <div class="hero-mockup hero-mockup-screenshots" role="img" aria-label="Application de bureau Diaspor : navigateur de fichiers multi-niveaux et moniteur de performance en direct sur macOS">
-            <img class="hero-screenshot is-active" src="/screenshots/diaspor-files.png" alt="Navigateur de fichiers Diaspor affichant les niveaux de stockage local et AWS S3, un menu contextuel avec « Déplacer vers un niveau de stockage » et un panneau de mesures système intégré" width="2798" height="1810" loading="eager" decoding="async">
-            <img class="hero-screenshot" src="/screenshots/diaspor-metrics.png" alt="Moniteur de performance Diaspor affichant CPU, GPU, RAM, VRAM, température, charge moyenne, E/S disque et débit réseau sur Apple M4 Pro" width="2798" height="1802" loading="lazy" decoding="async">
+            <img class="hero-screenshot is-active" src="/screenshots/diaspor-files.png" alt="Navigateur de fichiers Diaspor affichant les niveaux de stockage local et AWS S3, un menu contextuel avec « Déplacer vers un niveau de stockage » et un panneau de mesures système intégré" width="1600" height="1030" loading="eager" decoding="async" fetchpriority="high">
+            <img class="hero-screenshot" src="/screenshots/diaspor-metrics.png" alt="Moniteur de performance Diaspor affichant CPU, GPU, RAM, VRAM, température, charge moyenne, E/S disque et débit réseau sur Apple M4 Pro" width="1600" height="1035" loading="lazy" decoding="async">
           </div>
           <div class="hero-product-tag">
             <span class="hero-product-tag-pulse" aria-hidden="true"></span>
