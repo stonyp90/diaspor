@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   
   <!-- Primary Meta Tags -->
-  <title>Diaspor — Rust file intelligence on your hardware</title>
-  <meta name="title" content="Diaspor — Rust file intelligence on your hardware">
-  <meta name="description" content="Rust file intelligence platform: VDFS, CLI/SDK, AI models with Judge Assistant. Auto-tag video, transcribe, analyze WebRTC/HLS streams on-prem.">
+  <title>Diaspor — Run AI at scale on data you own.</title>
+  <meta name="title" content="Diaspor — Run AI at scale on data you own.">
+  <meta name="description" content="Run AI on your proprietary data at scale — transcribe, tag and search across any storage you already own. No per-token cloud AI bill, no giant GPU build-out. On-prem · OS-agnostic · in Canada (`ca-central-1`).">
   <meta name="keywords" content="Diaspor, Diaspor Desktop, Diaspor Engine, Diaspor Models, file intelligence, on-device AI, closed source Rust, VDFS, virtual distributed filesystem, Rust CLI, Rust SDK, REST API, auto-tag video, video transcription, WebRTC analysis, HLS analysis, RTSP analysis, judge assistant AI, on-prem AI, no per-call pricing, near-zero infrastructure cost, self-hosted AI, whisper.cpp, FUSE, WinFsp, AWS ca-central-1">
   <meta name="author" content="Diaspor">
   <meta name="robots" content="noindex, nofollow">
@@ -19,16 +19,16 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://diaspor.io/">
-  <meta property="og:title" content="Diaspor — Rust file intelligence on your hardware">
-  <meta property="og:description" content="Rust file intelligence platform: VDFS, CLI/SDK, AI models with Judge Assistant. Auto-tag video, transcribe, analyze WebRTC/HLS streams on-prem.">
+  <meta property="og:title" content="Diaspor — Run AI at scale on data you own.">
+  <meta property="og:description" content="Run AI on your proprietary data at scale. Transcribe, tag and search across any storage you own — no per-token cloud bill, no giant GPU build-out. On-prem · OS-agnostic · Canada.">
   <meta property="og:site_name" content="Diaspor">
   <meta property="og:locale" content="en_US">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:url" content="https://diaspor.io/">
-  <meta name="twitter:title" content="Diaspor — Rust file intelligence on your hardware">
-  <meta name="twitter:description" content="Rust file intelligence platform: VDFS, CLI/SDK, AI models with Judge Assistant. Auto-tag video, transcribe, analyze WebRTC/HLS streams on-prem.">
+  <meta name="twitter:title" content="Diaspor — Run AI at scale on data you own.">
+  <meta name="twitter:description" content="Run AI on your proprietary data at scale. Transcribe, tag and search across any storage you own — no per-token cloud bill, no giant GPU build-out. On-prem · OS-agnostic · Canada.">
 
   <!-- Favicon - Complete Set -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -42,6 +42,35 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Lightbox styles (vanilla, scoped) -->
+  <style>
+    .lightbox-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:1000;align-items:center;justify-content:center;flex-direction:column;}
+    .lightbox-overlay.is-open{display:flex;animation:lb-fade 180ms ease;}
+    @keyframes lb-fade{from{opacity:0;}to{opacity:1;}}
+    .lightbox-image{max-width:95vw;max-height:88vh;object-fit:contain;cursor:zoom-in;transition:transform 220ms ease;border-radius:6px;box-shadow:0 24px 64px rgba(0,0,0,0.5);user-select:none;-webkit-user-drag:none;}
+    .lightbox-image.is-zoomed{transform:scale(2);cursor:zoom-out;}
+    .lightbox-caption{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);max-width:90vw;text-align:center;font-size:13px;color:#c9d1d9;background:rgba(0,0,0,0.55);padding:8px 14px;border-radius:6px;font-family:'Outfit',system-ui,sans-serif;letter-spacing:0.01em;pointer-events:none;}
+    .lightbox-counter{position:absolute;top:18px;left:18px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;color:#c9d1d9;background:rgba(255,255,255,0.06);padding:5px 11px;border-radius:6px;letter-spacing:0.08em;}
+    .lightbox-close,.lightbox-prev,.lightbox-next,.lightbox-zoom-in,.lightbox-zoom-out{position:absolute;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Outfit',system-ui,sans-serif;line-height:1;padding:0;transition:background 150ms,border-color 150ms,transform 150ms;}
+    .lightbox-close:hover,.lightbox-prev:hover,.lightbox-next:hover,.lightbox-zoom-in:hover,.lightbox-zoom-out:hover{background:rgba(34,211,238,0.15);border-color:rgba(34,211,238,0.5);}
+    .lightbox-close{top:14px;right:14px;width:42px;height:42px;border-radius:50%;font-size:26px;font-weight:300;}
+    .lightbox-prev,.lightbox-next{top:50%;transform:translateY(-50%);width:48px;height:64px;font-size:32px;border-radius:8px;font-weight:300;}
+    .lightbox-prev{left:18px;}
+    .lightbox-next{right:18px;}
+    .lightbox-prev:hover,.lightbox-next:hover{transform:translateY(-50%) scale(1.04);}
+    .lightbox-zoom-controls{position:absolute;top:18px;right:74px;display:flex;gap:8px;}
+    .lightbox-zoom-in,.lightbox-zoom-out{position:relative;top:auto;right:auto;width:42px;height:42px;border-radius:50%;font-size:22px;font-weight:400;}
+    @media(max-width:600px){
+      .lightbox-prev,.lightbox-next{width:40px;height:54px;font-size:26px;}
+      .lightbox-close{width:38px;height:38px;font-size:22px;}
+      .lightbox-zoom-in,.lightbox-zoom-out{width:38px;height:38px;font-size:20px;}
+      .lightbox-zoom-controls{right:62px;}
+      .lightbox-caption{font-size:12px;bottom:14px;padding:6px 10px;}
+      .lightbox-counter{font-size:12px;top:14px;left:14px;}
+    }
+    .lightbox-trigger{cursor:zoom-in;}
+  </style>
 
   <!-- Hero screenshot preload: the eager-loaded one is the LCP candidate.
        Preload pulls it in parallel with CSS so the cross-fader has its
@@ -115,27 +144,26 @@
     <div class="hero-visual">
       <div class="hero-product-shot hero-product-shot-bare">
         <div class="hero-product-glow" aria-hidden="true"></div>
-        <div class="hero-mockup hero-mockup-screenshots" role="img" aria-label="Diaspor desktop app: multi-tier file browser and live performance monitor on macOS">
-          <img class="hero-screenshot is-active" src="screenshots/diaspor-files.png" alt="Diaspor file browser showing local and AWS S3 storage tiers, a context menu with Move to Storage Tier, and an embedded system metrics panel" width="1600" height="1030" loading="eager" decoding="async" fetchpriority="high">
-          <img class="hero-screenshot" src="screenshots/diaspor-metrics.png" alt="Diaspor performance monitor showing CPU, GPU, RAM, VRAM, temperature, load average, disk I/O and network throughput on Apple M4 Pro" width="1600" height="1035" loading="lazy" decoding="async">
+        <div class="hero-mockup hero-mockup-screenshots" role="img" aria-label="Diaspor desktop app: multi-storage file browser on macOS">
+          <img class="hero-screenshot lightbox-trigger is-active" src="screenshots/diaspor-files.png" alt="Diaspor file browser showing local and AWS S3 storage tiers, a context menu with Move to Storage Tier, and an embedded system metrics panel" data-caption="Files — multi-storage sidebar, context-menu actions, live system metrics." width="1600" height="1030" loading="eager" decoding="async" fetchpriority="high">
         </div>
         <div class="hero-product-tag">
           <span class="hero-product-tag-pulse" aria-hidden="true"></span>
-          <span>Private beta · Request access</span>
+          <span>Private beta · Calibrating with founding cohort</span>
         </div>
       </div>
     </div>
     <div class="hero-content">
       <span class="hero-eyebrow">
         <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-        Self-hosted · Storage tiers · Live observability
+        On-prem AI at scale · Rust 2024 · <code>ca-central-1</code>
       </span>
-      <h1 class="hero-title" itemprop="headline">
-        <span class="gradient-text">File intelligence</span><br>
-        <span class="gradient-text-secondary hero-creative-text">on your <em>hardware</em>.</span>
+      <h1 class="hero-title" itemprop="headline" style="font-size:clamp(48px,7vw,88px);font-weight:800;letter-spacing:-0.04em;line-height:1.02;">
+        <span class="gradient-text">Run AI at scale</span><br>
+        <span class="gradient-text-secondary hero-creative-text">on data you <em>own</em>.</span>
       </h1>
       <p class="hero-description" itemprop="description">
-        Diaspor is a <strong>Rust-powered file intelligence platform</strong>. One desktop browser across every storage tier you own — <strong>local · NAS · S3 · cloud · on-prem GPU</strong>. Move files between tiers without copy-paste-rename, search by content not filename, watch the agent's CPU, GPU and disk in real time. <strong>Nothing leaves your perimeter, by construction.</strong>
+        Put AI to work on everything your organization has recorded — right where it already lives — and surface any moment in seconds. Your <strong>proprietary data and IP never leave your perimeter</strong>, you skip the per-token cloud AI bill, and it all runs on infrastructure you already own — <strong>in Canada, for less.</strong>
       </p>
       <div class="hero-snippet" aria-label="Example command-line usage">
         <span class="hero-snippet-prompt">$</span>
@@ -148,33 +176,53 @@
           Book a demo
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <a href="#waitlist" class="btn-secondary">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
-          Request preview build
-        </a>
-        <a href="#waitlist" class="btn-secondary">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          Join Desktop waitlist
-        </a>
-        <a href="#vdfs" class="btn-secondary">
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
-          Explore the VDFS
+        <a href="#download" class="btn-secondary">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Desktop
         </a>
       </div>
+      <p class="hero-stack-line" style="margin:18px 0 0;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11.5px;color:#7d8590;letter-spacing:0.05em;line-height:1.6;">
+        <span style="color:#22d3ee;">●</span>&nbsp;Rust&nbsp;2024 <span style="color:#3a4453;">·</span> <code style="color:#a5b4fc;">whisper.cpp</code> <span style="color:#3a4453;">·</span> <code style="color:#a5b4fc;">FFmpeg</code> <span style="color:#3a4453;">·</span> <code style="color:#a5b4fc;">FUSE</code> <span style="color:#3a4453;">·</span> 100% on-device
+      </p>
       <div class="hero-stats">
         <div class="stat">
-          <span class="stat-value">Self-hosted</span>
-          <span class="stat-label">Laptop, server or Canadian cloud</span>
+          <span class="stat-value">Your hardware</span>
+          <span class="stat-label">Existing servers, GPU, or Canadian cloud</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
           <span class="stat-value">Auditable</span>
-          <span class="stat-label">Signed builds, full audit trail</span>
+          <span class="stat-label">Signed builds · Ed25519 audit log</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
           <span class="stat-value">Loi 25</span>
-          <span class="stat-label">PIPEDA, Bill 96, by design</span>
+          <span class="stat-label">PIPEDA · Bill 96 by design</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Hero stats strip — credibility at-a-glance under the fold (Vercel pattern) -->
+  <style>@media(max-width:880px){.hero-stats-strip-grid{grid-template-columns:repeat(2,1fr)!important;}.hero-stats-strip-cell:nth-child(2){border-right:none!important;}.hero-stats-strip-cell:nth-child(1),.hero-stats-strip-cell:nth-child(2){border-bottom:1px solid #1f2937;padding-bottom:24px!important;}.hero-stats-strip-cell:nth-child(3),.hero-stats-strip-cell:nth-child(4){padding-top:24px!important;}}</style>
+  <section class="hero-stats-strip" aria-label="Diaspor by the numbers" style="padding:44px 0;border-top:1px solid #1f2937;border-bottom:1px solid #1f2937;background:rgba(13,17,23,0.5);">
+    <div class="container">
+      <div class="hero-stats-strip-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;text-align:center;">
+        <div class="hero-stats-strip-cell" style="border-right:1px solid #1f2937;padding:0 24px;">
+          <div style="font-size:clamp(28px,3.4vw,40px);font-weight:700;background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.03em;line-height:1;">11</div>
+          <div style="font-size:11.5px;color:#7d8590;text-transform:uppercase;letter-spacing:0.15em;font-weight:600;margin-top:8px;">Storage backends</div>
+        </div>
+        <div class="hero-stats-strip-cell" style="border-right:1px solid #1f2937;padding:0 24px;">
+          <div style="font-size:clamp(28px,3.4vw,40px);font-weight:700;background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.03em;line-height:1;">9</div>
+          <div style="font-size:11.5px;color:#7d8590;text-transform:uppercase;letter-spacing:0.15em;font-weight:600;margin-top:8px;">AI capabilities</div>
+        </div>
+        <div class="hero-stats-strip-cell" style="border-right:1px solid #1f2937;padding:0 24px;">
+          <div style="font-size:clamp(28px,3.4vw,40px);font-weight:700;background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.03em;line-height:1;">100<span style="font-size:0.62em;letter-spacing:0;">%</span></div>
+          <div style="font-size:11.5px;color:#7d8590;text-transform:uppercase;letter-spacing:0.15em;font-weight:600;margin-top:8px;">On-device</div>
+        </div>
+        <div class="hero-stats-strip-cell" style="padding:0 24px;">
+          <div style="font-size:clamp(28px,3.4vw,40px);font-weight:700;background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.03em;line-height:1;">0</div>
+          <div style="font-size:11.5px;color:#7d8590;text-transform:uppercase;letter-spacing:0.15em;font-weight:600;margin-top:8px;">Per-call billing</div>
         </div>
       </div>
     </div>
@@ -184,13 +232,13 @@
   <section class="trust-strip" aria-label="Canadian posture and compliance">
     <div class="container">
       <ul class="trust-strip-badges">
-        <li><span class="badge-dot dot-success"></span>Loi 25, PIPEDA, Bill 96 by design</li>
-        <li><span class="badge-dot dot-success"></span>Bilingual MSA ready for BSP &amp; SQI</li>
-        <li><span class="badge-dot dot-info"></span>Data &amp; inference in <strong>AWS ca-central-1</strong></li>
+        <li><span class="badge-dot dot-success"></span>Loi 25 · PIPEDA · Bill 96 by design</li>
+        <li><span class="badge-dot dot-success"></span>Bilingual MSA · BSP &amp; SQI-ready</li>
+        <li><span class="badge-dot dot-info"></span>Data &amp; inference in <code>ca-central-1</code></li>
         <li><span class="badge-dot dot-info"></span>Zero US sub-processors</li>
         <li><span class="badge-dot dot-warning"></span>SOC 2 Type II in progress · 2026</li>
-        <li><span class="badge-dot dot-info"></span>Signed binaries · Ed25519 audit logs</li>
-        <li><span class="badge-dot dot-info"></span>Built in Stoneham (Québec) · runs anywhere</li>
+        <li><span class="badge-dot dot-info"></span>Signed binaries · Ed25519 audit log</li>
+        <li><span class="badge-dot dot-info"></span>Built in Stoneham, Québec · runs anywhere</li>
       </ul>
     </div>
   </section>
@@ -200,9 +248,21 @@
     <div class="container">
       <div class="section-header">
         <span class="section-tag">02 · Product line</span>
-        <h2 class="section-title">Three commercial products. One Rust platform.</h2>
-        <p class="section-description">All closed source. All hosted in Canada (<code>ca-central-1</code>). All built and maintained in Québec.</p>
+        <h2 class="section-title">Three products. One on-prem AI platform.</h2>
+        <p class="section-description">Closed source, built in Québec, and engineered to run on infrastructure you already own — hosted in Canada (<code>ca-central-1</code>) only if you'd rather we operate it.</p>
       </div>
+
+      <style>
+        /* Override container + canada-band-grid for the 3-product layout (was tuned for 4 cards in a 1100px container) */
+        #products .container { max-width: 1360px !important; }
+        #products .canada-band-grid { max-width: 1320px !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 24px !important; padding: 0 !important; }
+        #products .canada-band-card { padding: 32px 28px !important; min-height: 280px !important; }
+        #products .canada-band-card h3 { font-size: 22px !important; letter-spacing: -0.02em !important; }
+        #products .canada-band-card p { font-size: 14.5px !important; line-height: 1.62 !important; }
+        #products .section-header { max-width: 920px; margin-left: auto; margin-right: auto; }
+        #products .product-shots { max-width: 1320px !important; margin-left: auto !important; margin-right: auto !important; }
+        @media (max-width: 980px) { #products .canada-band-grid { grid-template-columns: 1fr !important; } }
+      </style>
 
       <div class="canada-band-grid">
         <article class="canada-band-card">
@@ -211,7 +271,7 @@
           </span>
           <div>
             <h3>Diaspor Desktop.</h3>
-            <p>Cross-platform app (macOS · Windows · Linux). <strong>Auto-tag</strong> any video archive. <strong>Transcribe</strong> meetings on-device. <strong>Analyze live streams</strong> (WebRTC, HLS, RTSP). Multi-storage (local · cloud · NAS · S3). <strong>15 CAD/mo prosumer · 50 CAD/seat/mo team · 199 CAD lifetime</strong>. <a href="#waitlist">Join the waitlist →</a></p>
+            <p>Native app for macOS, Windows, Linux. Auto-tag video archives, transcribe meetings, analyze live <code>WebRTC</code> · <code>HLS</code> · <code>RTSP</code> streams — all on-device. <br><strong>For:</strong> creators, prosumers, small teams. <br><a href="#waitlist">Join the waitlist →</a></p>
           </div>
         </article>
         <article class="canada-band-card">
@@ -220,7 +280,7 @@
           </span>
           <div>
             <h3>Diaspor Engine.</h3>
-            <p><strong>Virtual Distributed Filesystem</strong> in Rust 2024. Rust SDK · CLI · REST API · cargo-installable for licensed embedders. Single async API across memory · local · FUSE · WinFsp · S3 · NAS. Runs on laptop, server, cluster, cloud or edge. <strong>Near-zero infrastructure cost</strong> — your hardware does the work. <strong>5K CAD/yr per developer or 25-100K CAD/yr enterprise</strong>. <a href="mailto:hello@diaspor.io?subject=Diaspor%20Engine">Talk to us →</a></p>
+            <p>Virtual Distributed Filesystem in Rust 2024. One async API across memory, local, <code>FUSE</code>, <code>WinFsp</code>, S3, NAS. SDK · CLI · REST API. <br><strong>For:</strong> developers and ISVs embedding file intelligence. <br><a href="mailto:hello@diaspor.io?subject=Diaspor%20Engine">Talk to us about embedding →</a></p>
           </div>
         </article>
         <article class="canada-band-card">
@@ -229,77 +289,256 @@
           </span>
           <div>
             <h3>Diaspor Models.</h3>
-            <p>Proprietary AI capabilities. Auto-tagging, transcription FR/EN, vision, 3D pose, prosody, credibility, <strong>Judge Assistant AI for neutrality scoring</strong>, speech diarization. Plug into Engine + Desktop. <strong>25K+ CAD/seat/yr self-hosted or hosted SaaS</strong>. <a href="mailto:hello@diaspor.io?subject=Diaspor%20Models">Talk to us →</a></p>
+            <p>Nine proprietary AI capabilities: auto-tag, transcription FR/EN, vision, 3D pose, prosody, credibility, Judge Assistant, diarization, live stream. Plugs into Engine + Desktop. <br><strong>For:</strong> enterprises, federations, regulated sectors. <br><a href="mailto:hello@diaspor.io?subject=Diaspor%20Models">Request enterprise pricing →</a></p>
           </div>
         </article>
       </div>
 
       <p class="tech-cta" style="margin-top: 1.5rem;">
-        Built on Rust 2024 · runs on any on-prem infrastructure · closed source · trademark "Diaspor" filed 2026-05-19 · hosted in Canada (<code>ca-central-1</code>) when hosted · Loi 25 + PIPEDA + Bill 96 aligned.
+        Rust 2024 · runs on any infrastructure you control · closed source · Diaspor&trade; filed 2026-05-19 · Loi 25 + PIPEDA + Bill 96 by design.
       </p>
+
+      <!-- Product screenshots gallery — Files, Settings AI, Metrics -->
+      <style>@media(max-width:880px){.product-shots{grid-template-columns:1fr!important;}}</style>
+      <div class="product-shots" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px;">
+        <figure style="margin:0;">
+          <img class="lightbox-trigger" src="screenshots/diaspor-files.png" alt="Diaspor Desktop · Files view with multi-storage sidebar (Local + Cloud AWS), file list with right-click context menu (Open, Asset Details, Reveal in Finder, Move to Storage Tier, Copy, Cut, Paste, Rename, Move to Trash), live system metrics in the lower sidebar" data-caption="Files — multi-storage sidebar, right-click context menu, live metrics in the lower pane." loading="lazy" style="display:block;width:100%;height:auto;border-radius:10px;border:1px solid #1f2937;box-shadow:0 16px 32px rgba(0,0,0,0.4);cursor:zoom-in;">
+          <figcaption style="margin-top:10px;text-align:center;font-size:11.5px;color:#7d8590;">Files · multi-storage sidebar · live metrics</figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img class="lightbox-trigger" src="screenshots/diaspor-settings-ai.png" alt="Diaspor Desktop · Settings with AI-Powered Features: Speech-to-Text (auto-transcribe on open, language auto-detect), Smart Tagging (auto-tag when viewing). All on-device, no cloud APIs." data-caption="AI features — speech-to-text, smart tagging, all on-device. No cloud APIs." loading="lazy" style="display:block;width:100%;height:auto;border-radius:10px;border:1px solid #1f2937;box-shadow:0 16px 32px rgba(0,0,0,0.4);cursor:zoom-in;">
+          <figcaption style="margin-top:10px;text-align:center;font-size:11.5px;color:#7d8590;">AI features · transcription · tagging · all on-device</figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img class="lightbox-trigger" src="screenshots/diaspor-metrics.png" alt="Diaspor Desktop · Performance Monitor with live CPU (26%), RAM (57%), GPU (72%), VRAM, temperature, load average, disk I/O, network throughput. Your hardware does the work — Diaspor shows you exactly how much." data-caption="Performance monitor — live CPU, GPU, RAM, VRAM, temperature, disk I/O, network throughput." loading="lazy" style="display:block;width:100%;height:auto;border-radius:10px;border:1px solid #1f2937;box-shadow:0 16px 32px rgba(0,0,0,0.4);cursor:zoom-in;">
+          <figcaption style="margin-top:10px;text-align:center;font-size:11.5px;color:#7d8590;">Performance monitor · CPU · GPU · RAM · disk · network</figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 
-  <!-- VDFS — folder-tree mockup + capabilities -->
-  <style>@media(max-width:880px){.vdfs-grid{grid-template-columns:1fr!important;}}</style>
-  <section id="vdfs" class="vdfs-section" style="padding:72px 0;border-top:1px solid #1f2937;">
-    <div class="container">
+  <!-- VDFS — bento grid: hero screenshot + stat + 4 capability cards + CLI -->
+  <style>
+    .vdfs-bento{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:auto;gap:20px;align-items:stretch;}
+    .vdfs-bento-hero{grid-column:1 / span 1;grid-row:1 / span 2;background:#0d1117;border:1px solid #1f2937;border-radius:16px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
+    .vdfs-bento-hero::before{content:"";position:absolute;inset:-1px;background:radial-gradient(ellipse at top right, rgba(34,211,238,0.06), transparent 60%);pointer-events:none;}
+    .vdfs-bento-stat{grid-column:2 / span 2;grid-row:1 / span 1;background:linear-gradient(135deg,rgba(34,211,238,0.06),rgba(79,70,229,0.06));border:1px solid #1f2937;border-radius:16px;padding:28px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+    .vdfs-bento-mount{grid-column:2 / span 2;grid-row:2 / span 1;background:#14141d;border:1px solid #1f2937;border-radius:16px;padding:24px;}
+    .vdfs-bento-card{background:#14141d;border:1px solid #1f2937;border-radius:16px;padding:24px;transition:border-color 200ms ease, transform 200ms ease;}
+    .vdfs-bento-card:hover{border-color:rgba(34,211,238,0.35);transform:translateY(-1px);}
+    .vdfs-bento-tree{grid-column:1 / span 3;background:#0d1117;border:1px solid #1f2937;border-radius:16px;padding:28px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:1.8;color:#c9d1d9;}
+    .vdfs-bento-cli{grid-column:1 / span 3;background:#0d1117;border:1px solid #1f2937;border-radius:16px;padding:28px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:2;color:#c9d1d9;}
+    .vdfs-bento h3{font-size:15px;font-weight:600;color:#fff;margin-bottom:10px;letter-spacing:-0.005em;}
+    .vdfs-bento p{font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.6;}
+    @media(max-width:880px){
+      .vdfs-bento{grid-template-columns:1fr;}
+      .vdfs-bento-hero,.vdfs-bento-stat,.vdfs-bento-mount,.vdfs-bento-tree,.vdfs-bento-cli{grid-column:1 / -1;grid-row:auto;}
+    }
+  </style>
+  <section id="vdfs" class="vdfs-section" style="padding:100px 0;border-top:1px solid #1f2937;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 40% at 50% 0%, rgba(34,211,238,0.04), transparent 70%);pointer-events:none;" aria-hidden="true"></div>
+    <div class="container" style="position:relative;">
       <div class="section-header" style="text-align:center;margin-bottom:48px;">
         <span class="section-tag" style="display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:#22d3ee;font-weight:600;margin-bottom:14px;">Virtual Distributed Filesystem · Rust 2024</span>
-        <h2 class="section-title" style="font-size:clamp(28px,3.4vw,42px);font-weight:700;color:#fff;letter-spacing:-0.025em;margin-bottom:14px;">One folder tree. <span style="background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Every storage you own.</span></h2>
-        <p class="section-description" style="font-size:16px;color:#c9d1d9;max-width:680px;margin:0 auto;line-height:1.6;">Mount local disks, S3 buckets, NAS shares, FUSE volumes, RTSP cameras — all under one async API. Search · transcribe · tag · analyze across sources without copying a byte.</p>
+        <h2 class="section-title" style="font-size:clamp(32px,4vw,52px);font-weight:700;color:#fff;letter-spacing:-0.03em;margin-bottom:16px;line-height:1.05;">One tree. <span style="background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Every backend you own.</span></h2>
+        <p class="section-description" style="font-size:17px;color:#c9d1d9;max-width:680px;margin:0 auto;line-height:1.65;">Drop into the infrastructure you already run — or simply point Diaspor at it. Every major cloud, every on-prem and bare-metal backend, under one mount surface. Zero copy. Your data, your perimeter.</p>
       </div>
 
-      <div class="vdfs-grid" style="display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:start;">
+      <!-- CSP / on-prem compatibility grid -->
+      <style>
+        .csp-tile:hover { border-color:rgba(34,211,238,0.45); transform:translateY(-1px); }
+      </style>
+      <div class="csp-grid" style="margin:0 auto 32px;max-width:1080px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;">
+        <!-- 1. AWS S3 -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">AWS S3</span>
+        </div>
+        <!-- 2. Google Cloud Storage -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Google Cloud Storage</span>
+        </div>
+        <!-- 3. Azure Blob -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Azure Blob Storage</span>
+        </div>
+        <!-- 4. Cloudflare R2 -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Cloudflare R2</span>
+        </div>
+        <!-- 5. Backblaze B2 -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Backblaze B2</span>
+        </div>
+        <!-- 6. DigitalOcean Spaces -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">DigitalOcean Spaces</span>
+        </div>
+        <!-- 7. Wasabi -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Wasabi</span>
+        </div>
+        <!-- 8. Linode Object Storage -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Linode Object Storage</span>
+        </div>
+        <!-- 9. MinIO (server) -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="7" y1="17" x2="7.01" y2="17"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">MinIO</span>
+        </div>
+        <!-- 10. Ceph (server) -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="7" y1="17" x2="7.01" y2="17"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Ceph</span>
+        </div>
+        <!-- 11. Garage (server) -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><line x1="7" y1="7" x2="7.01" y2="7"/><line x1="7" y1="17" x2="7.01" y2="17"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Garage</span>
+        </div>
+        <!-- 12. SMB / CIFS (folder) -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">SMB / CIFS</span>
+        </div>
+        <!-- 13. NFS (folder) -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">NFS</span>
+        </div>
+        <!-- 14. SFTP (folder) -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">SFTP</span>
+        </div>
+        <!-- 15. Local filesystem (folder) -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Local filesystem</span>
+        </div>
+        <!-- 16. Bare metal / FUSE / WinFsp (chip) -->
+        <div class="csp-tile" style="background:#0d1117;border:1px solid #1f2937;border-radius:12px;padding:20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;transition:border-color 180ms,transform 180ms;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1"/><line x1="9" y1="2" x2="9" y2="6"/><line x1="15" y1="2" x2="15" y2="6"/><line x1="9" y1="18" x2="9" y2="22"/><line x1="15" y1="18" x2="15" y2="22"/><line x1="2" y1="9" x2="6" y2="9"/><line x1="2" y1="15" x2="6" y2="15"/><line x1="18" y1="9" x2="22" y2="9"/><line x1="18" y1="15" x2="22" y2="15"/></svg>
+          <span style="font-size:12.5px;color:#c9d1d9;font-weight:600;">Bare metal · FUSE · WinFsp</span>
+        </div>
+      </div>
 
-        <!-- Left: folder tree mockup -->
-        <div class="vdfs-tree" style="background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:24px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:1.8;color:#c9d1d9;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid #1f2937;padding-bottom:12px;">
-            <span style="color:#7d8590;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:600;">$ diaspor tree /cases</span>
-            <span style="font-size:11px;color:#22d3ee;">● connected</span>
+      <p style="text-align:center;max-width:760px;margin:0 auto 56px;font-size:14.5px;color:#c9d1d9;line-height:1.6;"><strong style="color:#fff;">Same async API everywhere.</strong> No vendor lock-in. No surprise egress fees.</p>
+
+      <div class="vdfs-bento">
+
+        <!-- Mount anywhere card (now spans wider since the hero figure is gone) -->
+        <article class="vdfs-bento-mount" style="grid-column:1 / -1;grid-row:auto;">
+          <h3>&#128204; Mount anywhere.</h3>
+          <p>Memory · local · <code>FUSE</code> (macOS/Linux) · <code>WinFsp</code> (Windows) · S3 · NAS/SMB · RTSP. One async API. One mental model.</p>
+        </article>
+
+        <!-- Index without copying -->
+        <article class="vdfs-bento-card">
+          <h3>&#9889; Index in place.</h3>
+          <p>The pipeline reads files where they live. Tags, transcripts and embeddings go to a separate metadata store. Originals never move.</p>
+        </article>
+
+        <!-- No-network by construction -->
+        <article class="vdfs-bento-card">
+          <h3>&#128274; No-network by construction.</h3>
+          <p>CI runs every test inside <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#22d3ee;font-size:0.9em;">unshare --net</code>. Build fails if any module opens a socket without explicit opt-in. The privacy contract is structural, not aspirational.</p>
+        </article>
+
+        <!-- Pay for your hardware -->
+        <article class="vdfs-bento-card">
+          <h3>&#128176; Pay for hardware. Not tokens.</h3>
+          <p>Your CPU, GPU and disk do the work. Diaspor scales linearly with your infrastructure — and nothing else.</p>
+        </article>
+
+        <!-- Folder tree mockup -->
+        <div class="vdfs-bento-tree">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid #1f2937;padding-bottom:14px;">
+            <span style="color:#7d8590;font-size:11px;text-transform:uppercase;letter-spacing:0.14em;font-weight:600;">$ diaspor tree /cases</span>
+            <span style="font-size:11px;color:#22d3ee;display:inline-flex;align-items:center;gap:6px;"><span style="width:6px;height:6px;border-radius:50%;background:#22d3ee;box-shadow:0 0 8px rgba(34,211,238,0.6);display:inline-block;"></span>connected</span>
           </div>
           <div>&#128193; <strong style="color:#22d3ee;">cases/</strong></div>
           <div style="padding-left:14px;">├─ &#128190; <span style="color:#a5b4fc;">local/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">2.1 TB · NVMe SSD</span></div>
-          <div style="padding-left:30px;color:#8b949e;">│  ├─ 2026-cases/</div>
-          <div style="padding-left:30px;color:#8b949e;">│  └─ archives/</div>
-          <div style="padding-left:14px;">├─ &#9729;&#65039; <span style="color:#a5b4fc;">s3-evidence/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">47 TB · AWS ca-central-1</span></div>
-          <div style="padding-left:30px;color:#8b949e;">│  ├─ video/</div>
-          <div style="padding-left:30px;color:#8b949e;">│  └─ audio/</div>
-          <div style="padding-left:14px;">├─ &#128230; <span style="color:#a5b4fc;">nas-archive/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">120 TB · SMB share</span></div>
-          <div style="padding-left:30px;color:#8b949e;">│  └─ 2024-2025/</div>
+          <div style="padding-left:30px;color:#8b949e;">│  ├─ 2026-active/</div>
+          <div style="padding-left:30px;color:#8b949e;">│  └─ working-drafts/</div>
+          <div style="padding-left:14px;">├─ &#9729;&#65039; <span style="color:#a5b4fc;">s3-evidence/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">47.2 TB · AWS <code>ca-central-1</code></span></div>
+          <div style="padding-left:30px;color:#8b949e;">│  ├─ depositions/</div>
+          <div style="padding-left:30px;color:#8b949e;">│  └─ body-cam/</div>
+          <div style="padding-left:14px;">├─ &#128230; <span style="color:#a5b4fc;">nas-archive/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">119.4 TB · SMB share</span></div>
+          <div style="padding-left:30px;color:#8b949e;">│  └─ 2018-2025/</div>
           <div style="padding-left:14px;">├─ &#127909; <span style="color:#a5b4fc;">rtsp-cam-01/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">live · auto-indexed</span></div>
-          <div style="padding-left:14px;">└─ &#128274; <span style="color:#a5b4fc;">encrypted-vault/</span> &nbsp;<span style="color:#7d8590;font-size:11px;">FUSE · AES-256</span></div>
-          <div style="margin-top:22px;padding-top:14px;border-top:1px solid #1f2937;color:#7d8590;font-size:12px;">→ <strong style="color:#22d3ee;">169 TB</strong> across 5 backends · one async API · zero copy · zero data leaving your perimeter</div>
+          <div style="padding-left:14px;">└─ &#128274; <span style="color:#a5b4fc;">encrypted-vault/</span> &nbsp;<span style="color:#7d8590;font-size:11px;"><code>FUSE</code> · AES-256</span></div>
+          <div style="margin-top:22px;padding-top:14px;border-top:1px solid #1f2937;color:#7d8590;font-size:12px;">→ <strong style="color:#22d3ee;">168.7 TB</strong> across 5 backends · one async API · zero copy · zero data leaving your perimeter.</div>
         </div>
 
-        <!-- Right: capability list -->
-        <div class="vdfs-features" style="display:flex;flex-direction:column;gap:18px;">
-          <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
-            <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128204; Mount anywhere</h3>
-            <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">Memory · local disk · FUSE (macOS/Linux) · WinFsp (Windows) · S3 · NAS/SMB · RTSP. One async API, one mental model.</p>
-          </article>
-          <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
-            <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#9889; Index without copying</h3>
-            <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">The pipeline reads files in-place. Tagging, transcription, embeddings live in a separate metadata store. Originals stay on their backend.</p>
-          </article>
-          <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
-            <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128274; No-network by construction</h3>
-            <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">CI runs every test inside <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#22d3ee;font-size:0.9em;">unshare --net</code>. Build fails if any module opens a socket without explicit opt-in. The privacy contract is structural, not aspirational.</p>
-          </article>
-          <article style="background:#14141d;border:1px solid #1f2937;border-radius:12px;padding:20px;">
-            <h3 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:8px;">&#128176; Pay for your hardware</h3>
-            <p style="font-size:13.5px;color:#c9d1d9;margin:0;line-height:1.55;">No per-token cloud bills. Your CPU, GPU and disk do the work. Diaspor scales linearly with your infrastructure — and nothing else.</p>
-          </article>
+        <!-- CLI command samples -->
+        <div class="vdfs-bento-cli">
+          <div style="color:#7d8590;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;font-weight:600;margin-bottom:16px;">Three commands · any infrastructure</div>
+          <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor mount</span> --backend s3 --bucket evidence --to /cases/s3-evidence</div>
+          <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor index</span> /cases --pipeline whisper-cpp --tag-with llama3</div>
+          <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor search</span> "interview about Q3 budget" --speaker A --confidence 0.8</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cost — the structural case against renting AI by the token -->
+  <style>
+    .cost-band{padding:100px 0;border-top:1px solid #1f2937;position:relative;overflow:hidden;}
+    .cost-compare{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:980px;margin:0 auto;}
+    .cost-col{background:#0d1117;border:1px solid #1f2937;border-radius:16px;padding:30px 28px;}
+    .cost-col-keep{background:linear-gradient(135deg,rgba(34,211,238,0.06),rgba(79,70,229,0.06));border-color:rgba(34,211,238,0.28);}
+    .cost-col h3{font-size:16px;font-weight:600;color:#fff;margin:0 0 6px;letter-spacing:-0.01em;}
+    .cost-col-sub{font-size:11px;color:#7d8590;text-transform:uppercase;letter-spacing:0.14em;font-weight:600;margin-bottom:18px;}
+    .cost-list{list-style:none;margin:0;padding:0;}
+    .cost-list li{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:#c9d1d9;line-height:1.5;padding:10px 0;border-top:1px solid rgba(255,255,255,0.04);}
+    .cost-list li:first-child{border-top:none;padding-top:0;}
+    .cost-ic{flex-shrink:0;margin-top:2px;}
+    @media(max-width:760px){.cost-compare{grid-template-columns:1fr;}}
+  </style>
+  <section id="cost" class="cost-band">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 40% at 50% 0%, rgba(34,211,238,0.04), transparent 70%);pointer-events:none;" aria-hidden="true"></div>
+    <div class="container" style="position:relative;">
+      <div class="section-header" style="text-align:center;margin-bottom:44px;">
+        <span class="section-tag" style="display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:#22d3ee;font-weight:600;margin-bottom:14px;">Cost</span>
+        <h2 class="section-title" style="font-size:clamp(32px,4vw,52px);font-weight:700;color:#fff;letter-spacing:-0.03em;margin-bottom:16px;line-height:1.05;">Stop renting intelligence <span style="background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">by the token.</span></h2>
+        <p class="section-description" style="font-size:17px;color:#c9d1d9;max-width:680px;margin:0 auto;line-height:1.65;">Cloud AI meters every call and bills it back forever. Diaspor runs on hardware you already own — the meter stops at your power bill.</p>
+      </div>
+
+      <div class="cost-compare">
+        <div class="cost-col">
+          <h3>The cloud AI bill</h3>
+          <div class="cost-col-sub">What you stop paying</div>
+          <ul class="cost-list">
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Per-token, per-minute inference fees on every call</li>
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Per-seat SaaS licences that climb with headcount</li>
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Egress charges to read data you already own</li>
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>A net-new GPU cluster to procure, power and staff</li>
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7d8590" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/></svg>A meter that scales with usage — recurring forever</li>
+          </ul>
+        </div>
+        <div class="cost-col cost-col-keep">
+          <h3>Your hardware</h3>
+          <div class="cost-col-sub">What you pay for</div>
+          <ul class="cost-list">
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>The servers, GPU and disk you already run</li>
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>One flat licence, scoped to your data volume</li>
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Zero per-call · zero per-token · zero egress</li>
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Drops into existing infra — or connects straight to it</li>
+            <li><svg class="cost-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Scales linearly with hardware you control, nothing else</li>
+          </ul>
         </div>
       </div>
 
-      <!-- Bottom: CLI command samples -->
-      <div style="margin-top:36px;background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:24px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:13px;line-height:2;color:#c9d1d9;">
-        <div style="color:#7d8590;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;font-weight:600;margin-bottom:14px;">Three commands · any infrastructure</div>
-        <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor mount</span> --backend s3 --bucket evidence --to /cases/s3-evidence</div>
-        <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor index</span> /cases --pipeline whisper-cpp --tag-with llama3</div>
-        <div><span style="color:#7d8590;">$</span> <span style="color:#22d3ee;font-weight:600;">diaspor search</span> "interview about Q3 budget" --speaker A --confidence 0.8</div>
-      </div>
+      <p style="text-align:center;max-width:760px;margin:32px auto 0;font-size:14.5px;color:#c9d1d9;line-height:1.6;"><strong style="color:#fff;">Pay once for hardware you keep</strong> — not a meter that runs every time your team hits &ldquo;analyze.&rdquo; Priced in CAD · hosted in <code>ca-central-1</code> when hosted · zero US sub-processors.</p>
     </div>
   </section>
 
@@ -365,7 +604,7 @@
       <div class="section-header section-header-asym">
         <span class="section-tag section-tag-bleed">Industries · use cases</span>
         <h2 class="section-title">12 industries. One platform.</h2>
-        <p class="section-description">Find your sector. Diaspor's Engine, Desktop and Models adapt to the workflow without changing the privacy contract. <strong>Same Rust 2024 stack, same near-zero infrastructure cost, same Canadian sovereignty.</strong></p>
+        <p class="section-description">Find your sector. Diaspor Desktop, Engine and Models adapt to the workflow — the privacy contract doesn't change. <strong>Same Rust 2024 stack. Same Canadian sovereignty. Same hardware bill.</strong></p>
       </div>
 
       <ul class="usecases-grid">
@@ -402,7 +641,7 @@
             <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
           </span>
           <h3>04 · Media &amp; broadcasters</h3>
-          <p>Video archive auto-tag (MAM catalog) · bilingual auto-subtitling · news bulletin chronological indexing · <strong>live HLS stream transcription</strong> · broadcast compliance monitoring (Loi 96).</p>
+          <p>MAM auto-tagging · bilingual auto-subtitling · chronological newscast indexing · <strong>live HLS transcription</strong> · Loi 96 broadcast compliance.</p>
           <span class="usecase-meta">Radio-Canada · TVA · Bell Media · independent productions · streaming platforms</span>
         </li>
 
@@ -420,7 +659,7 @@
             <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
           </span>
           <h3>06 · Healthcare &amp; clinics</h3>
-          <p>Automatic medical video anonymization (PHIPA + Loi 25) · consultation transcription · radiology/ultrasound archive indexing · consultation archive search · patient behavior analysis (autism, motor disorders).</p>
+          <p>Medical video anonymization (PHIPA + Loi 25) · consultation transcription · radiology/ultrasound archive indexing · semantic search across visits · patient behaviour analysis (autism, motor disorders).</p>
           <span class="usecase-meta">CIUSSS · CISSS · teaching hospitals · private clinics · medical research</span>
         </li>
 
@@ -429,7 +668,7 @@
             <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
           </span>
           <h3>07 · Education &amp; research</h3>
-          <p>Recorded lecture indexing (searchable transcripts) · automatic FR/EN subtitling for students · research video corpora analysis (kinesiology, social sciences) · lab experiment auto-annotation · video presentation plagiarism detection.</p>
+          <p>Searchable lecture transcripts · auto FR/EN subtitles · research video corpus analysis (kinesiology, social sciences) · lab experiment auto-annotation · plagiarism detection on video presentations.</p>
           <span class="usecase-meta">UdeM · ULaval · McGill · Concordia · UQAM · CEGEPs · MILA · IVADO · CRIM</span>
         </li>
 
@@ -438,7 +677,7 @@
             <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4 8 4v14"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
           </span>
           <h3>08 · Government &amp; municipal</h3>
-          <p>Municipal council session archive (transcription + search) · bilingual parliamentary indexing · Loi 25-compliant records management · traffic camera event analysis · Loi 96 bilingual content compliance.</p>
+          <p>Council session archive · bilingual parliamentary indexing · Loi 25-compliant records management · traffic-camera event detection · Loi 96 content compliance.</p>
           <span class="usecase-meta">Cities (Stoneham, Québec, Montréal) · Quebec ministries · federal agencies · BAnQ</span>
         </li>
 
@@ -492,8 +731,8 @@
     <div class="container">
       <div class="section-header">
         <span class="section-tag">Under the hood</span>
-        <h2 class="section-title">One proprietary stack. Built in Rust 2024.</h2>
-        <p class="section-description">A Virtual Distributed Filesystem, CLI and SDK that runs anywhere — laptop, server, on-prem GPU cluster or your cloud tenancy — at near-zero compute cost. One codebase, one trademark, one Canadian vendor.</p>
+        <h2 class="section-title">Proprietary stack. Built in Rust 2024.</h2>
+        <p class="section-description">VDFS, CLI, SDK and Models — one codebase. Runs on laptop, server, GPU cluster or your cloud tenancy. One trademark. One Canadian vendor.</p>
       </div>
       <div class="tech-bands">
         <div class="tech-band">
@@ -504,11 +743,10 @@
           <div class="tech-band-body">
             <p class="tech-band-models"><strong>Virtual Distributed Filesystem · Rust 2024</strong></p>
             <p class="tech-band-note">
-              Single async API across <strong>memory · local · FUSE · WinFsp · S3 · NAS</strong> backends. CLI for ops · SDK for embedders · REST API for everything else.<br>
-              On-device pipeline: <strong>FFmpeg ingest → whisper.cpp transcription → local LLM tagging → vector index</strong>.<br>
-              Runs on <strong>laptop, server, cluster, cloud or edge</strong>.<br>
-              <strong>Near-zero infrastructure cost</strong> — your hardware does the work, no per-API-call billing.<br>
-              Conformance suite proves every backend behaves identically. Embedded in Diaspor Desktop · also licensed standalone to ISVs.
+              Single async API across <strong>memory · local · <code>FUSE</code> · <code>WinFsp</code> · S3 · NAS</strong>.<br>
+              <strong>CLI</strong> for ops · <strong>SDK</strong> (cargo-installable) for embedders · <strong>REST API</strong> for everything else.<br>
+              On-device pipeline: <strong><code>FFmpeg</code> ingest → <code>whisper.cpp</code> transcription → local LLM tagging → vector index</strong>.<br>
+              Conformance suite proves every backend behaves identically. Embedded in Diaspor Desktop · licensed standalone to ISVs.
             </p>
           </div>
         </div>
@@ -520,15 +758,15 @@
           <div class="tech-band-body">
             <p class="tech-band-models"><strong>Proprietary AI · 9 capabilities</strong></p>
             <p class="tech-band-note">
-              <strong>Auto-tagging</strong> · scene + object + face + OCR FR+EN.<br>
-              <strong>Transcription</strong> · diarization · Quebec French + Canadian English.<br>
-              <strong>Live stream analysis</strong> · WebRTC · HLS · RTSP.<br>
+              <strong>Auto-tag</strong> · scene · object · face · OCR FR+EN.<br>
+              <strong>Transcribe</strong> · diarization · Quebec French + Canadian English.<br>
+              <strong>Live streams</strong> · <code>WebRTC</code> · <code>HLS</code> · <code>RTSP</code>.<br>
               <strong>3D pose</strong> · 33 keypoints · sport judging, gesture, posture.<br>
-              <strong>Vocal prosody</strong> · stress, tremor, pace, pauses.<br>
-              <strong>Credibility composite</strong> · decision-aid, never a verdict.<br>
-              <strong>Judge Assistant AI</strong> · neutrality scoring for sport, arbitration, refereeing — in active development, Y2 launch.<br>
-              <strong>Speech diarization</strong> · who said what.<br>
-              <strong>Vision</strong> · scene/object/OCR detection FR + EN.
+              <strong>Prosody</strong> · stress, tremor, pace, pauses.<br>
+              <strong>Credibility</strong> · composite decision-aid · never a verdict.<br>
+              <strong>Judge Assistant</strong> · neutrality scoring for sport &amp; arbitration · Y2.<br>
+              <strong>Diarize</strong> · who said what.<br>
+              <strong>Vision</strong> · scene · object · OCR FR + EN.
             </p>
           </div>
         </div>
@@ -565,13 +803,13 @@
           <span class="section-tag">Talk to us</span>
           <h2 class="section-title">Every deployment starts with a 30-minute call.</h2>
           <p class="section-description">
-            Diaspor scopes to your hardware, your cloud region, your throughput, your compliance posture. We listen first, then send a written proposal — usually within five business days. No list price you have to negotiate down, no per-seat traps.
+            Diaspor scopes to your hardware, your region, your throughput, your compliance posture. Written proposal within five business days. No list price to negotiate down. No per-seat traps.
           </p>
           <ul class="contact-points">
-            <li><strong>Founder-led</strong> — you talk to the people building the product, not an SDR.</li>
-            <li><strong>Bilingual MSA</strong> — pre-cleared for BSP, SQI, Crown procurement.</li>
-            <li><strong>Written proposal</strong> — in five business days, with assumptions spelled out.</li>
-            <li><strong>No purchase obligation</strong> — the scoping call is on us.</li>
+            <li><strong>Founder-led.</strong> You talk to the people building the product — not an SDR.</li>
+            <li><strong>Bilingual MSA.</strong> Pre-cleared for BSP, SQI and Crown procurement.</li>
+            <li><strong>Written proposal.</strong> Five business days, assumptions spelled out.</li>
+            <li><strong>No purchase obligation.</strong> The scoping call is on us.</li>
           </ul>
         </div>
         <div class="contact-card-actions">
@@ -587,7 +825,7 @@
         </div>
       </div>
 
-      <p style="margin-top:24px;text-align:center;font-size:14px;color:#c9d1d9;max-width:760px;margin-left:auto;margin-right:auto;line-height:1.55;"><strong style="color:#fff;">Custom engagements available</strong> — we scope per-volume Engine deployments, hosted SaaS quotas, and Models training corpora (domain-tuned diaspor-* models, RLHF/RLAIF on your evaluation criteria, sport-specific scoring, bespoke credibility models). Weights stay in your environment. Ask in your first message.</p>
+      <p style="margin-top:24px;text-align:center;font-size:14px;color:#c9d1d9;max-width:760px;margin-left:auto;margin-right:auto;line-height:1.55;"><strong style="color:#fff;">Custom engagements.</strong> Per-volume Engine deployments · hosted SaaS quotas · Models training corpora (domain-tuned <code>diaspor-*</code> models, RLHF/RLAIF on your criteria, sport-specific scoring, bespoke credibility). Weights stay in your environment. Mention it in your first message.</p>
     </div>
   </section>
 
@@ -596,9 +834,9 @@
     <div class="container">
       <div class="section-header">
         <span class="section-tag">FAQ</span>
-        <h2 class="section-title">Answers procurement asks for</h2>
+        <h2 class="section-title">Answers procurement asks for.</h2>
         <p class="section-description">
-          The questions every privacy officer, CIO, and security reviewer sends us first.
+          The questions every privacy officer, CIO and security reviewer sends first.
         </p>
       </div>
 
@@ -607,7 +845,7 @@
           <summary>What does Diaspor do, exactly?</summary>
           <div class="faq-answer">
             <p>
-              Three products on one Rust 2024 platform. <strong>Diaspor Desktop</strong> — a cross-platform app that auto-tags video archives, transcribes meetings on-device, and analyzes live streams. <strong>Diaspor Engine</strong> — a Virtual Distributed Filesystem with CLI, SDK and REST API, mounting local · FUSE · S3 · NAS under one async API. <strong>Diaspor Models</strong> — nine proprietary AI capabilities (auto-tag, transcription, vision, 3D pose, prosody, credibility, Judge Assistant, diarization, live stream) that plug into either.
+              Three products on one Rust 2024 platform. <strong>Diaspor Desktop</strong> — native app that auto-tags video archives, transcribes meetings on-device, analyzes live streams. <strong>Diaspor Engine</strong> — VDFS with CLI, SDK and REST API; mounts local, <code>FUSE</code>, S3, NAS under one async API. <strong>Diaspor Models</strong> — nine proprietary AI capabilities (auto-tag, transcription, vision, 3D pose, prosody, credibility, Judge Assistant, diarization, live stream) that plug into either. <a href="#products">See the product line →</a>
             </p>
           </div>
         </details>
@@ -616,7 +854,7 @@
           <summary>Where does my data go?</summary>
           <div class="faq-answer">
             <p>
-              Wherever you keep it. The Engine reads files in-place from whichever backend you mount — local disk, S3 bucket, NAS share, FUSE volume — without copying. Tagging, transcripts and embeddings go to a separate metadata store you control. If you opt into our Canadian cloud, everything runs in <strong>AWS ca-central-1 (Montréal)</strong>, zero US sub-processors. CI proves it: every test runs inside <code>unshare --net</code> and the build fails if any module opens a socket without explicit opt-in.
+              Wherever you keep it. Diaspor Engine reads files in place from whichever backend you mount — local, S3, NAS, <code>FUSE</code> — without copying. Tags, transcripts and embeddings go to a metadata store you control. Opt into the Canadian cloud and everything runs in <strong>AWS <code>ca-central-1</code> (Montréal)</strong>, zero US sub-processors. CI proves it: every test runs inside <code>unshare --net</code> and the build fails if any module opens a socket without explicit opt-in.
             </p>
           </div>
         </details>
@@ -625,7 +863,7 @@
           <summary>What's the pricing model?</summary>
           <div class="faq-answer">
             <p>
-              <strong>Desktop</strong>: 15 CAD/mo prosumer, 50 CAD/seat/mo team, 199 CAD lifetime. <strong>Engine</strong>: 5K CAD/yr per developer or 25–100K CAD/yr enterprise. <strong>Models</strong>: 25K+ CAD/seat/yr self-hosted or hosted SaaS. No per-token cloud bills — you pay for your hardware. Detailed quotes on request, scoped to volume and compliance posture.
+              Pricing on request. Every deployment is scoped to your volume, hardware footprint and compliance posture — no list price to negotiate down, no per-seat traps, no per-token cloud bills. Your hardware does the work. <a href="#contact">Book a scoping call →</a>
             </p>
           </div>
         </details>
@@ -634,7 +872,7 @@
           <summary>Can I self-host?</summary>
           <div class="faq-answer">
             <p>
-              Yes — that's the default. Single signed binary on a laptop. Helm chart for your Kubernetes cluster. Official Terraform module for your AWS · Azure · GCP tenancy. Air-gap mode for classified environments (models transferred via signed USB, zero network services). Our Canadian-cloud option exists for firms that don't want to operate, but every primitive is built to run in your perimeter.
+              Yes — that's the default. Single signed binary on a laptop. Helm chart for your Kubernetes cluster. Official Terraform module for AWS · Azure · GCP. Air-gap mode for classified environments (models transferred via signed USB, zero network services). The Canadian cloud option exists for firms that don't want to operate — every primitive runs in your perimeter.
             </p>
           </div>
         </details>
@@ -643,7 +881,7 @@
           <summary>Is the source code public?</summary>
           <div class="faq-answer">
             <p>
-              No. Diaspor is closed source — proprietary runtime binaries, proprietary <code>diaspor-*</code> model weights, NDA-protected codebase hosted on a self-hosted private GitLab. Full source review is available under NDA for security teams. Internal use is unrestricted under our MSA; redistribution requires a commercial agreement. Builds are SHA-256 + Ed25519 (minisign) signed with SLSA build provenance.
+              No. Diaspor is closed source — proprietary runtime binaries, proprietary <code>diaspor-*</code> model weights, NDA-protected codebase on a self-hosted GitLab. Full source review available under NDA for security teams. Internal use is unrestricted under MSA; redistribution requires a commercial agreement. Builds are SHA-256 + Ed25519 (minisign) signed with SLSA build provenance.
             </p>
           </div>
         </details>
@@ -652,7 +890,7 @@
           <summary>What about Loi 25 / PIPEDA / Bill 96?</summary>
           <div class="faq-answer">
             <p>
-              Aligned by design. Data residency in ca-central-1, PIA/EFVP template provided, built-in incident log, all 10 PIPEDA principles embedded in the architecture, bilingual UI/docs/support/AI for Bill 96 (OQLF-compliant), bilingual MSA pre-cleared for BSP and SQI procurement frameworks. SOC 2 Type II is in progress for 2026; interim evidence available under NDA.
+              Aligned by design. Data residency in <code>ca-central-1</code> · PIA/EFVP template provided · built-in incident log · all 10 PIPEDA principles embedded in the architecture · bilingual UI / docs / support / AI for Bill 96 (OQLF-compliant) · bilingual MSA pre-cleared for BSP and SQI procurement. SOC 2 Type II in progress for 2026 — interim evidence under NDA.
             </p>
           </div>
         </details>
@@ -661,7 +899,7 @@
           <summary>How do I get Desktop / CLI / SDK?</summary>
           <div class="faq-answer">
             <p>
-              <strong>Desktop</strong>: <a href="#waitlist">join the founding cohort</a> for early access. <strong>CLI</strong> (the <code>diaspor</code> binary + <code>diaspor-agent</code> daemon): signed builds for macOS (Apple Silicon + Intel), Windows (x86_64), Linux (x86_64 + aarch64) — all minisign-verified, SHA-256 checksummed, reproducible from source, zero installer telemetry. <strong>SDK</strong>: cargo-installable for licensed embedders, with bindings for Rust, Python, TypeScript, Swift and Kotlin. <a href="mailto:hello@diaspor.io">Email us</a> to scope an Engine licence.
+              <strong>Desktop</strong> — <a href="#download">download direct</a> or <a href="#waitlist">join the founding cohort</a>. <strong>CLI</strong> (<code>diaspor</code> binary + <code>diaspor-agent</code> daemon) — signed builds for macOS (Apple Silicon + Intel), Windows (x86_64), Linux (x86_64 + aarch64). All minisign-verified, SHA-256 checksummed, reproducible from source, zero installer telemetry. <strong>SDK</strong> — cargo-installable for licensed embedders; bindings for Rust, Python, TypeScript, Swift, Kotlin. <a href="mailto:hello@diaspor.io">Email us</a> to scope an Engine licence.
             </p>
           </div>
         </details>
@@ -675,9 +913,9 @@
       <div class="waitlist-card">
         <div class="waitlist-header">
           <span class="section-tag">Early access</span>
-          <h2 class="section-title">Join the founding cohort</h2>
+          <h2 class="section-title">Join the founding cohort.</h2>
           <p class="section-description">
-            Founding-cohort partners get a direct line to the team, white-glove onboarding, and a seat at the product-roadmap table. Quebec residents get priority onboarding and bilingual support from day one.
+            Direct line to the team. White-glove onboarding. A seat at the roadmap table. Quebec residents get priority onboarding and bilingual support from day one.
           </p>
         </div>
 
@@ -702,11 +940,11 @@
         <ul class="waitlist-perks">
           <li>
             <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Influence on the 2026 roadmap and feature priorities
+            Influence on the 2026 roadmap
           </li>
           <li>
             <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            Direct line to the team building it
+            Direct line to the engineering team
           </li>
           <li>
             <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -717,24 +955,44 @@
     </div>
   </section>
 
-  </main>
-
-  <!-- Funding & community — non-dilutive public support -->
-  <section class="trust-strip" aria-label="Funding and community">
+  <!-- Final CTA — top-of-funnel "let's build" before the footer -->
+  <section class="final-cta" aria-label="Get in touch" style="padding:120px 0;text-align:center;background:radial-gradient(ellipse 60% 60% at center, rgba(34,211,238,0.06), transparent 70%);border-top:1px solid #1f2937;">
     <div class="container">
-      <p style="text-align:center;margin-bottom:0.75rem;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.6;font-weight:600;">Backed by non-dilutive public funding · Québec + Canada</p>
-      <ul class="trust-strip-badges">
-        <li><span class="badge-dot dot-info"></span>Investissement Québec · CDAE</li>
-        <li><span class="badge-dot dot-info"></span>Revenu Québec · RS&amp;DE</li>
-        <li><span class="badge-dot dot-info"></span>ARC · SR&amp;ED</li>
-        <li><span class="badge-dot dot-info"></span>NRC-IRAP</li>
-        <li><span class="badge-dot dot-info"></span>Scale AI Montréal</li>
-        <li><span class="badge-dot dot-info"></span>MITACS</li>
-        <li><span class="badge-dot dot-info"></span>MILA · IVADO</li>
-      </ul>
-      <p style="text-align:center;margin-top:1rem;opacity:0.7;font-size:0.875rem;"><strong>Diaspor is built and maintained in Québec, funded by Canadian public R&amp;D programs (SR&amp;ED · CDAE · NRC-IRAP · Scale AI · MITACS · CRIC). Zero equity dilution by design.</strong></p>
+      <h2 style="font-size:clamp(36px,5vw,60px);font-weight:700;letter-spacing:-0.03em;color:#fff;margin-bottom:20px;line-height:1.05;">
+        Ready to <span style="background:linear-gradient(135deg,#22d3ee,#4f46e5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">own your file intelligence</span>?
+      </h2>
+      <p style="font-size:17px;color:#c9d1d9;max-width:580px;margin:0 auto 36px;line-height:1.6;">Desktop is in private beta. Engine and Models ship to design partners now.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://calendly.com/anthonypaquet1508" target="_blank" rel="noopener" class="btn-primary">
+          Book a demo
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#waitlist" class="btn-secondary">Join the waitlist</a>
+      </div>
+      <p style="margin-top:28px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;color:#7d8590;letter-spacing:0.1em;">
+        Diaspor&trade; · v0.1.0-alpha · made in Stoneham, Québec · <code>ca-central-1</code>
+      </p>
     </div>
   </section>
+
+  <!-- Hidden Add Storage screenshot — present in the lightbox carousel without taking layout space -->
+  <img class="lightbox-trigger" src="screenshots/diaspor-add-storage.png" alt="Diaspor Desktop · Add Storage modal" data-caption="Add Storage — every major cloud provider, every on-prem backend, one mount surface." style="display:none;" loading="lazy">
+
+  <!-- Lightbox overlay -->
+  <div id="lightbox" class="lightbox-overlay" role="dialog" aria-label="Image viewer" aria-modal="true" aria-hidden="true">
+    <div class="lightbox-counter" id="lightbox-counter">1/4</div>
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close viewer">&times;</button>
+    <div class="lightbox-zoom-controls">
+      <button type="button" class="lightbox-zoom-out" id="lightbox-zoom-out" aria-label="Zoom out">&minus;</button>
+      <button type="button" class="lightbox-zoom-in" id="lightbox-zoom-in" aria-label="Zoom in">+</button>
+    </div>
+    <button type="button" class="lightbox-prev" id="lightbox-prev" aria-label="Previous image">&lsaquo;</button>
+    <img class="lightbox-image" id="lightbox-image" src="" alt="">
+    <button type="button" class="lightbox-next" id="lightbox-next" aria-label="Next image">&rsaquo;</button>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+
+  </main>
 
   <!-- Footer -->
   <footer class="footer" role="contentinfo">
@@ -751,7 +1009,7 @@
             </span>
             <span class="logo-text">diaspor<span class="logo-dot">.</span></span>
           </a>
-          <p>File intelligence on your hardware. Built in Québec, runs anywhere.</p>
+          <p>File intelligence in Rust. Built in Québec. Runs anywhere.</p>
           <div class="footer-locale" role="group" aria-label="Language">
             <button type="button" class="locale-btn locale-active" aria-pressed="true">EN</button>
             <button type="button" class="locale-btn" aria-pressed="false" title="French translation in progress">FR</button>
@@ -795,11 +1053,19 @@
         </div>
       </div>
       <div class="footer-bottom">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:10px;">
+          <span style="display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;color:#7d8590;letter-spacing:0.05em;">
+            <span style="width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,0.55);display:inline-block;"></span>
+            All systems operational
+          </span>
+          <span style="font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;color:#7d8590;letter-spacing:0.05em;">v0.1.0-alpha</span>
+          <span style="font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;color:#7d8590;letter-spacing:0.05em;"><a href="/" lang="en" style="color:#22d3ee;text-decoration:none;">EN</a> <span style="color:#3a4453;">|</span> <a href="/fr/" lang="fr" style="color:#7d8590;text-decoration:none;">FR</a></span>
+        </div>
         <p>
-          &copy; 2026 Diaspor inc. Built in Montréal · Hosted in
+          &copy; 2026 Diaspor inc. Made with care in Stoneham, Québec · Hosted in
           <span title="AWS Canada Central, Montréal">ca-central-1</span>.
         </p>
-        <p class="footer-meta">All trademarks are the property of their respective owners.</p>
+        <p class="footer-meta">All trademarks are the property of their respective owners. Diaspor&trade; filed 2026-05-19 · CIPO.</p>
       </div>
     </div>
   </footer>
@@ -1141,6 +1407,108 @@
       applyTag(FALLBACK_TAG, null);
       highlightPlatform();
       refreshLatest();
+    })();
+  </script>
+
+  <!-- Lightbox: vanilla JS, no deps. Triggers on .lightbox-trigger images. -->
+  <script>
+    (function() {
+      var overlay = document.getElementById('lightbox');
+      if (!overlay) return;
+      var imgEl = document.getElementById('lightbox-image');
+      var counterEl = document.getElementById('lightbox-counter');
+      var captionEl = document.getElementById('lightbox-caption');
+      var closeBtn = document.getElementById('lightbox-close');
+      var prevBtn = document.getElementById('lightbox-prev');
+      var nextBtn = document.getElementById('lightbox-next');
+      var zoomInBtn = document.getElementById('lightbox-zoom-in');
+      var zoomOutBtn = document.getElementById('lightbox-zoom-out');
+
+      var triggers = [];
+      var currentIndex = 0;
+      var touchStartX = 0;
+
+      function rebuildTriggers() {
+        triggers = Array.prototype.slice.call(document.querySelectorAll('.lightbox-trigger'));
+      }
+
+      function showImage(idx) {
+        if (!triggers.length) return;
+        if (idx < 0) idx = triggers.length - 1;
+        if (idx >= triggers.length) idx = 0;
+        currentIndex = idx;
+        var src = triggers[idx].getAttribute('src');
+        var alt = triggers[idx].getAttribute('alt') || '';
+        var caption = triggers[idx].getAttribute('data-caption') || alt;
+        imgEl.src = src;
+        imgEl.alt = alt;
+        imgEl.classList.remove('is-zoomed');
+        captionEl.textContent = caption;
+        counterEl.textContent = (idx + 1) + '/' + triggers.length;
+      }
+
+      function openLightbox(idx) {
+        rebuildTriggers();
+        showImage(idx);
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        imgEl.classList.remove('is-zoomed');
+        imgEl.src = '';
+      }
+
+      function next() { showImage(currentIndex + 1); }
+      function prev() { showImage(currentIndex - 1); }
+      function toggleZoom() { imgEl.classList.toggle('is-zoomed'); }
+
+      function handleKeyboard(e) {
+        if (!overlay.classList.contains('is-open')) return;
+        if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+        else if (e.key === '+' || e.key === '=') { e.preventDefault(); toggleZoom(); }
+        else if (e.key === '-' || e.key === '_') { e.preventDefault(); toggleZoom(); }
+      }
+
+      // Delegate click on any .lightbox-trigger
+      document.addEventListener('click', function(e) {
+        var t = e.target.closest('.lightbox-trigger');
+        if (!t) return;
+        e.preventDefault();
+        rebuildTriggers();
+        var idx = triggers.indexOf(t);
+        if (idx < 0) idx = 0;
+        openLightbox(idx);
+      });
+
+      closeBtn.addEventListener('click', closeLightbox);
+      prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prev(); });
+      nextBtn.addEventListener('click', function(e) { e.stopPropagation(); next(); });
+      zoomInBtn.addEventListener('click', function(e) { e.stopPropagation(); imgEl.classList.add('is-zoomed'); });
+      zoomOutBtn.addEventListener('click', function(e) { e.stopPropagation(); imgEl.classList.remove('is-zoomed'); });
+      imgEl.addEventListener('click', function(e) { e.stopPropagation(); toggleZoom(); });
+
+      // Backdrop click closes
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeLightbox();
+      });
+
+      // Touch swipe
+      overlay.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+      overlay.addEventListener('touchend', function(e) {
+        var diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) { diff > 0 ? next() : prev(); }
+      }, { passive: true });
+
+      document.addEventListener('keydown', handleKeyboard);
     })();
   </script>
 </body>

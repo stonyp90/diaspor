@@ -49,7 +49,7 @@
 
   /* Spacing - Ultra-compact startup style */
   --nav-height: 60px;
-  --container-max: 1100px;
+  --container-max: 1320px;
   --section-padding: 64px;
   --card-radius: 10px;
   --card-padding: 20px;
@@ -13196,5 +13196,135 @@ code, pre code {
   }
   .contact-card-actions {
     padding: 22px;
+  }
+}
+
+/* ============================================================
+   2026-06 — Outline CTAs + side-by-side hero
+   1. Buttons drop their solid fill and become outline (accent
+      border + text, faint tint on hover only).
+   2. The product (Files) screenshot sits BESIDE the copy on
+      desktop, so at least half of it is visible on landing
+      instead of being stacked entirely below the fold.
+   Appended last to win the earlier !important cascade.
+   ============================================================ */
+
+/* 1 — Outline buttons (no background fill) */
+.btn-primary {
+  background: transparent !important;
+  border: 1px solid var(--primary) !important;
+  color: var(--primary) !important;
+  box-shadow: none !important;
+}
+.btn-primary:hover {
+  background: rgba(var(--primary-rgb), 0.12) !important;
+  border-color: var(--primary) !important;
+  box-shadow: none !important;
+  transform: translateY(-1px);
+}
+.btn-primary::before {
+  display: none !important;
+} /* drop the white sheen sweep — reads oddly without a fill */
+
+.btn-nav-cta,
+.nav-links a.btn-nav-cta {
+  background: transparent !important;
+  border: 1px solid var(--primary) !important;
+  color: var(--primary) !important;
+}
+.btn-nav-cta:hover {
+  background: rgba(var(--primary-rgb), 0.12) !important;
+}
+
+.btn-mobile-cta {
+  background: transparent !important;
+  border: 1px solid var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+/* 2 — Side-by-side hero on desktop: copy left, Files shot right */
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    text-align: left !important;
+    gap: 48px !important;
+  }
+  .hero-content {
+    order: 1 !important;
+    max-width: 620px !important;
+    margin: 0 !important;
+    text-align: left !important;
+  }
+  .hero-content .hero-eyebrow {
+    margin-left: 0 !important;
+  }
+  .hero-content .hero-description {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .hero-content .hero-snippet {
+    margin-left: 0 !important;
+  }
+  .hero-content .hero-actions {
+    justify-content: flex-start !important;
+  }
+  .hero-content .hero-stats {
+    justify-content: flex-start !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .hero-visual {
+    order: 2 !important;
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    justify-content: center !important;
+  }
+  .hero-product-shot,
+  .hero-product-shot-bare {
+    max-width: 600px !important;
+    margin: 0 auto !important;
+  }
+  .hero-title {
+    font-size: 44px !important;
+    line-height: 1.05 !important;
+  }
+}
+@media (min-width: 1440px) {
+  .hero {
+    gap: 64px !important;
+  }
+  .hero-content {
+    max-width: 660px !important;
+  }
+  .hero-title {
+    font-size: 50px !important;
+  }
+  .hero-product-shot,
+  .hero-product-shot-bare {
+    max-width: 660px !important;
+  }
+}
+
+/* Tablet & phone (stacked): there is no room for side-by-side, so put
+   the product shot FIRST — at least half of it stays above the fold
+   on landing, then the copy follows. */
+@media (max-width: 1023px) {
+  .hero-visual {
+    order: 1 !important;
+    margin-bottom: 6px;
+  }
+  .hero-content {
+    order: 2 !important;
+  }
+}
+
+/* Phone: the floating nav CTA overlaps the logo once the hamburger
+   appears. It already lives in the mobile menu, so hide it here. */
+@media (max-width: 768px) {
+  .nav-links .btn-nav-cta {
+    display: none !important;
   }
 }
