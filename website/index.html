@@ -190,7 +190,7 @@
         <div class="stat-divider"></div>
         <div class="stat">
           <span class="stat-value">Auditable</span>
-          <span class="stat-label">Signed builds · Ed25519 audit log</span>
+          <span class="stat-label">Auditable · signed binaries</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat">
@@ -235,7 +235,7 @@
         <li><span class="badge-dot dot-info"></span>Data &amp; inference in <code>ca-central-1</code></li>
         <li><span class="badge-dot dot-info"></span>Zero US sub-processors</li>
         <li><span class="badge-dot dot-warning"></span>SOC 2 Type II in progress · 2026</li>
-        <li><span class="badge-dot dot-info"></span>Signed binaries · Ed25519 audit log</li>
+        <li><span class="badge-dot dot-info"></span>Signed binaries · auditable</li>
         <li><span class="badge-dot dot-info"></span>Built in Stoneham, Québec · runs anywhere</li>
       </ul>
     </div>
@@ -591,7 +591,7 @@
       </div>
 
       <p class="download-fineprint" style="text-align:center;margin:28px auto 0;font-size:13px;color:#7d8590;max-width:640px;line-height:1.6;">
-        macOS DMG is unsigned during alpha — right-click the app and choose <em>Open</em> on first launch, or run <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#22d3ee;font-size:0.92em;">xattr -d com.apple.quarantine /Applications/Diaspor.app</code> from Terminal. <a href="https://github.com/stonyp90/diaspor/releases/latest" target="_blank" rel="noopener" style="color:#22d3ee;text-decoration:none;border-bottom:1px solid rgba(34,211,238,0.35);">All releases &amp; checksums →</a>
+        macOS DMG is unsigned during alpha — right-click the app and choose <em>Open</em> on first launch, or run <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#22d3ee;font-size:0.92em;">xattr -d com.apple.quarantine /Applications/Diaspor.app</code> from Terminal.
       </p>
     </div>
   </section>
@@ -810,7 +810,7 @@
           <summary>Is the source code public?</summary>
           <div class="faq-answer">
             <p>
-              No. Diaspor is closed source — proprietary runtime binaries, proprietary <code>diaspor-*</code> model weights, NDA-protected codebase on a self-hosted GitLab. Full source review available under NDA for security teams. Internal use is unrestricted under MSA; redistribution requires a commercial agreement. Builds are SHA-256 + Ed25519 (minisign) signed with SLSA build provenance.
+              No. Diaspor is closed source — proprietary runtime binaries, proprietary <code>diaspor-*</code> model weights, NDA-protected codebase on a self-hosted GitLab. Full source review available under NDA for security teams. Internal use is unrestricted under MSA; redistribution requires a commercial agreement. Builds are signed binaries distributed under NDA.
             </p>
           </div>
         </details>
