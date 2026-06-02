@@ -1,0 +1,39 @@
+[package]
+name = "diaspor-imagegen"
+description = "Cost/quality-routed image generation and composition for diaspor: a provider-agnostic port with Nano Banana (Gemini 2.5 Flash Image), Azure OpenAI, and an offline local adapter."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+readme.workspace = true
+keywords = ["image-generation", "gemini", "compositing", "ai", "diaspor"]
+categories = ["multimedia::images", "api-bindings"]
+
+[lints]
+workspace = true
+
+[features]
+default = []
+# `remote` enables the networked provider adapters (Gemini / Nano Banana and
+# Azure OpenAI). Without it the crate builds offline-only (the `local`
+# adapter), keeping the no-network CI sandbox green — same pattern as
+# diaspor-infer's `hub` feature.
+remote = ["dep:reqwest", "dep:base64"]
+
+[dependencies]
+async-trait.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
+image = { workspace = true }
+reqwest = { workspace = true, features = ["json", "multipart"], optional = true }
+base64 = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+serde_json.workspace = true

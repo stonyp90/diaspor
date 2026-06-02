@@ -34,6 +34,7 @@ diaspor-core.workspace = true
 diaspor-backend-memory.workspace = true
 diaspor-backend-local.workspace = true
 diaspor-index.workspace = true
+diaspor-imagegen = { workspace = true, features = ["remote"] }
 async-trait.workspace = true
 bytes.workspace = true
 clap.workspace = true

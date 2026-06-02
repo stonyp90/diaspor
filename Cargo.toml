@@ -18,6 +18,7 @@ members = [
     "crates/diaspor-events",
     "crates/diaspor-train",
     "crates/diaspor-api-server",
+    "crates/diaspor-imagegen",
 ]
 
 [workspace.package]
@@ -47,6 +48,7 @@ diaspor-stream-ingest = { version = "0.1.0-alpha.17", path = "crates/diaspor-str
 diaspor-events = { version = "0.1.0-alpha.17", path = "crates/diaspor-events" }
 diaspor-train = { version = "0.1.0-alpha.17", path = "crates/diaspor-train" }
 diaspor-api-server = { version = "0.1.0-alpha.17", path = "crates/diaspor-api-server" }
+diaspor-imagegen = { version = "0.1.0-alpha.17", path = "crates/diaspor-imagegen" }
 
 # HTTP / web framework (M10 — api.diaspor.io)
 axum = "0.7"
@@ -59,6 +61,11 @@ serde_json = "1.0"
 # string. Already in the lockfile via axum / jsonschema transitives;
 # locking the major version here so the wire shape stays stable.
 base64 = "0.22"
+
+# Raster image encode/decode + compositing — used by diaspor-imagegen's
+# offline adapter (deterministic PNG synthesis + layer overlay) and by the
+# cloud adapters to read back dimensions. PNG + JPEG only to keep it light.
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }
 
 # Error handling
 thiserror = "2.0"

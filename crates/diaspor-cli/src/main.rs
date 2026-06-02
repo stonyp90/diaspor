@@ -24,6 +24,8 @@ use clap::{Parser, Subcommand};
 use diaspor_backend_local::LocalBackend;
 use diaspor_backend_memory::MemoryBackend;
 use diaspor_core::{OpenFlags, Result, VfsBackend, VfsError, VfsPath};
+use diaspor_imagegen::adapters::{GeminiImageAdapter, LocalImageAdapter, OpenAiImageAdapter};
+use diaspor_imagegen::{GenerateRequest, ImageCompositor, ImageStudio, Policy};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
 const ABOUT: &str = "Diaspor · operator CLI for the non-verbal AI runtime";
@@ -61,6 +63,35 @@ enum Command {
     Cat { backend: String, path: String },
     /// Write stdin into `path`, truncating any existing data.
     Put { backend: String, path: String },
+    /// Generate images with the cost/quality-routed studio.
+    Image {
+        #[command(subcommand)]
+        cmd: ImageCmd,
+    },
+}
+
+#[derive(Subcommand, Debug)]
+enum ImageCmd {
+    /// Generate an image from a text prompt and write it to a PNG file.
+    ///
+    /// Uses the offline local adapter by default; if `OPENAI_API_KEY` and/or
+    /// `GEMINI_API_KEY` are set, those providers join the cost/quality router.
+    Generate {
+        /// What to draw.
+        prompt: String,
+        /// Output PNG path.
+        #[arg(short, long, default_value = "out.png")]
+        out: String,
+        /// Canvas width in pixels.
+        #[arg(long, default_value_t = 1024)]
+        width: u32,
+        /// Canvas height in pixels.
+        #[arg(long, default_value_t = 1024)]
+        height: u32,
+        /// Routing policy: `cost`, `quality`, or `balanced:<usd>`.
+        #[arg(long, default_value = "quality")]
+        policy: String,
+    },
 }
 
 #[tokio::main]
@@ -77,6 +108,7 @@ async fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
         Command::List { backend, path } => run_list(&backend, &path).await?,
         Command::Cat { backend, path } => run_cat(&backend, &path).await?,
         Command::Put { backend, path } => run_put(&backend, &path).await?,
+        Command::Image { cmd } => run_image(cmd).await?,
     }
     Ok(())
 }
@@ -146,4 +178,68 @@ async fn run_put(backend: &str, path: &str) -> Result<()> {
     }
     handle.flush().await?;
     Ok(())
+}
+
+/// Build a studio from whatever providers are configured: the offline local
+/// adapter is always present; `OpenAI` / `Gemini` join if their API keys are set.
+fn build_studio() -> diaspor_imagegen::Result<ImageStudio> {
+    let local = Arc::new(LocalImageAdapter::new());
+    let openai = OpenAiImageAdapter::new(None).ok().map(Arc::new);
+
+    // Prefer the OpenAI compositor when configured, else the offline local one.
+    let compositor: Arc<dyn ImageCompositor> = match &openai {
+        Some(openai) => openai.clone(),
+        None => local.clone(),
+    };
+
+    let mut builder = ImageStudio::builder()
+        .generator(local)
+        .compositor(compositor);
+    if let Some(openai) = openai {
+        builder = builder.generator(openai);
+    }
+    if let Ok(gemini) = GeminiImageAdapter::new(None) {
+        builder = builder.generator(Arc::new(gemini));
+    }
+    builder.build()
+}
+
+fn parse_policy(spec: &str) -> std::result::Result<Policy, Box<dyn std::error::Error>> {
+    if spec == "cost" {
+        return Ok(Policy::CostOptimized);
+    }
+    if spec == "quality" {
+        return Ok(Policy::QualityFirst);
+    }
+    if let Some(budget) = spec.strip_prefix("balanced:") {
+        return Ok(Policy::Balanced {
+            max_cost_usd: budget.parse()?,
+        });
+    }
+    Err(format!("unknown policy '{spec}' (use cost|quality|balanced:<usd>)").into())
+}
+
+async fn run_image(cmd: ImageCmd) -> std::result::Result<(), Box<dyn std::error::Error>> {
+    match cmd {
+        ImageCmd::Generate {
+            prompt,
+            out,
+            width,
+            height,
+            policy,
+        } => {
+            let studio = build_studio()?;
+            let policy = parse_policy(&policy)?;
+            let request = GenerateRequest::new(prompt, width, height);
+            let image = studio.generate(&request, &policy).await?;
+            std::fs::write(&out, &image.bytes)?;
+            eprintln!(
+                "wrote {}x{} image ({} bytes) to {out}",
+                image.width,
+                image.height,
+                image.bytes.len()
+            );
+            Ok(())
+        }
+    }
 }
