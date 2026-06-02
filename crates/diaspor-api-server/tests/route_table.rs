@@ -584,3 +584,78 @@ async fn daily_cap_returns_429_until_midnight() {
         "Retry-After must be 1..=86400 seconds (until UTC midnight)"
     );
 }
+
+// ── /v1/images/generate ─────────────────────────────────────────────────────
+
+#[tokio::test]
+async fn images_generate_requires_auth() {
+    // Unauthenticated → 401
+    let app = build_router(test_helpers::test_state());
+    let resp = app
+        .oneshot(
+            Request::builder()
+                .method("POST")
+                .uri("/v1/images/generate")
+                .header("Content-Type", "application/json")
+                .body(Body::from(r#"{"prompt":"a banana"}"#))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::UNAUTHORIZED);
+    let body = body_json(resp).await;
+    assert_eq!(body["code"], "unauthorized");
+}
+
+#[tokio::test]
+async fn images_generate_with_valid_jwt_succeeds() {
+    // A valid JWT gets through auth + rate-limit and reaches the handler, which
+    // falls back to the offline local adapter (no API keys are set in the test
+    // environment) and returns a 200 with a base64-encoded PNG.
+    let app = build_router(test_helpers::test_state());
+    let token = test_helpers::valid_jwt("acme", VerticalAttestation::Coaching);
+    let resp = app
+        .oneshot(
+            Request::builder()
+                .method("POST")
+                .uri("/v1/images/generate")
+                .header("Authorization", test_helpers::bearer(&token))
+                .header("Content-Type", "application/json")
+                .body(Body::from(
+                    r#"{"prompt":"a banana","width":64,"height":64,"policy":"cost"}"#,
+                ))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::OK);
+    let body = body_json(resp).await;
+    assert!(
+        body["b64_data"].is_string(),
+        "response must include b64_data"
+    );
+    assert_eq!(body["format"], "image/png");
+    assert_eq!(body["width"], 64);
+    assert_eq!(body["height"], 64);
+}
+
+#[tokio::test]
+async fn images_generate_bad_policy_returns_400() {
+    let app = build_router(test_helpers::test_state());
+    let token = test_helpers::valid_jwt("acme", VerticalAttestation::Coaching);
+    let resp = app
+        .oneshot(
+            Request::builder()
+                .method("POST")
+                .uri("/v1/images/generate")
+                .header("Authorization", test_helpers::bearer(&token))
+                .header("Content-Type", "application/json")
+                .body(Body::from(r#"{"prompt":"x","policy":"bogus"}"#))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), StatusCode::BAD_REQUEST);
+    let body = body_json(resp).await;
+    assert_eq!(body["code"], "bad_request");
+}

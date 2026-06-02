@@ -131,6 +131,8 @@ pub fn build_router(state: Arc<AppState>) -> Router {
         .route("/v1/prosody", post(routes::modality::prosody))
         .route("/v1/credibility", post(routes::modality::credibility))
         .route("/v1/judge", post(routes::modality::judge))
+        // Image generation — cost/quality-routed text-to-image
+        .route("/v1/images/generate", post(routes::images::generate))
         // Custom-tier training
         .route("/v1/train", post(routes::train::submit_train))
         .route(

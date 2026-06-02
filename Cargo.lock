@@ -388,9 +388,11 @@ version = "0.1.0-alpha.17"
 dependencies = [
  "async-trait",
  "axum",
+ "base64",
  "bytes",
  "dashmap",
  "diaspor-core",
+ "diaspor-imagegen",
  "jsonwebtoken",
  "serde",
  "serde_json",

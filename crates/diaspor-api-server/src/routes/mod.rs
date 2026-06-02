@@ -7,6 +7,7 @@
 
 pub mod analyze;
 pub mod health;
+pub mod images;
 pub mod modality;
 pub mod stream;
 pub mod train;
