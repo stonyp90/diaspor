@@ -112,7 +112,6 @@
         <a href="#products" role="menuitem">Product line</a>
         <a href="#vdfs" role="menuitem">VDFS</a>
         <a href="#usecases" role="menuitem">Use cases</a>
-        <a href="#tech" role="menuitem">Technology</a>
         <a href="#contact" role="menuitem">Contact</a>
         <a href="/fr/" role="menuitem" lang="fr" title="Version française" aria-label="Version française">FR</a>
         <a href="https://calendly.com/anthonypaquet1508" target="_blank" rel="noopener" class="btn-nav-cta" role="menuitem">Book a demo</a>
@@ -130,7 +129,6 @@
     <a href="#products" role="menuitem">Product line</a>
     <a href="#vdfs" role="menuitem">VDFS</a>
     <a href="#usecases" role="menuitem">Use cases</a>
-    <a href="#tech" role="menuitem">Technology</a>
     <a href="#contact" role="menuitem">Contact</a>
     <a href="/fr/" role="menuitem" lang="fr">Version française</a>
     <a href="https://calendly.com/anthonypaquet1508" target="_blank" rel="noopener" class="btn-mobile-cta" role="menuitem">Book a demo</a>
@@ -726,75 +724,6 @@
     </div>
   </section>
 
-  <!-- Under the hood / Tech stack Section -->
-  <section id="tech" class="tech-section tech-section-bands">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-tag">Under the hood</span>
-        <h2 class="section-title">Proprietary stack. Built in Rust 2024.</h2>
-        <p class="section-description">VDFS, CLI, SDK and Models — one codebase. Runs on laptop, server, GPU cluster or your cloud tenancy. One trademark. One Canadian vendor.</p>
-      </div>
-      <div class="tech-bands">
-        <div class="tech-band">
-          <div class="tech-band-head">
-            <span class="tech-band-tag">Diaspor Engine (proprietary)</span>
-            <code class="tech-band-code">$ diaspor index /cases --pipeline whisper-cpp --tag-with llama3</code>
-          </div>
-          <div class="tech-band-body">
-            <p class="tech-band-models"><strong>Virtual Distributed Filesystem · Rust 2024</strong></p>
-            <p class="tech-band-note">
-              Single async API across <strong>memory · local · <code>FUSE</code> · <code>WinFsp</code> · S3 · NAS</strong>.<br>
-              <strong>CLI</strong> for ops · <strong>SDK</strong> (cargo-installable) for embedders · <strong>REST API</strong> for everything else.<br>
-              On-device pipeline: <strong><code>FFmpeg</code> ingest → <code>whisper.cpp</code> transcription → local LLM tagging → vector index</strong>.<br>
-              Conformance suite proves every backend behaves identically. Embedded in Diaspor Desktop · licensed standalone to ISVs.
-            </p>
-          </div>
-        </div>
-        <div class="tech-band tech-band-accent">
-          <div class="tech-band-head">
-            <span class="tech-band-tag">Diaspor Models (proprietary · commercial)</span>
-            <code class="tech-band-code">$ diaspor model run diaspor-judge-assistant-v1 --stream rtsp://camera</code>
-          </div>
-          <div class="tech-band-body">
-            <p class="tech-band-models"><strong>Proprietary AI · 9 capabilities</strong></p>
-            <p class="tech-band-note">
-              <strong>Auto-tag</strong> · scene · object · face · OCR FR+EN.<br>
-              <strong>Transcribe</strong> · diarization · Quebec French + Canadian English.<br>
-              <strong>Live streams</strong> · <code>WebRTC</code> · <code>HLS</code> · <code>RTSP</code>.<br>
-              <strong>3D pose</strong> · 33 keypoints · sport judging, gesture, posture.<br>
-              <strong>Prosody</strong> · stress, tremor, pace, pauses.<br>
-              <strong>Credibility</strong> · composite decision-aid · never a verdict.<br>
-              <strong>Judge Assistant</strong> · neutrality scoring for sport &amp; arbitration · Y2.<br>
-              <strong>Diarize</strong> · who said what.<br>
-              <strong>Vision</strong> · scene · object · OCR FR + EN.
-            </p>
-          </div>
-        </div>
-      </div>
-      <p class="tech-cta">All proprietary · runs on your hardware · trade-secret-protected · no per-call billing. <a href="mailto:hello@diaspor.io?subject=Technical%20deep-dive">Request a technical deep-dive.</a></p>
-
-      <!-- Engineering callout: by engineers, for engineers -->
-      <aside style="margin-top:28px;background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:22px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;">
-        <div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Stack</div>
-          <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Rust 2024 · 8-crate workspace · zero unsafe except FFI · <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#a5b4fc;font-size:0.9em;">cargo --release · LTO=thin</code></div>
-        </div>
-        <div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Builds</div>
-          <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Cross-platform signed binaries · SHA-256 + Ed25519 (minisign) + SLSA build provenance · reproducible from source</div>
-        </div>
-        <div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Source control</div>
-          <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Self-hosted private GitLab · NDA-protected codebase · full source review available under NDA for security teams</div>
-        </div>
-        <div>
-          <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Compliance scope</div>
-          <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;"><code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#a5b4fc;font-size:0.9em;">diaspor-credibility-v1</code> excluded from EU workplace/education (AI Act). BIPA opt-in for Illinois facial-biometric. Forensic/hiring adjudication out of ToS scope.</div>
-        </div>
-      </aside>
-    </div>
-  </section>
-
   <!-- Contact — single CTA replacing the old pricing-tier grid -->
   <section id="contact" class="contact-section">
     <div class="container">
@@ -895,14 +824,6 @@
           </div>
         </details>
 
-        <details class="faq-item">
-          <summary>How do I get Desktop / CLI / SDK?</summary>
-          <div class="faq-answer">
-            <p>
-              <strong>Desktop</strong> — <a href="#download">download direct</a> or <a href="#waitlist">join the founding cohort</a>. <strong>CLI</strong> (<code>diaspor</code> binary + <code>diaspor-agent</code> daemon) — signed builds for macOS (Apple Silicon + Intel), Windows (x86_64), Linux (x86_64 + aarch64). All minisign-verified, SHA-256 checksummed, reproducible from source, zero installer telemetry. <strong>SDK</strong> — cargo-installable for licensed embedders; bindings for Rust, Python, TypeScript, Swift, Kotlin. <a href="mailto:hello@diaspor.io">Email us</a> to scope an Engine licence.
-            </p>
-          </div>
-        </details>
       </div>
     </div>
   </section>
@@ -1022,7 +943,6 @@
             <a href="#products">Product line</a>
             <a href="#vdfs">VDFS</a>
             <a href="#usecases">Use cases</a>
-            <a href="#tech">Technology</a>
             <a href="#contact">Contact</a>
           </div>
 
@@ -1036,7 +956,6 @@
 
           <div class="footer-column">
             <h3>Resources</h3>
-            <a href="#tech">Engineering &amp; Models</a>
             <a href="#vdfs">CLI · SDK · API</a>
             <a href="mailto:hello@diaspor.io?subject=Diaspor%20%E2%80%94%20preview%20build%20request">Request preview build</a>
             <a href="#faq">FAQ</a>

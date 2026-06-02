@@ -103,7 +103,6 @@
         <a href="#products" role="menuitem">Gamme de produits</a>
         <a href="#vdfs" role="menuitem">VDFS</a>
         <a href="#usecases" role="menuitem">Cas d'usage</a>
-        <a href="#tech" role="menuitem">Technologie</a>
         <a href="#contact" role="menuitem">Contact</a>
         <a href="/" role="menuitem" lang="en" title="English version" aria-label="English version">EN</a>
         <a href="https://calendly.com/anthonypaquet1508" target="_blank" rel="noopener" class="btn-nav-cta" role="menuitem">Réserver une démo</a>
@@ -119,7 +118,6 @@
     <a href="#products" role="menuitem">Gamme de produits</a>
     <a href="#vdfs" role="menuitem">VDFS</a>
     <a href="#usecases" role="menuitem">Cas d'usage</a>
-    <a href="#tech" role="menuitem">Technologie</a>
     <a href="#contact" role="menuitem">Contact</a>
     <a href="/" role="menuitem" lang="en">English version</a>
     <a href="https://calendly.com/anthonypaquet1508" target="_blank" rel="noopener" class="btn-mobile-cta" role="menuitem">Réserver une démo</a>
@@ -711,75 +709,6 @@
           <strong>Cette liste est illustrative, pas exhaustive.</strong> Toute équipe qui gère une archive média, opère un flux d'enregistrement ou surveille un flux en direct sur une infrastructure qu'elle contrôle peut exécuter Diaspor. <strong>Votre secteur n'y est pas ?</strong> <a href="mailto:hello@diaspor.io?subject=Mon%20secteur%20n%27est%20pas%20list%C3%A9">Parlez-nous de votre cas d'usage →</a><br><br>
           <strong>Bêta · en développement actif.</strong> Les <strong>signaux de crédibilité</strong>, l'<strong>Assistant Juge AI</strong> et le <strong>jugement sportif</strong> sont en bêta privée. Les signaux de crédibilité ne sont pas de la détection de mensonge (plafond de précision scientifique ≈ 74&nbsp;%, base humaine ≈ 54&nbsp;%). Diaspor publie des fiches de précision par version. Verdicts forensiques, décisions d'embauche, adjudications d'assurance et décisions policières sont hors-cadre. Contextes travail et éducation UE exclus en vertu du AI Act européen (en vigueur août 2026). Flux BIPA requis en Illinois. Scores sont des aides à la décision — restitution humaine obligatoire dans tout contexte légal, employeur ou disciplinaire.
         </p>
-      </div>
-    </section>
-
-    <!-- Tech / Under the hood -->
-    <section id="tech" class="tech-section tech-section-bands">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Sous le capot</span>
-          <h2 class="section-title">Pile propriétaire. Construite en Rust 2024.</h2>
-          <p class="section-description">VDFS, CLI, SDK et Modèles — une seule base de code. Fonctionne sur poste, serveur, grappe GPU ou votre tenancy infonuagique. Une marque. Un fournisseur canadien.</p>
-        </div>
-        <div class="tech-bands">
-          <div class="tech-band">
-            <div class="tech-band-head">
-              <span class="tech-band-tag">Diaspor Engine (propriétaire)</span>
-              <code class="tech-band-code">$ diaspor index /cases --pipeline whisper-cpp --tag-with llama3</code>
-            </div>
-            <div class="tech-band-body">
-              <p class="tech-band-models"><strong>Système de Fichiers Virtuel Distribué · Rust 2024</strong></p>
-              <p class="tech-band-note">
-                API async unique sur <strong>mémoire · local · <code>FUSE</code> · <code>WinFsp</code> · S3 · NAS</strong>.<br>
-                <strong>CLI</strong> pour l'opération · <strong>SDK</strong> (cargo-installable) pour les intégrateurs · <strong>API REST</strong> pour le reste.<br>
-                Pipeline sur l'appareil : <strong>ingestion <code>FFmpeg</code> → transcription <code>whisper.cpp</code> → étiquetage LLM local → index vectoriel</strong>.<br>
-                Suite de conformité qui prouve que chaque backend se comporte de manière identique. Embarqué dans Diaspor Desktop · licencié séparément aux ÉPI.
-              </p>
-            </div>
-          </div>
-          <div class="tech-band tech-band-accent">
-            <div class="tech-band-head">
-              <span class="tech-band-tag">Modèles Diaspor (propriétaire · commercial)</span>
-              <code class="tech-band-code">$ diaspor model run diaspor-judge-assistant-v1 --stream rtsp://camera</code>
-            </div>
-            <div class="tech-band-body">
-              <p class="tech-band-models"><strong>IA propriétaire · 9 capacités</strong></p>
-              <p class="tech-band-note">
-                <strong>Auto-étiquetage</strong> · scène · objet · visage · OCR FR+EN.<br>
-                <strong>Transcription</strong> · diarisation · français québécois + anglais canadien.<br>
-                <strong>Flux en direct</strong> · <code>WebRTC</code> · <code>HLS</code> · <code>RTSP</code>.<br>
-                <strong>Pose 3D</strong> · 33 keypoints · jugement sportif, geste, posture.<br>
-                <strong>Prosodie</strong> · stress, tremblement, rythme, pauses.<br>
-                <strong>Crédibilité</strong> · aide à la décision composite · jamais un verdict.<br>
-                <strong>Assistant Juge</strong> · scoring de neutralité pour le sport &amp; l'arbitrage · Y2.<br>
-                <strong>Diarisation</strong> · qui a dit quoi.<br>
-                <strong>Vision</strong> · scène · objet · OCR FR + EN.
-              </p>
-            </div>
-          </div>
-        </div>
-        <p class="tech-cta">Tout propriétaire · fonctionne sur votre matériel · protégé par secret commercial · aucune facturation par appel. <a href="mailto:hello@diaspor.io?subject=Plong%C3%A9e%20technique">Demander une plongée technique.</a></p>
-
-        <!-- Encadré ingénierie : par techniques, pour techniques -->
-        <aside style="margin-top:28px;background:#0d1117;border:1px solid #1f2937;border-radius:14px;padding:22px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;">
-          <div>
-            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Pile</div>
-            <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Rust 2024 · workspace de 8 crates · zéro unsafe sauf FFI · <code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#a5b4fc;font-size:0.9em;">cargo --release · LTO=thin</code></div>
-          </div>
-          <div>
-            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Builds</div>
-            <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">Binaires signés multi-plateformes · SHA-256 + Ed25519 (minisign) + provenance SLSA · reproductibles depuis la source</div>
-          </div>
-          <div>
-            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Code source</div>
-            <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;">GitLab privé auto-hébergé · codebase protégée par NDA · revue complète disponible sous NDA pour les équipes sécurité</div>
-          </div>
-          <div>
-            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#22d3ee;font-weight:600;margin-bottom:6px;">Cadre de conformité</div>
-            <div style="font-size:13.5px;color:#c9d1d9;line-height:1.5;"><code style="background:rgba(255,255,255,0.05);padding:1px 5px;border-radius:3px;color:#a5b4fc;font-size:0.9em;">diaspor-credibility-v1</code> exclu des contextes travail/éducation UE (AI Act). Consentement BIPA pour biométrie faciale en Illinois. Adjudication forensique/embauche hors-cadre.</div>
-          </div>
-        </aside>
       </div>
     </section>
 
