@@ -27,47 +27,77 @@ impl ImageStudio {
         self.generators.iter().map(|g| g.profile()).collect()
     }
 
-    /// Pick the generator that best satisfies `policy`.
+    /// Generators ordered best-first for `policy` — cheapest first for
+    /// [`Policy::CostOptimized`], highest-quality first otherwise (within the
+    /// budget for [`Policy::Balanced`]). The router both *picks* and *falls
+    /// back* down this order.
+    fn ranked_generators(&self, policy: &Policy) -> Vec<&Arc<dyn ImageGenerator>> {
+        let mut ranked: Vec<&Arc<dyn ImageGenerator>> = match policy {
+            Policy::Balanced { max_cost_usd } => self
+                .generators
+                .iter()
+                .filter(|g| g.profile().cost_usd_per_image <= *max_cost_usd)
+                .collect(),
+            Policy::CostOptimized | Policy::QualityFirst => self.generators.iter().collect(),
+        };
+        ranked.sort_by(|a, b| {
+            let (pa, pb) = (a.profile(), b.profile());
+            match policy {
+                Policy::CostOptimized => pa
+                    .cost_usd_per_image
+                    .total_cmp(&pb.cost_usd_per_image)
+                    .then(pb.quality.cmp(&pa.quality)),
+                Policy::QualityFirst | Policy::Balanced { .. } => pb
+                    .quality
+                    .cmp(&pa.quality)
+                    .then(pa.cost_usd_per_image.total_cmp(&pb.cost_usd_per_image)),
+            }
+        });
+        ranked
+    }
+
+    /// The single best generator for `policy` (the head of the ranking).
     ///
-    /// Pure and deterministic — this is the routing logic under test.
+    /// Pure and deterministic — the routing-order logic under test.
     ///
     /// # Errors
     /// Returns [`ImageError::NoProvider`] when no registered generator
     /// satisfies the policy (e.g. all exceed a [`Policy::Balanced`] budget).
     pub fn select_generator(&self, policy: &Policy) -> Result<&Arc<dyn ImageGenerator>> {
-        let pick = match policy {
-            Policy::CostOptimized => self.generators.iter().min_by(|a, b| {
-                let (pa, pb) = (a.profile(), b.profile());
-                pa.cost_usd_per_image
-                    .total_cmp(&pb.cost_usd_per_image)
-                    .then(pb.quality.cmp(&pa.quality))
-            }),
-            Policy::QualityFirst => self.generators.iter().max_by(|a, b| {
-                let (pa, pb) = (a.profile(), b.profile());
-                pa.quality
-                    .cmp(&pb.quality)
-                    .then(pb.cost_usd_per_image.total_cmp(&pa.cost_usd_per_image))
-            }),
-            Policy::Balanced { max_cost_usd } => self
-                .generators
-                .iter()
-                .filter(|g| g.profile().cost_usd_per_image <= *max_cost_usd)
-                .max_by(|a, b| {
-                    let (pa, pb) = (a.profile(), b.profile());
-                    pa.quality
-                        .cmp(&pb.quality)
-                        .then(pb.cost_usd_per_image.total_cmp(&pa.cost_usd_per_image))
-                }),
-        };
-        pick.ok_or_else(|| ImageError::NoProvider(policy.to_string()))
+        self.ranked_generators(policy)
+            .into_iter()
+            .next()
+            .ok_or_else(|| ImageError::NoProvider(policy.to_string()))
     }
 
-    /// Generate one image using the policy-selected provider.
+    /// Generate one image, trying the policy-ranked providers in order and
+    /// falling back to the next when one errors (e.g. an unfunded provider
+    /// returning HTTP 429). Returns the last error if every provider fails.
     ///
     /// # Errors
-    /// Propagates routing and provider errors.
+    /// [`ImageError::NoProvider`] when nothing satisfies the policy, otherwise
+    /// the final provider's error after all have failed.
     pub async fn generate(&self, request: &GenerateRequest, policy: &Policy) -> Result<Image> {
-        self.select_generator(policy)?.generate(request).await
+        let ranked = self.ranked_generators(policy);
+        if ranked.is_empty() {
+            return Err(ImageError::NoProvider(policy.to_string()));
+        }
+        let mut last_error = None;
+        for generator in ranked {
+            match generator.generate(request).await {
+                Ok(image) => return Ok(image),
+                Err(error) => {
+                    let provider = generator.profile().name;
+                    tracing::warn!(
+                        %provider,
+                        %error,
+                        "image generator failed; falling back to the next provider"
+                    );
+                    last_error = Some(error);
+                }
+            }
+        }
+        Err(last_error.unwrap_or_else(|| ImageError::NoProvider(policy.to_string())))
     }
 
     /// Composite pre-made layers with the configured compositor.
@@ -96,10 +126,9 @@ impl ImageStudio {
         if prompts.is_empty() {
             return Err(ImageError::InvalidRequest("no prompts to generate".into()));
         }
-        let generator = self.select_generator(policy)?;
         let mut layers = Vec::with_capacity(prompts.len());
         for prompt in prompts {
-            layers.push(Layer::new(generator.generate(prompt).await?));
+            layers.push(Layer::new(self.generate(prompt, policy).await?));
         }
         self.compositor
             .composite(&CompositeRequest::new(instruction, layers, width, height))
@@ -183,6 +212,21 @@ mod tests {
         }
     }
 
+    /// A generator that always errors — used to exercise router fallback.
+    struct FailingGen(ProviderProfile);
+    #[async_trait]
+    impl ImageGenerator for FailingGen {
+        fn profile(&self) -> ProviderProfile {
+            self.0.clone()
+        }
+        async fn generate(&self, _request: &GenerateRequest) -> Result<Image> {
+            Err(ImageError::Provider {
+                provider: self.0.name.clone(),
+                message: "simulated provider failure".into(),
+            })
+        }
+    }
+
     struct FakeCompositor;
     #[async_trait]
     impl ImageCompositor for FakeCompositor {
@@ -205,6 +249,39 @@ mod tests {
             builder = builder.generator(Arc::new(FakeGen(p)));
         }
         builder.build().expect("valid studio")
+    }
+
+    #[tokio::test]
+    async fn generate_falls_back_when_the_top_provider_fails() {
+        // QualityFirst ranks the q95 provider first; it always errors, so the
+        // router must fall back to the working q80 provider.
+        let studio = ImageStudio::builder()
+            .generator(Arc::new(FailingGen(profile("flaky-premium", 95, 0.080))))
+            .generator(Arc::new(FakeGen(profile("reliable", 80, 0.020))))
+            .compositor(Arc::new(FakeCompositor))
+            .build()
+            .expect("valid studio");
+        let image = studio
+            .generate(&GenerateRequest::new("x", 8, 8), &Policy::QualityFirst)
+            .await
+            .expect("falls back to the working provider");
+        assert_eq!((image.width, image.height), (8, 8));
+    }
+
+    #[tokio::test]
+    async fn generate_errors_when_every_provider_fails() {
+        let studio = ImageStudio::builder()
+            .generator(Arc::new(FailingGen(profile("a", 95, 0.080))))
+            .generator(Arc::new(FailingGen(profile("b", 50, 0.010))))
+            .compositor(Arc::new(FakeCompositor))
+            .build()
+            .expect("valid studio");
+        assert!(matches!(
+            studio
+                .generate(&GenerateRequest::new("x", 8, 8), &Policy::QualityFirst)
+                .await,
+            Err(ImageError::Provider { .. })
+        ));
     }
 
     #[test]
