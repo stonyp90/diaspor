@@ -1,0 +1,44 @@
+name: Check desktop updater
+
+on:
+  push:
+    paths:
+      - '.github/workflows/check-desktop-updater.yml'
+      - '.github/workflows/release-desktop.yml'
+      - 'apps/vfs-desktop/scripts/generate-update-manifest*'
+      - 'apps/vfs-desktop/src-tauri/tauri.conf.json'
+      - 'tools/check_asset_pattern.py'
+  pull_request:
+    paths:
+      - '.github/workflows/check-desktop-updater.yml'
+      - '.github/workflows/release-desktop.yml'
+      - 'apps/vfs-desktop/scripts/generate-update-manifest*'
+      - 'apps/vfs-desktop/src-tauri/tauri.conf.json'
+      - 'tools/check_asset_pattern.py'
+
+permissions:
+  contents: read
+
+jobs:
+  updater-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install 'PyYAML==6.0.3'
+      - run: node --test apps/vfs-desktop/scripts/generate-update-manifest.test.js
+      - run: python3 tools/check_asset_pattern.py
+      - name: Parse release workflows
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import yaml
+          for name in ['release-desktop.yml', 'check-desktop-updater.yml']:
+              yaml.safe_load((Path('.github/workflows') / name).read_text())
+          PY
