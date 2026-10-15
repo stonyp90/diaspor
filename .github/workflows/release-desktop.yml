@@ -132,6 +132,20 @@ jobs:
           security delete-keychain "$KCHAIN" >/dev/null 2>&1 || true
           rm -f "$CERT_FILE"
 
+      - name: Configure updater artifacts
+        shell: bash
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        run: |
+          if [ -n "$TAURI_SIGNING_PRIVATE_KEY" ]; then
+            enabled=true
+          else
+            enabled=false
+            echo "::warning title=Updater signing unavailable::TAURI_SIGNING_PRIVATE_KEY is absent. Installers will build without an updater feed."
+          fi
+          echo "UPDATER_SIGNING_ENABLED=$enabled" >> "$GITHUB_ENV"
+          printf '{"bundle":{"createUpdaterArtifacts":%s}}\n' "$enabled" > "$RUNNER_TEMP/updater-config.json"
+
       - name: Build Desktop (macOS/Linux)
         if: matrix.os != 'windows-latest'
         working-directory: apps/vfs-desktop
@@ -145,9 +159,9 @@ jobs:
             unset APPLE_CERTIFICATE APPLE_CERTIFICATE_PASSWORD APPLE_SIGNING_IDENTITY APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID
           fi
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
-            npm run tauri:build -- --target universal-apple-darwin
+            npm run tauri:build -- --config "$RUNNER_TEMP/updater-config.json" --target universal-apple-darwin
           else
-            npm run tauri:build
+            npm run tauri:build -- --config "$RUNNER_TEMP/updater-config.json"
           fi
         env:
           # Updater signing (Ed25519, used by tauri-plugin-updater)
@@ -171,9 +185,10 @@ jobs:
         if: matrix.os == 'windows-latest'
         working-directory: apps/vfs-desktop
         shell: pwsh
-        run: npm run tauri:build
+        run: npm run tauri:build -- --config "$env:RUNNER_TEMP/updater-config.json"
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
           RUST_BACKTRACE: full
 
       - name: Prepare macOS artifacts
@@ -192,12 +207,22 @@ jobs:
           ls -lh release-artifacts/
           shasum -a 256 release-artifacts/diaspor-vfs.dmg
 
+      - name: Collect signed macOS updater
+        if: matrix.os == 'macos-latest' && env.UPDATER_SIGNING_ENABLED == 'true'
+        shell: bash
+        run: |
+          bundle_dir="apps/vfs-desktop/src-tauri/target/universal-apple-darwin/release/bundle/macos"
+          if [ ! -d "$bundle_dir" ]; then
+            bundle_dir="apps/vfs-desktop/src-tauri/target/release/bundle/macos"
+          fi
+          node apps/vfs-desktop/scripts/generate-update-manifest.js collect --platform macos --bundle-dir "$bundle_dir" --output-dir release-artifacts
+
       - name: Upload macOS artifact
         if: matrix.os == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
           name: vfs-macos-${{ github.sha }}
-          path: release-artifacts/diaspor-vfs.dmg
+          path: release-artifacts/*
           retention-days: 90
           if-no-files-found: error
 
@@ -224,12 +249,22 @@ jobs:
             exit 1
           }
 
+      - name: Collect signed Windows updater
+        if: matrix.os == 'windows-latest' && env.UPDATER_SIGNING_ENABLED == 'true'
+        shell: bash
+        run: |
+          bundle_dir="apps/vfs-desktop/src-tauri/target/release/bundle/msi"
+          if [ ! -d "$bundle_dir" ]; then
+            bundle_dir="apps/vfs-desktop/src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi"
+          fi
+          node apps/vfs-desktop/scripts/generate-update-manifest.js collect --platform windows --bundle-dir "$bundle_dir" --output-dir release-artifacts
+
       - name: Upload Windows artifact
         if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
           name: vfs-windows-${{ github.sha }}
-          path: release-artifacts/diaspor-vfs.msi
+          path: release-artifacts/*
           retention-days: 90
           if-no-files-found: error
 
@@ -245,12 +280,18 @@ jobs:
           ls -lh release-artifacts/
           sha256sum release-artifacts/diaspor-vfs.AppImage
 
+      - name: Collect signed Linux updater
+        if: matrix.os == 'ubuntu-22.04' && env.UPDATER_SIGNING_ENABLED == 'true'
+        shell: bash
+        run: |
+          node apps/vfs-desktop/scripts/generate-update-manifest.js collect --platform linux --bundle-dir apps/vfs-desktop/src-tauri/target/release/bundle/appimage --output-dir release-artifacts
+
       - name: Upload Linux artifact
         if: matrix.os == 'ubuntu-22.04'
         uses: actions/upload-artifact@v4
         with:
           name: vfs-linux-${{ github.sha }}
-          path: release-artifacts/diaspor-vfs.AppImage
+          path: release-artifacts/*
           retention-days: 90
           if-no-files-found: error
 
@@ -302,12 +343,25 @@ jobs:
             exit 1
           fi
 
+      - name: Set up feed generator runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Generate signed update feed
+        env:
+          RELEASE_TAG: ${{ github.event.inputs.version || github.ref_name }}
+        run: |
+          APP_VERSION=$(node -p "JSON.parse(require('fs').readFileSync('apps/vfs-desktop/src-tauri/tauri.conf.json', 'utf8')).version")
+          node apps/vfs-desktop/scripts/generate-update-manifest.js manifest --artifacts artifacts --output artifacts/latest.json --version "$APP_VERSION" --tag "$RELEASE_TAG" --repository "$GITHUB_REPOSITORY"
+
       - name: Attach to existing release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.event.inputs.version || github.ref_name }}
         run: |
-          VERSION="${{ github.event.inputs.version || github.ref_name }}"
+          VERSION="$RELEASE_TAG"
           # The CLI workflow (.github/workflows/release.yml) creates the
           # release first via softprops/action-gh-release. If it hasn't run
           # yet (or this fires standalone via workflow_dispatch), create the
@@ -321,7 +375,7 @@ jobs:
               --repo ${{ github.repository }}
           fi
           echo "Uploading desktop artifacts to $VERSION..."
-          for artifact in artifacts/macos/diaspor-vfs.dmg artifacts/windows/diaspor-vfs.msi artifacts/linux/diaspor-vfs.AppImage; do
+          for artifact in artifacts/macos/* artifacts/windows/* artifacts/linux/*; do
             if [ -f "$artifact" ]; then
               echo "  Uploading $artifact"
               gh release upload "$VERSION" "$artifact" --clobber --repo ${{ github.repository }}
@@ -329,4 +383,8 @@ jobs:
               echo "  Skipping $artifact (not built)"
             fi
           done
+          # Publish the feed last, after every referenced payload has uploaded.
+          if [ -f artifacts/latest.json ]; then
+            gh release upload "$VERSION" artifacts/latest.json --clobber --repo "$GITHUB_REPOSITORY"
+          fi
           echo "Done. Release URL: https://github.com/${{ github.repository }}/releases/tag/$VERSION"

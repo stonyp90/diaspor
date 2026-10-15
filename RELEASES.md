@@ -3,6 +3,32 @@
 Release-by-release notes live here. ROADMAP.md describes the *intended*
 milestones; this file is the *actual* shipping log written after each tag.
 
+## Unreleased — signed desktop updater feed
+
+- Desktop releases retain the existing DMG, MSI and AppImage download names.
+  When the updater signing key is configured, Tauri 2 also generates its signed
+  updater payloads. The release adapter copies their exact signature contents
+  into `latest.json` and publishes that feed after its referenced payloads.
+  Updater payloads use separate asset names, so an unsigned rerun cannot replace
+  a previously signed Windows/Linux payload with an ordinary installer.
+- The app version in the feed comes from `tauri.conf.json`; download URLs use
+  the actual release tag, because desktop and workspace versions can differ.
+- Without `TAURI_SIGNING_PRIVATE_KEY`, installers still build and the workflow
+  warns and omits the updater feed. No unsigned or stale checked-in feed ships.
+- Validation: Node fixture tests cover signed platform payloads, universal macOS,
+  partial builds, empty/missing signatures and metadata. Native signed builds
+  and end-to-end update installation remain release-run checks.
+- Design: the existing Node release adapter owns filesystem collection and feed
+  generation; application/domain and runtime update behavior are unchanged.
+  No dependencies or versions were upgraded.
+- Guidance checked 2026-10-15: locked Tauri CLI 2.9.6 and updater JS 2.9.0;
+  [Tauri 2 updater](https://v2.tauri.app/plugin/updater/) and
+  [CLI configuration overlays](https://v2.tauri.app/reference/cli/#build),
+  [GitHub artifact transfer](https://docs.github.com/en/actions/tutorials/store-and-share-data),
+  [Node 20 test runner](https://github.com/nodejs/node/blob/v20.19.0/doc/api/test.md)
+  and [PyYAML safe loading](https://pyyaml.org/wiki/PyYAMLDocumentation)
+  (local PyYAML 6.0.3, pinned in the fast CI check).
+
 ## v0.1.0-alpha.6 — pending
 
 Polish pass on top of alpha.5:
