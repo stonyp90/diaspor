@@ -15,6 +15,10 @@ S3_BUCKET="${S3_BUCKET:-diaspor-io-site-436136277668}"
 CLOUDFRONT_DISTRIBUTION_ID="${CLOUDFRONT_DISTRIBUTION_ID:-E5ZB29XQZG1PT}"
 REGION="${AWS_REGION:-ca-central-1}"
 
+# Validate the exact source before AWS credentials or any upload are used.
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+python3 "$SCRIPT_DIR/../scripts/check_website_discovery.py" --website-dir "$SCRIPT_DIR"
+
 echo -e "${GREEN}🚀 Deploying website to S3...${NC}"
 echo "Bucket: $S3_BUCKET"
 echo "Region: $REGION"
@@ -32,7 +36,7 @@ if [ -z "${AWS_ACCESS_KEY_ID:-}" ] || [ -z "${AWS_SECRET_ACCESS_KEY:-}" ]; then
 fi
 
 # Change to website directory
-cd "$(dirname "$0")"
+cd "$SCRIPT_DIR"
 
 # Verify we're in the right directory
 if [ ! -f "index.html" ]; then
@@ -67,7 +71,7 @@ CSS_HASH=${CSS_HASH:0:8}
 
 # Build marker — verifiable proof of which commit is on prod.
 # In CI, $GITHUB_SHA is set; locally we fall back to `git rev-parse HEAD`.
-BUILD_SHA="${GITHUB_SHA:-$(git -C "$(dirname "$0")/.." rev-parse HEAD 2>/dev/null || echo unknown)}"
+BUILD_SHA="${GITHUB_SHA:-$(git -C "$SCRIPT_DIR/.." rev-parse HEAD 2>/dev/null || echo unknown)}"
 BUILD_SHA_SHORT="${BUILD_SHA:0:8}"
 BUILD_TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 BUILD_MARKER="<!-- build: ${BUILD_SHA_SHORT} at ${BUILD_TIMESTAMP} -->"
@@ -132,22 +136,24 @@ for svg in *.svg; do
     fi
 done
 
-# Upload robots.txt and sitemap.xml (excluded from the initial sync above)
-if [ -f "robots.txt" ]; then
-    echo -e "${GREEN}🤖 Uploading robots.txt...${NC}"
-    aws s3 cp robots.txt s3://$S3_BUCKET/robots.txt \
+# Discovery files are excluded from the immutable asset sync above.
+for discovery_file in robots.txt llms.txt; do
+    aws s3 cp "$discovery_file" "s3://$S3_BUCKET/$discovery_file" \
         --region $REGION \
         --content-type "text/plain; charset=utf-8" \
-        --cache-control "public, max-age=3600"
-fi
+        --cache-control "public, max-age=3600, must-revalidate"
+done
 
-if [ -f "sitemap.xml" ]; then
-    echo -e "${GREEN}🗺️  Uploading sitemap.xml...${NC}"
-    aws s3 cp sitemap.xml s3://$S3_BUCKET/sitemap.xml \
-        --region $REGION \
-        --content-type "application/xml; charset=utf-8" \
-        --cache-control "public, max-age=3600"
-fi
+aws s3 cp sitemap.xml "s3://$S3_BUCKET/sitemap.xml" \
+    --region $REGION \
+    --content-type "application/xml; charset=utf-8" \
+    --cache-control "public, max-age=3600, must-revalidate"
+
+# Verification HTML is also excluded by the initial sync; upload it verbatim.
+aws s3 cp google5781a30bbd14f93a.html "s3://$S3_BUCKET/google5781a30bbd14f93a.html" \
+    --region $REGION \
+    --content-type "text/html; charset=utf-8" \
+    --cache-control "public, max-age=300, must-revalidate"
 
 # Upload screenshots directory
 if [ -d "screenshots" ]; then

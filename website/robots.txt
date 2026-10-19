@@ -1,11 +1,10 @@
-# Robots.txt for diaspor.io
-# https://www.robotstxt.org/
-
+# Public marketing pages share one policy for all crawlers.
+# These crawl exclusions are not authentication or access control.
 User-agent: *
 Allow: /
+Disallow: /api
+Disallow: /admin
+Disallow: /app
+Disallow: /account
 
-# Sitemap location
 Sitemap: https://diaspor.io/sitemap.xml
-
-# Crawl delay (optional, be polite to crawlers)
-Crawl-delay: 1
