@@ -3,18 +3,12 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://diaspor.io/</loc>
-    <lastmod>2026-05-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://diaspor.io/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://diaspor.io/fr/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://diaspor.io/" />
   </url>
   <url>
     <loc>https://diaspor.io/fr/</loc>
-    <lastmod>2026-05-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://diaspor.io/" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://diaspor.io/fr/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://diaspor.io/" />

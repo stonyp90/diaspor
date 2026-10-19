@@ -1,0 +1,18 @@
+# Diaspor
+
+> File intelligence across storage you control. Diaspor is in early access.
+
+## Official public pages
+
+- [English product overview](https://diaspor.io/): product scope, examples, availability, FAQ and contact.
+- [Présentation en français](https://diaspor.io/fr/): produit, exemples, disponibilité, FAQ et contact.
+
+## Product scope and availability
+
+The public site presents Diaspor Desktop, Engine and Models for working with files across existing storage, including transcription, tagging and search. It describes on-premises deployment and a Rust engine with a CLI, SDK and REST API.
+
+Early access and private beta features are identified on the public pages. Contact the team through those pages for current availability and a deployment proposal. The public website is the source for current product details; this file is a concise guide.
+
+## Français
+
+Diaspor est en accès anticipé. Le site présente Desktop, Engine et Models pour transcrire, étiqueter et rechercher des fichiers sur le stockage que vous contrôlez. Certaines fonctions sont en bêta privée. Consultez la page française pour les détails actuels et les coordonnées de l’équipe.

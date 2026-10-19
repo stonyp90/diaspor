@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "website/**"
+      - "scripts/check_website_discovery.py"
       - ".github/workflows/deploy-website.yml"
   workflow_dispatch:
 
@@ -31,6 +32,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate public discovery
+        run: python3 scripts/check_website_discovery.py
+
       - name: Validate HTML (EN + FR)
         run: |
           npm install --no-save html-validate@8
@@ -47,7 +51,7 @@ jobs:
         working-directory: website
         run: |
           # HTML files — short cache, must-revalidate
-          for f in index.html fr/index.html; do
+          for f in index.html fr/index.html google5781a30bbd14f93a.html; do
             aws s3 cp "$f" "s3://${{ env.S3_BUCKET }}/$f" \
               --cache-control "public, max-age=300, must-revalidate" \
               --content-type "text/html; charset=utf-8" \
@@ -60,8 +64,20 @@ jobs:
             --content-type "text/css" \
             --region "${{ env.AWS_REGION }}"
 
-          # Static assets — long cache
-          for ext in svg png ico webmanifest txt xml; do
+          # Discovery files — refresh promptly after changes.
+          for f in robots.txt llms.txt; do
+            aws s3 cp "$f" "s3://${{ env.S3_BUCKET }}/$f" \
+              --cache-control "public, max-age=3600, must-revalidate" \
+              --content-type "text/plain; charset=utf-8" \
+              --region "${{ env.AWS_REGION }}"
+          done
+          aws s3 cp sitemap.xml "s3://${{ env.S3_BUCKET }}/sitemap.xml" \
+            --cache-control "public, max-age=3600, must-revalidate" \
+            --content-type "application/xml; charset=utf-8" \
+            --region "${{ env.AWS_REGION }}"
+
+          # Static assets — long cache; discovery files are handled above.
+          for ext in svg png ico webmanifest; do
             find . -maxdepth 2 -name "*.$ext" | while read -r f; do
               aws s3 cp "$f" "s3://${{ env.S3_BUCKET }}/$f" \
                 --cache-control "public, max-age=31536000, immutable" \
